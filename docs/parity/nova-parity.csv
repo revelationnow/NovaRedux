@@ -1,0 +1,168 @@
+Area,Feature,Since,Prime,Status,Priority,Nova behaviour,Notes
+Home screen,"Desktop grid, rows by columns",1.x,No,Done,P0,Any grid from very small to very dense,"grid_rows, grid_cols (up to 24)"
+Home screen,Subgrid positioning,,No,Done,P0,Icons and widgets snap halfway between cells,subgrid; widgets resize to half a cell
+Home screen,Icon size,6.0,No,Done,P0,Free since 6.0 (was Prime),icon_scale
+Home screen,"Icon labels: show or hide, font, colour, shadow, two lines",,No,Done,P1,Per-surface label styling,label_* prefs
+Home screen,Width and height padding,,No,Done,P1,Space between the grid and the screen edges,"desktop_padding_h, desktop_padding_v"
+Home screen,Persistent search bar on the desktop,4.1,No,Check,P1,A search bar that stays on every page,"home_search, search_bar_config"
+Home screen,"Search bar placement: top of page, or dock above or below icons",5.5,No,Check,P1,Choose where the desktop bar sits,SearchBarPlacement; confirm all three spots
+Home screen,Replace the dock search bar with any widget,5.5,No,Check,P2,"Long-press the bar, then Replace",search_bar_widget_provider suggests support
+Home screen,Page indicator style and colour,5.0,No,Done,P2,"Dots, line or none, in any colour","IndicatorStyle NONE, DOTS, CIRCLE, LINE"
+Home screen,Swipe-to-drawer indicator,5.0,No,Done,P2,Arrow hinting that a swipe opens the drawer,drawer_swipe_indicator
+Home screen,Infinite scroll,1.x,No,Done,P1,Last page wraps to the first,infinite_scroll
+Home screen,"Scroll effects: Simple, Cube, Card stack",1.x,No,Done,P1,Free page transitions,ScrollEffect enum
+Home screen,"More scroll effects: Tablet, Revolving door, Flip, Flip vertical, In and out, Accordion, Glass, Zoom fade, Throw, Wipe",1.x,Yes,Done,P2,Prime page transitions,All present in ScrollEffect
+Home screen,Wallpaper scrolling modes,1.x,No,Partial,P2,"On, off, reverse; early builds also static-only and delayed","On, off and reverse only"
+Home screen,Lock layout,7.0.15,No,Done,P1,Stops accidental moves and removals,desktop_locked
+Home screen,Overlap when placing,,No,Done,P1,Icons and widgets may overlap,"overlap_when_placing, widget_overlap"
+Home screen,Top and bottom shadow,,No,Done,P2,Shade behind the status bar and dock,show_scrims
+Home screen,Add new apps to the home screen,,No,Done,P2,New installs placed automatically,auto_add_apps
+Home screen,Default page; Home returns to it,,No,Done,P1,Home button jumps to the chosen page,home_return_to_default_page
+Home screen,"Desktop previews: add, remove, reorder, set default page",,No,Done,P1,Page overview for editing,Page drag and default-page controls
+Home screen,Screen rotation,,No,Done,P1,"Portrait, landscape or auto-rotate",HomeOrientation
+Home screen,Tablet and foldable layouts,8.0 beta,No,Check,P1,8.0 beta moved to the Android 12L launcher base,Needs a tablet and a foldable
+Home screen,Edge-to-edge display support,7.0.37,No,Check,P2,Layouts that respect curved and edge displays,Behaviour; test on an edge display
+Widgets,Resize any widget,,No,Done,P0,Including widgets that don't declare resizing,Resize from any edge; check non-resizable widgets
+Widgets,Widget padding,,No,Done,P1,Per-widget padding from the long-press menu,widget_padding
+Widgets,Widget corner radius,7.0.39,No,Done,P2,Custom corner radius for widgets,widget_corner_radius
+Widgets,"Widget long-press menu: remove, padding, resize, app info",7.0.11,No,Check,P2,App info target added in 7.0.11,Compare menu items
+Widgets,Desktop gestures work on top of widgets,7.0.41,Yes,Check,P2,Two-finger gestures over widgets,Behaviour
+Dock,Dock on or off,1.x,No,Done,P0,Dock toggle,dock_enabled
+Dock,Dock pages,1.x,No,Done,P0,One to five swipeable dock pages,"dock_pages, up to 5"
+Dock,Icons per dock page,1.x,No,Done,P0,Up to 7 per page in Nova,"dock_count, 3 to 12"
+Dock,Dock icon layout,,No,Done,P1,Icon size and labels set separately,"dock_icon_scale, dock_labels, dock_match_desktop"
+Dock,Dock infinite scroll,,No,Done,P2,Dock pages wrap around,dock_infinite_scroll
+Dock,Dock width and height padding,,No,Done,P2,Space around dock icons,"dock_padding_h, dock_padding_v"
+Dock,Dock as overlay,,No,Done,P2,Dock drawn over the page,dock_overlay
+Dock,Close the overlay dock after launching an app,,No,Done,P2,Needs dock as overlay,dock_auto_close
+Dock,Remember the dock page,,No,Done,P2,Return to the last dock page used,dock_remember_position
+Dock,"Dock background shapes: rectangle, rounded, arc, platform",,No,Partial,P2,Four shapes,"None, rounded, square plus a corner radius"
+Dock,Dock background colour and transparency,,No,Done,P2,Tint presets or any colour,dock_bg_opacity and colours
+Dock,Dock background image,,No,Missing,P2,"From the gallery, dock theme apps or an icon pack",Not found
+Dock,Dock background behind the navigation bar,5.0,No,Done,P2,Background extends under the nav bar,dock_bg_behind_nav
+Dock,Dock swipe actions,1.x,Yes,Done,P1,A swipe on a dock icon runs a second action,Icon swipe actions; check on the dock
+App drawer,"Drawer style: horizontal pages, vertical grid, list",1.x,No,Done,P0,Horizontal style returned in 7.0.10,DrawerStyle
+App drawer,"Drawer grid, separate from the desktop",,No,Done,P0,Its own rows and columns,"drawer_columns, drawer_rows"
+App drawer,Landscape drawer grid,,No,Check,P2,Separate grid in landscape,Not seen in prefs
+App drawer,Drawer icon layout; match the desktop,6.0,No,Done,P1,"Icon size and labels, or follow the desktop","drawer_icon_scale, drawer_match_desktop"
+App drawer,Card or immersive background,5.0,No,Partial,P1,"A card panel, or a full-screen drawer",Colour and opacity only; no card panel
+App drawer,Background colour and transparency,1.x,No,Done,P1,"Any colour, any transparency","drawer_bg_color, drawer_bg_opacity"
+App drawer,Swipe up to open the drawer,5.0,No,Done,P0,Pixel-style swipe from the desktop,Gesture
+App drawer,"Open animation: circle reveal, slide up, zoom, fade",2014 beta,No,Partial,P2,Drawer transition choice,"Slide up, zoom, fade; no circle reveal"
+App drawer,Drawer scroll effects in paged mode,1.x,No,Done,P2,Same effects as the desktop,drawer_page_effect
+App drawer,Fast scroller and scroll accent colour,4.2 beta,No,Done,P2,Letter scrubber along the edge,"drawer_fast_scroller, drawer_scrubber_color"
+App drawer,Frequently used apps row,4.2 beta,No,Done,P2,Most-used apps at the top,drawer_frequent_row
+App drawer,Search bar in the drawer,4.2 beta,No,Done,P1,Persistent bar at the top of the drawer,Drawer bar
+App drawer,Drawer search bar styled like the desktop bar,6.0,No,Check,P2,Same style options as the desktop bar,Compare options
+App drawer,Search and tab bars at the bottom,7.0 beta,No,Done,P1,Easier reach on tall phones,"DrawerTabBar TOP, BOTTOM"
+App drawer,Pull to search,7.0.11,No,Done,P2,Pull down in the drawer to search,drawer_pull_to_search
+App drawer,"Tab bar on or off, and its style",,No,Done,P1,Tab styles such as colour blocks or small tabs,DrawerTabStyle; styles differ from Nova
+App drawer,Scrolling tab bar and tab menu action icons,7.0.10,No,Check,P2,Many tabs scroll; icons in the tab menu,Behaviour
+App drawer,Custom tabs (drawer groups),,Yes,Done,P0,Unlimited custom tabs,drawer_groups
+App drawer,"Apps only in their tab, or also in All apps",,Yes,Done,P1,Per-tab choice,drawer_isolate_tabs
+App drawer,Category tabs,7.0 beta,Yes,Check,P2,Tabs sorted by app category,"smart_folders, SmartCategory"
+App drawer,Folders in the drawer,,Yes,Done,P0,"Drawer folders, inside tabs too",Nested drawer folders
+App drawer,Hide apps,1.x,Yes,Done,P0,Hidden without uninstalling,hidden_apps
+App drawer,Hide from the long-press menu,7.0.10,Yes,Done,P2,One-tap hide,PopupExtraRow HIDE
+App drawer,Work-profile apps in their own tab,7.0.39,No,Done,P1,Separate work tab,drawer_work_tab
+App drawer,Recent and new or updated apps,5.0,No,Partial,P2,"Frequent, Recent and New/Updated tabs in the search view",Recent row only
+App drawer,Drawer greys out behind a windowed folder,7.0.37,No,Check,P2,Content fades to grayscale,One grayscale hit in the code
+App drawer,Widget drawer,,No,Done,P1,Browse and place widgets,WidgetPickerSheet
+Search,App search,2014 beta,No,Done,P0,Instant search over installed apps,"Search package, 54 unit tests"
+Search,Web search with a choice of provider,6.0,No,Partial,P1,"Google, DuckDuckGo and others",Providers present; no suggestions
+Search,Web suggestions while typing,7.0.37,No,Missing,P2,"Autocomplete, e.g. with DuckDuckGo",Needs internet; keep optional if added
+Search,Play Store search from results,,No,Done,P2,Jump to a Play Store search,SearchChip PLAY_STORE
+Search,Calculator,,No,Done,P2,Sums answered in the search box,search_calculator
+Search,Contacts in search,5.4,No,Done,P2,Arrived with the Sesame integration,search_contacts
+Search,App shortcuts in search,5.4,No,Done,P2,Shortcuts in the results,search_shortcuts
+Search,"Search bar style: shape, colour, logo, content",4.3,No,Partial,P1,"Bar style, colour and logo style choices; pill (5.0) and round (5.21) bars",Compare the range with Nova
+Search,Voice and Assistant buttons in the bar,6.0,No,Check,P2,Assistant launch from the search widget,SearchBarChip VOICE
+Search,Weather in the search bar,7.0.54,No,Missing,P2,Was a Labs option before 7.0.54,No internet permission; needs a local source
+Search,Search apps from the desktop Google bar,6.0,No,Check,P2,The bar opens Nova search,Behaviour
+Search,Search window: windowed or immersive,7.0 beta,No,Done,P2,More search window options,SearchWindowMode
+Search,Search in Nova Settings,6.0,No,Done,P1,Find any setting by name,Settings search
+Search,Sesame deep shortcuts,5.4,No,Won't do,Skip,Proprietary; now owned by Branch,Out of scope
+Folders,"Folder preview: grid, fan, stack, line, radial",7.0 beta,No,Done,P1,Radial arrived in Nova 7,FolderPreviewStyle
+Folders,Folder icon shapes match the icon shapes,6.0,No,Done,P1,"Round, squircle and the rest",folder_icon_shape
+Folders,Folder icon colour,,No,Done,P2,Background colour of the folder icon,"folder_bg_color, folder_plate_color"
+Folders,Replace the folder icon,1.x,No,Done,P2,Any icon or image,setFolderIcon
+Folders,Windowed or immersive folders,6.0,No,Done,P1,Two window styles,"FolderMode WINDOW, IMMERSIVE"
+Folders,Folder window colour and transparency,,No,Done,P2,Window background,folder colour prefs
+Folders,Bottom-aligned immersive folders,8.0 beta,No,Check,P2,Align bottom option,Check
+Folders,Scroll vertically or horizontally; vertical paging,6.0,No,Done,P2,Paginated vertical scrolling came in 7,FolderScroll
+Folders,Folder grid and icon layout,,No,Done,P2,"Columns, icon size, labels","folder_columns, folder_icon_scale"
+Folders,Folder open transition,,No,Missing,P2,Zoom or circle,Not found
+Folders,Swipe to open (tap opens the first app),,Yes,Done,P1,Hidden folders,setFolderSwipeToOpen
+Look and feel,Icon packs,1.x,No,Done,P0,Thousands of third-party icon themes,icon_pack
+Look and feel,"Edit an icon: pack icon or image, custom label",,No,Done,P0,Per-icon edits,AppEditSheet
+Look and feel,Adaptive icon shapes,5.5,No,Done,P1,"System, round, squircle and more",IconShape
+Look and feel,Custom icon shape,6.0,No,Done,P2,Draw your own shape,IconShape CUSTOM
+Look and feel,"Flower, pebble, vessel, pentagon, hexagon, heptagon, octagon shapes",7.0.4,No,Done,P2,Android 11 shapes plus polygons,All in IconShape
+Look and feel,Reshape legacy icons,5.5,No,Done,P1,"Only adaptive icons, or force all","ReshapeLegacy OFF, AUTO, ON"
+Look and feel,Normalize icon size,4.1,No,Done,P2,Even out icon sizes,icon_normalize
+Look and feel,"Reshape themed icons, toggle per icon",7.0.39,No,Done,P2,Per-icon reshape switch,"themed_icons, reshape_legacy"
+Look and feel,Adaptive icon animations,,No,Check,P2,Animated adaptive icons,A drag animation exists; compare
+Look and feel,Bypass system icon theme,,No,Missing,P2,Labs: skip OEM icon frames,Not found
+Look and feel,"Night mode: off, always, auto by sunrise, set times",4.3,No,Done,P1,Schedules for the dark theme,"ThemeMode, theme_schedule_*"
+Look and feel,Night mode follows the system dark theme,6.2.2,No,Done,P1,Android 10 dark theme,ThemeMode SYSTEM
+Look and feel,"Night mode per element: search bar, drawer, folders",4.3,No,Missing,P2,Pick what turns dark,Themes everything at once
+Look and feel,"Night mode shades: dark, darker, darkest",6.1.x,No,Missing,P2,Three dark colours,Not found
+Look and feel,Accent colour with full colour picker,1.x,No,Done,P1,Launcher accent colour,accent_color
+Look and feel,"Colours for labels, folders, badges, tabs, backgrounds",,No,Done,P1,Colour controls,Any surface colour
+Look and feel,Material You colours,8.0 beta,No,Done,P1,Colours from the wallpaper,"palette_source, palette_seed"
+Look and feel,App open animation,6.0,No,Done,P2,Includes the Android Pie style,LaunchAnimation
+Look and feel,Animation speed,,No,Done,P2,Relaxed or fast,"AnimationSpeed RELAXED, FAST, SYSTEM"
+Look and feel,Popup menu style,5.5,No,Done,P2,Android 8.1 block style or pills,PopupMenuStyle
+Look and feel,"Status bar: show or hide, transparent, dark icons",,No,Done,P2,Notification bar options,"hide_status_bar, transparent_status, dark_status_icons"
+Look and feel,Haptic toggle for the notification swipe,7.0 beta,No,Done,P2,Turn off the buzz on swipe-down,swipe_down_haptic
+Look and feel,Save APK in the long-press menu,7.0 beta,No,Done,P2,Export an app's APK,PopupExtraRow SAVE_APK
+Look and feel,Shortcut and work badges toggle in Edit icon,7.0.41,No,Missing,P2,Hide the small badges on an icon,Not found
+Notification badges,"Badge type: dynamic, dots, numeric dots, none",5.1,No,Done,P1,"Dynamic 5.1, dots 5.21, numeric dots 6.1","BadgeStyle DOTS, NUMERIC, DYNAMIC"
+Notification badges,Numeric dots,6.1,Yes,Done,P1,Counts tied to the notifications,BadgeStyle NUMERIC
+Notification badges,Badge position and size,5.21,No,Done,P2,Corner and size,"badge_position, badge_scale"
+Notification badges,Badge colours,,No,Done,P2,Badge and text colour,"badge_color, badge_text_color"
+Notification badges,Notifications in the long-press menu,5.5,No,Done,P1,Oreo-style notification popup,popup_notifications
+Notification badges,Dynamic badges on folders show the app's icon,5.1,No,Check,P2,A small app icon on the folder,Compare
+Notification badges,TeslaUnread unread counts,1.x,Yes,Won't do,Skip,"Legacy plugin, pulled from the Play Store in 2019",Replaced by notification access
+Gestures,Swipe up and down,1.x,Yes,Done,P0,Desktop gestures,"Gesture SWIPE_UP, SWIPE_DOWN"
+Gestures,Pinch in and out,1.x,Yes,Done,P1,Desktop gestures,"PINCH_IN, PINCH_OUT"
+Gestures,Double tap,,Yes,Done,P1,Often used to lock the screen,DOUBLE_TAP
+Gestures,Double tap and swipe up or down,5.0,Yes,Done,P2,Double-tap-swipe gestures,"DOUBLE_TAP_SWIPE_UP, DOUBLE_TAP_SWIPE_DOWN"
+Gestures,Two-finger swipe up and down,1.x,Yes,Done,P2,Two-finger gestures,"TWO_FINGER_SWIPE_UP, TWO_FINGER_SWIPE_DOWN"
+Gestures,Two-finger rotate,,Yes,Done,P2,Clockwise and counter-clockwise,"TWO_FINGER_ROTATE_CW, TWO_FINGER_ROTATE_CCW"
+Gestures,Swipe left and right,8.0 beta,Yes,Done,P2,New desktop gestures,"SWIPE_LEFT, SWIPE_RIGHT"
+Gestures,Home button action,,No,Done,P1,What Home does on the home screen,home_button_action
+Gestures,"Gesture targets: Nova actions, apps, shortcuts",,No,Done,P0,Three tabs of targets,GestureAction
+Gestures,Nova Actions,4.2 beta,No,Done,P0,"Drawer, notifications, quick settings, recents, lock, search, voice, default page, settings, toggle dock or status bar, previews",GestureAction enum
+Gestures,Lock screen through device admin or accessibility,4.2 beta,No,Done,P1,Screen-off action,"LockMethod ACCESSIBILITY, DEVICE_ADMIN"
+Gestures,Lock screen through root,,No,Missing,P2,Root screen-off method,Not found
+Gestures,Timeout screen-lock method,5.0,No,Missing,P2,Blacks the screen and shortens the timeout,Not found
+Gestures,Icon swipe up action,1.x,Yes,Done,P0,Second action on any icon or folder,swipeAction
+Gestures,Icon swipe down action,7.0 beta,Yes,Done,P1,"Third action, different from swipe up",swipeActionDown
+Shortcuts,App shortcuts on long-press,5.0,No,Done,P0,Android 7.1 launcher shortcuts,Popup shortcuts
+Shortcuts,Activities picker,,No,Done,P1,Launch any app activity,ActivitiesPickerSheet
+Shortcuts,Nova Actions as desktop shortcuts,,No,Done,P2,Place an action on the home screen,ActionShortcut
+Integrations,Google Discover page,,No,Missing,P2,Needs the Nova Google Companion app,Depends on Google's app; best effort
+Integrations,"Discover theme: light, dark, follow night mode",6.1,No,Missing,P2,Dark Discover cards,Depends on the Discover page
+Backup and setup,Backup and restore,1.x,No,Done,P0,Layout and settings in one file,"exportBackup, importBackup"
+Backup and setup,Quick start,5.0,No,Done,P2,"Pick theme, drawer and dock style in one place",Onboarding wizard
+Backup and setup,Import from other launchers,,No,Done,P1,Start from your current home screen,BackupLayouts
+Backup and setup,Reset to defaults,,No,Done,P2,Start over,resetToDefaults
+Labs,Hidden Labs menu,,No,Done,P2,Held volume-down in Nova Settings,labs_enabled
+Labs,Big grid sizes,,No,Done,P2,Lifts the grid caps,labs_big_grid
+Labs,Permissions list,,No,Done,P2,Review the launcher's permissions,LabsPermission
+Labs,"Debug tools: clear icon cache, send device info",,No,Partial,P2,Troubleshooting,Clear icon cache present; check device info
+Beyond Nova,Import a Nova backup,,No,Done,P0,Bring a whole Nova setup across,"favorites table, drawer groups"
+Beyond Nova,Import Nova's other settings,,No,Partial,P1,"Look, gestures, badges and the rest","Reads grid, dock, drawer columns, subgrid, groups"
+Beyond Nova,At a Glance via Smartspacer,,No,Missing,P1,Common add-on for Nova users,"Smartspacer SDK, GPL-3.0"
+Beyond Nova,Private space (Android 15+),,No,Done,P1,Private apps in their own container,ACCESS_HIDDEN_PROFILES
+Beyond Nova,Feed page with cards,,No,Done,P2,"Calendar, media, contacts and widget cards",Feed package
+Beyond Nova,Automatic backups and recovery,,No,Done,P2,Restored if the store breaks,"writeAutoBackup, StoreRecovery"
+Beyond Nova,"Bring to front, send to back",,No,Done,P2,Stacking order for overlaps,restackItem
+Project,CI on every pull request,,No,Done,P0,"Lint, detekt, unit tests and a debug APK",GitHub Actions workflow in #2; passing
+Project,"Own app ID, name and icon",,No,Partial,P0,Installs beside Supernova; no Nova branding,Name and app ID io.github.revelationnow.novaredux in #3; icon and store images still Supernova's
+Project,Release signing and F-Droid listing,,No,Missing,P1,Reproducible builds like upstream,Upstream setup to copy
+Project,Translations,,No,Missing,P1,Nova shipped 74 languages,English only
+Project,TalkBack support,,No,Partial,P1,Accessible custom views,12 accessibility lint entries
+Project,Split LauncherActivity,,No,Partial,P1,Move UI state into controllers,"5,333 lines, 291 functions"
+Project,Give the layout its own store,,No,Missing,P2,Layout saves stop rewriting settings,One Preferences DataStore today
