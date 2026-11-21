@@ -43,7 +43,7 @@ class BackupTransfer(
 
     fun pickExportFile() = exportLauncher.launch(exportFileName())
 
-    // Supernova_v0.2.5_2026-11-20_19-05-42.json: the version that wrote it
+    // NovaRedux_v0.2.5_2026-11-20_19-05-42.json: the version that wrote it
     // and a readable local time, where it ended in a raw millisecond count
     // (#296). No colons: some file providers refuse them.
     private fun exportFileName(): String {
@@ -52,7 +52,7 @@ class BackupTransfer(
         }.getOrNull().orEmpty()
         val stamp = java.text.SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", java.util.Locale.ROOT)
             .format(java.util.Date())
-        return if (version.isEmpty()) "Supernova_$stamp.json" else "Supernova_${version}_$stamp.json"
+        return if (version.isEmpty()) "NovaRedux_$stamp.json" else "NovaRedux_${version}_$stamp.json"
     }
 
     // Any file: another launcher's backup has an extension of its own, which

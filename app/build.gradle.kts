@@ -25,7 +25,10 @@ android {
     compileSdk = 37
 
     defaultConfig {
-        applicationId = "com.supernova.launcher"
+        // NovaRedux's own ID, so it installs beside Supernova and never
+        // replaces it. The namespace above (the code's package) stays
+        // Supernova's, which keeps merging from upstream simple.
+        applicationId = "io.github.revelationnow.novaredux"
         minSdk = 28
         targetSdk = 36
         versionCode = 28

@@ -43,7 +43,7 @@ object AboutLinks {
     // rather than from Report an issue. Android 13+ confirms a copy itself.
     fun copyDeviceDetails(context: Context) {
         context.getSystemService(android.content.ClipboardManager::class.java)
-            ?.setPrimaryClip(android.content.ClipData.newPlainText("Supernova", deviceDetails(context)))
+            ?.setPrimaryClip(android.content.ClipData.newPlainText("NovaRedux", deviceDetails(context)))
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
             Toast.makeText(context, R.string.copied_to_clipboard, Toast.LENGTH_SHORT).show()
         }
