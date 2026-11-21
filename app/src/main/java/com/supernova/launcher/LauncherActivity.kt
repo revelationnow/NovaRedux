@@ -536,7 +536,7 @@ class LauncherActivity :
             viewModel.pendingExportPng = runLogged("draw icon for PNG export") {
                 view.drawToBitmap()
             }.getOrNull() ?: return@addRow
-            val file = name.replace(Regex("[\\\\/:*?\"<>|]"), "_").trim().ifEmpty { "supernova" }
+            val file = name.replace(Regex("[\\\\/:*?\"<>|]"), "_").trim().ifEmpty { "novaredux" }
             exportPngLauncher.launch("$file.png")
         }
     }

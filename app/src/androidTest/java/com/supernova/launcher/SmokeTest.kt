@@ -32,7 +32,7 @@ import org.junit.runner.RunWith
 //
 //   ./gradlew :app:installDebug :app:installDebugAndroidTest
 //   adb shell am instrument -w \
-//       com.supernova.launcher.debug.test/androidx.test.runner.AndroidJUnitRunner
+//       io.github.revelationnow.novaredux.debug.test/androidx.test.runner.AndroidJUnitRunner
 @RunWith(AndroidJUnit4::class)
 class SmokeTest {
 

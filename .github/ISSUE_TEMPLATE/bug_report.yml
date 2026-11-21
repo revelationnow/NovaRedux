@@ -7,7 +7,7 @@ body:
     attributes:
       label: Before you post
       options:
-        - label: This is a bug, not a feature request or enhancement (those go in [Discussions](https://github.com/tanujnotes/Supernova/discussions)).
+        - label: This is a bug, not a feature request or enhancement (those go in [Discussions](https://github.com/revelationnow/NovaRedux/discussions)).
           required: true
         - label: I'm on the latest version and searched existing issues.
           required: true

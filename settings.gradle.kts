@@ -14,6 +14,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Supernova"
+rootProject.name = "NovaRedux"
 include(":app")
 include(":baselineprofile")

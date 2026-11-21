@@ -55,6 +55,7 @@ class BaselineProfileGenerator {
     }
 
     private companion object {
-        const val PACKAGE = "com.supernova.launcher"
+        // The release application ID, not the code namespace.
+        const val PACKAGE = "io.github.revelationnow.novaredux"
     }
 }

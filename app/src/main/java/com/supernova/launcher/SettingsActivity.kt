@@ -512,7 +512,7 @@ class SettingsActivity : AppCompatActivity() {
             pickIconShape = ::showIconShapePicker,
             resetCustomIcons = ::confirmResetCustomIcons,
             resetHiddenLabels = ::confirmResetHiddenLabels,
-            exportIcons = { exportIconsLauncher.launch("supernova-icons.zip") },
+            exportIcons = { exportIconsLauncher.launch("novaredux-icons.zip") },
             managePermission = ::manageLabsPermission,
             clearIconCache = {
                 viewModel.clearIconCache()
@@ -1853,11 +1853,11 @@ class SettingsActivity : AppCompatActivity() {
     // FileProvider exposes.
     private fun shareCrashLog() {
         runLogged("share crash log") {
-            val header = "Supernova ${SupernovaApp.versionLabel(this)}\n" +
+            val header = "NovaRedux ${SupernovaApp.versionLabel(this)}\n" +
                 "Android ${android.os.Build.VERSION.RELEASE} (API ${android.os.Build.VERSION.SDK_INT}), " +
                 "${android.os.Build.MANUFACTURER} ${android.os.Build.MODEL}\n"
             val dir = java.io.File(cacheDir, "share").apply { mkdirs() }
-            val file = java.io.File(dir, "supernova-crash-log.txt")
+            val file = java.io.File(dir, "novaredux-crash-log.txt")
             file.writeText(header + SupernovaApp.crashLog(this).readText())
             val uri = androidx.core.content.FileProvider.getUriForFile(this, "$packageName.fileprovider", file)
             val send = Intent(Intent.ACTION_SEND)

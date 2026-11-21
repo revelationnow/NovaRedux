@@ -1,8 +1,8 @@
 <resources>
-    <string name="app_name">Supernova</string>
+    <string name="app_name">NovaRedux</string>
     <!-- The name the system shows (drawers, the default-home chooser, the
          accessibility and notification-access lists); debug builds rename it. -->
-    <string name="app_label">Supernova</string>
+    <string name="app_label">NovaRedux</string>
     <string name="settings">Settings</string>
     <string name="set_default_launcher">Set as default launcher</string>
     <string name="add_page">Add page</string>
@@ -66,7 +66,7 @@
     <string name="widget_finish_setup">%1$s\nTap to finish setup</string>
     <string name="export_backup">Export backup</string>
     <string name="import_backup">Import backup</string>
-    <string name="import_backup_subtitle">A Supernova backup, or a backup file from another launcher</string>
+    <string name="import_backup_subtitle">A NovaRedux or Supernova backup, or a backup file from another launcher</string>
     <string name="backup_exported">Backup exported</string>
     <plurals name="backup_imported_count">
         <item quantity="one">Restored %1$d item</item>
@@ -81,8 +81,8 @@
         <item quantity="other">, %1$d widgets may need setting up again</item>
     </plurals>
     <plurals name="backup_left_out">
-        <item quantity="one">, left out %1$d item Supernova has no place for</item>
-        <item quantity="other">, left out %1$d items Supernova has no place for</item>
+        <item quantity="one">, left out %1$d item NovaRedux has no place for</item>
+        <item quantity="other">, left out %1$d items NovaRedux has no place for</item>
     </plurals>
     <string name="backup_export_failed">Export failed: %1$s</string>
     <string name="backup_import_failed">Import failed: %1$s</string>
@@ -98,16 +98,16 @@
     <string name="badges_need_access_summary">Tap to grant it, so badges can show</string>
     <string name="popup_needs_access_summary">Tap to grant it, so the menu can list notifications</string>
     <string name="notification_access_title">Allow notification access</string>
-    <string name="notification_access_badges">Badges are counted from your notifications, so Supernova needs notification access. They are read on this phone only.</string>
-    <string name="notification_access_popup">The long-press menu lists an app\'s notifications, so Supernova needs notification access. They are read on this phone only.</string>
-    <string name="notification_access_media">The media card shows what is playing from your notifications, so Supernova needs notification access. They are read on this phone only.</string>
+    <string name="notification_access_badges">Badges are counted from your notifications, so NovaRedux needs notification access. They are read on this phone only.</string>
+    <string name="notification_access_popup">The long-press menu lists an app\'s notifications, so NovaRedux needs notification access. They are read on this phone only.</string>
+    <string name="notification_access_media">The media card shows what is playing from your notifications, so NovaRedux needs notification access. They are read on this phone only.</string>
     <string name="permission_in_app_info">Android won\'t ask again. Allow it here, under Permissions</string>
-    <string name="notification_access_restricted">If the notification access switch is greyed out, Android is blocking it because Supernova was not installed from the Play Store. Open App info, tap the \u22ee menu at the top right, choose Allow restricted settings, then open the notification access screen again.</string>
+    <string name="notification_access_restricted">If the notification access switch is greyed out, Android is blocking it because NovaRedux was not installed from the Play Store. Open App info, tap the \u22ee menu at the top right, choose Allow restricted settings, then open the notification access screen again.</string>
     <string name="open_settings">Open settings</string>
     <string name="not_now">Not now</string>
     <string name="continue_label">Continue</string>
     <string name="accessibility_needed_title">Use the Accessibility API?</string>
-    <string name="accessibility_needed_message">Supernova uses Android\'s Accessibility API only to lock the screen, open Recent apps and open Quick settings when you use a gesture set to one of them.\n\nIt does not read what is on the screen or what you type, and it collects no data. Supernova has no internet access, so nothing leaves this phone.\n\nIf you agree, turn on Supernova on the next screen. You can turn it off there at any time.</string>
+    <string name="accessibility_needed_message">NovaRedux uses Android\'s Accessibility API only to lock the screen, open Recent apps and open Quick settings when you use a gesture set to one of them.\n\nIt does not read what is on the screen or what you type, and it collects no data. NovaRedux has no internet access, so nothing leaves this phone.\n\nIf you agree, turn on NovaRedux on the next screen. You can turn it off there at any time.</string>
     <string name="accessibility_agree">Agree</string>
     <string name="accessibility_decline">Decline</string>
     <string name="gestures_need_accessibility">Needs the accessibility service</string>
@@ -143,7 +143,7 @@
         <item quantity="other">%d shortcuts</item>
     </plurals>
     <string name="gestures">Gestures</string>
-    <string name="accessibility_description">Lets Supernova lock the screen, open Recent apps and open Quick settings from your gestures. It does not read the screen or collect any data. Optional.</string>
+    <string name="accessibility_description">Lets NovaRedux lock the screen, open Recent apps and open Quick settings from your gestures. It does not read the screen or collect any data. Optional.</string>
     <string name="hidden_apps">Hidden apps</string>
     <string name="drawer_groups">Drawer groups</string>
     <string name="drawer_style">Drawer style</string>
@@ -307,8 +307,8 @@
     <string name="badge_test_summary">Post a notification to badge the Settings icon</string>
     <string name="badge_test_channel">Test notifications</string>
     <string name="badge_test_title">Test notification</string>
-    <string name="badge_test_text">Supernova Settings has a badge now. Tap to clear it.</string>
-    <string name="badge_test_blocked">Supernova isn\'t allowed to post notifications</string>
+    <string name="badge_test_text">NovaRedux Settings has a badge now. Tap to clear it.</string>
+    <string name="badge_test_blocked">NovaRedux isn\'t allowed to post notifications</string>
     <string name="badge_test_badges_off">Posted. Turn on Notification badges to see the badge.</string>
     <string name="shortcut_unusable">That shortcut couldn\'t be used</string>
     <string name="pos_top_right">Top right</string>
@@ -551,13 +551,13 @@
     <string name="about_report_issue">Report an issue</string>
     <string name="about_report_issue_summary">Opens a new issue on GitHub</string>
     <string name="about_report_issue_body">\n\n---\n%1$s</string>
-    <string name="about_device_details">Supernova %1$s, Android %2$s (API %3$d), %4$s</string>
+    <string name="about_device_details">NovaRedux %1$s, Android %2$s (API %3$d), %4$s</string>
     <string name="about_no_browser">No app here opens links</string>
     <string name="about_source">Source code</string>
-    <string name="about_source_url" translatable="false">https://github.com/tanujnotes/Supernova</string>
+    <string name="about_source_url" translatable="false">https://github.com/revelationnow/NovaRedux</string>
     <string name="about_privacy">Privacy policy</string>
     <string name="about_privacy_summary">No data collected; nothing leaves this phone</string>
-    <string name="about_privacy_url" translatable="false">https://github.com/tanujnotes/Supernova/blob/main/PRIVACY.md</string>
+    <string name="about_privacy_url" translatable="false">https://github.com/revelationnow/NovaRedux/blob/main/PRIVACY.md</string>
     <string name="crash_log">Crash log</string>
     <string name="crash_log_none">No crashes recorded</string>
     <plurals name="crash_log_count">
@@ -573,9 +573,9 @@
     <!-- Short, so the dialog's three buttons fit on one row. -->
     <string name="crash_log_share_button">Share</string>
     <string name="crash_log_clear">Clear</string>
-    <string name="crash_log_subject">Supernova crash log</string>
+    <string name="crash_log_subject">NovaRedux crash log</string>
     <string name="crash_log_share_failed">Couldn\'t share the crash log: %1$s</string>
-    <string name="about_license_text">Supernova is free software, released under the GNU Affero General Public License v3.0. You may redistribute and modify it under the terms of that license; it comes with no warranty. The full text ships in the LICENSE file of the source repository.</string>
+    <string name="about_license_text">NovaRedux is free software, released under the GNU Affero General Public License v3.0. It is a modified version of Supernova by tanujnotes. You may redistribute and modify it under the terms of that license; it comes with no warranty. The full text ships in the LICENSE file of the source repository.</string>
     <string name="section_home_subtitle">Grid, icons, labels and pages</string>
     <string name="section_dock_subtitle">Icons, background and pages</string>
     <string name="section_drawer_subtitle">Layout, style and groups</string>
@@ -722,7 +722,7 @@
     <!-- Group labels on the grouped settings pages (the root list and Style). -->
     <string name="settings_group_screens">Screens</string>
     <string name="settings_group_customize">Customize</string>
-    <string name="settings_group_app">Supernova</string>
+    <string name="settings_group_app">NovaRedux</string>
     <string name="style_group_theme">Theme</string>
     <string name="style_group_surfaces">Surfaces</string>
     <string name="style_tab">Style</string>
@@ -756,7 +756,7 @@
     <string name="export_png">Export PNG</string>
     <string name="export_png_saved">PNG saved</string>
     <string name="export_png_failed">Couldn\'t save the PNG: %1$s</string>
-    <string name="export_png_lost">Couldn\'t save the PNG: Supernova restarted while the file picker was open</string>
+    <string name="export_png_lost">Couldn\'t save the PNG: NovaRedux restarted while the file picker was open</string>
     <string name="labs_export_icons">Export icons</string>
     <string name="labs_export_icons_summary">Save all app icons and an appfilter.xml to a zip</string>
     <string name="labs_export_icons_failed">Couldn\'t export icons: %1$s</string>
@@ -884,11 +884,11 @@
     <string name="action_open_feed">Feed page</string>
     <string name="action_voice_search">Voice search</string>
     <string name="action_private_space">Private space</string>
-    <string name="settings_launcher_label">Supernova Settings</string>
+    <string name="settings_launcher_label">NovaRedux Settings</string>
     <string name="lock_method">Screen lock method</string>
     <string name="lock_method_accessibility">Accessibility service</string>
     <string name="lock_method_device_admin">Device admin</string>
-    <string name="lock_admin_explanation">Allows Supernova to lock the screen. It never wipes data or manages passwords.</string>
+    <string name="lock_admin_explanation">Allows NovaRedux to lock the screen. It never wipes data or manages passwords.</string>
     <string name="lock_admin_note">Device admin locks instantly, but biometric unlock is disabled right after; turn admin off before uninstalling.</string>
     <string name="voice_search_unavailable">No voice search app found</string>
     <string name="page_number">Page %1$d</string>
@@ -1030,10 +1030,10 @@
     <string name="onboarding_design_home">Design my home screen</string>
     <string name="onboarding_import_lead">Coming from another launcher?</string>
     <string name="onboarding_import_action"><u>Import your settings</u></string>
-    <string name="onboarding_privacy_line">Supernova collects no data. Nothing leaves your phone.</string>
+    <string name="onboarding_privacy_line">NovaRedux collects no data. Nothing leaves your phone.</string>
     <string name="onboarding_privacy_link"><u>Privacy policy</u></string>
     <string name="onboarding_animations_title">Launcher animations</string>
-    <string name="onboarding_animations_message">Your phone\'s animations are turned off. Supernova\'s animations have their own switch. Keep them on? You can change this later in Settings.</string>
+    <string name="onboarding_animations_message">Your phone\'s animations are turned off. NovaRedux\'s animations have their own switch. Keep them on? You can change this later in Settings.</string>
     <string name="onboarding_animations_keep">Keep on</string>
     <string name="onboarding_animations_off">Turn off</string>
     <string name="onboarding_previous">Previous</string>
@@ -1085,9 +1085,9 @@
     <string name="reset_failed">Reset failed: %1$s</string>
     <string name="quick_start">Quick start</string>
     <string name="quick_start_subtitle">Run the first-run setup again</string>
-    <string name="restart_supernova">Restart Supernova</string>
+    <string name="restart_supernova">Restart NovaRedux</string>
     <string name="restart_supernova_subtitle">Close and reopen the launcher</string>
-    <string name="restart_launcher_q">Restart Supernova?</string>
+    <string name="restart_launcher_q">Restart NovaRedux?</string>
     <string name="restart_launcher_message">Settings and the home screen close and open again. Nothing is lost.</string>
     <string name="restart">Restart</string>
     <!-- Popup row jumping straight to one app's widgets. -->
