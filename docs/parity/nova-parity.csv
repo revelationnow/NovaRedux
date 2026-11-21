@@ -159,7 +159,7 @@ Beyond Nova,Private space (Android 15+),,No,Done,P1,Private apps in their own co
 Beyond Nova,Feed page with cards,,No,Done,P2,"Calendar, media, contacts and widget cards",Feed package
 Beyond Nova,Automatic backups and recovery,,No,Done,P2,Restored if the store breaks,"writeAutoBackup, StoreRecovery"
 Beyond Nova,"Bring to front, send to back",,No,Done,P2,Stacking order for overlaps,restackItem
-Project,CI on every pull request,,No,Missing,P0,"Lint, detekt, unit tests and a debug APK",Workflow ready in a separate change
+Project,CI on every pull request,,No,Done,P0,"Lint, detekt, unit tests and a debug APK",GitHub Actions workflow in #2; passing
 Project,"Own app ID, name and icon",,No,Partial,P0,Installs beside Supernova; no Nova branding,Name and app ID io.github.revelationnow.novaredux in #3; icon and store images still Supernova's
 Project,Release signing and F-Droid listing,,No,Missing,P1,Reproducible builds like upstream,Upstream setup to copy
 Project,Translations,,No,Missing,P1,Nova shipped 74 languages,English only

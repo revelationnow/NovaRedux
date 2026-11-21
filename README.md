@@ -37,9 +37,9 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 
 | Status | Features |
 | --- | --- |
-| ✅ Done | 119 |
+| ✅ Done | 120 |
 | 🟡 Partial | 12 |
-| ❌ Missing | 17 |
+| ❌ Missing | 16 |
 | ❔ Needs a check on a device | 17 |
 | ⛔ Won't do | 2 |
 | **Total** | **167** |
@@ -317,11 +317,11 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 </details>
 
 <details>
-<summary><b>Project</b> · 7 features · 🟡 3 · ❌ 4</summary>
+<summary><b>Project</b> · 7 features · ✅ 1 · 🟡 3 · ❌ 3</summary>
 
 | Status | Feature | Since | Prime | Priority | What Nova did | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
-| ❌ | CI on every pull request |  |  | P0 | Lint, detekt, unit tests and a debug APK | Workflow ready in a separate change |
+| ✅ | CI on every pull request |  |  | P0 | Lint, detekt, unit tests and a debug APK | GitHub Actions workflow in #2; passing |
 | 🟡 | Own app ID, name and icon |  |  | P0 | Installs beside Supernova; no Nova branding | Name and app ID io.github.revelationnow.novaredux in #3; icon and store images still Supernova's |
 | ❌ | Release signing and F-Droid listing |  |  | P1 | Reproducible builds like upstream | Upstream setup to copy |
 | ❌ | Translations |  |  | P1 | Nova shipped 74 languages | English only |
