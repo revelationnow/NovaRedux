@@ -21,21 +21,34 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Set up JDK 21
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v6
         with:
           distribution: temurin
           java-version: "21"
 
-      # Caches Gradle and checks the wrapper jar against Gradle's checksums.
+      # Checks the wrapper jar against Gradle's checksums and caches Gradle.
+      # "basic" is the open-source (MIT) cache; the default one is proprietary.
       - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v4
+        uses: gradle/actions/setup-gradle@v6
+        with:
+          cache-provider: basic
 
-      # Accepts the SDK licences so AGP can fetch the compileSdk platform.
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
+      # The runner image already ships an Android SDK in $ANDROID_HOME.
+      # Accepting its licences lets AGP download the compileSdk platform and
+      # build tools itself. (android-actions/setup-android is not used: it
+      # asks sdkmanager for the retired "tools" package, which now fails.)
+      - name: Accept Android SDK licences
+        run: |
+          : "${ANDROID_HOME:?ANDROID_HOME is not set on this runner}"
+          sdkmanager="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+          if [ ! -x "$sdkmanager" ]; then
+            sdkmanager="$(find "$ANDROID_HOME/cmdline-tools" -path '*/bin/sdkmanager' | sort -V | tail -n 1)"
+          fi
+          echo "Using $sdkmanager"
+          yes | "$sdkmanager" --licenses > /dev/null
 
       - name: Lint, detekt, unit tests and debug build
         run: >
@@ -47,7 +60,7 @@ jobs:
 
       - name: Upload reports
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: reports
           path: |
@@ -56,8 +69,8 @@ jobs:
           if-no-files-found: ignore
 
       - name: Upload debug APK
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
-          name: supernova-debug-apk
+          name: novaredux-debug-apk
           path: app/build/outputs/apk/debug/*.apk
           if-no-files-found: error
