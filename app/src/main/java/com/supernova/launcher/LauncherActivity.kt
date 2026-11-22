@@ -23,7 +23,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.view.WindowManager
-import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.core.graphics.Insets
@@ -46,11 +45,9 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.supernova.launcher.ui.ShortcutItem
 import com.supernova.launcher.ui.dp
 import com.supernova.launcher.ui.showTracked
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import android.graphics.Bitmap
-import android.graphics.PointF
 import android.graphics.Rect
 import android.graphics.RectF
 import androidx.core.view.drawToBitmap
@@ -58,7 +55,6 @@ import androidx.core.view.isVisible
 import com.supernova.launcher.ui.DragPayload
 import com.supernova.launcher.ui.LiveDragController
 import com.supernova.launcher.ui.WidgetController
-import com.supernova.launcher.ui.clampAnchor
 import com.supernova.launcher.ui.currentWorkspaceCanvas
 import com.supernova.launcher.ui.screenRect
 import com.supernova.launcher.ui.toLaunchableApp
@@ -96,12 +92,10 @@ import com.supernova.launcher.ui.PopupRows
 import com.supernova.launcher.ui.HomeOrientation
 import com.supernova.launcher.ui.WallpaperScrollMode
 import com.supernova.launcher.ui.SupernovaPopupMenu
-import com.supernova.launcher.ui.snapToHalfCell
 import com.supernova.launcher.ui.BadgeDiff
 import com.supernova.launcher.ui.BadgeStyle
 import com.supernova.launcher.ui.FolderEditSheet
 import com.supernova.launcher.ui.LabelStyler
-import com.supernova.launcher.ui.SwipeArrowDrawable
 import com.supernova.launcher.ui.FolderIconDrawable
 import com.supernova.launcher.ui.FolderMemberAdapter
 import com.supernova.launcher.ui.FolderTileSwipeHold
@@ -111,18 +105,11 @@ import com.supernova.launcher.ui.PausedIcon
 import com.supernova.launcher.ui.PendingStarts
 import com.supernova.launcher.ui.LauncherUiState
 import com.supernova.launcher.ui.LauncherViewModel
-import com.supernova.launcher.ui.BottomChrome
-import com.supernova.launcher.ui.BottomChrome.BarSlot
 import com.supernova.launcher.ui.PageTransformers
-import com.supernova.launcher.ui.pagePaddingVPx
-import com.supernova.launcher.ui.CustomCardEditorSheet
 import com.supernova.launcher.ui.TouchTrace
-import com.supernova.launcher.ui.DockBgStyle
 import com.supernova.launcher.ui.DrawerController
 import com.supernova.launcher.ui.FeedController
-import com.supernova.launcher.ui.IndicatorStyle
 import com.supernova.launcher.ui.SearchBarConfig
-import com.supernova.launcher.ui.SearchBarPlacement
 import com.supernova.launcher.ui.SearchController
 import com.supernova.launcher.ui.ScrollEffect
 import com.supernova.launcher.ui.WorkspacePagerAdapter
@@ -409,11 +396,23 @@ class LauncherActivity :
     private var reportedFullyDrawn = false
     private var lastWallpaperPages = -1
 
-    // Which dock page is showing (transient) and the applied dock chrome guard.
+    // Which dock page is showing (transient).
     // Page 0 is the main one, drawn in the middle (DockPages).
     private var dockPage = 0
     private val dockSlide by lazy { com.supernova.launcher.ui.DockSlide(binding.dockBar) }
-    private var appliedDockChrome: List<Any>? = null
+    private val dockGeometry by lazy {
+        com.supernova.launcher.ui.DockGeometry(this, binding.dockBar, { systemInsets }, { isLandscape })
+    }
+    private val dockChrome by lazy {
+        com.supernova.launcher.ui.DockChrome(this, binding, dockGeometry, dockChromeHost)
+    }
+    private val dockChromeHost = object : com.supernova.launcher.ui.DockChrome.Host {
+        override val systemInsets: Insets get() = this@LauncherActivity.systemInsets
+        override val dockHeightPx: Int get() = this@LauncherActivity.dockHeightPx
+        override val isLandscape: Boolean get() = this@LauncherActivity.isLandscape
+        override val dockHidden: Boolean get() = dockAutoClosed || dockToggledOff
+        override fun bindSearchBarWidget(prefs: LauncherPrefs): View? = widgets.bindSearchBarWidget(prefs)
+    }
 
     // The window shape the chrome was last laid out against. The activity
     // handles orientation and size changes itself (see the manifest's
@@ -781,7 +780,7 @@ class LauncherActivity :
         // the re-apply because the prefs themselves did not change.
         dockHeightPx = 0
         dockSlotWidthPx = 0
-        appliedDockChrome = null
+        dockChrome.invalidate()
         renderedDock = null
         appliedSystemChrome = null
         widgets.clearReportedSizes()
@@ -942,11 +941,11 @@ class LauncherActivity :
                 // Based-on-wallpaper status icons; the guard skips it when
                 // their colour stays.
                 applySystemChrome(viewModel.state.value.prefs)
-                appliedDockChrome = null
+                dockChrome.invalidate()
                 // Palette-derived colors moved under everything the dock
                 // draws, and none of that is in its signature.
                 renderedDock = null
-                applyDockChrome(viewModel.state.value.prefs)
+                dockChrome.apply(viewModel.state.value.prefs)
                 if (::drawer.isInitialized) drawer.invalidateStyle()
                 if (::search.isInitialized) search.invalidateStyle()
                 if (::feed.isInitialized) feed.invalidateStyle()
@@ -1907,7 +1906,7 @@ class LauncherActivity :
         override fun onPreDraw(): Boolean {
             if (dockChromePending) {
                 dockChromePending = false
-                applyDockChrome(viewModel.state.value.prefs)
+                dockChrome.apply(viewModel.state.value.prefs)
                 if (dockChromeHolds < MAX_DOCK_CHROME_HOLDS) {
                     dockChromeHolds++
                     return false
@@ -2192,7 +2191,7 @@ class LauncherActivity :
         val leaving = if (dockSlides(slide, prefs)) dockSlide.capture() else null
         binding.dockBar.removeAllViews()
         if (!prefs.dockEnabled) {
-            applyDockChrome(prefs)
+            dockChrome.apply(prefs)
             return
         }
 
@@ -2204,7 +2203,7 @@ class LauncherActivity :
         // its slot rather than overflowing it. The dock's laid-out width is
         // authoritative once there is one; before that the window minus the
         // dock's own margins is the same number.
-        dockSlotWidthPx = dockContentWidth(prefs) / prefs.dockCount.coerceAtLeast(1)
+        dockSlotWidthPx = dockGeometry.contentWidth(prefs) / prefs.dockCount.coerceAtLeast(1)
         // An empty dock still has to be a drop target, so it never collapses
         // below a bare icon column even with every slot empty.
         binding.dockBar.minimumHeight = dockIconBoxPx(prefs) +
@@ -2253,7 +2252,7 @@ class LauncherActivity :
         // come out uniform at the tallest column's height and every icon lines
         // up whether or not its neighbour's label wrapped. The chrome goes on
         // after the slots: the height it spaces from is theirs.
-        applyDockChrome(prefs)
+        dockChrome.apply(prefs)
         leaving?.let { dockSlide.play(it, slide, Animations.duration(prefs, DOCK_SLIDE_MS)) }
     }
 
@@ -2296,102 +2295,6 @@ class LauncherActivity :
             binding.dockBar.width,
             items
         )
-    }
-
-    // How wide the bottom chrome is allowed to grow in landscape: the
-    // display's short edge (the width this same chrome has in portrait) with
-    // some slack, so it uses the extra room without spreading across it. 0 in
-    // portrait, and whenever the window is already narrower than the cap.
-    private fun landscapeChromeWidthPx(): Int {
-        if (!isLandscape) return 0
-        val metrics = resources.displayMetrics
-        val available = metrics.widthPixels - systemInsets.left - systemInsets.right
-        val cap = (minOf(metrics.widthPixels, metrics.heightPixels) * LANDSCAPE_CHROME_WIDTH).toInt()
-        return if (cap in 1 until available) cap else 0
-    }
-
-    // A phone (not a tablet) on its side with a dock: the dock and a search
-    // bar share one row, when the dock's icons fit beside a usable bar.
-    private fun phoneSideBySide(prefs: LauncherPrefs): Boolean =
-        isLandscape && !com.supernova.launcher.data.DeviceProfile.isWide(this) && prefs.dockEnabled
-
-    // The dock's icon box before any slot squeezes it.
-    private fun dockBoxPx(prefs: LauncherPrefs): Int =
-        (dp(ICON_BASE_DP) * if (prefs.dockMatchDesktop) prefs.iconScale else prefs.dockIconScale).toInt()
-
-    // A dock slot's width: roomy, about a portrait dock's spacing, or as
-    // tight as an icon (and its label) still reads at.
-    private fun dockSlotPx(prefs: LauncherPrefs, tight: Boolean): Int {
-        val box = dockBoxPx(prefs)
-        return if (tight) {
-            maxOf(dp(DOCK_SLOT_TIGHT_DP), box + dp(DOCK_SLOT_TIGHT_EXTRA_DP))
-        } else {
-            maxOf(dp(DOCK_SLOT_ROOMY_DP), box + dp(DOCK_SLOT_ROOMY_EXTRA_DP))
-        }
-    }
-
-    private class SharedRow(val bar: Int, val dock: Int)
-
-    // The shared row's split: the dock as wide as its icons need at a roomy
-    // spacing (tighter only to leave the bar its minimum), the bar the rest.
-    // Splitting the row in half crammed a seven-icon dock and spread three
-    // icons far apart. Null when even tight slots leave the bar too short:
-    // the two stack instead.
-    private fun sharedRowPx(prefs: LauncherPrefs): SharedRow? {
-        val available = resources.displayMetrics.widthPixels - systemInsets.left - systemInsets.right -
-            dp(SIDE_BY_SIDE_GAP_DP) * SIDE_BY_SIDE_GAPS
-        val padding = 2 * dp(prefs.dockPaddingH)
-        val count = prefs.dockCount.coerceAtLeast(1)
-        val slot = ((available - dp(SHARED_BAR_MIN_DP) - padding) / count)
-            .coerceAtMost(dockSlotPx(prefs, tight = false))
-        if (slot < dockSlotPx(prefs, tight = true)) return null
-        val dock = slot * count + padding
-        return SharedRow(available - dock, dock)
-    }
-
-    // A landscape dock on a row of its own: no wider than roomy slots need
-    // and no wider than the cap near its portrait width, so three icons
-    // don't spread across the screen; but never so narrow its icons lose
-    // their tight slots, up to the window.
-    // A tablet keeps the cap itself: its dock has room, and its bar matches.
-    private fun stackedDockWidthPx(prefs: LauncherPrefs, cap: Int): Int {
-        if (com.supernova.launcher.data.DeviceProfile.isWide(this)) return cap
-        val available = resources.displayMetrics.widthPixels - systemInsets.left - systemInsets.right
-        val padding = 2 * dp(prefs.dockPaddingH)
-        val roomy = prefs.dockCount * dockSlotPx(prefs, tight = false) + padding
-        val tight = prefs.dockCount * dockSlotPx(prefs, tight = true) + padding
-        return maxOf(minOf(cap, roomy), tight).coerceAtMost(available)
-    }
-
-    // The dock's margin at each side. A dock without a background spans the
-    // width, so its slots stand on the grid's columns; a
-    // background floats 10dp in from the edges unless it runs edge to edge.
-    private fun dockSideMarginPx(prefs: LauncherPrefs, edgeToEdge: Boolean): Int =
-        if (edgeToEdge || prefs.dockBgStyle == DockBgStyle.NONE) 0 else dp(10)
-
-    // Width the dock has for its slots: its laid-out width once it has one,
-    // else the window minus the margins applyDockChrome is about to give it.
-    private fun dockContentWidth(prefs: LauncherPrefs): Int {
-        val laidOut = binding.dockBar.width - binding.dockBar.paddingLeft - binding.dockBar.paddingRight
-        // A landscape dock's width follows its icon count and size, so the
-        // last layout's width is stale the moment one of those changes.
-        if (laidOut > 0 && !isLandscape) return laidOut
-        val sideMargins = 2 * (dockSideMarginPx(prefs, false) + dp(prefs.dockPaddingH)) +
-            systemInsets.left + systemInsets.right
-        val prefsBar = SearchBarConfig.decode(prefs.searchBarConfig).desktop
-        val barShown = SearchBarPlacement.fromName(prefsBar.placement).let {
-            it != SearchBarPlacement.NONE && it != SearchBarPlacement.WIDGET && it != SearchBarPlacement.TOP
-        }
-        val shared = if (barShown && phoneSideBySide(prefs)) sharedRowPx(prefs) else null
-        val content = if (shared != null) {
-            shared.dock - 2 * dp(prefs.dockPaddingH)
-        } else {
-            val window = landscapeChromeWidthPx().takeIf { it > 0 }
-                ?.let { stackedDockWidthPx(prefs, it) + systemInsets.left + systemInsets.right }
-                ?: resources.displayMetrics.widthPixels
-            window - sideMargins
-        }
-        return content.coerceAtLeast(1)
     }
 
     // The icon box a dock item draws in. The scale rides in the box size
@@ -2437,9 +2340,6 @@ class LauncherActivity :
         return desktopNeed
     }
 
-    // Dock visibility, background, scrims, the desktop search bar, and the
-    // workspace/indicator insets that depend on them; guarded so repeat
-    // emissions don't rebuild drawables.
     // Edge-to-edge: the window draws behind the status and navigation bars so
     // the wallpaper is unbroken. Nothing is consumed here - the drawer sheet,
     // the search overlay, the feed pane and the edit-mode overlay all run their
@@ -2467,7 +2367,7 @@ class LauncherActivity :
 
     // Fans the current insets out to the chrome that is always present. The
     // dock, workspace, indicator and desktop bar take theirs inside
-    // applyDockChrome, which already owns every margin on those views.
+    // DockChrome, which already owns every margin on those views.
     private fun applyWindowInsets() {
         binding.scrimTop.updateLayoutParams { height = dp(96) + systemInsets.top }
         binding.scrimBottom.updateLayoutParams { height = dp(96) + systemInsets.bottom }
@@ -2477,245 +2377,8 @@ class LauncherActivity :
         binding.dropTargetBar.updateLayoutParams<ViewGroup.MarginLayoutParams> {
             topMargin = systemInsets.top + dp(16)
         }
-        // applyDockChrome's guard key carries systemInsets, so this re-applies.
-        applyDockChrome(viewModel.state.value.prefs)
-    }
-
-    private fun applyDockChrome(prefs: LauncherPrefs) {
-        val key = listOf(
-            prefs.dockEnabled, prefs.dockBgStyle, prefs.dockBgOpacity, prefs.dockBgRadius,
-            // The image by identity: the string is long, and only its
-            // replacement matters.
-            System.identityHashCode(prefs.dockBgImage),
-            prefs.dockOverlay, prefs.showScrims,
-            prefs.styleConfig, prefs.paletteSource, prefs.paletteSeed,
-            prefs.searchBarConfig, prefs.searchBarWidgetId,
-            prefs.dockPaddingH, prefs.dockPaddingV,
-            prefs.dockBgBehindNav, prefs.dockBgPadding,
-            // What a landscape dock's width is worked out from.
-            prefs.dockCount, prefs.iconScale, prefs.dockIconScale, prefs.dockMatchDesktop,
-            swipeArrowWanted(prefs), prefs.labelColor,
-            prefs.pageIndicatorStyle != IndicatorStyle.NONE, prefs.desktopPaddingV,
-            systemInsets, dockHeightPx, isLandscape
-        )
-        if (appliedDockChrome == key) return
-        appliedDockChrome = key
-
-        binding.dockBar.visibility =
-            if (prefs.dockEnabled && !dockAutoClosed && !dockToggledOff) View.VISIBLE else View.GONE
-        syncSwipeArrow(prefs)
-        binding.scrimTop.visibility = if (prefs.showScrims) View.VISIBLE else View.GONE
-        binding.scrimBottom.visibility = if (prefs.showScrims) View.VISIBLE else View.GONE
-        // Desktop search bar placement. DOCK_ABOVE/DOCK_BELOW only exist
-        // relative to a visible dock; PERSISTENT degrades to the bare bottom
-        // when the dock is off. TOP is pinned under the status bar whatever
-        // the dock does. WIDGET is a later phase and renders nothing.
-        val barConfig = SearchBarConfig.decode(prefs.searchBarConfig).desktop
-        val slot = when (SearchBarPlacement.fromName(barConfig.placement)) {
-            SearchBarPlacement.NONE, SearchBarPlacement.WIDGET -> null
-            SearchBarPlacement.DOCK_ABOVE -> if (prefs.dockEnabled) BarSlot.ABOVE_DOCK else null
-            SearchBarPlacement.DOCK_BELOW -> if (prefs.dockEnabled) BarSlot.BELOW_DOCK else null
-            SearchBarPlacement.PERSISTENT ->
-                if (prefs.dockEnabled) BarSlot.BELOW_DOCK else BarSlot.BOTTOM
-            SearchBarPlacement.TOP -> BarSlot.TOP
-        }
-        val topBar = if (slot == BarSlot.TOP) {
-            BottomChrome.topBar(resources.displayMetrics.density, systemInsets.top)
-        } else {
-            null
-        }
-        // A Replace widget takes the bar's slot; the built-in bar steps aside
-        // but keeps driving the slot's geometry below.
-        val barWidget = if (slot == null) null else widgets.bindSearchBarWidget(prefs)
-        binding.desktopSearchWidget.visibility =
-            if (barWidget == null) View.GONE else View.VISIBLE
-        binding.desktopSearchBar.visibility =
-            if (slot == null || barWidget != null) View.GONE else View.VISIBLE
-        if (slot != null) {
-            binding.desktopSearchBar.apply(
-                barConfig,
-                com.supernova.launcher.ui.theme.Styles.resolve(this, prefs)
-                    .of(com.supernova.launcher.ui.theme.SurfaceId.SEARCH_BAR)
-            )
-        }
-        // A phone on its side shares one row between the bar (left) and the
-        // dock (right): stacked, the two took a third of the short window
-        // and the grid's icons shrank to half size to fit what was left.
-        val shared = if (slot != null && topBar == null && phoneSideBySide(prefs)) sharedRowPx(prefs) else null
-        val sideBySide = shared != null
-        // Behind-nav mode drops the side and bottom margins so the background
-        // slab runs flush to the window's bottom edge. Neither edge-to-edge
-        // style fits a dock that has only part of a row.
-        val dockBehindNav = !sideBySide && prefs.dockBgBehindNav &&
-            prefs.dockBgStyle != DockBgStyle.NONE &&
-            slot != BarSlot.BELOW_DOCK
-        // Un-inset background: the slab spans the full width and rests on the
-        // navigation bar rather than floating clear of it. Behind-nav is the
-        // stronger version of the same thing, so it wins.
-        val dockFullBleed = !sideBySide && !prefs.dockBgPadding && !dockBehindNav &&
-            prefs.dockBgStyle != DockBgStyle.NONE &&
-            slot != BarSlot.BELOW_DOCK
-        // A background gets room above and below the icons, so they don't
-        // touch its edges.
-        val bgPadV = if (prefs.dockBgStyle == DockBgStyle.NONE) 0 else dp(DOCK_BG_PADDING_V_DP)
-        binding.dockBar.setPadding(
-            dp(prefs.dockPaddingH) + if (dockBehindNav) systemInsets.left else 0,
-            dp(prefs.dockPaddingV) + bgPadV,
-            dp(prefs.dockPaddingH) + if (dockBehindNav) systemInsets.right else 0,
-            dp(prefs.dockPaddingV) + bgPadV + if (dockBehindNav) systemInsets.bottom else 0
-        )
-        val density = resources.displayMetrics.density
-        val arrowWanted = swipeArrowWanted(prefs)
-        val arrow = if (arrowWanted) {
-            SwipeArrowDrawable(density, LabelStyler.parseColor(prefs.labelColor, getColor(R.color.onWallpaper)))
-        } else {
-            null
-        }
-        // Heights above the window bottom for the dock, the bar, the arrow,
-        // the page indicator and the workspace's floor (BottomChrome). Before
-        // the dock's first layout the old fixed bar height stands in;
-        // behind-nav folds the navigation bar into the dock's own padding, so
-        // the laid-out height counts it already.
-        val chrome = BottomChrome.layout(
-            BottomChrome.Spec(
-                density = density,
-                landscape = isLandscape,
-                navInset = systemInsets.bottom,
-                dockEnabled = prefs.dockEnabled,
-                dockOverlay = prefs.dockOverlay,
-                dockBehindNav = dockBehindNav,
-                dockFullBleed = dockFullBleed,
-                dockHeight = dockHeightPx.takeIf { it > 0 } ?: dp(72),
-                dockIconInset = binding.dockBar.paddingTop + dp(DOCK_SLOT_PADDING_V_DP + DOCK_ITEM_PADDING_V_DP),
-                dockBare = prefs.dockBgStyle == DockBgStyle.NONE,
-                slot = slot,
-                arrowWanted = arrowWanted,
-                arrowHeight = arrow?.intrinsicHeight ?: 0,
-                indicatorOn = prefs.pageIndicatorStyle != IndicatorStyle.NONE,
-                pagePadding = pagePaddingVPx(prefs.desktopPaddingV, density, isLandscape),
-                sideBySide = sideBySide
-            )
-        )
-        val dockParams = binding.dockBar.layoutParams as ViewGroup.MarginLayoutParams
-        dockParams.bottomMargin = chrome.dockBottom
-        val dockSideMargin = dockSideMarginPx(prefs, dockBehindNav || dockFullBleed)
-        dockParams.leftMargin = if (dockBehindNav) 0 else dockSideMargin + systemInsets.left
-        dockParams.rightMargin = if (dockBehindNav) 0 else dockSideMargin + systemInsets.right
-        // Landscape: the slots share the bar's width by weight, so a bar that
-        // spans a window twice as wide leaves the same icons stranded a
-        // half-screen apart. Cap the bar near its portrait width and centre
-        // it, so the dock reads as one row rather than a scattered line. The
-        // edge-to-edge background styles are the exception - a slab that
-        // stops short of the edges is not the thing they are asking for.
-        val dockCap = landscapeChromeWidthPx()
-        if (shared != null) {
-            dockParams.width = shared.dock
-            // The bar's 16dp, mirrored at the other edge.
-            dockParams.rightMargin = dp(SIDE_BY_SIDE_GAP_DP) + systemInsets.right
-            (dockParams as? androidx.coordinatorlayout.widget.CoordinatorLayout.LayoutParams)
-                ?.gravity = Gravity.BOTTOM or Gravity.END
-        } else if (dockCap > 0 && !dockBehindNav && !dockFullBleed) {
-            dockParams.width = stackedDockWidthPx(prefs, dockCap)
-            (dockParams as? androidx.coordinatorlayout.widget.CoordinatorLayout.LayoutParams)
-                ?.gravity = Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL
-        } else {
-            dockParams.width = ViewGroup.LayoutParams.MATCH_PARENT
-            (dockParams as? androidx.coordinatorlayout.widget.CoordinatorLayout.LayoutParams)
-                ?.gravity = Gravity.BOTTOM
-        }
-        binding.dockBar.layoutParams = dockParams
-
-        val barParams = binding.desktopSearchBar.layoutParams as ViewGroup.MarginLayoutParams
-        barParams.bottomMargin = if (topBar != null) 0 else chrome.barBottom
-        barParams.topMargin = topBar?.barTop ?: 0
-        barParams.leftMargin = dp(16) + systemInsets.left
-        barParams.rightMargin = dp(16) + systemInsets.right
-        // Same landscape cap the dock takes: a search field running the full
-        // width of a landscape window is a very long, very empty box.
-        // Side by side it takes what the dock leaves of the row, at the start.
-        val barWidth = when {
-            shared != null -> shared.bar
-            dockCap > 0 -> dockCap
-            else -> ViewGroup.LayoutParams.MATCH_PARENT
-        }
-        val barEdge = if (topBar != null) Gravity.TOP else Gravity.BOTTOM
-        val barGravity = when {
-            shared != null -> barEdge or Gravity.START
-            dockCap > 0 -> barEdge or Gravity.CENTER_HORIZONTAL
-            else -> barEdge
-        }
-        barParams.width = barWidth
-        (barParams as? androidx.coordinatorlayout.widget.CoordinatorLayout.LayoutParams)
-            ?.gravity = barGravity
-        binding.desktopSearchBar.layoutParams = barParams
-        binding.desktopSearchWidget.layoutParams =
-            (binding.desktopSearchWidget.layoutParams as ViewGroup.MarginLayoutParams).apply {
-                bottomMargin = barParams.bottomMargin
-                topMargin = barParams.topMargin
-                leftMargin = barParams.leftMargin
-                rightMargin = barParams.rightMargin
-                width = barWidth
-                (this as? androidx.coordinatorlayout.widget.CoordinatorLayout.LayoutParams)
-                    ?.gravity = barGravity
-            }
-
-        if (arrow != null) {
-            binding.dockSwipeIndicator.setImageDrawable(arrow)
-            binding.dockSwipeIndicator.updateLayoutParams<ViewGroup.MarginLayoutParams> {
-                bottomMargin = chrome.arrowBottom
-            }
-        }
-        val pagerParams = binding.workspacePager.layoutParams as ViewGroup.MarginLayoutParams
-        pagerParams.bottomMargin = chrome.pagerBottom
-        pagerParams.topMargin = topBar?.pagerTop ?: systemInsets.top
-        pagerParams.leftMargin = systemInsets.left
-        pagerParams.rightMargin = systemInsets.right
-        binding.workspacePager.layoutParams = pagerParams
-        val indicatorParams = binding.pageIndicator.layoutParams as ViewGroup.MarginLayoutParams
-        indicatorParams.bottomMargin = chrome.indicatorBottom
-        indicatorParams.leftMargin = systemInsets.left
-        indicatorParams.rightMargin = systemInsets.right
-        binding.pageIndicator.layoutParams = indicatorParams
-
-        // The Home surface: a color over the wallpaper, under everything on the
-        // home screen. Transparent until one is picked, so the wallpaper shows.
-        binding.root.setBackgroundColor(
-            com.supernova.launcher.ui.theme.Styles.resolve(this, prefs)
-                .of(com.supernova.launcher.ui.theme.SurfaceId.HOME).surface
-        )
-        val resolvedDock = com.supernova.launcher.ui.theme.Styles.resolve(this, prefs)
-            .of(com.supernova.launcher.ui.theme.SurfaceId.DOCK)
-        binding.dockBar.background = dockBackground(prefs, resolvedDock, dockBehindNav || dockFullBleed)
-    }
-
-    // Nova's shapes, filled with the dock's colour or its image; a plain
-    // rectangle with no image keeps the style engine's own background.
-    private fun dockBackground(
-        prefs: LauncherPrefs,
-        resolved: com.supernova.launcher.ui.theme.ResolvedSurface,
-        squareBottom: Boolean
-    ): android.graphics.drawable.Drawable? {
-        val radius = if (prefs.dockBgStyle == DockBgStyle.ROUNDED) dp(prefs.dockBgRadius).toFloat() else 0f
-        val image = com.supernova.launcher.data.DockImage.decode(prefs.dockBgImage)
-        val shaped = prefs.dockBgStyle == DockBgStyle.ARC || prefs.dockBgStyle == DockBgStyle.PLATFORM
-        return when {
-            prefs.dockBgStyle == DockBgStyle.NONE -> null
-            image == null && !shaped -> dockBackgroundDrawable(resolved, radius, squareBottom)
-            else -> com.supernova.launcher.ui.DockShapeDrawable(
-                prefs.dockBgStyle, resolved.surface, image,
-                floatArrayOf(radius, radius, if (squareBottom) 0f else radius, if (squareBottom) 0f else radius)
-            )
-        }
-    }
-
-    private fun dockBackgroundDrawable(
-        resolved: com.supernova.launcher.ui.theme.ResolvedSurface,
-        defaultRadius: Float,
-        squareBottom: Boolean = false
-    ): android.graphics.drawable.Drawable {
-        // Behind-nav squares the bottom corners of the default shape.
-        val radii = if (squareBottom) floatArrayOf(defaultRadius, defaultRadius, 0f, 0f) else null
-        return com.supernova.launcher.ui.theme.SurfaceShapes.background(resolved.surface, radii, defaultRadius)
+        // DockChrome's guard key carries systemInsets, so this re-applies.
+        dockChrome.apply(viewModel.state.value.prefs)
     }
 
     private fun openDrawer(forSearch: Boolean = false) {
@@ -3000,7 +2663,7 @@ class LauncherActivity :
         if (!prefs.dockEnabled || !prefs.dockOverlay || !prefs.dockAutoClose) return
         dockAutoClosed = true
         binding.dockBar.visibility = View.GONE
-        syncSwipeArrow(prefs)
+        dockChrome.syncArrow(prefs)
     }
 
     private fun reopenDockIfAutoClosed() {
@@ -3009,7 +2672,7 @@ class LauncherActivity :
         if (viewModel.state.value.prefs.dockEnabled && !dockToggledOff) {
             binding.dockBar.visibility = View.VISIBLE
         }
-        syncSwipeArrow(viewModel.state.value.prefs)
+        dockChrome.syncArrow(viewModel.state.value.prefs)
     }
 
     // TOGGLE_DOCK action: transient visibility flip, mirroring the overlay
@@ -3019,20 +2682,7 @@ class LauncherActivity :
         dockToggledOff = !dockToggledOff
         binding.dockBar.visibility =
             if (dockToggledOff || dockAutoClosed) View.GONE else View.VISIBLE
-        syncSwipeArrow(viewModel.state.value.prefs)
-    }
-
-    // The swipe indicator belongs to a swipe up that opens the drawer, and
-    // points at the dock: it is only wanted with both.
-    private fun swipeArrowWanted(prefs: LauncherPrefs): Boolean =
-        prefs.drawerSwipeIndicator && prefs.dockEnabled &&
-            GestureDefaults.swipeUpOpensDrawer(prefs.gestureBindings)
-
-    // It hides and comes back with the dock (auto-close, the dock toggle),
-    // keeping its strip as the dock keeps its margins.
-    private fun syncSwipeArrow(prefs: LauncherPrefs) {
-        binding.dockSwipeIndicator.visibility =
-            if (swipeArrowWanted(prefs) && binding.dockBar.visibility == View.VISIBLE) View.VISIBLE else View.GONE
+        dockChrome.syncArrow(viewModel.state.value.prefs)
     }
 
     // The app-open transition. Single choke point: every app, shortcut and
@@ -5421,12 +5071,10 @@ class LauncherActivity :
         // item_icon's padding, all round.
         private const val ICON_ITEM_PADDING_DP = 4
         private const val DOCK_ITEM_PADDING_H_DP = 2
-        private const val DOCK_ITEM_PADDING_V_DP = 4
-        private const val DOCK_SLOT_PADDING_V_DP = 2
+        private const val DOCK_ITEM_PADDING_V_DP = com.supernova.launcher.ui.ChromeMargins.ITEM_PADDING_V_DP
+        private const val DOCK_SLOT_PADDING_V_DP = com.supernova.launcher.ui.ChromeMargins.SLOT_PADDING_V_DP
         // A dock page turn; Launcher3 settles a flicked page in about this.
         private const val DOCK_SLIDE_MS = 300L
-        // The dock background's room above and below the icons.
-        private const val DOCK_BG_PADDING_V_DP = 8
 
         // The dim behind a dialog that previews on the home screen.
         private const val PREVIEW_DIALOG_DIM = 0.15f
@@ -5434,21 +5082,6 @@ class LauncherActivity :
         // Frames dockChromeWatch may drop in a row while the dock's height
         // settles.
         private const val MAX_DOCK_CHROME_HOLDS = 2
-
-        // Landscape cap on the dock and desktop search bar, as a multiple of
-        // the display's short edge: wide enough to use the extra room, narrow
-        // enough that five dock icons still read as a row.
-        private const val LANDSCAPE_CHROME_WIDTH = 1.35f
-        private const val SIDE_BY_SIDE_GAP_DP = 16
-        // Start, middle and end.
-        private const val SIDE_BY_SIDE_GAPS = 3
-        // The shortest bar the shared row keeps; a dock that leaves less stacks.
-        private const val SHARED_BAR_MIN_DP = 200
-        // Dock slots in landscape: a roomy one, and the tightest kept.
-        private const val DOCK_SLOT_ROOMY_DP = 72
-        private const val DOCK_SLOT_ROOMY_EXTRA_DP = 24
-        private const val DOCK_SLOT_TIGHT_DP = 56
-        private const val DOCK_SLOT_TIGHT_EXTRA_DP = 8
 
         private const val WALLPAPER_ZOOM_MS = 250L
     }

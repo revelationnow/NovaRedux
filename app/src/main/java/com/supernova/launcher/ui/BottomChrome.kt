@@ -4,9 +4,8 @@ package com.supernova.launcher.ui
 // desktop search bar, the swipe arrow and the page indicator, and the
 // floor the workspace ends on. Every number is a height above the window's
 // bottom edge in pixels, ready to be a view's bottom margin.
-// LauncherActivity.applyDockChrome measures the dock, resolves the prefs and
-// applies what comes back; the rules live here so they can be tested apart
-// from the views.
+// ChromeMargins measures the dock, resolves the prefs and applies what comes
+// back; the rules live here so they can be tested apart from the views.
 internal object BottomChrome {
 
     // Where the desktop search bar landed after resolving its placement
