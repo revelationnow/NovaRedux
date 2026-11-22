@@ -121,7 +121,7 @@ class NovaSettingsTest {
 
     @Test
     fun aValueWithNoTwinKeepsTheSetting() {
-        val prefs = NovaSettings.applyTo(LauncherPrefs(), nova6 + ("scroll_effect" to "THROW"))
+        val prefs = NovaSettings.applyTo(LauncherPrefs(), nova6 + ("scroll_effect" to "SPIN_AROUND"))
         assertEquals(LauncherPrefs().scrollEffect, prefs.scrollEffect)
     }
 
