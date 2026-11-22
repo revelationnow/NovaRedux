@@ -1,0 +1,138 @@
+# Builds a signed release APK for a version tag and publishes it as a GitHub
+# release, with the release notes its store listing carries (the fastlane
+# changelogs/<versionCode>.txt) and a SHA256SUMS file. Two kinds of tag:
+#   v0.3.0          NovaRedux, versionName v0.3.0 in app/build.gradle.kts
+#   connect-v0.1.0  NovaRedux Connect, versionName v0.1.0 in connect/build.gradle.kts
+# F-Droid's reproducible builds compare their own build with these APKs
+# (docs/fdroid), and NovaRedux Connect's download link points at them.
+#
+# The signing key comes from four repository secrets (Settings > Secrets and
+# variables > Actions); see docs/RELEASING.md:
+#   SIGNING_KEYSTORE_BASE64  the keystore (.jks), base64-encoded
+#   SIGNING_STORE_PASSWORD   its password
+#   SIGNING_KEY_ALIAS        the key's alias
+#   SIGNING_KEY_PASSWORD     the key's password
+# Without them the run stops before building: every release must carry the
+# one key, or installs can't update.
+name: Release
+
+on:
+  push:
+    tags: ["v*", "connect-v*"]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "An existing tag to build and release: v0.3.0 or connect-v0.1.0"
+        required: true
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ inputs.tag || github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      TAG: ${{ inputs.tag || github.ref_name }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ inputs.tag || github.ref }}
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      # No cache from or for a release: it builds from a clean state, as
+      # F-Droid's reproducible build does.
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v6
+        with:
+          cache-provider: basic
+          cache-disabled: true
+
+      - name: Accept Android SDK licences
+        run: |
+          : "${ANDROID_HOME:?ANDROID_HOME is not set on this runner}"
+          sdkmanager="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+          if [ ! -x "$sdkmanager" ]; then
+            sdkmanager="$(find "$ANDROID_HOME/cmdline-tools" -path '*/bin/sdkmanager' | sort -V | tail -n 1)"
+          fi
+          yes | "$sdkmanager" --licenses > /dev/null
+
+      # Which app the tag is for, and that it names that app's version, with
+      # release notes written for its versionCode.
+      - name: Read the tag
+        run: |
+          case "$TAG" in
+            connect-v*) module=connect; title="NovaRedux Connect"; file=NovaRedux-Connect; version="${TAG#connect-}"
+                        notes_dir=connect/fastlane/metadata/android/en-US/changelogs ;;
+            v*)         module=app; title=NovaRedux; file=NovaRedux; version="$TAG"
+                        notes_dir=fastlane/metadata/android/en-US/changelogs ;;
+            *) echo "::error::$TAG is neither vX.Y.Z nor connect-vX.Y.Z."; exit 1 ;;
+          esac
+          declared=$(sed -n 's/^ *versionName = "\(.*\)"$/\1/p' "$module/build.gradle.kts")
+          if [ "$version" != "$declared" ]; then
+            echo "::error::Tag $TAG, but $module/build.gradle.kts says versionName $declared."
+            exit 1
+          fi
+          code=$(sed -n 's/^ *versionCode = \([0-9]*\)$/\1/p' "$module/build.gradle.kts")
+          if [ ! -f "$notes_dir/$code.txt" ]; then
+            echo "::error::No release notes at $notes_dir/$code.txt for versionCode $code."
+            exit 1
+          fi
+          {
+            echo "MODULE=$module"
+            echo "TITLE=$title $version"
+            echo "APK_NAME=$file-$version.apk"
+            echo "NOTES=$notes_dir/$code.txt"
+          } >> "$GITHUB_ENV"
+
+      # The keystore lands in local/, which .gitignore keeps out of the repo,
+      # and keystore.properties there points the build at it.
+      - name: Signing key
+        env:
+          KEYSTORE: ${{ secrets.SIGNING_KEYSTORE_BASE64 }}
+          STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
+        run: |
+          if [ -z "$KEYSTORE" ] || [ -z "$STORE_PASSWORD" ] || [ -z "$KEY_ALIAS" ] || [ -z "$KEY_PASSWORD" ]; then
+            echo "::error::The signing secrets are not set; see docs/RELEASING.md."
+            exit 1
+          fi
+          mkdir -p local
+          printf '%s' "$KEYSTORE" | base64 -d > local/release.jks
+          {
+            printf 'storeFile=local/release.jks\n'
+            printf 'storePassword=%s\n' "$STORE_PASSWORD"
+            printf 'keyAlias=%s\n' "$KEY_ALIAS"
+            printf 'keyPassword=%s\n' "$KEY_PASSWORD"
+          } > local/keystore.properties
+
+      - name: Build the release APK
+        run: ./gradlew --stacktrace ":$MODULE:assembleRelease"
+
+      - name: Check the signature
+        run: |
+          apksigner="$(find "$ANDROID_HOME/build-tools" -name apksigner | sort -V | tail -n 1)"
+          "$apksigner" verify --print-certs "$MODULE/build/outputs/apk/release/$MODULE-release.apk"
+
+      - name: Publish the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p out
+          cp "$MODULE/build/outputs/apk/release/$MODULE-release.apk" "out/$APK_NAME"
+          (cd out && sha256sum "$APK_NAME" > SHA256SUMS)
+          gh release create "$TAG" "out/$APK_NAME" out/SHA256SUMS --verify-tag --title "$TITLE" --notes-file "$NOTES"
+
+      - name: Remove the key
+        if: always()
+        run: rm -f local/release.jks local/keystore.properties

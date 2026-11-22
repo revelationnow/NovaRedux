@@ -71,6 +71,13 @@ android {
         viewBinding = true
     }
 
+    // Each translation in res/values-xx is offered in the phone's per-app
+    // language settings (Android 13+); res/resources.properties names the
+    // language of res/values.
+    androidResources {
+        generateLocaleConfig = true
+    }
+
     // No Google-encrypted dependency report in the APK signing block: F-Droid's
     // scanner rejects it, and it breaks reproducible-build verification.
     dependenciesInfo {
@@ -100,6 +107,9 @@ android {
         // "A newer version is available" isn't a defect in this code, and with
         // warningsAsErrors every upstream release would break the build.
         disable += setOf("AndroidGradlePluginVersion", "GradleDependency", "NewerVersionAvailable")
+        // A translation may be partial: what it leaves out shows in English
+        // (docs/TRANSLATING.md). Placeholders and stray strings are still checked.
+        disable += "MissingTranslation"
     }
 
     compileOptions {

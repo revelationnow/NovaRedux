@@ -1,0 +1,31 @@
+# Draft of NovaRedux Connect's F-Droid metadata, for fdroiddata as
+# metadata/io.github.revelationnow.novaredux.connect.yml; see the launcher's
+# draft beside it. Connect has its own tags (connect-v0.1.0), as its versions
+# move apart from the launcher's.
+Categories:
+  - Internet
+License: AGPL-3.0-or-later
+SourceCode: https://github.com/revelationnow/NovaRedux/tree/main/connect
+IssueTracker: https://github.com/revelationnow/NovaRedux/issues
+Changelog: https://github.com/revelationnow/NovaRedux/releases
+
+AutoName: NovaRedux Connect
+
+RepoType: git
+Repo: https://github.com/revelationnow/NovaRedux.git
+Binaries: https://github.com/revelationnow/NovaRedux/releases/download/connect-%v/NovaRedux-Connect-%v.apk
+
+Builds:
+  - versionName: v0.1.0
+    versionCode: 1
+    commit: connect-v0.1.0
+    subdir: connect
+    gradle:
+      - yes
+
+AllowedAPKSigningKeys: REPLACE_WITH_THE_RELEASE_KEY_SHA256
+
+AutoUpdateMode: Version connect-%v
+UpdateCheckMode: Tags ^connect-v[0-9.]+$
+CurrentVersion: v0.1.0
+CurrentVersionCode: 1

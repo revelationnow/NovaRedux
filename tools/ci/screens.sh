@@ -7,13 +7,23 @@
 # TOUR_ARGS holds extra instrumentation arguments, e.g.
 #   -e pref.b.dock_enabled false -e shots home,drawer
 # SHOT_WIDTH is the width the screenshots are printed at (540 unless set;
-# 1080 for store screenshots).
+# 1080 for store screenshots). SHOT_CUTOUT names a display cutout for the
+# emulator to emulate (corner, double, hole, tall, waterfall), to check what
+# the launcher keeps clear of it.
 set -euo pipefail
 
 app=io.github.revelationnow.novaredux.debug
 apk=app/build/outputs/apk/debug/app-debug.apk
 tests=app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
 out=screens
+
+if [ -n "${SHOT_CUTOUT:-}" ]; then
+    adb shell cmd overlay enable "com.android.internal.display.cutout.emulation.$SHOT_CUTOUT" \
+        || echo "This emulator has no $SHOT_CUTOUT cutout"
+    sleep 5
+fi
+adb shell wm size
+adb shell wm density
 
 adb install -r -g "$apk"
 adb install -r "$tests"

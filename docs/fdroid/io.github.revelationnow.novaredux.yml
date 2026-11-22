@@ -1,0 +1,34 @@
+# Draft of NovaRedux's F-Droid metadata, for a merge request to fdroiddata
+# (https://gitlab.com/fdroid/fdroiddata) as metadata/io.github.revelationnow.novaredux.yml.
+# Before opening it (docs/RELEASING.md): put the release key's SHA-256
+# certificate fingerprint in AllowedAPKSigningKeys, and the first release's
+# version in Builds and Current*. F-Droid builds the tag from source and
+# publishes the APK from the GitHub release (Binaries) when the two match:
+# a reproducible build, signed with the project's own key.
+Categories:
+  - Theming
+License: AGPL-3.0-or-later
+SourceCode: https://github.com/revelationnow/NovaRedux
+IssueTracker: https://github.com/revelationnow/NovaRedux/issues
+Changelog: https://github.com/revelationnow/NovaRedux/releases
+
+AutoName: NovaRedux
+
+RepoType: git
+Repo: https://github.com/revelationnow/NovaRedux.git
+Binaries: https://github.com/revelationnow/NovaRedux/releases/download/%v/NovaRedux-%v.apk
+
+Builds:
+  - versionName: v0.3.0
+    versionCode: 29
+    commit: v0.3.0
+    subdir: app
+    gradle:
+      - yes
+
+AllowedAPKSigningKeys: REPLACE_WITH_THE_RELEASE_KEY_SHA256
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[0-9.]+$
+CurrentVersion: v0.3.0
+CurrentVersionCode: 29

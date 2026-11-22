@@ -1,6 +1,9 @@
 package com.supernova.launcher
 
 import android.content.Intent
+import android.content.pm.LauncherApps
+import android.os.Process
+import android.os.UserManager
 import android.util.Base64
 import android.widget.EditText
 import androidx.datastore.preferences.core.MutablePreferences
@@ -9,6 +12,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.floatPreferencesKey
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.core.stringSetPreferencesKey
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.By
@@ -41,6 +45,8 @@ import org.junit.runner.RunWith
 // and settings.searchbar (the search bar's settings page). The default is the
 // first four. `query` is typed into search before its shot, with time for web
 // suggestions to come back (through NovaRedux Connect, when installed).
+// `hide_own true`, for store screenshots: this debug build's own entries
+// (NovaRedux Debug, Debug Settings) are off the home screen and the drawer.
 @RunWith(AndroidJUnit4::class)
 class ScreenshotTour {
 
@@ -83,12 +89,27 @@ class ScreenshotTour {
             )
         }
         graph.preferences.markOnboardingDone()
+        val hidden = if (args.getString("hide_own") == "true") hideOwnEntries() else emptySet()
         context.supernovaStore.edit { store ->
+            if (hidden.isNotEmpty()) {
+                val key = stringSetPreferencesKey(Pref.hiddenApps.key.name)
+                store[key] = store[key].orEmpty() + hidden
+            }
             // Coming back home between shots is a Home press while home is in
             // front, which would open the drawer; an argument can set it back.
             store[stringPreferencesKey(Pref.homeButtonAction.key.name)] = "NONE"
             args.keySet().filter { it.startsWith(PREF) }.forEach { name -> applyArgument(store, name) }
         }
+    }
+
+    // This build's own icons come off the home screen; the drawer keys of its
+    // activities come back, for the drawer to hide them.
+    private suspend fun hideOwnEntries(): Set<String> {
+        val user = Process.myUserHandle()
+        val serial = context.getSystemService(UserManager::class.java).getSerialNumberForUser(user)
+        context.appGraph.repository.removeItemsForPackage(appId, serial)
+        return context.getSystemService(LauncherApps::class.java).getActivityList(appId, user)
+            .mapTo(mutableSetOf()) { "$serial/$appId/${it.componentName.className}" }
     }
 
     private fun applyArgument(store: MutablePreferences, name: String) {

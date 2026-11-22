@@ -13,6 +13,7 @@ import android.graphics.drawable.AdaptiveIconDrawable
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.SystemClock
+import androidx.core.graphics.withClip
 import com.supernova.launcher.data.AppItemEdits
 import com.supernova.launcher.data.CustomShapeSpec
 import com.supernova.launcher.data.DynamicAppIcons
@@ -67,11 +68,10 @@ class AdaptiveDragIcon(
         lastFrame = now
         // Both axes step, whichever still moves.
         val moving = springX.step(dt) or springY.step(dt)
-        val saved = canvas.save()
-        canvas.clipPath(shaped)
-        drawLayer(canvas, background, BACKGROUND_SHARE)
-        drawLayer(canvas, foreground, 1f)
-        canvas.restoreToCount(saved)
+        canvas.withClip(shaped) {
+            drawLayer(this, background, BACKGROUND_SHARE)
+            drawLayer(this, foreground, 1f)
+        }
         if (moving) invalidateSelf() else lastFrame = 0L
     }
 

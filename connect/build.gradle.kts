@@ -59,6 +59,11 @@ android {
         }
     }
 
+    // As the launcher: translations offered in the per-app language settings.
+    androidResources {
+        generateLocaleConfig = true
+    }
+
     // As the launcher: no Google-encrypted dependency report in the APK.
     dependenciesInfo {
         includeInApk = false
@@ -73,6 +78,7 @@ android {
         // As the launcher, plus OldTargetApi: it targets the launcher's API
         // level, and the two are raised together.
         disable += setOf("AndroidGradlePluginVersion", "GradleDependency", "NewerVersionAvailable", "OldTargetApi")
+        disable += "MissingTranslation"
     }
 
     compileOptions {

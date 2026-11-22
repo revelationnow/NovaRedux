@@ -351,11 +351,12 @@ You need JDK 17 or newer and the Android SDK with the compile SDK the project us
 ./gradlew :app:assembleDebug :connect:assembleDebug
 ```
 
-The debug APKs land in `app/build/outputs/apk/debug/` and `connect/build/outputs/apk/debug/`. NovaRedux's debug build installs beside its release build, because it uses a `.debug` application ID suffix; Connect has one ID for both, and answers either. Release signing is described in `app/build.gradle.kts`.
+The debug APKs land in `app/build/outputs/apk/debug/` and `connect/build/outputs/apk/debug/`. NovaRedux's debug build installs beside its release build, because it uses a `.debug` application ID suffix; Connect has one ID for both, and answers either. Releases (signing, tags, F-Droid) are described in [docs/RELEASING.md](docs/RELEASING.md).
 
 ## Contributing
 
 - Pick a ❌ or 🟡 row and open an issue before starting anything large.
+- Translate NovaRedux into your language: [docs/TRANSLATING.md](docs/TRANSLATING.md).
 - Have Nova 7.0.57 on a spare phone? Check ✅ rows side by side and correct their status.
 - Keep the offline design: no internet permission in NovaRedux, no analytics. What truly needs the network goes through another app (Connect, or an app the user already has).
 - If a change would suit Supernova too, offer it upstream as well.

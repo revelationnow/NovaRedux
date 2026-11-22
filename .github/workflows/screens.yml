@@ -15,6 +15,14 @@ on:
         description: "Width the screenshots are printed at (1080 for store screenshots)"
         required: false
         default: "540"
+      profile:
+        description: "The emulator's device: pixel_6, or pixel_tablet, pixel_fold and the like for wide screens"
+        required: false
+        default: "pixel_6"
+      cutout:
+        description: 'A display cutout to emulate: "", corner, double, hole, tall or waterfall'
+        required: false
+        default: ""
 
 permissions:
   contents: read
@@ -66,11 +74,12 @@ jobs:
         env:
           TOUR_ARGS: ${{ inputs.args }}
           SHOT_WIDTH: ${{ inputs.width }}
+          SHOT_CUTOUT: ${{ inputs.cutout }}
         with:
           api-level: 35
           target: google_apis
           arch: x86_64
-          profile: pixel_6
+          profile: ${{ inputs.profile || 'pixel_6' }}
           cores: 4
           disable-animations: true
           script: bash tools/ci/screens.sh

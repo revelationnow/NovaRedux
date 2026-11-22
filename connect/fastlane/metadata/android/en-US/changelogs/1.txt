@@ -1,0 +1,1 @@
+First release: web search suggestions for NovaRedux from Google, DuckDuckGo, Brave, Bing, Ecosia, Startpage, Qwant, Yahoo, Yandex or Kagi, asked only for NovaRedux and over HTTPS.
