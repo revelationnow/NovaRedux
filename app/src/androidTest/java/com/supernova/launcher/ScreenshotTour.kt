@@ -42,8 +42,8 @@ import org.junit.runner.RunWith
 //   pref.b.<key> true · pref.i.<key> 5 · pref.f.<key> 1.5 · pref.s.<key> TEXT
 //   pref.s64.<key> <base64 of the text>, for values with spaces or quotes.
 // `shots` lists the screens, comma-separated: home, drawer, search, settings,
-// and settings.searchbar (the search bar's settings page). The default is the
-// first four. `query` is typed into search before its shot, with time for web
+// settings.searchbar (the search bar's settings page) and feed (the page to
+// the left of home). The default is the first four. `query` is typed into search before its shot, with time for web
 // suggestions to come back (through NovaRedux Connect, when installed).
 // `hide_own true`, for store screenshots: this debug build's own entries
 // (NovaRedux Debug, Debug Settings) are off the home screen and the drawer.
@@ -134,6 +134,7 @@ class ScreenshotTour {
             bar?.click()
             (bar != null && shows("drawerSheet")).also { opened -> if (opened) typeQuery() }
         }
+        "feed" -> openFeed()
         "settings" -> startSettings(Intent())
         "settings.searchbar" -> startSettings(Intent().putExtra(SettingsActivity.EXTRA_OPEN_SEARCH_BAR, true))
         else -> false
@@ -160,6 +161,17 @@ class ScreenshotTour {
             settle()
         }
         return opened && device.hasObject(By.res(appId, "drawerSheet"))
+    }
+
+    // A slow pull rightward across the first page: the feed, NovaRedux's own
+    // or another app's page (pref.s.feed_provider), which draws its own
+    // window and settles open on its own.
+    private fun openFeed(): Boolean {
+        val y = device.displayHeight / 2
+        val edge = device.displayWidth / EDGE_SHARE
+        device.swipe(edge, y, device.displayWidth - edge, y, SLOW_SWIPE_STEPS)
+        Thread.sleep(FEED_WAIT_MS)
+        return true
     }
 
     private fun startSettings(extras: Intent): Boolean {
@@ -200,6 +212,8 @@ class ScreenshotTour {
         const val SETTLE_MS = 1_500L
         const val QUERY_WAIT_MS = 4_000L
         const val SLOW_SWIPE_STEPS = 60
+        const val EDGE_SHARE = 10
+        const val FEED_WAIT_MS = 4_000L
         const val BACK_PRESSES = 2
     }
 }

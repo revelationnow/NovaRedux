@@ -527,6 +527,14 @@
     <string name="group_folder_icon_change">Change</string>
     <string name="group_put_in">Put it in</string>
     <string name="group_put_in_nowhere">No tab or folder</string>
+    <string name="feed_page">Page</string>
+    <string name="feed_page_own">NovaRedux feed</string>
+    <string name="feed_page_discover">Google Discover</string>
+    <string name="feed_page_discover_summary">Install a bridge app such as AIDL Bridge or Lawnfeed, then pick it under Page. The Google app shows Discover through it; on its own it answers only test builds of a launcher. Feed apps such as Neo Feed can be picked the same way.</string>
+    <string name="discover_theme">Page theme</string>
+    <string name="discover_theme_auto">Follow night mode</string>
+    <string name="discover_theme_light">Light</string>
+    <string name="discover_theme_dark">Dark</string>
     <string name="group_category">Apps from a category</string>
     <string name="group_category_none">None: you pick its apps</string>
     <string name="group_category_value">%1$s, kept up as apps install. Picking apps by hand ends this.</string>

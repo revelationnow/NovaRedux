@@ -10,6 +10,7 @@ import com.supernova.launcher.gesture.Gesture
 import com.supernova.launcher.gesture.GestureAction
 import com.supernova.launcher.ui.BadgePosition
 import com.supernova.launcher.ui.BadgeStyle
+import com.supernova.launcher.ui.DiscoverTheme
 import com.supernova.launcher.ui.DockBgStyle
 import com.supernova.launcher.ui.DrawerSort
 import com.supernova.launcher.ui.DrawerTabBar
@@ -309,6 +310,13 @@ object EnumLabels {
         DrawerSort.INSTALL_DATE -> R.string.sort_install
         DrawerSort.MOST_USED -> R.string.sort_most_used
         DrawerSort.RECENTLY_USED -> R.string.sort_recently_used
+    }
+
+    @StringRes
+    fun of(theme: DiscoverTheme): Int = when (theme) {
+        DiscoverTheme.AUTO -> R.string.discover_theme_auto
+        DiscoverTheme.LIGHT -> R.string.discover_theme_light
+        DiscoverTheme.DARK -> R.string.discover_theme_dark
     }
 
     @StringRes

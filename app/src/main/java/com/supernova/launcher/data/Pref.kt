@@ -351,6 +351,8 @@ object Pref {
     val homeOrientation = text("home_orientation")
     val feedEnabled = bool("feed_enabled")
     val feedEdgeSwipe = bool("feed_edge_swipe")
+    val feedProvider = text("feed_provider")
+    val discoverTheme = choice("discover_theme", com.supernova.launcher.ui.DiscoverTheme.entries)
     val feedShowSearch = bool("feed_show_search")
     val feedBarButtons = text("feed_bar_buttons")
     val feedShowFrequent = bool("feed_show_frequent")

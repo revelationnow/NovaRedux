@@ -562,6 +562,11 @@ data class LauncherPrefs(
     // default because they are permission-gated. The page itself starts on.
     val feedEnabled: Boolean = true,
     val feedEdgeSwipe: Boolean = true,
+    // What the page is: "" for NovaRedux's own feed, or the package of an
+    // app that draws a launcher overlay (Google Discover through a bridge
+    // app, a feed app) - DiscoverClient. And that page's theme.
+    val feedProvider: String = "",
+    val discoverTheme: com.supernova.launcher.ui.DiscoverTheme = com.supernova.launcher.ui.DiscoverTheme.AUTO,
     val feedShowSearch: Boolean = true,
     // The buttons at the feed bar's right end, as drawerActionButtons; the
     // date and Settings (the Feed page) until changed.

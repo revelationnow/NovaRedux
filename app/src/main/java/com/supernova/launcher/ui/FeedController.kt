@@ -86,6 +86,18 @@ class FeedController(
     var isOpen = false
         private set
 
+    // The page drawn by another app instead (DiscoverClient), once one is
+    // set and has a page to show: a pull drives it, and the home screen
+    // fades as it opens. Set by the activity, which owns its lifecycle.
+    var overlay: DiscoverClient? = null
+    private var overlayPull = false
+
+    // Something is open over the home screen: this pane, or that page.
+    val isShowing: Boolean get() = isOpen || overlay?.showing == true
+
+    // The other app's page moved (0 shut, 1 open).
+    fun overlayMoved(progress: Float) = applyHomeFade(progress)
+
     private var ui: ViewFeedPaneBinding? = null
     private var shown = false
 
@@ -137,6 +149,10 @@ class FeedController(
 
     fun open() {
         if (isOpen || dragging) return
+        overlay?.takeIf { it.ready }?.let { page ->
+            page.show(open = true)
+            return
+        }
         val pane = ensureInflated().root
         isOpen = true
         beginShown()
@@ -166,6 +182,7 @@ class FeedController(
     }
 
     fun close() {
+        if (overlay?.showing == true) overlay?.show(open = false)
         if (!isOpen && !dragging) return
         isOpen = false
         dragging = false
@@ -313,7 +330,7 @@ class FeedController(
             }
             MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
                 if (dragging) {
-                    settle(cancelled = ev.actionMasked == MotionEvent.ACTION_CANCEL)
+                    endDrag(cancelled = ev.actionMasked == MotionEvent.ACTION_CANCEL)
                     return TouchResult.CONSUMED
                 }
                 stopTracking()
@@ -335,6 +352,12 @@ class FeedController(
         edgeTracking = false
         pullTracking = false
         closeTracking = false
+        overlayPull = !isOpen && overlay?.ready == true
+        if (overlayPull) {
+            overlay?.pull(DiscoverClient.Pull.START)
+            dragTo(currentX)
+            return
+        }
         val pane = ensureInflated().root
         pane.animate().cancel()
         if (isOpen) {
@@ -348,10 +371,24 @@ class FeedController(
     }
 
     private fun dragTo(x: Float) {
+        if (overlayPull) {
+            overlay?.pull(DiscoverClient.Pull.MOVE, (x - downX) / binding.root.width.coerceAtLeast(1))
+            return
+        }
         val pane = ui?.root ?: return
         val width = paneWidth().toFloat()
         pane.translationX = (dragOrigin + (x - downX)).coerceIn(-width, 0f)
         applyHomeFade((width + pane.translationX) / width)
+    }
+
+    // The lift: the other app's page settles open or shut on its own; this
+    // pane, as settle decides.
+    private fun endDrag(cancelled: Boolean) {
+        if (!overlayPull) return settle(cancelled)
+        overlayPull = false
+        dragging = false
+        recycleVelocityTracker()
+        overlay?.pull(DiscoverClient.Pull.END)
     }
 
     private fun settle(cancelled: Boolean) {
@@ -606,6 +643,7 @@ class FeedController(
     // (the ⋮, then Settings) and back, it went on showing its old rows and
     // styling; turned off, an open pane could no longer be swiped shut.
     fun onPrefs(prefs: LauncherPrefs) {
+        overlay?.configure(prefs.feedProvider.takeIf { prefs.feedEnabled && it.isNotEmpty() }, prefs.discoverTheme)
         if (!shown) return
         if (!prefs.feedEnabled) {
             close()

@@ -1364,6 +1364,7 @@ object SettingsCatalogue {
                         set = { viewModel.set(Pref.feedEnabled, it) }
                     )
                 )
+                addAll(FeedPageRows.of(context, viewModel, rows, feedHidden))
                 add(
                     SettingItem.Toggle(
                         R.string.feed_edge_swipe,

@@ -956,6 +956,7 @@ class LauncherActivity :
         // showing; its media and calendar listeners are registered with the
         // system and would keep this activity alive for good.
         if (::feed.isInitialized) feed.release()
+        discover.configure(null, com.supernova.launcher.ui.DiscoverTheme.AUTO)
         WallpaperManager.getInstance(this).removeOnColorsChangedListener(wallpaperColorsListener)
         runCatching { unregisterReceiver(screenOffReceiver) }
         // It takes itself off once the dock has settled; a destroy can come
@@ -1004,6 +1005,7 @@ class LauncherActivity :
 
     override fun onStart() {
         super.onStart()
+        discover.activityState(started = true, resumed = false)
         MainStallWatch.start()
         startedSinceResume = true
         widgets.startListening()
@@ -1027,11 +1029,13 @@ class LauncherActivity :
         widgets.stopListening()
         runCatching { unregisterReceiver(dateChangeReceiver) }
         MainStallWatch.stop()
+        discover.activityState(started = false, resumed = false)
         super.onStop()
     }
 
     override fun onResume() {
         super.onResume()
+        discover.activityState(started = true, resumed = true)
         // Cleared after onNewIntent, which runs first on the way back in.
         startedSinceResume = false
         // The launcher is what the user is looking at again, so a drawer still
@@ -1044,6 +1048,7 @@ class LauncherActivity :
         // Home pressed while a circle was still filling, say: that launch is
         // off. One already asked for carries on.
         launchPrelude.cancelPending()
+        discover.activityState(started = true, resumed = false)
         super.onPause()
     }
 
@@ -1165,6 +1170,25 @@ class LauncherActivity :
 
     // Set while a home swipe that ran mid-stream owns the rest of it.
     private var swipeOwnsStream = false
+
+    // The feed page from another app (Settings > Feed > Page), when one is
+    // set: it draws over this window, so it hears about the window and the
+    // activity's state from here. The feed configures it from the settings.
+    private val discover by lazy {
+        com.supernova.launcher.ui.DiscoverClient(this) { progress ->
+            if (::feed.isInitialized) feed.overlayMoved(progress)
+        }
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        discover.windowAttached(true)
+    }
+
+    override fun onDetachedFromWindow() {
+        discover.windowAttached(false)
+        super.onDetachedFromWindow()
+    }
 
     // Set while two fingers that landed on a widget own the rest of the
     // stream, for the home gestures alone.
@@ -1771,6 +1795,7 @@ class LauncherActivity :
                 }
             }
         )
+        feed.overlay = discover
         // Edge swipes flip pages rather than run system Back, while nothing
         // is over the home screen.
         com.supernova.launcher.ui.HomeEdgeSwipes(
@@ -2793,7 +2818,7 @@ class LauncherActivity :
         }
         if (widgets.dismissResizeFrame()) closed = true
         reopenDockIfAutoClosed()
-        if (::feed.isInitialized && feed.isOpen) {
+        if (::feed.isInitialized && feed.isShowing) {
             feed.close()
             closed = true
         }
