@@ -4947,6 +4947,9 @@ class LauncherActivity :
         // can't also tap it.
         var swiped = false
         val hold = inFolder?.let { FolderTileSwipeHold(view, claimsUp, claimsDown) }
+        // It only claims a swipe; a tap falls through to the icon's own
+        // click handling, which accessibility services reach as usual.
+        //noinspection ClickableViewAccessibility
         view.setOnTouchListener { v, event ->
             // In an open folder the grid is held off until the finger has
             // gone one way.

@@ -584,6 +584,9 @@ class WorkspacePagerAdapter(private val host: Host) : RecyclerView.Adapter<Recyc
             var lastTouchX = 0f
             var lastTouchY = 0f
             val touchSlop = android.view.ViewConfiguration.get(canvas.context).scaledTouchSlop
+            // It only watches (false: nothing consumed); the tap is the
+            // canvas's own click, which accessibility services reach.
+            //noinspection ClickableViewAccessibility
             canvas.setOnTouchListener { view, event ->
                 when (event.actionMasked) {
                     android.view.MotionEvent.ACTION_DOWN -> {

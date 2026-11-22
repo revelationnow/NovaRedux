@@ -124,6 +124,10 @@ class SupernovaWidgetHostView(context: Context) : AppWidgetHostView(context) {
         return longPressFired
     }
 
+    // A tap lands on the widget's own views; this keeps the host clickable the
+    // way accessibility services click, by calling it.
+    override fun performClick(): Boolean = super.performClick()
+
     override fun onTouchEvent(ev: MotionEvent): Boolean {
         when (ev.actionMasked) {
             // A press no child took comes here directly, past the intercept

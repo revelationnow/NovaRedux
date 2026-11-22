@@ -2036,137 +2036,17 @@
             column="17"/>
     </issue>
 
-    <issue
-        id="ClickableViewAccessibility"
-        message="`onTouch` lambda should call `View#performClick` when a click is detected"
-        errorLine1="        val trackTouch = android.view.View.OnTouchListener { view, event ->"
-        errorLine2="                                                           ^">
-        <location
-            file="src/main/java/com/supernova/launcher/ui/AppEditSheet.kt"
-            line="102"
-            column="60"/>
-    </issue>
 
-    <issue
-        id="ClickableViewAccessibility"
-        message="Custom view ``LinearLayout`` has `setOnTouchListener` called on it but does not override `performClick`"
-        errorLine1="        binding.shapeRow.setOnTouchListener(trackTouch)"
-        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/com/supernova/launcher/ui/AppEditSheet.kt"
-            line="110"
-            column="9"/>
-    </issue>
 
-    <issue
-        id="ClickableViewAccessibility"
-        message="Custom view ``LinearLayout`` has `setOnTouchListener` called on it but does not override `performClick`"
-        errorLine1="        binding.variantRow.setOnTouchListener(trackTouch)"
-        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/com/supernova/launcher/ui/AppEditSheet.kt"
-            line="111"
-            column="9"/>
-    </issue>
 
-    <issue
-        id="ClickableViewAccessibility"
-        message="`onTouch` lambda should call `View#performClick` when a click is detected"
-        errorLine1="        popup?.let { window -> window.setTouchInterceptor { _, ev -> drag.routeGesture(ev, window) } }"
-        errorLine2="                                                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/com/supernova/launcher/LauncherActivity.kt"
-            line="3512"
-            column="59"/>
-    </issue>
 
-    <issue
-        id="ClickableViewAccessibility"
-        message="`onTouch` lambda should call `View#performClick` when a click is detected"
-        errorLine1="        popup?.let { window -> window.setTouchInterceptor { _, ev -> drag.routeGesture(ev, window) } }"
-        errorLine2="                                                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/com/supernova/launcher/LauncherActivity.kt"
-            line="3756"
-            column="59"/>
-    </issue>
 
-    <issue
-        id="ClickableViewAccessibility"
-        message="`onTouch` lambda should call `View#performClick` when a click is detected"
-        errorLine1="        view.setOnTouchListener { v, event ->"
-        errorLine2="                                ^">
-        <location
-            file="src/main/java/com/supernova/launcher/LauncherActivity.kt"
-            line="4127"
-            column="33"/>
-    </issue>
 
-    <issue
-        id="ClickableViewAccessibility"
-        message="Custom view ``TextView`` has `setOnTouchListener` called on it but does not override `performClick`"
-        errorLine1="        value.setOnTouchListener { _, event ->"
-        errorLine2="        ^">
-        <location
-            file="src/main/java/com/supernova/launcher/onboarding/OnboardingActivity.kt"
-            line="571"
-            column="9"/>
-    </issue>
 
-    <issue
-        id="ClickableViewAccessibility"
-        message="`onTouch` lambda should call `View#performClick` when a click is detected"
-        errorLine1="        value.setOnTouchListener { _, event ->"
-        errorLine2="                                 ^">
-        <location
-            file="src/main/java/com/supernova/launcher/onboarding/OnboardingActivity.kt"
-            line="571"
-            column="34"/>
-    </issue>
 
-    <issue
-        id="ClickableViewAccessibility"
-        message="Custom view `SupernovaWidgetHostView` overrides `onTouchEvent` but not `performClick`"
-        errorLine1="    override fun onTouchEvent(ev: MotionEvent): Boolean {"
-        errorLine2="                 ~~~~~~~~~~~~">
-        <location
-            file="src/main/java/com/supernova/launcher/widget/SupernovaWidgetHost.kt"
-            line="127"
-            column="18"/>
-    </issue>
 
-    <issue
-        id="ClickableViewAccessibility"
-        message="Custom view `WidgetResizeFrame` overrides `onTouchEvent` but not `performClick`"
-        errorLine1="    override fun onTouchEvent(event: MotionEvent): Boolean {"
-        errorLine2="                 ~~~~~~~~~~~~">
-        <location
-            file="src/main/java/com/supernova/launcher/widget/WidgetResizeFrame.kt"
-            line="134"
-            column="18"/>
-    </issue>
 
-    <issue
-        id="ClickableViewAccessibility"
-        message="Custom view ``WorkspaceCanvas`` has `setOnTouchListener` called on it but does not override `performClick`"
-        errorLine1="            canvas.setOnTouchListener { view, event ->"
-        errorLine2="            ^">
-        <location
-            file="src/main/java/com/supernova/launcher/ui/WorkspacePagerAdapter.kt"
-            line="473"
-            column="13"/>
-    </issue>
 
-    <issue
-        id="ClickableViewAccessibility"
-        message="`onTouch` lambda should call `View#performClick` when a click is detected"
-        errorLine1="            canvas.setOnTouchListener { view, event ->"
-        errorLine2="                                      ^">
-        <location
-            file="src/main/java/com/supernova/launcher/ui/WorkspacePagerAdapter.kt"
-            line="473"
-            column="39"/>
-    </issue>
 
     <issue
         id="SetTextI18n"
