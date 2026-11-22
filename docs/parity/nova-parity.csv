@@ -146,7 +146,7 @@ Integrations,Google Discover page,,No,Done,P2,Needs the Nova Google Companion ap
 Integrations,"Discover theme: light, dark, follow night mode",6.1,No,Done,P2,Dark Discover cards,"Feed > Page theme: follow night mode, light or dark, sent to the page with the home window; the Google app's Discover follows it (seen dark on the CI emulator)"
 Backup and setup,Backup and restore,1.x,No,Done,P0,Layout and settings in one file,"exportBackup, importBackup"
 Backup and setup,Quick start,5.0,No,Done,P2,"Pick theme, drawer and dock style in one place",Onboarding wizard
-Backup and setup,Import from other launchers,,No,Done,P1,Start from your current home screen,"Lawnchair and other launchers built on Launcher3 (their favorites table), and Smart Launcher (its own layout tables, its drawer categories as groups). BackupLayouts, DrawerGroupTables; not yet tried with a real Smart Launcher backup"
+Backup and setup,Import from other launchers,,No,Done,P1,Start from your current home screen,"Lawnchair and other launchers built on Launcher3 (their favorites table), and Smart Launcher (its own layout tables: drawer categories become tabs, drawer folders folders in them, the App page button the drawer action), checked against a real Smart Launcher backup. BackupLayouts, DrawerGroupTables"
 Backup and setup,Reset to defaults,,No,Done,P2,Start over,resetToDefaults
 Labs,Hidden Labs menu,,No,Done,P2,Held volume-down in Nova Settings,labs_enabled
 Labs,Big grid sizes,,No,Done,P2,Lifts the grid caps,labs_big_grid

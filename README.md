@@ -284,7 +284,7 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 | --- | --- | --- | --- | --- | --- | --- |
 | ✅ | Backup and restore | 1.x |  | P0 | Layout and settings in one file | exportBackup, importBackup |
 | ✅ | Quick start | 5.0 |  | P2 | Pick theme, drawer and dock style in one place | Onboarding wizard |
-| ✅ | Import from other launchers |  |  | P1 | Start from your current home screen | Lawnchair and other launchers built on Launcher3 (their favorites table), and Smart Launcher (its own layout tables, its drawer categories as groups). BackupLayouts, DrawerGroupTables; not yet tried with a real Smart Launcher backup |
+| ✅ | Import from other launchers |  |  | P1 | Start from your current home screen | Lawnchair and other launchers built on Launcher3 (their favorites table), and Smart Launcher (its own layout tables: drawer categories become tabs, drawer folders folders in them, the App page button the drawer action), checked against a real Smart Launcher backup. BackupLayouts, DrawerGroupTables |
 | ✅ | Reset to defaults |  |  | P2 | Start over | resetToDefaults |
 
 </details>
