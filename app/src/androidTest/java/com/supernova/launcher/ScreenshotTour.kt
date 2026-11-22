@@ -164,9 +164,13 @@ class ScreenshotTour {
 
     // A slow swipe up from the lower page; failing that, the search bar's
     // tap opens the drawer too, and Back puts the keyboard away.
+    // A pull past half way: a software-rendered emulator takes a frame per
+    // step, so on a big screen the swipe is too slow to count as a fling, and
+    // a pull of exactly half the height (as this was) settles closed again.
     private fun openDrawer(): Boolean {
         val x = device.displayWidth / 2
-        device.swipe(x, device.displayHeight * 3 / 4, x, device.displayHeight / 4, SLOW_SWIPE_STEPS)
+        val height = device.displayHeight
+        device.swipe(x, height * PULL_FROM / PULL_SHARES, x, height * PULL_TO / PULL_SHARES, SLOW_SWIPE_STEPS)
         if (shows("drawerSheet")) return true
         // What the swipe left on screen, and the views then, for a look at
         // why it didn't open.
@@ -231,6 +235,12 @@ class ScreenshotTour {
         const val SETTLE_MS = 1_500L
         const val QUERY_WAIT_MS = 4_000L
         const val SLOW_SWIPE_STEPS = 60
+
+        // The drawer pull runs from 15/20 of the height (above the dock, as
+        // before) to 1/20: 70% of it.
+        const val PULL_SHARES = 20
+        const val PULL_FROM = 15
+        const val PULL_TO = 1
         const val EDGE_SHARE = 10
         const val FEED_WAIT_MS = 4_000L
         const val BACK_PRESSES = 2
