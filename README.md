@@ -37,10 +37,10 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 
 | Status | Features |
 | --- | --- |
-| ✅ Done | 127 |
-| 🟡 Partial | 17 |
-| ❌ Missing | 19 |
-| ❔ Needs a check on a device | 2 |
+| ✅ Done | 141 |
+| 🟡 Partial | 10 |
+| ❌ Missing | 11 |
+| ❔ Needs a check on a device | 3 |
 | ⛔ Won't do | 2 |
 | **Total** | **167** |
 
@@ -111,7 +111,7 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 </details>
 
 <details>
-<summary><b>App drawer</b> · 27 features · ✅ 20 · 🟡 6 · ❌ 1</summary>
+<summary><b>App drawer</b> · 27 features · ✅ 23 · 🟡 4</summary>
 
 | Status | Feature | Since | Prime | Priority | What Nova did | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -119,10 +119,10 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 | ✅ | Drawer grid, separate from the desktop |  |  | P0 | Its own rows and columns | drawer_columns, drawer_rows |
 | 🟡 | Landscape drawer grid |  |  | P2 | Separate grid in landscape | Landscape columns are scaled from the portrait count; no separate landscape setting |
 | ✅ | Drawer icon layout; match the desktop | 6.0 |  | P1 | Icon size and labels, or follow the desktop | drawer_icon_scale, drawer_match_desktop |
-| 🟡 | Card or immersive background | 5.0 |  | P1 | A card panel, or a full-screen drawer | Colour and opacity only; no card panel |
+| ✅ | Card or immersive background | 5.0 |  | P1 | A card panel, or a full-screen drawer | A card panel (inset 8dp, rounded, its own colour) or edge to edge, with colour and opacity |
 | ✅ | Background colour and transparency | 1.x |  | P1 | Any colour, any transparency | drawer_bg_color, drawer_bg_opacity |
 | ✅ | Swipe up to open the drawer | 5.0 |  | P0 | Pixel-style swipe from the desktop | Gesture |
-| 🟡 | Open animation: circle reveal, slide up, zoom, fade | 2014 beta |  | P2 | Drawer transition choice | Slide up, zoom, fade; no circle reveal |
+| ✅ | Open animation: circle reveal, slide up, zoom, fade | 2014 beta |  | P2 | Drawer transition choice | Slide up, Zoom, Fade and Circle (a reveal from the bottom middle) |
 | ✅ | Drawer scroll effects in paged mode | 1.x |  | P2 | Same effects as the desktop | drawer_page_effect |
 | ✅ | Fast scroller and scroll accent colour | 4.2 beta |  | P2 | Letter scrubber along the edge | drawer_fast_scroller, drawer_scrubber_color |
 | ✅ | Frequently used apps row | 4.2 beta |  | P2 | Most-used apps at the top | drawer_frequent_row |
@@ -140,26 +140,26 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 | ✅ | Hide from the long-press menu | 7.0.10 | Prime | P2 | One-tap hide | PopupExtraRow HIDE |
 | ✅ | Work-profile apps in their own tab | 7.0.39 |  | P1 | Separate work tab | drawer_work_tab |
 | 🟡 | Recent and new or updated apps | 5.0 |  | P2 | Frequent, Recent and New/Updated tabs in the search view | Recent row only |
-| ❌ | Drawer greys out behind a windowed folder | 7.0.37 |  | P2 | Content fades to grayscale | Windowed folders leave the scrim clear; only immersive ones dim (to 70% black) |
+| ✅ | Drawer greys out behind a windowed folder | 7.0.37 |  | P2 | Content fades to grayscale | The drawer fades to grey behind a windowed folder opened in it (Grey out the drawer behind, on by default) |
 | ✅ | Widget drawer |  |  | P1 | Browse and place widgets | WidgetPickerSheet |
 
 </details>
 
 <details>
-<summary><b>Search</b> · 14 features · ✅ 9 · 🟡 2 · ❌ 2 · ⛔ 1</summary>
+<summary><b>Search</b> · 14 features · ✅ 13 · ⛔ 1</summary>
 
 | Status | Feature | Since | Prime | Priority | What Nova did | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
 | ✅ | App search | 2014 beta |  | P0 | Instant search over installed apps | Search package, 54 unit tests |
-| 🟡 | Web search with a choice of provider | 6.0 |  | P1 | Google, DuckDuckGo and others | Providers present; suggestions will come from a companion app (see Web suggestions) |
-| ❌ | Web suggestions while typing | 7.0.37 |  | P2 | Autocomplete, e.g. with DuckDuckGo | Plan: a separate companion app with internet access serves suggestions over a provider contract NovaRedux defines, so NovaRedux stays offline |
+| ✅ | Web search with a choice of provider | 6.0 |  | P1 | Google, DuckDuckGo and others | Ten engines and a custom address; suggestions while typing come through NovaRedux Connect (see Web suggestions) |
+| ✅ | Web suggestions while typing | 7.0.37 |  | P2 | Autocomplete, e.g. with DuckDuckGo | Through NovaRedux Connect (connect/), the companion app that alone has internet access: the chosen engine's suggestions from the second letter, off by default; a weekly workflow checks every engine |
 | ✅ | Play Store search from results |  |  | P2 | Jump to a Play Store search | SearchChip PLAY_STORE |
 | ✅ | Calculator |  |  | P2 | Sums answered in the search box | search_calculator |
 | ✅ | Contacts in search | 5.4 |  | P2 | Arrived with the Sesame integration | search_contacts |
 | ✅ | App shortcuts in search | 5.4 |  | P2 | Shortcuts in the results | search_shortcuts |
-| 🟡 | Search bar style: shape, colour, logo, content | 4.3 |  | P1 | Bar style, colour and logo style choices; pill (5.0) and round (5.21) bars | Radius, opacity, outline, shadow, glass, hint and five buttons, colour from Styles; no logo choice (always a magnifier) |
+| ✅ | Search bar style: shape, colour, logo, content | 4.3 |  | P1 | Bar style, colour and logo style choices; pill (5.0) and round (5.21) bars | Radius, opacity, outline, shadow, glass, hint, logo (magnifier, none or the browser's icon) and buttons, colour from Styles |
 | ✅ | Voice and Assistant buttons in the bar | 6.0 |  | P2 | Assistant launch from the search widget | VOICE and ASSISTANT buttons, beside DATE, PLAY_STORE and SETTINGS |
-| ❌ | Weather in the search bar | 7.0.54 |  | P2 | Was a Labs option before 7.0.54 | Plan: read Breezy Weather's content provider (org.breezyweather.provider.weather; LGPL-3.0 contract, permission the user grants), so NovaRedux stays offline |
+| ✅ | Weather in the search bar | 7.0.54 |  | P2 | Was a Labs option before 7.0.54 | A Weather button on the home bar, read from Breezy Weather's content provider with a permission the user grants; NovaRedux stays offline |
 | ✅ | Search apps from the desktop Google bar | 6.0 |  | P2 | The bar opens Nova search | Tapping the bar opens the drawer with its search ready |
 | ✅ | Search window: windowed or immersive | 7.0 beta |  | P2 | More search window options | SearchWindowMode |
 | ✅ | Search in Nova Settings | 6.0 |  | P1 | Find any setting by name | Settings search |
@@ -168,7 +168,7 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 </details>
 
 <details>
-<summary><b>Folders</b> · 11 features · ✅ 9 · ❌ 2</summary>
+<summary><b>Folders</b> · 11 features · ✅ 11</summary>
 
 | Status | Feature | Since | Prime | Priority | What Nova did | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -178,16 +178,16 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 | ✅ | Replace the folder icon | 1.x |  | P2 | Any icon or image | setFolderIcon |
 | ✅ | Windowed or immersive folders | 6.0 |  | P1 | Two window styles | FolderMode WINDOW, IMMERSIVE |
 | ✅ | Folder window colour and transparency |  |  | P2 | Window background | folder colour prefs |
-| ❌ | Bottom-aligned immersive folders | 8.0 beta |  | P2 | Align bottom option | Immersive folders always open centred |
+| ✅ | Bottom-aligned immersive folders | 8.0 beta |  | P2 | Align bottom option | Align to the bottom, for full-screen folders |
 | ✅ | Scroll vertically or horizontally; vertical paging | 6.0 |  | P2 | Paginated vertical scrolling came in 7 | FolderScroll |
 | ✅ | Folder grid and icon layout |  |  | P2 | Columns, icon size, labels | folder_columns, folder_icon_scale |
-| ❌ | Folder open transition |  |  | P2 | Zoom or circle | Not found |
+| ✅ | Folder open transition |  |  | P2 | Zoom or circle | Zoom out of the folder's icon, or Circle (Folder animation) |
 | ✅ | Swipe to open (tap opens the first app) |  | Prime | P1 | Hidden folders | setFolderSwipeToOpen |
 
 </details>
 
 <details>
-<summary><b>Look and feel</b> · 24 features · ✅ 19 · ❌ 5</summary>
+<summary><b>Look and feel</b> · 24 features · ✅ 21 · ❌ 3</summary>
 
 | Status | Feature | Since | Prime | Priority | What Nova did | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -203,8 +203,8 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 | ❌ | Bypass system icon theme |  |  | P2 | Labs: skip OEM icon frames | Not found |
 | ✅ | Night mode: off, always, auto by sunrise, set times | 4.3 |  | P1 | Schedules for the dark theme | ThemeMode, theme_schedule_* |
 | ✅ | Night mode follows the system dark theme | 6.2.2 |  | P1 | Android 10 dark theme | ThemeMode SYSTEM |
-| ❌ | Night mode per element: search bar, drawer, folders | 4.3 |  | P2 | Pick what turns dark | Themes everything at once |
-| ❌ | Night mode shades: dark, darker, darkest | 6.1.x |  | P2 | Three dark colours | Not found |
+| ✅ | Night mode per element: search bar, drawer, folders | 4.3 |  | P2 | Pick what turns dark | Night mode can leave the home search bar, the drawer, folders, or menus and cards in day colours (Style tab) |
+| ✅ | Night mode shades: dark, darker, darkest | 6.1.x |  | P2 | Three dark colours | Night shade: Dark, Darker or Black (for OLED screens), on the theme's own surfaces |
 | ✅ | Accent colour with full colour picker | 1.x |  | P1 | Launcher accent colour | accent_color |
 | ✅ | Colours for labels, folders, badges, tabs, backgrounds |  |  | P1 | Colour controls | Any surface colour |
 | ✅ | Material You colours | 8.0 beta |  | P1 | Colours from the wallpaper | palette_source, palette_seed |
@@ -290,25 +290,25 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 </details>
 
 <details>
-<summary><b>Labs</b> · 4 features · ✅ 3 · 🟡 1</summary>
+<summary><b>Labs</b> · 4 features · ✅ 4</summary>
 
 | Status | Feature | Since | Prime | Priority | What Nova did | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
 | ✅ | Hidden Labs menu |  |  | P2 | Held volume-down in Nova Settings | labs_enabled |
 | ✅ | Big grid sizes |  |  | P2 | Lifts the grid caps | labs_big_grid |
 | ✅ | Permissions list |  |  | P2 | Review the launcher's permissions | LabsPermission |
-| 🟡 | Debug tools: clear icon cache, send device info |  |  | P2 | Troubleshooting | Clear icon cache present; check device info |
+| ✅ | Debug tools: clear icon cache, send device info |  |  | P2 | Troubleshooting | Clear icon cache in Labs; About's version row copies the device details, and Report an issue fills them in |
 
 </details>
 
 <details>
-<summary><b>Beyond Nova</b> · 7 features · ✅ 5 · 🟡 1 · ❌ 1</summary>
+<summary><b>Beyond Nova</b> · 7 features · ✅ 7</summary>
 
 | Status | Feature | Since | Prime | Priority | What Nova did | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
 | ✅ | Import a Nova backup |  |  | P0 | Bring a whole Nova setup across | favorites table, drawer groups |
-| 🟡 | Import Nova's other settings |  |  | P1 | Look, gestures, badges and the rest | Reads grid, dock, drawer columns, subgrid, groups |
-| ❌ | At a Glance via Smartspacer |  |  | P1 | Common add-on for Nova users | Smartspacer client SDK: a whole At a Glance view (BcSmartspaceView), Android 10+; GPL-3.0 |
+| ✅ | Import Nova's other settings |  |  | P1 | Look, gestures, badges and the rest | Grids, dock, drawer, folders, search bars, gestures, home button, scroll effects, night mode and more, from Nova's preferences file (NovaSettings) |
+| ✅ | At a Glance via Smartspacer |  |  | P1 | Common add-on for Nova users | Smartspacer's own At a Glance widget, hosted like any widget, as Nova hosted Google's; its client SDK isn't needed |
 | ✅ | Private space (Android 15+) |  |  | P1 | Private apps in their own container | ACCESS_HIDDEN_PROFILES |
 | ✅ | Feed page with cards |  |  | P2 | Calendar, media, contacts and widget cards | Feed package |
 | ✅ | Automatic backups and recovery |  |  | P2 | Restored if the store breaks | writeAutoBackup, StoreRecovery |
@@ -317,15 +317,15 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 </details>
 
 <details>
-<summary><b>Project</b> · 7 features · ✅ 1 · 🟡 3 · ❌ 3</summary>
+<summary><b>Project</b> · 7 features · ✅ 1 · 🟡 2 · ❌ 3 · ❔ 1</summary>
 
 | Status | Feature | Since | Prime | Priority | What Nova did | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
 | ✅ | CI on every pull request |  |  | P0 | Lint, detekt, unit tests and a debug APK | GitHub Actions workflow in #2; passing |
-| 🟡 | Own app ID, name and icon |  |  | P0 | Installs beside Supernova; no Nova branding | Name and app ID io.github.revelationnow.novaredux in #3; icon and store images still Supernova's |
+| 🟡 | Own app ID, name and icon |  |  | P0 | Installs beside Supernova; no Nova branding | io.github.revelationnow.novaredux, named NovaRedux, with its own icon (a grid of apps with one gone nova) and store icon; store screenshots still upstream's |
 | ❌ | Release signing and F-Droid listing |  |  | P1 | Reproducible builds like upstream | Upstream setup to copy |
 | ❌ | Translations |  |  | P1 | Nova shipped 74 languages | English only |
-| 🟡 | TalkBack support |  |  | P1 | Accessible custom views | 12 accessibility lint entries |
+| ❔ | TalkBack support |  |  | P1 | Accessible custom views | No accessibility lint findings left; needs a TalkBack pass on a device |
 | 🟡 | Split LauncherActivity |  |  | P1 | Move UI state into controllers | 5,333 lines, 291 functions |
 | ❌ | Give the layout its own store |  |  | P2 | Layout saves stop rewriting settings | One Preferences DataStore today |
 
