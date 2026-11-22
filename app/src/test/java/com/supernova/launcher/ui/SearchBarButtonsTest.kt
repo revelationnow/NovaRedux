@@ -9,8 +9,12 @@ class SearchBarButtonsTest {
 
     @Test
     fun bothBarsListEveryButton() {
-        assertEquals(SearchBarChip.entries.toSet(), SearchBarButtons.ROWS.toSet())
-        assertEquals(SearchBarChip.entries.size, SearchBarButtons.ROWS.size)
+        // The weather is read for the home bar only, so only its page lists it.
+        val shared = SearchBarChip.entries - SearchBarChip.WEATHER
+        assertEquals(shared.toSet(), SearchBarButtons.ROWS.toSet())
+        assertEquals(shared.size, SearchBarButtons.ROWS.size)
+        assertEquals(SearchBarChip.entries.toSet(), SearchBarButtons.HOME_ROWS.toSet())
+        assertEquals(SearchBarChip.entries.size, SearchBarButtons.HOME_ROWS.size)
     }
 
     @Test
