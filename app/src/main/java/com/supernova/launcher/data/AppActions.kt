@@ -4,10 +4,10 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.pm.LauncherApps
-import android.net.Uri
 import android.os.UserHandle
 import android.os.UserManager
 import android.provider.Settings
+import androidx.core.net.toUri
 
 // What the launcher does with an app beyond drawing it: launches it, opens
 // its info and uninstall pages, and asks whether it is installed. Through
@@ -36,7 +36,7 @@ class AppActions(
         } else {
             context.startActivity(
                 Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-                    data = Uri.parse("package:$packageName")
+                    data = "package:$packageName".toUri()
                     flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 }
             )
@@ -45,7 +45,7 @@ class AppActions(
 
     fun uninstallIntent(packageName: String, userSerial: Long): Intent {
         return Intent(Intent.ACTION_DELETE).apply {
-            data = Uri.parse("package:$packageName")
+            data = "package:$packageName".toUri()
             userForSerial(userSerial)?.let { putExtra(Intent.EXTRA_USER, it) }
             flags = Intent.FLAG_ACTIVITY_NEW_TASK
         }

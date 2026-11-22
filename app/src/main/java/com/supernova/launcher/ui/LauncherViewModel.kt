@@ -1551,7 +1551,11 @@ class LauncherViewModel(
     // Like any edit, it makes a Smart Folder the user's.
     fun setGroupCategory(group: DrawerGroup, category: SmartCategory?) {
         viewModelScope.launch {
-            val byCategory = if (category == null) emptyMap() else withContext(Dispatchers.Default) { categoryMembers() }
+            val byCategory = if (category == null) {
+                emptyMap()
+            } else {
+                withContext(Dispatchers.Default) { categoryMembers() }
+            }
             preferences.updateDrawerGroups { groups ->
                 groups.map {
                     if (it.id != group.id) return@map it

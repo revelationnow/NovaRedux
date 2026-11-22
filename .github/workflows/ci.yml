@@ -63,6 +63,15 @@ jobs:
           :connect:testDebugUnitTest
           :connect:assembleDebug
 
+      # Lint names only its first error in the console; the rest are in its
+      # text report, printed here when a check failed.
+      - name: Print lint findings
+        if: failure()
+        run: |
+          for report in app/build/reports/lint-results-debug.txt connect/build/reports/lint-results-debug.txt; do
+            if [ -f "$report" ]; then echo "== $report"; cat "$report"; fi
+          done
+
       - name: Upload reports
         if: always()
         uses: actions/upload-artifact@v7

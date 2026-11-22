@@ -94,6 +94,9 @@ android {
         baseline = file("lint-baseline.xml")
         warningsAsErrors = true
         abortOnError = true
+        // A text report too (build/reports/lint-results-debug.txt), which CI
+        // prints: the console names only the first error.
+        textReport = true
         // "A newer version is available" isn't a defect in this code, and with
         // warningsAsErrors every upstream release would break the build.
         disable += setOf("AndroidGradlePluginVersion", "GradleDependency", "NewerVersionAvailable")

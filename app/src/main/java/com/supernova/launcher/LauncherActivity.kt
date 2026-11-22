@@ -3634,7 +3634,8 @@ class LauncherActivity :
                     menu.addRow(getString(R.string.app_info), R.drawable.ic_menu_info) {
                         // The provider names the package and, through the
                         // user, the profile its details open in.
-                        viewModel.appCatalog().actions.openAppInfo(provider.packageName, provider.className, item.userSerial)
+                        viewModel.appCatalog().actions
+                            .openAppInfo(provider.packageName, provider.className, item.userSerial)
                     }
                 }
                 // The widget's own settings screen, for widgets that offer it

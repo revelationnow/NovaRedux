@@ -783,7 +783,8 @@ class LiveDragController(
             picture.bitmap, grabX, grabY, lifted?.let(::roundedRect) ?: picture.source,
             if (isWidgetPayload(payload)) 1f else DRAG_PICKUP_SCALE,
             Animations.duration(prefs, DRAG_PICKUP_MS),
-            picture.outset
+            picture.outset,
+            adaptiveLayers(payload)
         )
         // The picture is what is seen now; the source can vanish.
         anchor.alpha = 0f
@@ -812,6 +813,22 @@ class LiveDragController(
 
     private fun itemById(id: String): LauncherItem? =
         viewModel.state.value.model.items.firstOrNull { it.id == id }
+
+    private val adaptiveIcons by lazy { AdaptiveDragIcons(context, viewModel) }
+
+    // An app's icon is carried as its adaptive layers, which move as it is
+    // dragged (Nova's adaptive icon animation), where AdaptiveDragIcons can.
+    private fun adaptiveLayers(payload: DragPayload): AdaptiveDragIcon? {
+        val item = (payload as? DragPayload.ExistingItem)?.itemId?.let(::itemById)
+        val app = when {
+            payload is DragPayload.DrawerApp -> payload.app
+            item?.itemType == ItemType.APP && !item.isLargeIcon -> item.packageName
+                ?.let { host.installedApp(it, item.userSerial) }
+                ?.let { it.copy(className = item.className ?: it.className) }
+            else -> null
+        }
+        return app?.let { adaptiveIcons.forApp(it, item) }
+    }
 
     // A widget from the add sheet or one already placed: carried at full
     // size, aimed by its top-left cell, and never given a dock slot.

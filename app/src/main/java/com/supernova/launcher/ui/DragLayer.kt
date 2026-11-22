@@ -63,6 +63,10 @@ class DragLayer @JvmOverloads constructor(
     // What the settle in flight runs once its picture has landed.
     private var onSettled: (() -> Unit)? = null
     private val origin = IntArray(2)
+    // An adaptive icon's moving layers, and where the finger last was.
+    private var layers: AdaptiveDragIcon? = null
+    private var lastFingerX = 0f
+    private var lastFingerY = 0f
 
     // True from pickup until release; false while the picture settles.
     val isDragging: Boolean get() = dragView != null && !settling
@@ -82,6 +86,8 @@ class DragLayer @JvmOverloads constructor(
     // enlargement while dragging, reached over `durationMs`. `outset` is room
     // round the picture in `bitmap` (iconPictureWithRoom), drawn past its
     // edges: the picture is the bitmap less it, for every size and place.
+    // `layers`, for an app's adaptive icon, is drawn in the picture's place,
+    // its layers moving with the finger (AdaptiveDragIcon).
     @Suppress("LongParameterList")
     fun begin(
         bitmap: Bitmap,
@@ -90,10 +96,14 @@ class DragLayer @JvmOverloads constructor(
         source: Rect?,
         scale: Float,
         durationMs: Long,
-        outset: Int = 0
+        outset: Int = 0,
+        layers: AdaptiveDragIcon? = null
     ) {
         cancel()
         getLocationOnScreen(origin)
+        this.layers = layers
+        lastFingerX = fingerRawX
+        lastFingerY = fingerRawY
         bitmapWidth = bitmap.width - 2 * outset
         bitmapHeight = bitmap.height - 2 * outset
         liveScale = scale
@@ -121,7 +131,11 @@ class DragLayer @JvmOverloads constructor(
         }
 
         val view = ImageView(context).apply {
-            if (outset > 0) setImageDrawable(OutsetPicture(bitmap, outset)) else setImageBitmap(bitmap)
+            when {
+                layers != null -> setImageDrawable(layers)
+                outset > 0 -> setImageDrawable(OutsetPicture(bitmap, outset))
+                else -> setImageBitmap(bitmap)
+            }
             elevation = SHADOW_DP * resources.displayMetrics.density
             pivotX = grabX
             pivotY = grabY
@@ -146,6 +160,9 @@ class DragLayer @JvmOverloads constructor(
         if (settling) return
         view.x = fingerRawX - origin[0] - grabX
         view.y = fingerRawY - origin[1] - grabY
+        layers?.pull(fingerRawX - lastFingerX, fingerRawY - lastFingerY)
+        lastFingerX = fingerRawX
+        lastFingerY = fingerRawY
     }
 
     // The picture's on-screen rect, scale included. Cell maths works from this
@@ -222,6 +239,7 @@ class DragLayer @JvmOverloads constructor(
             removeView(it)
         }
         dragView = null
+        layers = null
         settling = false
         onEnd?.invoke()
     }

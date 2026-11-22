@@ -3,6 +3,7 @@ package com.supernova.launcher.ui
 import android.content.Context
 import android.view.LayoutInflater
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.supernova.launcher.R
@@ -157,7 +158,7 @@ object AppEditSheet {
         binding.hideLabelSwitch.isChecked = current.hideLabel
         binding.hideLabelRow.setOnClickListener { binding.hideLabelSwitch.toggle() }
         if (!workApp) return
-        binding.workBadgeRow.visibility = android.view.View.VISIBLE
+        binding.workBadgeRow.isVisible = true
         binding.workBadgeSwitch.isChecked = !current.noBadge
         binding.workBadgeRow.setOnClickListener { binding.workBadgeSwitch.toggle() }
     }

@@ -31,7 +31,7 @@ class GroupCategoryPick(
         val context = binding.root.context
         val choices = listOf<SmartCategory?>(null) + SmartCategory.entries
         val labels = choices.map { category ->
-            if (category == null) context.getString(R.string.option_none) else context.getString(EnumLabels.of(category))
+            context.getString(if (category == null) R.string.option_none else EnumLabels.of(category))
         }.toTypedArray()
         MaterialAlertDialogBuilder(context)
             .setTitle(R.string.group_category)

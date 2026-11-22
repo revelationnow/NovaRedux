@@ -68,6 +68,8 @@ android {
     lint {
         warningsAsErrors = true
         abortOnError = true
+        // For CI to print (see the launcher's).
+        textReport = true
         // As the launcher, plus OldTargetApi: it targets the launcher's API
         // level, and the two are raised together.
         disable += setOf("AndroidGradlePluginVersion", "GradleDependency", "NewerVersionAvailable", "OldTargetApi")
