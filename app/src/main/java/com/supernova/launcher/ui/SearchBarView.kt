@@ -36,7 +36,7 @@ class SearchBarView @JvmOverloads constructor(
     // Rebuilt from the config's chip list on every style change; the date
     // chip is remembered so midnight refreshes can find it.
     private var dateChip: TextView? = null
-    private var applied: List<Any>? = null
+    private var applied: List<Any?>? = null
 
 
     // The search-bar menu hangs off a long press.
