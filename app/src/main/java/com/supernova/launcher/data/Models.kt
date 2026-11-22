@@ -277,6 +277,11 @@ data class LauncherPrefs(
     // by default.
     val drawerMatchDesktop: Boolean = true,
     val drawerBgOpacity: Float = 1f,
+    // Nova's card drawer: the apps on a rounded card over the drawer's
+    // background (DrawerCard). The card's color, "" for the background's
+    // own made opaque.
+    val drawerCard: Boolean = false,
+    val drawerCardColor: String = "",
     // On by default.
     val drawerFastScroller: Boolean = true,
     // Overscrolling past the bottom of the drawer list opens global search.

@@ -63,6 +63,8 @@ internal object NovaLooks {
             drawerBgOpacity = nova.int("drawer_transparency")?.let { Pref.drawerBgOpacity.clamped(it / ALPHA) }
                 ?: prefs.drawerBgOpacity,
             drawerBgColor = nova.int("drawer_background_color")?.let(::rgb) ?: prefs.drawerBgColor,
+            drawerCard = nova.bool("drawer_cards") ?: prefs.drawerCard,
+            drawerCardColor = nova.int("drawer_card_color")?.let(::rgb) ?: prefs.drawerCardColor,
             labelConfig = labels(prefs, LabelContext.DRAWER, spec)
         )
     }

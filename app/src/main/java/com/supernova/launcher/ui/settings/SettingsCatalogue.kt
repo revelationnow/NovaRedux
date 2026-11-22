@@ -876,6 +876,15 @@ object SettingsCatalogue {
                     preview = { p, v -> SurfaceOpacity.preview(p, SurfaceId.DRAWER, v) }
                 ),
                 SettingItem.Toggle(
+                    R.string.drawer_card,
+                    get = { it.drawerCard },
+                    set = { viewModel.set(Pref.drawerCard, it) },
+                    subtitle = R.string.drawer_card_subtitle
+                ),
+                rows.color(R.string.drawer_card_color, { it.drawerCardColor }) {
+                    viewModel.set(Pref.drawerCardColor, it)
+                }.hiddenWhen { needsOn(R.string.drawer_card, !it.drawerCard) }.nested(),
+                SettingItem.Toggle(
                     R.string.drawer_labels,
                     get = { it.drawerLabels },
                     set = { viewModel.set(Pref.drawerLabels, it) }

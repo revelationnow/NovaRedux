@@ -2089,7 +2089,7 @@ class DrawerController(
     private fun applyStyle(prefs: LauncherPrefs) {
         val key = listOf(
             prefs.drawerStyle, prefs.drawerColumns, prefs.drawerRows,
-            prefs.drawerBgOpacity,
+            prefs.drawerBgOpacity, prefs.drawerCard, prefs.drawerCardColor,
             prefs.drawerFastScroller, prefs.drawerBgColor,
             prefs.styleConfig, prefs.paletteSource, prefs.paletteSeed,
             prefs.searchBarConfig, prefs.drawerTabBar, prefs.drawerTabStyle, prefs.drawerTabAlign,
@@ -2107,6 +2107,9 @@ class DrawerController(
         appliedStyle = key
 
         applyTransition(prefs)
+        // Before the columns are worked out: the card narrows the grid.
+        val drawerSurface = Styles.resolve(context, prefs).of(SurfaceId.DRAWER).surface
+        DrawerCard.apply(binding.drawerListContainer, prefs, drawerSurface)
 
         val sheet = binding.drawerSheet
         val tabs = binding.drawerTabs
@@ -2369,7 +2372,7 @@ class DrawerController(
     // edges, unless `padded` is false: the column count is taken without
     // it, so padding pulls the columns in rather than dropping one.
     private fun gridWidthPx(padded: Boolean = true): Int {
-        val sides = if (padded) 2 * sidePaddingPx() else 0
+        val sides = (if (padded) 2 * sidePaddingPx() else 0) + DrawerCard.sideMargins(binding.drawerListContainer)
         val laidOut = binding.drawerSheet.width - binding.drawerSheet.paddingLeft -
             binding.drawerSheet.paddingRight
         if (laidOut > 0) return (laidOut - sides).coerceAtLeast(1)

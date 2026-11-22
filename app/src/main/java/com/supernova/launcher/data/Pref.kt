@@ -220,6 +220,8 @@ object Pref {
     val drawerPaddingV = int("drawer_padding_v", 0..DESKTOP_PADDING_MAX)
     val drawerMatchDesktop = bool("drawer_match_desktop")
     val drawerBgOpacity = float("drawer_bg_opacity", DRAWER_OPACITY_MIN..1f)
+    val drawerCard = bool("drawer_card")
+    val drawerCardColor = text("drawer_card_color")
     val drawerFastScroller = bool("drawer_fast_scroller")
     val drawerPullToSearch = bool("drawer_pull_to_search")
     val drawerSwipeIndicator = bool("drawer_swipe_indicator")

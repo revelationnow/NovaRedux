@@ -185,6 +185,9 @@
     <string name="category_finance">Finance</string>
     <string name="drawer_icon_scale">Icon size</string>
     <string name="drawer_bg_opacity">Background opacity</string>
+    <string name="drawer_card">Card background</string>
+    <string name="drawer_card_subtitle">Apps sit on a rounded card over the drawer\'s background</string>
+    <string name="drawer_card_color">Card color</string>
     <string name="drawer_fast_scroller">Fast scroller</string>
     <string name="drawer_labels">Icon labels</string>
     <string name="drawer_sort">Sort order</string>
