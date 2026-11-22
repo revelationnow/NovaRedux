@@ -90,14 +90,16 @@ enum class LaunchAnimation {
 }
 
 // How the app drawer arrives (drawerTransition pref). SLIDE_UP is the
-// BottomSheetBehavior slide the drawer has always used; ZOOM and FADE park the
-// sheet at its open position and animate it in place, so nothing slides; a
-// swipe up opens them outright instead of pulling the sheet under the finger.
+// BottomSheetBehavior slide the drawer has always used; ZOOM, FADE and CIRCLE
+// park the sheet at its open position and animate it in place, so nothing
+// slides; a swipe up opens them outright instead of pulling the sheet under
+// the finger. CIRCLE is Nova's circle reveal (DrawerCircle).
 @kotlinx.serialization.Serializable(with = DrawerTransition.Names::class)
 enum class DrawerTransition {
     SLIDE_UP,
     ZOOM,
-    FADE;
+    FADE,
+    CIRCLE;
 
     // Its name in the store and in a backup, read back leniently.
     object Names : SettingEnumSerializer<DrawerTransition>("DrawerTransition", entries, SLIDE_UP)

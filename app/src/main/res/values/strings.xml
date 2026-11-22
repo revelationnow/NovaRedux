@@ -444,6 +444,7 @@
     <string name="transition_slide_up">Slide up</string>
     <string name="transition_zoom">Zoom</string>
     <string name="transition_fade">Fade</string>
+    <string name="transition_circle">Circle</string>
     <string name="popup_card_bg">Group shortcuts in a card</string>
     <string name="popup_group_shortcuts">Visually group shortcuts</string>
     <string name="popup_action_icons">Actions as icons</string>

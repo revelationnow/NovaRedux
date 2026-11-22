@@ -278,6 +278,7 @@ object EnumLabels {
         com.supernova.launcher.ui.DrawerTransition.SLIDE_UP -> R.string.transition_slide_up
         com.supernova.launcher.ui.DrawerTransition.ZOOM -> R.string.transition_zoom
         com.supernova.launcher.ui.DrawerTransition.FADE -> R.string.transition_fade
+        com.supernova.launcher.ui.DrawerTransition.CIRCLE -> R.string.transition_circle
     }
 
     fun of(sort: DrawerSort): Int = when (sort) {

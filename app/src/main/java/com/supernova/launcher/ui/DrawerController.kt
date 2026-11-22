@@ -142,6 +142,8 @@ class DrawerController(
     // DrawerOpenCurve.
     private var progress = 0f
     private var progressAnimator: android.animation.ValueAnimator? = null
+    // The Circle transition's reveal, while it plays.
+    private var circle: android.animation.Animator? = null
     // Last progress the desktop and scrim were drawn at, so a park from an
     // already-closed state leaves views something else may be animating alone.
     private var homeProgress = -1f
@@ -826,7 +828,7 @@ class DrawerController(
             val settled = { focusOnOpen(prefs, forSearch) }
             when (transition) {
                 DrawerTransition.SLIDE_UP -> slideIn(prefs, settled)
-                DrawerTransition.ZOOM, DrawerTransition.FADE -> revealInPlace(prefs, settled)
+                DrawerTransition.ZOOM, DrawerTransition.FADE, DrawerTransition.CIRCLE -> revealInPlace(prefs, settled)
             }
         }
     }
@@ -918,7 +920,7 @@ class DrawerController(
         if (sheet.visibility == View.VISIBLE && behavior.state != BottomSheetBehavior.STATE_HIDDEN) {
             when (transition) {
                 DrawerTransition.SLIDE_UP -> slideOut(viewModel.state.value.prefs, instant)
-                DrawerTransition.ZOOM, DrawerTransition.FADE ->
+                DrawerTransition.ZOOM, DrawerTransition.FADE, DrawerTransition.CIRCLE ->
                     dismissInPlace(viewModel.state.value.prefs, instant)
             }
         } else {
@@ -1236,6 +1238,7 @@ class DrawerController(
         val sheet = binding.drawerSheet
         sheet.animate().cancel()
         progressAnimator?.cancel()
+        stopCircle()
         sheet.alpha = 1f
         sheet.scaleX = 1f
         sheet.scaleY = 1f
@@ -1281,6 +1284,7 @@ class DrawerController(
     private fun revealInPlace(prefs: LauncherPrefs, onSettled: (() -> Unit)? = null) {
         val sheet = binding.drawerSheet
         sheet.animate().cancel()
+        stopCircle()
         ensureParkedExpanded()
         sheet.translationY = 0f
         val zoom = transition == DrawerTransition.ZOOM
@@ -1294,7 +1298,7 @@ class DrawerController(
             sheet.alpha = 1f
             sheet.scaleX = 1f
             sheet.scaleY = 1f
-        } else {
+        } else if (!playCircle(sheet, duration, opening = true, end = null)) {
             sheet.animate().alpha(1f).scaleX(1f).scaleY(1f)
                 .setDuration(duration)
                 .setInterpolator(android.view.animation.DecelerateInterpolator())
@@ -1313,6 +1317,7 @@ class DrawerController(
     private fun dismissInPlace(prefs: LauncherPrefs, instant: Boolean = false) {
         val sheet = binding.drawerSheet
         sheet.animate().cancel()
+        stopCircle()
         val finish = Runnable {
             parkSheet()
             resetSearch()
@@ -1325,7 +1330,7 @@ class DrawerController(
         )
         if (duration == 0L) {
             finish.run()
-        } else {
+        } else if (!playCircle(sheet, duration, opening = false, end = finish)) {
             val zoom = transition == DrawerTransition.ZOOM
             sheet.animate().alpha(0f)
                 .scaleX(if (zoom) ZOOM_FROM else 1f)
@@ -1334,6 +1339,45 @@ class DrawerController(
                 .setInterpolator(android.view.animation.AccelerateInterpolator())
                 .withEndAction(finish)
                 .start()
+        }
+    }
+
+    // The Circle transition's reveal in or out, when it is the transition and
+    // the sheet can take one; false otherwise, and the caller fades instead.
+    // end runs once it has played out (not when a newer one stops it).
+    private fun playCircle(sheet: View, duration: Long, opening: Boolean, end: Runnable?): Boolean {
+        val reveal = (if (transition == DrawerTransition.CIRCLE) DrawerCircle.reveal(sheet, opening) else null)
+            ?: return false
+        sheet.alpha = 1f
+        sheet.scaleX = 1f
+        sheet.scaleY = 1f
+        reveal.duration = duration
+        reveal.interpolator = if (opening) {
+            android.view.animation.DecelerateInterpolator()
+        } else {
+            android.view.animation.AccelerateInterpolator()
+        }
+        reveal.addListener(object : android.animation.AnimatorListenerAdapter() {
+            private var stopped = false
+
+            override fun onAnimationCancel(animation: android.animation.Animator) {
+                stopped = true
+            }
+
+            override fun onAnimationEnd(animation: android.animation.Animator) {
+                if (circle === animation) circle = null
+                if (!stopped) end?.run()
+            }
+        })
+        circle = reveal
+        reveal.start()
+        return true
+    }
+
+    private fun stopCircle() {
+        circle?.let {
+            circle = null
+            it.cancel()
         }
     }
 
