@@ -36,14 +36,14 @@ Dock,Dock width and height padding,,No,Done,P2,Space around dock icons,"dock_pad
 Dock,Dock as overlay,,No,Done,P2,Dock drawn over the page,dock_overlay
 Dock,Close the overlay dock after launching an app,,No,Done,P2,Needs dock as overlay,dock_auto_close
 Dock,Remember the dock page,,No,Done,P2,Return to the last dock page used,dock_remember_position
-Dock,"Dock background shapes: rectangle, rounded, arc, platform",,No,Partial,P2,Four shapes,"None, rounded, square plus a corner radius"
+Dock,"Dock background shapes: rectangle, rounded, arc, platform",,No,Done,P2,Four shapes,"Rectangle (rounded by the radius), Arc and Platform; the Nova importer maps all four"
 Dock,Dock background colour and transparency,,No,Done,P2,Tint presets or any colour,dock_bg_opacity and colours
-Dock,Dock background image,,No,Missing,P2,"From the gallery, dock theme apps or an icon pack",Not found
+Dock,Dock background image,,No,Partial,P2,"From the gallery, dock theme apps or an icon pack","From the gallery, in the dock's shape and opacity, kept in backups; no dock theme apps or icon pack images"
 Dock,Dock background behind the navigation bar,5.0,No,Done,P2,Background extends under the nav bar,dock_bg_behind_nav
 Dock,Dock swipe actions,1.x,Yes,Done,P1,A swipe on a dock icon runs a second action,Icon swipe actions; check on the dock
 App drawer,"Drawer style: horizontal pages, vertical grid, list",1.x,No,Done,P0,Horizontal style returned in 7.0.10,DrawerStyle
 App drawer,"Drawer grid, separate from the desktop",,No,Done,P0,Its own rows and columns,"drawer_columns, drawer_rows"
-App drawer,Landscape drawer grid,,No,Partial,P2,Separate grid in landscape,Landscape columns are scaled from the portrait count; no separate landscape setting
+App drawer,Landscape drawer grid,,No,Done,P2,Separate grid in landscape,"Drawer settings: Landscape columns and rows, 0 scales the portrait grid as before"
 App drawer,Drawer icon layout; match the desktop,6.0,No,Done,P1,"Icon size and labels, or follow the desktop","drawer_icon_scale, drawer_match_desktop"
 App drawer,Card or immersive background,5.0,No,Done,P1,"A card panel, or a full-screen drawer","A card panel (inset 8dp, rounded, its own colour) or edge to edge, with colour and opacity"
 App drawer,Background colour and transparency,1.x,No,Done,P1,"Any colour, any transparency","drawer_bg_color, drawer_bg_opacity"
@@ -53,7 +53,7 @@ App drawer,Drawer scroll effects in paged mode,1.x,No,Done,P2,Same effects as th
 App drawer,Fast scroller and scroll accent colour,4.2 beta,No,Done,P2,Letter scrubber along the edge,"drawer_fast_scroller, drawer_scrubber_color"
 App drawer,Frequently used apps row,4.2 beta,No,Done,P2,Most-used apps at the top,drawer_frequent_row
 App drawer,Search bar in the drawer,4.2 beta,No,Done,P1,Persistent bar at the top of the drawer,Drawer bar
-App drawer,Drawer search bar styled like the desktop bar,6.0,No,Partial,P2,Same style options as the desktop bar,"Radius, filled or outline, glass, hint, top or bottom, colour from Styles; no opacity, shadow or buttons like the home bar"
+App drawer,Drawer search bar styled like the desktop bar,6.0,No,Done,P2,Same style options as the desktop bar,"Radius, filled or outline, glass, hint, top or bottom, opacity, shadow, colour from Styles and the same buttons as the home bar"
 App drawer,Search and tab bars at the bottom,7.0 beta,No,Done,P1,Easier reach on tall phones,"DrawerTabBar TOP, BOTTOM"
 App drawer,Pull to search,7.0.11,No,Done,P2,Pull down in the drawer to search,drawer_pull_to_search
 App drawer,"Tab bar on or off, and its style",,No,Done,P1,Tab styles such as colour blocks or small tabs,DrawerTabStyle; styles differ from Nova
@@ -65,7 +65,7 @@ App drawer,Folders in the drawer,,Yes,Done,P0,"Drawer folders, inside tabs too",
 App drawer,Hide apps,1.x,Yes,Done,P0,Hidden without uninstalling,hidden_apps
 App drawer,Hide from the long-press menu,7.0.10,Yes,Done,P2,One-tap hide,PopupExtraRow HIDE
 App drawer,Work-profile apps in their own tab,7.0.39,No,Done,P1,Separate work tab,drawer_work_tab
-App drawer,Recent and new or updated apps,5.0,No,Partial,P2,"Frequent, Recent and New/Updated tabs in the search view",Recent row only
+App drawer,Recent and new or updated apps,5.0,No,Done,P2,"Frequent, Recent and New/Updated tabs in the search view","Recent, Frequent and New tabs above the empty search window's row of apps; the last tab picked is kept"
 App drawer,Drawer greys out behind a windowed folder,7.0.37,No,Done,P2,Content fades to grayscale,"The drawer fades to grey behind a windowed folder opened in it (Grey out the drawer behind, on by default)"
 App drawer,Widget drawer,,No,Done,P1,Browse and place widgets,WidgetPickerSheet
 Search,App search,2014 beta,No,Done,P0,Instant search over installed apps,"Search package, 54 unit tests"
@@ -102,7 +102,7 @@ Look and feel,Reshape legacy icons,5.5,No,Done,P1,"Only adaptive icons, or force
 Look and feel,Normalize icon size,4.1,No,Done,P2,Even out icon sizes,icon_normalize
 Look and feel,"Reshape themed icons, toggle per icon",7.0.39,No,Done,P2,Per-icon reshape switch,"themed_icons, reshape_legacy"
 Look and feel,Adaptive icon animations,,No,Missing,P2,Animated adaptive icons,No adaptive-layer animation; a dragged icon only scales as a whole picture
-Look and feel,Bypass system icon theme,,No,Missing,P2,Labs: skip OEM icon frames,Not found
+Look and feel,Bypass system icon theme,,No,Done,P2,Labs: skip OEM icon frames,Labs: Bypass system icon theme shows each app's own icon without the OEM frame
 Look and feel,"Night mode: off, always, auto by sunrise, set times",4.3,No,Done,P1,Schedules for the dark theme,"ThemeMode, theme_schedule_*"
 Look and feel,Night mode follows the system dark theme,6.2.2,No,Done,P1,Android 10 dark theme,ThemeMode SYSTEM
 Look and feel,"Night mode per element: search bar, drawer, folders",4.3,No,Done,P2,Pick what turns dark,"Night mode can leave the home search bar, the drawer, folders, or menus and cards in day colours (Style tab)"
@@ -116,7 +116,7 @@ Look and feel,Popup menu style,5.5,No,Done,P2,Android 8.1 block style or pills,P
 Look and feel,"Status bar: show or hide, transparent, dark icons",,No,Done,P2,Notification bar options,"hide_status_bar, transparent_status, dark_status_icons"
 Look and feel,Haptic toggle for the notification swipe,7.0 beta,No,Done,P2,Turn off the buzz on swipe-down,swipe_down_haptic
 Look and feel,Save APK in the long-press menu,7.0 beta,No,Done,P2,Export an app's APK,PopupExtraRow SAVE_APK
-Look and feel,Shortcut and work badges toggle in Edit icon,7.0.41,No,Missing,P2,Hide the small badges on an icon,Not found
+Look and feel,Shortcut and work badges toggle in Edit icon,7.0.41,No,Done,P2,Hide the small badges on an icon,Edit icon: Work badge switch for work apps; placed shortcuts carry no app badge in NovaRedux
 Notification badges,"Badge type: dynamic, dots, numeric dots, none",5.1,No,Done,P1,"Dynamic 5.1, dots 5.21, numeric dots 6.1","BadgeStyle DOTS, NUMERIC, DYNAMIC"
 Notification badges,Numeric dots,6.1,Yes,Done,P1,Counts tied to the notifications,BadgeStyle NUMERIC
 Notification badges,Badge position and size,5.21,No,Done,P2,Corner and size,"badge_position, badge_scale"
@@ -135,8 +135,8 @@ Gestures,Home button action,,No,Done,P1,What Home does on the home screen,home_b
 Gestures,"Gesture targets: Nova actions, apps, shortcuts",,No,Done,P0,Three tabs of targets,GestureAction
 Gestures,Nova Actions,4.2 beta,No,Done,P0,"Drawer, notifications, quick settings, recents, lock, search, voice, default page, settings, toggle dock or status bar, previews",GestureAction enum
 Gestures,Lock screen through device admin or accessibility,4.2 beta,No,Done,P1,Screen-off action,"LockMethod ACCESSIBILITY, DEVICE_ADMIN"
-Gestures,Lock screen through root,,No,Missing,P2,Root screen-off method,Not found
-Gestures,Timeout screen-lock method,5.0,No,Missing,P2,Blacks the screen and shortens the timeout,Not found
+Gestures,Lock screen through root,,No,Done,P2,Root screen-off method,Lock method Root: the power key pressed through su; a phone without root is told so
+Gestures,Timeout screen-lock method,5.0,No,Done,P2,Blacks the screen and shortens the timeout,"Lock method Timeout: a black screen and a short screen timeout (needs Modify system settings), restored when the screen goes off"
 Gestures,Icon swipe up action,1.x,Yes,Done,P0,Second action on any icon or folder,swipeAction
 Gestures,Icon swipe down action,7.0 beta,Yes,Done,P1,"Third action, different from swipe up",swipeActionDown
 Shortcuts,App shortcuts on long-press,5.0,No,Done,P0,Android 7.1 launcher shortcuts,Popup shortcuts

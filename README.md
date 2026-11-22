@@ -37,9 +37,9 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 
 | Status | Features |
 | --- | --- |
-| ✅ Done | 141 |
-| 🟡 Partial | 10 |
-| ❌ Missing | 11 |
+| ✅ Done | 149 |
+| 🟡 Partial | 7 |
+| ❌ Missing | 6 |
 | ❔ Needs a check on a device | 3 |
 | ⛔ Won't do | 2 |
 | **Total** | **167** |
@@ -89,7 +89,7 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 </details>
 
 <details>
-<summary><b>Dock</b> · 14 features · ✅ 12 · 🟡 1 · ❌ 1</summary>
+<summary><b>Dock</b> · 14 features · ✅ 13 · 🟡 1</summary>
 
 | Status | Feature | Since | Prime | Priority | What Nova did | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -102,22 +102,22 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 | ✅ | Dock as overlay |  |  | P2 | Dock drawn over the page | dock_overlay |
 | ✅ | Close the overlay dock after launching an app |  |  | P2 | Needs dock as overlay | dock_auto_close |
 | ✅ | Remember the dock page |  |  | P2 | Return to the last dock page used | dock_remember_position |
-| 🟡 | Dock background shapes: rectangle, rounded, arc, platform |  |  | P2 | Four shapes | None, rounded, square plus a corner radius |
+| ✅ | Dock background shapes: rectangle, rounded, arc, platform |  |  | P2 | Four shapes | Rectangle (rounded by the radius), Arc and Platform; the Nova importer maps all four |
 | ✅ | Dock background colour and transparency |  |  | P2 | Tint presets or any colour | dock_bg_opacity and colours |
-| ❌ | Dock background image |  |  | P2 | From the gallery, dock theme apps or an icon pack | Not found |
+| 🟡 | Dock background image |  |  | P2 | From the gallery, dock theme apps or an icon pack | From the gallery, in the dock's shape and opacity, kept in backups; no dock theme apps or icon pack images |
 | ✅ | Dock background behind the navigation bar | 5.0 |  | P2 | Background extends under the nav bar | dock_bg_behind_nav |
 | ✅ | Dock swipe actions | 1.x | Prime | P1 | A swipe on a dock icon runs a second action | Icon swipe actions; check on the dock |
 
 </details>
 
 <details>
-<summary><b>App drawer</b> · 27 features · ✅ 23 · 🟡 4</summary>
+<summary><b>App drawer</b> · 27 features · ✅ 26 · 🟡 1</summary>
 
 | Status | Feature | Since | Prime | Priority | What Nova did | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
 | ✅ | Drawer style: horizontal pages, vertical grid, list | 1.x |  | P0 | Horizontal style returned in 7.0.10 | DrawerStyle |
 | ✅ | Drawer grid, separate from the desktop |  |  | P0 | Its own rows and columns | drawer_columns, drawer_rows |
-| 🟡 | Landscape drawer grid |  |  | P2 | Separate grid in landscape | Landscape columns are scaled from the portrait count; no separate landscape setting |
+| ✅ | Landscape drawer grid |  |  | P2 | Separate grid in landscape | Drawer settings: Landscape columns and rows, 0 scales the portrait grid as before |
 | ✅ | Drawer icon layout; match the desktop | 6.0 |  | P1 | Icon size and labels, or follow the desktop | drawer_icon_scale, drawer_match_desktop |
 | ✅ | Card or immersive background | 5.0 |  | P1 | A card panel, or a full-screen drawer | A card panel (inset 8dp, rounded, its own colour) or edge to edge, with colour and opacity |
 | ✅ | Background colour and transparency | 1.x |  | P1 | Any colour, any transparency | drawer_bg_color, drawer_bg_opacity |
@@ -127,7 +127,7 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 | ✅ | Fast scroller and scroll accent colour | 4.2 beta |  | P2 | Letter scrubber along the edge | drawer_fast_scroller, drawer_scrubber_color |
 | ✅ | Frequently used apps row | 4.2 beta |  | P2 | Most-used apps at the top | drawer_frequent_row |
 | ✅ | Search bar in the drawer | 4.2 beta |  | P1 | Persistent bar at the top of the drawer | Drawer bar |
-| 🟡 | Drawer search bar styled like the desktop bar | 6.0 |  | P2 | Same style options as the desktop bar | Radius, filled or outline, glass, hint, top or bottom, colour from Styles; no opacity, shadow or buttons like the home bar |
+| ✅ | Drawer search bar styled like the desktop bar | 6.0 |  | P2 | Same style options as the desktop bar | Radius, filled or outline, glass, hint, top or bottom, opacity, shadow, colour from Styles and the same buttons as the home bar |
 | ✅ | Search and tab bars at the bottom | 7.0 beta |  | P1 | Easier reach on tall phones | DrawerTabBar TOP, BOTTOM |
 | ✅ | Pull to search | 7.0.11 |  | P2 | Pull down in the drawer to search | drawer_pull_to_search |
 | ✅ | Tab bar on or off, and its style |  |  | P1 | Tab styles such as colour blocks or small tabs | DrawerTabStyle; styles differ from Nova |
@@ -139,7 +139,7 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 | ✅ | Hide apps | 1.x | Prime | P0 | Hidden without uninstalling | hidden_apps |
 | ✅ | Hide from the long-press menu | 7.0.10 | Prime | P2 | One-tap hide | PopupExtraRow HIDE |
 | ✅ | Work-profile apps in their own tab | 7.0.39 |  | P1 | Separate work tab | drawer_work_tab |
-| 🟡 | Recent and new or updated apps | 5.0 |  | P2 | Frequent, Recent and New/Updated tabs in the search view | Recent row only |
+| ✅ | Recent and new or updated apps | 5.0 |  | P2 | Frequent, Recent and New/Updated tabs in the search view | Recent, Frequent and New tabs above the empty search window's row of apps; the last tab picked is kept |
 | ✅ | Drawer greys out behind a windowed folder | 7.0.37 |  | P2 | Content fades to grayscale | The drawer fades to grey behind a windowed folder opened in it (Grey out the drawer behind, on by default) |
 | ✅ | Widget drawer |  |  | P1 | Browse and place widgets | WidgetPickerSheet |
 
@@ -187,7 +187,7 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 </details>
 
 <details>
-<summary><b>Look and feel</b> · 24 features · ✅ 21 · ❌ 3</summary>
+<summary><b>Look and feel</b> · 24 features · ✅ 23 · ❌ 1</summary>
 
 | Status | Feature | Since | Prime | Priority | What Nova did | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -200,7 +200,7 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 | ✅ | Normalize icon size | 4.1 |  | P2 | Even out icon sizes | icon_normalize |
 | ✅ | Reshape themed icons, toggle per icon | 7.0.39 |  | P2 | Per-icon reshape switch | themed_icons, reshape_legacy |
 | ❌ | Adaptive icon animations |  |  | P2 | Animated adaptive icons | No adaptive-layer animation; a dragged icon only scales as a whole picture |
-| ❌ | Bypass system icon theme |  |  | P2 | Labs: skip OEM icon frames | Not found |
+| ✅ | Bypass system icon theme |  |  | P2 | Labs: skip OEM icon frames | Labs: Bypass system icon theme shows each app's own icon without the OEM frame |
 | ✅ | Night mode: off, always, auto by sunrise, set times | 4.3 |  | P1 | Schedules for the dark theme | ThemeMode, theme_schedule_* |
 | ✅ | Night mode follows the system dark theme | 6.2.2 |  | P1 | Android 10 dark theme | ThemeMode SYSTEM |
 | ✅ | Night mode per element: search bar, drawer, folders | 4.3 |  | P2 | Pick what turns dark | Night mode can leave the home search bar, the drawer, folders, or menus and cards in day colours (Style tab) |
@@ -214,7 +214,7 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 | ✅ | Status bar: show or hide, transparent, dark icons |  |  | P2 | Notification bar options | hide_status_bar, transparent_status, dark_status_icons |
 | ✅ | Haptic toggle for the notification swipe | 7.0 beta |  | P2 | Turn off the buzz on swipe-down | swipe_down_haptic |
 | ✅ | Save APK in the long-press menu | 7.0 beta |  | P2 | Export an app's APK | PopupExtraRow SAVE_APK |
-| ❌ | Shortcut and work badges toggle in Edit icon | 7.0.41 |  | P2 | Hide the small badges on an icon | Not found |
+| ✅ | Shortcut and work badges toggle in Edit icon | 7.0.41 |  | P2 | Hide the small badges on an icon | Edit icon: Work badge switch for work apps; placed shortcuts carry no app badge in NovaRedux |
 
 </details>
 
@@ -234,7 +234,7 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 </details>
 
 <details>
-<summary><b>Gestures</b> · 15 features · ✅ 13 · ❌ 2</summary>
+<summary><b>Gestures</b> · 15 features · ✅ 15</summary>
 
 | Status | Feature | Since | Prime | Priority | What Nova did | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -249,8 +249,8 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 | ✅ | Gesture targets: Nova actions, apps, shortcuts |  |  | P0 | Three tabs of targets | GestureAction |
 | ✅ | Nova Actions | 4.2 beta |  | P0 | Drawer, notifications, quick settings, recents, lock, search, voice, default page, settings, toggle dock or status bar, previews | GestureAction enum |
 | ✅ | Lock screen through device admin or accessibility | 4.2 beta |  | P1 | Screen-off action | LockMethod ACCESSIBILITY, DEVICE_ADMIN |
-| ❌ | Lock screen through root |  |  | P2 | Root screen-off method | Not found |
-| ❌ | Timeout screen-lock method | 5.0 |  | P2 | Blacks the screen and shortens the timeout | Not found |
+| ✅ | Lock screen through root |  |  | P2 | Root screen-off method | Lock method Root: the power key pressed through su; a phone without root is told so |
+| ✅ | Timeout screen-lock method | 5.0 |  | P2 | Blacks the screen and shortens the timeout | Lock method Timeout: a black screen and a short screen timeout (needs Modify system settings), restored when the screen goes off |
 | ✅ | Icon swipe up action | 1.x | Prime | P0 | Second action on any icon or folder | swipeAction |
 | ✅ | Icon swipe down action | 7.0 beta | Prime | P1 | Third action, different from swipe up | swipeActionDown |
 
