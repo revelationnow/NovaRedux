@@ -1,3 +1,9 @@
+// The sections' row lists spread a few shared row groups in. The list is
+// built once per screen, so the copy a spread makes costs nothing, and
+// detekt's baseline keys each spread by the whole list's text, which turned
+// every added row into a new finding.
+@file:Suppress("SpreadOperator")
+
 package com.supernova.launcher.ui.settings
 
 import androidx.core.graphics.toColorInt
