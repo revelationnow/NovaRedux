@@ -1753,13 +1753,14 @@ class SettingsActivity : AppCompatActivity() {
         SettingsCatalogue.colorLabel(this, stored, com.supernova.launcher.ui.FolderIconDrawable.DEFAULT_PLATE_COLOR)
 
     private fun showLockMethodPicker() {
-        val methods = listOf(LockMethod.ACCESSIBILITY, LockMethod.DEVICE_ADMIN)
-        val labels = arrayOf(
-            getString(R.string.lock_method_accessibility),
-            getString(R.string.lock_method_device_admin)
-        )
+        val methods = LockMethod.entries
+        val labels = methods.map { getString(com.supernova.launcher.ui.settings.EnumLabels.of(it)) }.toTypedArray()
         val current = methods.indexOf(viewModel.state.value.prefs.lockMethod).coerceAtLeast(0)
         showChoice(R.string.lock_method, labels, current) { which ->
+            // The timeout lock asks for its permission as it is picked.
+            if (methods[which] == LockMethod.TIMEOUT && !com.supernova.launcher.ui.TimeoutLock.canLock(this)) {
+                com.supernova.launcher.ui.TimeoutLock.explainPermission(this)
+            }
             if (methods[which] != LockMethod.DEVICE_ADMIN || SupernovaDeviceAdmin.isActive(this)) {
                 viewModel.set(Pref.lockMethod, methods[which])
                 return@showChoice

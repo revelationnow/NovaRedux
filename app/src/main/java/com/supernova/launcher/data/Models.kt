@@ -128,12 +128,14 @@ data class AppOverride(
     val iconBase64: String? = null,
     // Per-app icon variant when no explicit icon is set: THEMED (system
     // monochrome) or ORIGINAL (the app's own icon, unshaped); null = default.
-    val iconVariant: String? = null
+    val iconVariant: String? = null,
+    // A work app's icon without its briefcase badge (Nova 7.0.41's toggle).
+    val noBadge: Boolean = false
 ) {
     fun isEmpty(): Boolean =
         customLabel == null && !hideLabel && iconShape == null &&
             iconPackPackage == null && iconDrawableName == null && iconBase64 == null &&
-            iconVariant == null
+            iconVariant == null && !noBadge
 }
 
 const val CURRENT_MODEL_VERSION = 6
@@ -583,7 +585,10 @@ data class LauncherPrefs(
     // Export PNG in a desktop item's long-press menu.
     val labsExportPng: Boolean = false,
     // The grid pickers offer GridLimits' big sizes.
-    val labsBigGrid: Boolean = false
+    val labsBigGrid: Boolean = false,
+    // Bypass system icon theme: apps' own icons, without the frames or theme
+    // the phone's maker adds (AppCatalog.shippedIcon).
+    val labsBypassIconTheme: Boolean = false
 )
 
 object BadgeLimits {

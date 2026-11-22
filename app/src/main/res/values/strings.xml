@@ -798,6 +798,9 @@
         <item quantity="other">Exported %d icons</item>
     </plurals>
     <string name="labs_clear_icon_cache">Clear icon cache</string>
+    <string name="labs_bypass_icon_theme">Bypass system icon theme</string>
+    <string name="work_badge">Work badge</string>
+    <string name="labs_bypass_icon_theme_summary">Draws apps’ own icons, without the frames or theme your phone’s maker adds</string>
     <string name="permissions">Permissions</string>
     <string name="section_permissions_subtitle">Contacts, calendar, notification access and more</string>
     <string name="permission_contacts">Contacts</string>
@@ -932,6 +935,11 @@
     <string name="lock_method">Screen lock method</string>
     <string name="lock_method_accessibility">Accessibility service</string>
     <string name="lock_method_device_admin">Device admin</string>
+    <string name="lock_method_root">Root</string>
+    <string name="lock_method_timeout">Screen timeout</string>
+    <string name="lock_root_failed">Couldn’t lock: root isn’t available, or it was refused</string>
+    <string name="lock_timeout_permission">The screen goes black and the screen timeout drops to its shortest until the screen turns off, then it is put back. Allow NovaRedux to modify system settings for this.</string>
+    <string name="lock_timeout_cancel">Tap to stay unlocked</string>
     <string name="lock_admin_explanation">Allows NovaRedux to lock the screen. It never wipes data or manages passwords.</string>
     <string name="lock_admin_note">Device admin locks instantly, but biometric unlock is disabled right after; turn admin off before uninstalling.</string>
     <string name="voice_search_unavailable">No voice search app found</string>

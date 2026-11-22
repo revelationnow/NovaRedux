@@ -1914,13 +1914,7 @@ object SettingsCatalogue {
                 SettingItem.Header(R.string.action_lock_screen),
                 SettingItem.Row(
                     R.string.lock_method,
-                    subtitle = {
-                        context.getString(
-                            if (it.lockMethod == LockMethod.DEVICE_ADMIN)
-                                R.string.lock_method_device_admin
-                            else R.string.lock_method_accessibility
-                        )
-                    },
+                    subtitle = { context.getString(EnumLabels.of(it.lockMethod)) },
                     onClick = actions.pickLockMethod
                 ),
                 warningRow(
@@ -2042,6 +2036,12 @@ object SettingsCatalogue {
                     get = { it.labsBigGrid },
                     set = { viewModel.set(Pref.labsBigGrid, it) },
                     subtitle = R.string.labs_big_grid_summary
+                ),
+                SettingItem.Toggle(
+                    R.string.labs_bypass_icon_theme,
+                    get = { it.labsBypassIconTheme },
+                    set = { viewModel.set(Pref.labsBypassIconTheme, it) },
+                    subtitle = R.string.labs_bypass_icon_theme_summary
                 ),
                 SettingItem.Toggle(
                     R.string.labs_export_png,

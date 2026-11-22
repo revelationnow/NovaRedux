@@ -46,6 +46,9 @@ class AppCatalog(
     // monochrome layer, tinted foreground on a tonal background, so unthemed
     // apps match the system's themed-icon look. Colors come from the palette.
     @Volatile private var themedIcons: Boolean = false
+    // Bypass system icon theme (Labs): apps' own icons, read from their own
+    // resources past any frame or theme the phone's maker puts on them.
+    @Volatile private var bypassTheme: Boolean = false
     @Volatile private var themedIconsAutogen: Boolean = false
     private var themedIconBg: Int = 0
     private var themedIconFg: Int = 0
@@ -263,8 +266,7 @@ class AppCatalog(
             if (job.own == null && LARGE_KEY !in job.cacheKey) {
                 dominantColorOf(IconRenderer.bitmapOf(rendered))?.let { dominantColors[job.appKey] = it }
             }
-            runLogged("badge icon for its profile") { pm.getUserBadgedIcon(rendered, job.user) }
-                .getOrNull()?.also { iconCache.put(job.cacheKey, it) }
+            badged(rendered, job.user, override)?.also { iconCache.put(job.cacheKey, it) }
         }
     }
 
@@ -277,10 +279,18 @@ class AppCatalog(
             if (job.own == null && LARGE_KEY !in job.cacheKey) {
                 dominantColorOf(IconRenderer.bitmapOf(stored))?.let { dominantColors[job.appKey] = it }
             }
-            (runLogged("badge icon for its profile") { pm.getUserBadgedIcon(stored, job.user) }.getOrNull() ?: stored)
-                .also { iconCache.put(job.cacheKey, it) }
+            (badged(stored, job.user, override) ?: stored).also { iconCache.put(job.cacheKey, it) }
         }
     }
+
+    // An icon with its profile's badge (a work app's briefcase), unless its
+    // Edit took the badge off; null when the badging fails.
+    private fun badged(icon: Drawable, user: UserHandle, override: AppOverride?): Drawable? =
+        if (override?.noBadge == true) {
+            icon
+        } else {
+            runLogged("badge icon for its profile") { pm.getUserBadgedIcon(icon, user) }.getOrNull()
+        }
 
     private fun storeIcon(job: RenderJob, override: AppOverride?, rendered: Drawable) {
         if (job.dated) return
@@ -302,7 +312,7 @@ class AppCatalog(
     private fun diskSignature(): String =
         "$DISK_FORMAT|${context.resources.displayMetrics.densityDpi}|$iconShape|${customShapeSpec?.encode()}|" +
             "${iconRenderer.reshapeLegacy}|${iconRenderer.shadow}|${iconRenderer.glass}|$themedIcons|" +
-            "$themedIconsAutogen|${iconPacks.loadedPack()}|$packStamp|${iconPacks.themeKey()}"
+            "$themedIconsAutogen|${iconPacks.loadedPack()}|$packStamp|${iconPacks.themeKey()}|$bypassTheme"
 
     // The loaded pack's own install time: an updated pack draws afresh.
     private var packStamp = 0L
@@ -328,8 +338,7 @@ class AppCatalog(
                 }.getOrNull()
             }
             ?.let { rendered ->
-                (runLogged("badge icon for its profile") { pm.getUserBadgedIcon(rendered, job.user) }.getOrNull()
-                    ?: rendered).also { iconCache.put(calKey, it) }
+                (badged(rendered, job.user, override) ?: rendered).also { iconCache.put(calKey, it) }
             }
     }
 
@@ -559,7 +568,26 @@ class AppCatalog(
     // one that has them (Google Calendar), else its launcher icon.
     private fun appOwnIcon(packageName: String, className: String, user: UserHandle): Drawable? {
         val info = resolveActivity(packageName, className, user) ?: return null
-        return dynamicIcons.forDay(info, today()) ?: info.getIcon(0)
+        return dynamicIcons.forDay(info, today()) ?: bypassTheme.takeIf { it }?.let { shippedIcon(info) }
+            ?: info.getIcon(0)
+    }
+
+    // The icon in the app's own resources: its launcher activity's, else
+    // the app's, at the launcher's icon density.
+    private fun shippedIcon(info: LauncherActivityInfo): Drawable? = runCatching {
+        val activityIcon = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) info.activityInfo.iconResource else 0
+        val id = activityIcon.takeIf { it != 0 } ?: info.applicationInfo.icon
+        val density = context.getSystemService(android.app.ActivityManager::class.java)?.launcherLargeIconDensity
+            ?: context.resources.displayMetrics.densityDpi
+        pm.getResourcesForApplication(info.applicationInfo).getDrawableForDensity(id, density, null)
+    }.getOrNull()
+
+    fun applyIconSource(bypass: Boolean): Boolean = synchronized(renderLock) {
+        if (bypass == bypassTheme) return false
+        bypassTheme = bypass
+        iconCache.evictAll()
+        dominantColors.clear()
+        true
     }
 
     private fun today(): Int = java.util.Calendar.getInstance().get(java.util.Calendar.DAY_OF_MONTH)

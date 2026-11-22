@@ -174,6 +174,7 @@ class LauncherViewModel(
     // Themed-icon colors depend on the whole palette, so track a signature.
     private var appliedThemedSig: String? = null
     private var appliedNight: Boolean? = null
+    private var appliedBypass = false
     private var autoBackupWritten = false
 
     // Whether each of the two icon-configuration collectors has applied its
@@ -225,9 +226,10 @@ class LauncherViewModel(
                 val largeResolutionChanged = largeResolution != appliedLargeResolution
                 val night = isNightMode(prefs)
                 val nightChanged = night != appliedNight
+                val bypassChanged = prefs.labsBypassIconTheme != appliedBypass
                 val changes = listOf(
                     packChanged, shapeChanged, normalizeChanged, shadowChanged,
-                    glassChanged, themedChanged, resolutionChanged, largeResolutionChanged, nightChanged
+                    glassChanged, themedChanged, resolutionChanged, largeResolutionChanged, nightChanged, bypassChanged
                 )
                 if (changes.none { it }) return@collect
                 appliedResolution = resolution
@@ -240,6 +242,7 @@ class LauncherViewModel(
                 appliedGlass = prefs.iconGlass
                 appliedThemedSig = themedSig
                 appliedNight = night
+                appliedBypass = prefs.labsBypassIconTheme
                 // A themed-color change that dropped no icon (Themed icons
                 // off) has nothing to redraw.
                 val redraw = withContext(Dispatchers.Default) {
@@ -259,12 +262,13 @@ class LauncherViewModel(
                     }
                     if (resolutionChanged) catalog.applyIconResolution(resolution)
                     if (largeResolutionChanged) catalog.applyLargeIconResolution(largeResolution)
+                    if (bypassChanged) catalog.applyIconSource(prefs.labsBypassIconTheme)
                     val themedEvicted = themedChanged && run {
                         val (bg, fg) = themedIconColors(prefs)
                         catalog.applyThemedIcons(prefs.themedIcons, bg, fg, prefs.themedIconsAutogen)
                     }
                     themedEvicted || nightEvicted || packChanged || shapeChanged || normalizeChanged || shadowChanged ||
-                        glassChanged || resolutionChanged || largeResolutionChanged
+                        glassChanged || resolutionChanged || largeResolutionChanged || bypassChanged
                 }
                 // The first emission is the startup configuration: it applies
                 // it and stops there, leaving the enumeration, the warm and

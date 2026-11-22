@@ -204,12 +204,14 @@ class ActionRunner(
     // Screen lock needs an accessibility service on API 28+; without it we
     // tell the user rather than silently doing nothing.
     private fun lockScreen(): Boolean {
-        if (viewModel.state.value.prefs.lockMethod == LockMethod.DEVICE_ADMIN) {
+        when (viewModel.state.value.prefs.lockMethod) {
             // Selected but not yet granted: send the user to enable it.
-            if (!SupernovaDeviceAdmin.lock(activity)) promptDeviceAdmin()
-            return true
+            LockMethod.DEVICE_ADMIN -> if (!SupernovaDeviceAdmin.lock(activity)) promptDeviceAdmin()
+            LockMethod.ROOT -> RootLock.lock(activity)
+            LockMethod.TIMEOUT -> TimeoutLock.lock(activity)
+            LockMethod.ACCESSIBILITY ->
+                if (!SupernovaAccessibilityService.lockScreen()) PermissionPrompts.explainAccessibility(activity)
         }
-        if (!SupernovaAccessibilityService.lockScreen()) PermissionPrompts.explainAccessibility(activity)
         return true
     }
 

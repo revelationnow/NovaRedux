@@ -130,7 +130,7 @@ object PermissionPrompts {
         GestureDefaults.decode(prefs.gestureBindings).values.any { binding ->
             when (binding.action) {
                 GestureAction.RECENTS, GestureAction.QUICK_SETTINGS -> true
-                GestureAction.LOCK_SCREEN -> prefs.lockMethod != LockMethod.DEVICE_ADMIN
+                GestureAction.LOCK_SCREEN -> prefs.lockMethod == LockMethod.ACCESSIBILITY
                 else -> false
             }
         }

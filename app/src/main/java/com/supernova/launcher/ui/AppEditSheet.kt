@@ -77,6 +77,12 @@ object AppEditSheet {
         binding.hideLabelSwitch.isChecked = current.hideLabel
         // The whole row toggles it, as the sheet's other switch rows do.
         binding.hideLabelRow.setOnClickListener { binding.hideLabelSwitch.toggle() }
+        // A work app's badge: on unless this edit took it off.
+        if (app?.work == true && shortcut == null) {
+            binding.workBadgeRow.visibility = android.view.View.VISIBLE
+            binding.workBadgeSwitch.isChecked = !current.noBadge
+            binding.workBadgeRow.setOnClickListener { binding.workBadgeSwitch.toggle() }
+        }
 
         // The name with no edit: shown in the empty field, and saved when the
         // field is left empty.

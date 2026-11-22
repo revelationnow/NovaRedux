@@ -36,7 +36,11 @@ open class SettingEnumSerializer<E : Enum<E>>(
 @kotlinx.serialization.Serializable(with = LockMethod.Names::class)
 enum class LockMethod {
     ACCESSIBILITY,
-    DEVICE_ADMIN;
+    DEVICE_ADMIN,
+    // Nova's other two: the power key through root (RootLock), and a black
+    // screen with the shortest screen timeout (TimeoutLock).
+    ROOT,
+    TIMEOUT;
 
     object Names : SettingEnumSerializer<LockMethod>("LockMethod", entries, ACCESSIBILITY)
 }

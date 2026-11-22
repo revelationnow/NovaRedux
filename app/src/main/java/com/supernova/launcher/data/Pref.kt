@@ -363,6 +363,7 @@ object Pref {
     val labsShowComponent = bool("labs_show_component")
     val labsExportPng = bool("labs_export_png")
     val labsBigGrid = bool("labs_big_grid")
+    val labsBypassIconTheme = bool("labs_bypass_icon_theme")
 
     private val byField: Map<String, PrefSpec<*>> = specs.associateBy { it.field }
 

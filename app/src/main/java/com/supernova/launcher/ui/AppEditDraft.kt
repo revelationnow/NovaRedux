@@ -58,7 +58,8 @@ internal class AppEditDraft(
             iconPackPackage = if (icon != null) pack else null,
             iconDrawableName = icon,
             iconBase64 = photo,
-            iconVariant = variant
+            iconVariant = variant,
+            noBadge = !binding.workBadgeSwitch.isChecked && binding.workBadgeRow.visibility == View.VISIBLE
         )
     }
 
@@ -71,6 +72,7 @@ internal class AppEditDraft(
         bindShapes()
         binding.editLabel.doAfterTextChanged { refresh() }
         binding.hideLabelSwitch.setOnCheckedChangeListener { _, _ -> refresh() }
+        binding.workBadgeSwitch.setOnCheckedChangeListener { _, _ -> refresh() }
         savedEdit = edit()
         refresh()
     }

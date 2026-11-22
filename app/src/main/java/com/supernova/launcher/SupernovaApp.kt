@@ -25,6 +25,9 @@ class SupernovaApp : Application() {
         com.supernova.launcher.data.StoreRecovery.install(this)
         applyStoredTheme()
         followLauncherAnimations()
+        // A timeout lock the app went away during leaves the screen timeout
+        // short; it is put back here.
+        com.supernova.launcher.ui.TimeoutLock.restore(this)
     }
 
     // The launcher's animations follow its own switch, whatever the

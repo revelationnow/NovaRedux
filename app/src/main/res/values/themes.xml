@@ -30,6 +30,13 @@
 
     <!-- The wallpaper crop screen: black behind the image while it loads,
          and no wallpaper drawn under a screen the image covers. -->
+    <!-- The timeout lock's black screen: black from its first frame. -->
+    <style name="Theme.Supernova.TimeoutLock" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="android:windowBackground">@android:color/black</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowAnimationStyle">@null</item>
+    </style>
+
     <style name="Theme.Supernova.WallpaperCrop">
         <item name="android:windowBackground">@android:color/black</item>
         <item name="android:windowShowWallpaper">false</item>

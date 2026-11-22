@@ -19,6 +19,13 @@
          used by the contacts search provider (and the feed's starred
          contacts card). -->
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <!-- Granted by the user on the system's "Modify system settings"
+         screen, and only used by the Screen timeout lock method: the screen
+         timeout is shortened while the lock's black screen shows, and put
+         back as soon as the screen is off. -->
+    <uses-permission
+        android:name="android.permission.WRITE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
     <!-- Runtime-gated; asked for the first time a Direct dial shortcut
          (an ACTION_CALL intent from the Contacts app) is tapped. -->
     <uses-permission android:name="android.permission.CALL_PHONE" />
@@ -240,6 +247,14 @@
             android:excludeFromRecents="true"
             android:exported="false"
             android:theme="@style/Theme.Supernova.WallpaperCrop" />
+
+        <!-- The Screen timeout lock method's black screen (TimeoutLock). -->
+        <activity
+            android:name=".ui.TimeoutLockActivity"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:noHistory="true"
+            android:theme="@style/Theme.Supernova.TimeoutLock" />
 
         <!-- Lets other apps ask to pin a shortcut or widget to the home screen;
              the system only delivers these to the default launcher. -->

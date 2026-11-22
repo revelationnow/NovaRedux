@@ -231,6 +231,14 @@ object EnumLabels {
     }
 
     @StringRes
+    fun of(method: com.supernova.launcher.data.LockMethod): Int = when (method) {
+        com.supernova.launcher.data.LockMethod.ACCESSIBILITY -> R.string.lock_method_accessibility
+        com.supernova.launcher.data.LockMethod.DEVICE_ADMIN -> R.string.lock_method_device_admin
+        com.supernova.launcher.data.LockMethod.ROOT -> R.string.lock_method_root
+        com.supernova.launcher.data.LockMethod.TIMEOUT -> R.string.lock_method_timeout
+    }
+
+    @StringRes
     fun of(animation: FolderAnimation): Int = when (animation) {
         FolderAnimation.ZOOM -> R.string.transition_zoom
         FolderAnimation.CIRCLE -> R.string.transition_circle
