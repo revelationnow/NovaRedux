@@ -15,6 +15,7 @@ import com.supernova.launcher.data.AppCatalog
 import com.supernova.launcher.data.AppItemEdits
 import com.supernova.launcher.data.AppChange
 import com.supernova.launcher.data.AppOverride
+import com.supernova.launcher.data.CategoryGroups
 import com.supernova.launcher.data.ContainerType
 import com.supernova.launcher.data.CustomIcons
 import com.supernova.launcher.data.CustomShapeSpec
@@ -40,6 +41,7 @@ import com.supernova.launcher.data.LauncherRepository
 import com.supernova.launcher.data.Pref
 import com.supernova.launcher.data.PrefSpec
 import com.supernova.launcher.data.PrivateSpace
+import com.supernova.launcher.data.SmartCategory
 import com.supernova.launcher.data.TabFolders
 import com.supernova.launcher.data.WorkspaceGeometry
 import com.supernova.launcher.data.imports.BackupFiles
@@ -312,6 +314,7 @@ class LauncherViewModel(
         viewModelScope.launch {
             val ready = state.first { it.loaded && it.apps.isNotEmpty() }
             if (ready.prefs.smartFolders && drawerGroups().none { it.smart }) regenerateSmartFolders()
+            refreshCategoryGroups()
         }
         viewModelScope.launch {
             repository.modelFlow.map { it.appOverrides }.distinctUntilChanged().collect { overrides ->
@@ -334,12 +337,15 @@ class LauncherViewModel(
                 is AppChange.Removed -> {
                     viewModelScope.launch(Dispatchers.Default) { catalog.invalidatePackages(listOf(change.packageName)) }
                     viewModelScope.launch { repository.removeItemsForPackage(change.packageName, change.userSerial) }
+                    viewModelScope.launch { refreshCategoryGroups() }
                 }
                 is AppChange.Added -> {
                     maybeAutoAddToHome(change.packageName, change.userSerial)
-                    // New installs slot into their smart folder while enabled.
-                    if (state.value.prefs.smartFolders) {
-                        viewModelScope.launch { regenerateSmartFolders() }
+                    // New installs slot into their smart folder while enabled,
+                    // and into their category groups.
+                    viewModelScope.launch {
+                        if (state.value.prefs.smartFolders) regenerateSmartFolders()
+                        refreshCategoryGroups()
                     }
                 }
                 is AppChange.Updated -> {
@@ -450,7 +456,7 @@ class LauncherViewModel(
             .filter { it.itemType == ItemType.APP || it.itemType == ItemType.SHORTCUT }
             .mapNotNull { item -> item.packageName?.let { it to item.userSerial } }
             .distinct()
-            .filter { (pkg, serial) -> "$serial/$pkg" !in listed && catalog.isUninstalled(pkg, serial) }
+            .filter { (pkg, serial) -> "$serial/$pkg" !in listed && catalog.actions.isUninstalled(pkg, serial) }
             .toList()
             .forEach { (pkg, serial) -> repository.removeItemsForPackage(pkg, serial) }
     }
@@ -1426,11 +1432,16 @@ class LauncherViewModel(
     }
 
     // A checklist's Save: every changed tick in one write. Picking a smart
-    // folder's apps makes it the user's, as a retype does.
+    // folder's apps makes it the user's, as a retype does; picking a
+    // category group's apps by hand ends its category (the folders it holds
+    // are the user's either way).
     fun setGroupMembership(groupId: String, changes: Map<GroupPick, Boolean>) {
         val add = changes.filterValues { it }.keys.map(::memberKey).toSet()
         val remove = changes.filterValues { !it }.keys.map(::memberKey).toSet()
-        editGroup(groupId) { it.copy(members = it.members - remove + add, smart = false) }
+        val apps = changes.keys.any { it is GroupPick.App }
+        editGroup(groupId) {
+            it.copy(members = it.members - remove + add, smart = false, category = it.category.takeUnless { apps })
+        }
     }
 
     // The new group ('|' can't be in its name), or null, and nothing
@@ -1482,33 +1493,19 @@ class LauncherViewModel(
     // the big ones back too.
     private suspend fun regenerateSmartFolders(freshInstall: Boolean = false) {
         val generated = withContext(Dispatchers.Default) {
-            val hidden = state.value.prefs.hiddenApps
-            // Fresh enumeration: the install hook fires before appsFlow updates.
-            val apps = catalog.listLaunchableApps().filterNot { it.privateSpace || hiddenKey(it) in hidden }
-                // With the Work tab on, work apps live there and stay out of
-                // the folders on the personal list.
-                .filter { !state.value.prefs.drawerWorkTab || !it.work }
             // Apps the user already placed in a folder group stay theirs.
             val claimed = drawerGroups()
                 .filter { it.type == DrawerGroupType.FOLDER && !it.smart }
                 .flatMap { it.members }
                 .toSet()
-            val byCategory = linkedMapOf<com.supernova.launcher.data.SmartCategory, MutableSet<String>>()
-            apps.forEach { app ->
-                val key = hiddenKey(app)
-                if (key in claimed) return@forEach
-                val category = com.supernova.launcher.data.AppCategories.categoryOf(
-                    app.packageName, catalog.appCategory(app.packageName)
-                ) ?: return@forEach
-                byCategory.getOrPut(category) { mutableSetOf() }.add(key)
-            }
-            byCategory.filterValues { it.size >= SMART_FOLDER_MIN_APPS }.map { (category, members) ->
+            categoryMembers(claimed).filterValues { it.size >= SMART_FOLDER_MIN_APPS }.map { (category, members) ->
                 DrawerGroup(
                     name = getApplication<Application>()
                         .getString(com.supernova.launcher.ui.settings.EnumLabels.of(category)),
                     members = members,
                     type = DrawerGroupType.FOLDER,
-                    smart = true
+                    smart = true,
+                    category = category
                 )
             }
         }
@@ -1517,6 +1514,52 @@ class LauncherViewModel(
         }
         // The store drops the dismissed names itself, in the same edit.
         preferences.replaceSmartGroups(kept, dismiss = tooBig.mapTo(mutableSetOf()) { it.name })
+    }
+
+    // Every launchable app's key by its category, as Smart Folders and
+    // category groups take them: hidden and private-space apps left out,
+    // and work apps while the Work tab is on (they live there). A fresh
+    // enumeration: the install hook fires before appsFlow updates.
+    private fun categoryMembers(exclude: Set<String> = emptySet()): Map<SmartCategory, Set<String>> {
+        val prefs = state.value.prefs
+        val byCategory = linkedMapOf<SmartCategory, MutableSet<String>>()
+        catalog.listLaunchableApps()
+            .filterNot { it.privateSpace || hiddenKey(it) in prefs.hiddenApps || hiddenKey(it) in exclude }
+            .filter { !prefs.drawerWorkTab || !it.work }
+            .forEach { app ->
+                val category = com.supernova.launcher.data.AppCategories.categoryOf(
+                    app.packageName, catalog.appCategory(app.packageName)
+                ) ?: return@forEach
+                byCategory.getOrPut(category) { mutableSetOf() }.add(hiddenKey(app))
+            }
+        return byCategory
+    }
+
+    // Category groups' apps kept to their categories: as the launcher
+    // starts, and after an app installs or goes. One write, when any moved.
+    private suspend fun refreshCategoryGroups() {
+        if (drawerGroups().none(CategoryGroups::follows)) return
+        val byCategory = withContext(Dispatchers.Default) { categoryMembers() }
+        fun refresh(groups: List<DrawerGroup>) = groups.map {
+            if (CategoryGroups.follows(it)) CategoryGroups.refreshed(it, byCategory) else it
+        }
+        if (refresh(drawerGroups()) != drawerGroups()) preferences.updateDrawerGroups(::refresh)
+    }
+
+    // A group made a category group (Nova 7's category tabs), or a plain one
+    // again: its apps are the category's at once, and keep up from then on.
+    // Like any edit, it makes a Smart Folder the user's.
+    fun setGroupCategory(group: DrawerGroup, category: SmartCategory?) {
+        viewModelScope.launch {
+            val byCategory = if (category == null) emptyMap() else withContext(Dispatchers.Default) { categoryMembers() }
+            preferences.updateDrawerGroups { groups ->
+                groups.map {
+                    if (it.id != group.id) return@map it
+                    val made = it.copy(category = category, smart = false)
+                    if (category == null) made else CategoryGroups.refreshed(made, byCategory)
+                }
+            }
+        }
     }
 
     suspend fun availableIconPacks(): List<IconPack> =
@@ -1651,7 +1694,7 @@ class LauncherViewModel(
                 picked.layout,
                 preferences.snapshot(),
                 LayoutConverter.Phone(
-                    activityFor = catalog::launchActivity,
+                    activityFor = catalog.actions::launchActivity,
                     encodeIcon = { bytes ->
                         android.graphics.BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
                             ?.let(com.supernova.launcher.data.GalleryIconCodec::encode)
@@ -1665,7 +1708,7 @@ class LauncherViewModel(
         }
 
     private fun isInstalled(packageName: String, userSerial: Long): Boolean =
-        catalog.isInstalled(packageName, userSerial)
+        catalog.actions.isInstalled(packageName, userSerial)
 
     // The name of an installed widget, by its provider's "package/class".
     private fun widgetName(provider: String, userSerial: Long): String? {

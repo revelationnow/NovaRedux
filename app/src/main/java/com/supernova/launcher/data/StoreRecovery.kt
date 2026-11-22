@@ -52,7 +52,7 @@ object StoreRecovery {
             val manager = AppWidgetManager.getInstance(context)
             val bound = SupernovaWidgetHost(context, SupernovaWidgetHost.HOST_ID).appWidgetIds.toSet()
             repository.importBackup(
-                newest.readText(), preferences.snapshot(), catalog::isInstalled,
+                newest.readText(), preferences.snapshot(), catalog.actions::isInstalled,
                 widgetBound = { id, provider ->
                     id in bound && manager.getAppWidgetInfo(id)?.provider?.flattenToString() == provider
                 },

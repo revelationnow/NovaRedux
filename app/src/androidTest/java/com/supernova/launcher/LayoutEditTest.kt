@@ -202,7 +202,7 @@ class LayoutEditTest {
         val result = graph.repository.importBackup(
             backup,
             graph.preferences.snapshot(),
-            isInstalled = { pkg, serial -> graph.catalog.isInstalled(pkg, serial) },
+            isInstalled = { pkg, serial -> graph.catalog.actions.isInstalled(pkg, serial) },
             widgetBound = { id, provider ->
                 id in hostIds && provider != null &&
                     manager.getAppWidgetInfo(id)?.provider?.flattenToString() == provider

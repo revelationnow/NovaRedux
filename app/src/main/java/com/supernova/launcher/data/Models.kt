@@ -634,7 +634,11 @@ data class DrawerGroup(
     // share one. A group stored before ids existed has its name as its id,
     // which is what tabs and the default tab already hold for it; a new
     // group gets a fresh one (newId).
-    val id: String = name
+    val id: String = name,
+    // A category group, as Nova 7's category tabs: its apps are the
+    // category's, kept up as apps install and go (LauncherViewModel
+    // .refreshCategoryGroups). Picking its apps by hand ends that.
+    val category: SmartCategory? = null
 ) {
     val hasCustomIcon: Boolean get() = iconName != null || !iconBase64.isNullOrEmpty()
 
@@ -662,6 +666,8 @@ data class DrawerGroup(
     // name, "raw" and photo after it; none of them can hold a "|". An id
     // other than the name comes last; an entry without one has its name as
     // its id, so groups stored before ids keep the identity tabs hold them by.
+    // A category follows the id, which is then written even when it is the
+    // name; older builds read up to the id and see a group of plain apps.
     fun encode(): String {
         val base = "$name|${members.joinToString(",")}|$order|${type.name}|${if (smart) SMART_MARKER else ""}"
         val keep = when (keepInMain) {
@@ -672,6 +678,7 @@ data class DrawerGroup(
         val raw = if (iconRaw) RAW_MARKER else ""
         val icon = "${iconPack.orEmpty()}|${iconName.orEmpty()}|$raw|${iconBase64.orEmpty()}"
         return when {
+            category != null -> "$base|$keep|$icon|$id|${category.name}"
             // An id other than the name follows every other segment.
             id != name -> "$base|$keep|$icon|$id"
             hasCustomIcon -> "$base|$keep|$icon"
@@ -690,6 +697,7 @@ data class DrawerGroup(
         private const val ICON_RAW_FIELD = 8
         private const val ICON_PHOTO_FIELD = 9
         private const val ID_FIELD = 10
+        private const val CATEGORY_FIELD = 11
         private const val RAW_MARKER = "raw"
         private const val ID_PREFIX = "#"
 
@@ -721,7 +729,10 @@ data class DrawerGroup(
                 iconName = parts.getOrNull(ICON_NAME_FIELD)?.ifEmpty { null },
                 iconBase64 = parts.getOrNull(ICON_PHOTO_FIELD)?.ifEmpty { null },
                 iconRaw = parts.getOrNull(ICON_RAW_FIELD) == RAW_MARKER,
-                id = parts.getOrNull(ID_FIELD)?.takeIf { it.isNotBlank() } ?: name
+                id = parts.getOrNull(ID_FIELD)?.takeIf { it.isNotBlank() } ?: name,
+                category = parts.getOrNull(CATEGORY_FIELD)?.let { field ->
+                    SmartCategory.entries.firstOrNull { it.name == field }
+                }
             )
         }
     }

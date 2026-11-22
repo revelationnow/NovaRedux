@@ -74,15 +74,7 @@ object AppEditSheet {
             binding.editComponent.text = "${app.packageName}/${app.className}"
             binding.editComponent.visibility = android.view.View.VISIBLE
         }
-        binding.hideLabelSwitch.isChecked = current.hideLabel
-        // The whole row toggles it, as the sheet's other switch rows do.
-        binding.hideLabelRow.setOnClickListener { binding.hideLabelSwitch.toggle() }
-        // A work app's badge: on unless this edit took it off.
-        if (app?.work == true && shortcut == null) {
-            binding.workBadgeRow.visibility = android.view.View.VISIBLE
-            binding.workBadgeSwitch.isChecked = !current.noBadge
-            binding.workBadgeRow.setOnClickListener { binding.workBadgeSwitch.toggle() }
-        }
+        bindSwitchRows(binding, current, workApp = app?.work == true && shortcut == null)
 
         // The name with no edit: shown in the empty field, and saved when the
         // field is left empty.
@@ -159,6 +151,17 @@ object AppEditSheet {
     // while the sheet is up, leaving that window showing only the wallpaper,
     // and the sheet doesn't dim it. The sheet covers nearly the whole
     // screen, so nothing is lost; the content comes back as it closes.
+    // Hide label, and a work app's badge (on unless this edit took it off).
+    // The whole row toggles each, as the sheet's other switch rows do.
+    private fun bindSwitchRows(binding: SheetAppEditBinding, current: AppOverride, workApp: Boolean) {
+        binding.hideLabelSwitch.isChecked = current.hideLabel
+        binding.hideLabelRow.setOnClickListener { binding.hideLabelSwitch.toggle() }
+        if (!workApp) return
+        binding.workBadgeRow.visibility = android.view.View.VISIBLE
+        binding.workBadgeSwitch.isChecked = !current.noBadge
+        binding.workBadgeRow.setOnClickListener { binding.workBadgeSwitch.toggle() }
+    }
+
     private fun dressForPreview(context: Context, dialog: android.app.Dialog, binding: SheetAppEditBinding) {
         binding.editTitle.visibility = android.view.View.GONE
         binding.cancelButton.setOnClickListener { dialog.dismiss() }

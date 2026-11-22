@@ -1635,12 +1635,12 @@ class LiveDragController(
         }
         dropZoneActions[binding.dropAppInfo] = { payload ->
             dragPayloadApp(payload)?.let { app ->
-                viewModel.appCatalog().openAppInfo(app.packageName, app.className, app.userSerial)
+                viewModel.appCatalog().actions.openAppInfo(app.packageName, app.className, app.userSerial)
             }
         }
         dropZoneActions[binding.dropUninstall] = { payload ->
             dragPayloadApp(payload)?.let { app ->
-                context.startActivity(viewModel.appCatalog().uninstallIntent(app.packageName, app.userSerial))
+                context.startActivity(viewModel.appCatalog().actions.uninstallIntent(app.packageName, app.userSerial))
             }
         }
     }

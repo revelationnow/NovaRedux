@@ -2926,7 +2926,7 @@ class LauncherActivity :
     private fun launchApp(app: LaunchableApp, anchor: View? = null) {
         launchWithAnimation(anchor) { bounds, options ->
             runLogged("launch app") {
-                viewModel.appCatalog().launch(app, bounds, options)
+                viewModel.appCatalog().actions.launch(app, bounds, options)
             }.onSuccess {
                 viewModel.noteLaunch(app)
                 maybeAutoCloseDock()
@@ -3383,11 +3383,11 @@ class LauncherActivity :
             }
         }
         menu.addRow(getString(R.string.app_info), R.drawable.ic_menu_info) {
-            viewModel.appCatalog().openAppInfo(app.packageName, app.className, app.userSerial)
+            viewModel.appCatalog().actions.openAppInfo(app.packageName, app.className, app.userSerial)
         }
         if (PopupExtraRow.UNINSTALL in extras) {
             menu.addRow(getString(R.string.uninstall), R.drawable.ic_menu_uninstall) {
-                startActivity(viewModel.appCatalog().uninstallIntent(app.packageName, app.userSerial))
+                startActivity(viewModel.appCatalog().actions.uninstallIntent(app.packageName, app.userSerial))
             }
         }
         menu.addRow(getString(R.string.edit), R.drawable.ic_menu_edit) {
@@ -3472,7 +3472,7 @@ class LauncherActivity :
         }
         installedApp(shortcut.packageName, shortcut.userSerial)?.let { app ->
             menu.addRow(getString(R.string.app_info), R.drawable.ic_menu_info) {
-                viewModel.appCatalog().openAppInfo(app.packageName, app.className, app.userSerial)
+                viewModel.appCatalog().actions.openAppInfo(app.packageName, app.className, app.userSerial)
             }
         }
         menu.show(anchor, menuTouchX)
@@ -3634,7 +3634,7 @@ class LauncherActivity :
                     menu.addRow(getString(R.string.app_info), R.drawable.ic_menu_info) {
                         // The provider names the package and, through the
                         // user, the profile its details open in.
-                        viewModel.appCatalog().openAppInfo(provider.packageName, provider.className, item.userSerial)
+                        viewModel.appCatalog().actions.openAppInfo(provider.packageName, provider.className, item.userSerial)
                     }
                 }
                 // The widget's own settings screen, for widgets that offer it
@@ -3669,7 +3669,7 @@ class LauncherActivity :
                 // the row did nothing for it.
                 item.packageName?.let { pkg ->
                     menu.addRow(getString(R.string.app_info), R.drawable.ic_menu_info) {
-                        viewModel.appCatalog().openAppInfo(pkg, item.className, item.userSerial)
+                        viewModel.appCatalog().actions.openAppInfo(pkg, item.className, item.userSerial)
                     }
                 }
                 menu.addRow(getString(R.string.edit), R.drawable.ic_menu_edit) {
@@ -4165,7 +4165,7 @@ class LauncherActivity :
                 }
             }
             menu.addRow(getString(R.string.app_info), R.drawable.ic_menu_info) {
-                viewModel.appCatalog().openAppInfo(pkg, member.className, member.userSerial)
+                viewModel.appCatalog().actions.openAppInfo(pkg, member.className, member.userSerial)
             }
         }
         menu.addRow(getString(R.string.edit), R.drawable.ic_menu_edit) {

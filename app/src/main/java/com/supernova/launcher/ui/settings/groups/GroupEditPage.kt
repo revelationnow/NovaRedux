@@ -41,6 +41,7 @@ class GroupEditPage(
     private var group: DrawerGroup? = null
 
     private val places = GroupPlacePick(binding, viewModel)
+    private val categories = GroupCategoryPick(binding, viewModel)
 
     // True while a bind sets the controls, so that is not taken for a tap.
     private var syncing = false
@@ -92,6 +93,7 @@ class GroupEditPage(
         }
         binding.groupIconButton.setOnClickListener { named()?.let(actions.editIcon) }
         binding.groupPlaceButton.setOnClickListener { named()?.let(places::pick) }
+        binding.groupCategoryButton.setOnClickListener { named()?.let(categories::pick) }
         binding.groupApps.setOnClickListener { named()?.let(actions.selectApps) }
         binding.groupSelectApps.setOnClickListener { named()?.let(actions.selectApps) }
         binding.groupDelete.setOnClickListener { named()?.let(actions.delete) }
@@ -148,6 +150,7 @@ class GroupEditPage(
         binding.groupPlaceRow.isVisible = !tab
         if (!tab) places.bind(next)
         bindApps(next)
+        categories.bind(next)
         binding.groupKeep.settingSwitch.isChecked = !viewModel.leavesMainList(next)
         binding.groupDefault.root.isVisible = tab
         binding.groupDefaultDivider.isVisible = tab

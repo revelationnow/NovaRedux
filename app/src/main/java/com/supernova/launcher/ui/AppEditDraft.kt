@@ -3,6 +3,7 @@ package com.supernova.launcher.ui
 import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.LinearLayout
+import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import com.google.android.material.chip.Chip
 import com.supernova.launcher.R
@@ -59,7 +60,7 @@ internal class AppEditDraft(
             iconDrawableName = icon,
             iconBase64 = photo,
             iconVariant = variant,
-            noBadge = !binding.workBadgeSwitch.isChecked && binding.workBadgeRow.visibility == View.VISIBLE
+            noBadge = !binding.workBadgeSwitch.isChecked && binding.workBadgeRow.isVisible
         )
     }
 

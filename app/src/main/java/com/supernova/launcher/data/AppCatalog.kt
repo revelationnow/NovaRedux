@@ -1,6 +1,5 @@
 package com.supernova.launcher.data
 
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
@@ -9,13 +8,11 @@ import android.content.pm.LauncherApps
 import android.content.pm.LauncherUserInfo
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
-import android.net.Uri
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.os.UserHandle
 import android.os.UserManager
-import android.provider.Settings
 import android.util.LruCache
 import androidx.core.graphics.drawable.toDrawable
 import com.supernova.launcher.runLogged
@@ -88,6 +85,9 @@ class AppCatalog(
     private val appChanges = AppChanges(launcherApps, ::serialFor)
     private val profiles = ProfileState(launcherApps, userManager, ::serialFor)
     private val diskIcons = IconDiskCache(context)
+
+    // Launching an app, its info and uninstall pages, and whether it is here.
+    val actions = AppActions(context, launcherApps, userManager, ::userForSerial)
 
     // When each of the phone's own packages was last installed or updated,
     // read with every listing, for the search window's New apps.
@@ -814,58 +814,6 @@ class AppCatalog(
         item.packageName?.takeIf { item.shortcutId != null }
             ?.let { pkg -> shortcutsFor(pkg, item.userSerial).firstOrNull { it.id == item.shortcutId } }
             ?.let(::shortcutIcon)
-
-    fun launch(
-        app: LaunchableApp,
-        sourceBounds: android.graphics.Rect? = null,
-        options: android.os.Bundle? = null
-    ) {
-        val user = requireNotNull(userForSerial(app.userSerial)) { "Unknown user ${app.userSerial}" }
-        launcherApps.startMainActivity(
-            ComponentName(app.packageName, app.className), user, sourceBounds, options
-        )
-    }
-
-    fun openAppInfo(packageName: String, className: String?, userSerial: Long) {
-        val user = userForSerial(userSerial)
-        if (user != null && className != null) {
-            launcherApps.startAppDetailsActivity(ComponentName(packageName, className), user, null, null)
-        } else {
-            context.startActivity(
-                Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-                    data = Uri.parse("package:$packageName")
-                    flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                }
-            )
-        }
-    }
-
-    fun uninstallIntent(packageName: String, userSerial: Long): Intent {
-        return Intent(Intent.ACTION_DELETE).apply {
-            data = Uri.parse("package:$packageName")
-            userForSerial(userSerial)?.let { putExtra(Intent.EXTRA_USER, it) }
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        }
-    }
-
-    // The activity an icon brought in from elsewhere should launch: the one
-    // it names while the app still has it, else the app's first launcher
-    // activity. An app that is not here keeps what it names.
-    fun launchActivity(packageName: String, className: String?, userSerial: Long): String? {
-        val user = userForSerial(userSerial) ?: return className
-        val activities = runCatching { launcherApps.getActivityList(packageName, user) }.getOrDefault(emptyList())
-            .map { it.componentName.className }
-        return className?.takeIf { activities.isEmpty() || it in activities } ?: activities.firstOrNull()
-    }
-
-    fun isInstalled(packageName: String, userSerial: Long): Boolean {
-        val user = userForSerial(userSerial) ?: return false
-        return runCatching { launcherApps.isPackageEnabled(packageName, user) }.getOrDefault(false)
-    }
-
-    // Whether the app is surely gone for that user (see InstalledApps).
-    fun isUninstalled(packageName: String, userSerial: Long): Boolean =
-        userForSerial(userSerial)?.let { InstalledApps.isGone(launcherApps, userManager, packageName, it) } == true
 
     // The private space and work profiles (ProfileState).
     fun privateSpaceUser(): UserHandle? = profiles.privateSpaceUser()

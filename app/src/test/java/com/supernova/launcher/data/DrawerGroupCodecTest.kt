@@ -170,4 +170,17 @@ class DrawerGroupCodecTest {
         assertEquals(100, ids.toSet().size)
         ids.forEach { id -> assertTrue(id.startsWith("#") && id.none { it == '|' || it == ',' || it == '%' }) }
     }
+
+    @Test
+    fun aCategoryFollowsTheIdAndRoundTrips() {
+        val tab = DrawerGroup("Games", setOf("0/a/A"), 2, DrawerGroupType.TAB, category = SmartCategory.GAMES)
+        assertEquals("Games|0/a/A|2|TAB|||||||Games|GAMES", tab.encode())
+        assertEquals(tab, DrawerGroup.decode(tab.encode()))
+        val owned = tab.copy(id = "#0a1b2c3d4e5f", keepInMain = true, iconName = "ic_games", iconPack = "pack")
+        assertEquals(owned, DrawerGroup.decode(owned.encode()))
+        // Without a category, nothing is added after the id.
+        assertNull(DrawerGroup.decode("Games|0/a/A|2|TAB")?.category)
+        // A category this build doesn't know reads as a plain group.
+        assertNull(DrawerGroup.decode("Games|0/a/A|2|TAB|||||||Games|CARS")?.category)
+    }
 }
