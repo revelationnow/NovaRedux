@@ -20,14 +20,11 @@ jobs:
             head -c 300 /tmp/body; echo
           }
           for ua in "$ours" "$ff"; do
-            try "$ua" 'https://www.bing.com/osjson.aspx?query=weather'
-            try "$ua" 'https://www.bing.com/osjson.aspx?query=weather&form=OSDJAS'
-            try "$ua" 'https://api.bing.com/osjson.aspx?query=weather'
-            try "$ua" 'https://www.bing.com/osjson.aspx?query=weather&language=en-US'
-            try "$ua" 'https://www.startpage.com/suggestions?format=opensearch&q=weather'
-            try "$ua" 'https://www.startpage.com/suggestions?q=weather&segment=startpage.udog&format=opensearch'
-            try "$ua" 'https://www.startpage.com/suggestions?q=weather&segment=startpage.defaultffx&format=opensearch'
-            try "$ua" 'https://www.startpage.com/suggestions?q=weather&segment=startpage.vivaldi&format=opensearch'
-            try "$ua" 'https://www.startpage.com/suggestions?q=weather&format=json'
-            try "$ua" 'https://www.startpage.com/osuggestions?q=weather'
+            try "$ua" 'https://www.bing.com/osjson.aspx?query=weather&mkt=en-US'
+            try "$ua" 'https://www.bing.com/osjson.aspx?query=weather&cc=US&setlang=en-US'
+            try "$ua" 'https://api.bing.com/qsonhs.aspx?type=cb&q=weather'
+            try "$ua" 'https://www.bing.com/qsonhs.aspx?type=cb&q=weather'
+            try "$ua" 'https://api.bing.com/osjson.aspx?query=weather&mkt=en-US'
+            try "$ua" 'https://www.bing.com/AS/Suggestions?pt=page.serp&mkt=en-US&qry=weather&cp=7&cvid=0'
           done
+          curl -s -D - -o /dev/null -A "$ff" 'https://www.bing.com/osjson.aspx?query=weather' | head -30
