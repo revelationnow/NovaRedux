@@ -71,6 +71,8 @@ class NovaSettingsTest {
             <boolean name="sanify_icon_size" value="true" />
             <boolean name="show_notification_bar" value="false" />
             <int name="drawer_background_color" value="-1" />
+            <boolean name="drawer_cards" value="true" />
+            <int name="drawer_card_color" value="-12627531" />
             <boolean name="drawer_enable_tabs" value="false" />
             <string name="gesture_swipe_down">${action("Expand notifications", "EXPAND_STATUS_BAR")}</string>
             <string name="gesture_pinch">${action("Show previews", "SHOW_PREVIEWS")}</string>
@@ -133,6 +135,8 @@ class NovaSettingsTest {
         assertEquals(LabelFont.CONDENSED.name, drawer.font)
         assertEquals(128 / 255f, applied.drawerBgOpacity, DELTA)
         assertEquals("#FFFFFF", applied.drawerBgColor)
+        assertTrue(applied.drawerCard)
+        assertEquals("#3F51B5", applied.drawerCardColor)
     }
 
     @Test
@@ -205,7 +209,8 @@ class NovaSettingsTest {
             ),
             Row(mapOf("_id" to 3L, "itemType" to 0L, "container" to 2L, "intent" to camera.substringAfter('$')))
         )
-        val prefs = nova6 + mapOf("desktop_grid_rows" to "7", "drawer_app_grid_cols" to "5", "drawer_app_grid_rows" to "8")
+        val prefs = nova6 +
+            mapOf("desktop_grid_rows" to "7", "drawer_app_grid_cols" to "5", "drawer_app_grid_rows" to "8")
         val layout = BackupLayouts.layout(BackupContents(tables = mapOf("favorites" to rows), prefs = prefs))!!
         assertEquals(6, layout.grid.cols)
         assertEquals(7, layout.grid.rows)

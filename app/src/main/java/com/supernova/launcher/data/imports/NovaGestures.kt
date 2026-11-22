@@ -19,7 +19,8 @@ internal object NovaGestures {
         val kept = prefs.gestureBindings.filterNot { entry -> entry.substringBefore(':') in bound.keys.map { it.name } }
         val home = nova.raw("home_button_intent")?.let(::binding)?.action?.takeIf { it in HomeButtonAction.choices }
         return prefs.copy(
-            gestureBindings = kept.toSet() + bound.map { (gesture, binding) -> GestureDefaults.encode(gesture, binding) },
+            gestureBindings = kept.toSet() +
+                bound.map { (gesture, binding) -> GestureDefaults.encode(gesture, binding) },
             homeButtonAction = home?.name ?: prefs.homeButtonAction,
             homeButtonOnMainPage = nova.bool("home_button_action_default_page_only") ?: prefs.homeButtonOnMainPage
         )

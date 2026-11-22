@@ -28,7 +28,10 @@ internal object NovaSettings {
         return NovaGestures.applyTo(NovaLooks.applyTo(general(prefs, nova), nova), nova)
     }
 
-    private fun general(prefs: LauncherPrefs, nova: NovaValues): LauncherPrefs {
+    private fun general(prefs: LauncherPrefs, nova: NovaValues): LauncherPrefs =
+        system(drawerAndDock(motion(prefs, nova), nova), nova)
+
+    private fun motion(prefs: LauncherPrefs, nova: NovaValues): LauncherPrefs {
         val wallpaper = nova.choice("wallpaper_scrolling", WALLPAPER)
         return prefs.copy(
             scrollEffect = nova.choice("scroll_effect", SCROLL_EFFECTS) ?: prefs.scrollEffect,
@@ -37,26 +40,32 @@ internal object NovaSettings {
             launchAnimation = nova.choice("activity_animation", LAUNCH_ANIMATIONS) ?: prefs.launchAnimation,
             pageIndicatorStyle = nova.choice("desktop_scroll_indicator", INDICATORS) ?: prefs.pageIndicatorStyle,
             themeMode = nova.choice("night_mode", NIGHT_MODES) ?: prefs.themeMode,
-            wallpaperScroll = wallpaper?.let { it != WallpaperScrollMode.OFF } ?: prefs.wallpaperScroll,
-            wallpaperScrollMode = wallpaper?.name ?: prefs.wallpaperScrollMode,
-            dockEnabled = nova.bool("dock_enable") ?: prefs.dockEnabled,
-            dockBgBehindNav = nova.bool("dock_background_draw_behind_navbar") ?: prefs.dockBgBehindNav,
-            drawerStyle = nova.choice("drawer_style", DRAWER_STYLES) ?: prefs.drawerStyle,
-            drawerFastScroller = nova.bool("drawer_fastscroll") ?: prefs.drawerFastScroller,
-            drawerFrequentRow = nova.bool("drawer_predictive_apps") ?: prefs.drawerFrequentRow,
-            drawerFoldersFirst = nova.bool("drawer_folders_before_apps") ?: prefs.drawerFoldersFirst,
-            drawerTabBar = tabBar(prefs.drawerTabBar, nova.bool("drawer_enable_tabs")),
-            autoAddApps = nova.bool("auto_add_shortcuts") ?: prefs.autoAddApps,
-            dropTargets = nova.bool("show_drop_targets") ?: prefs.dropTargets,
-            undoRemove = nova.bool("show_undo_bar") ?: prefs.undoRemove,
-            transparentStatus = nova.bool("notification_bar_transparency") ?: prefs.transparentStatus,
-            transparentNav = nova.bool("navigation_bar_transparency") ?: prefs.transparentNav,
-            hideStatusBar = nova.bool("show_notification_bar")?.not() ?: prefs.hideStatusBar,
-            iconShape = nova.choice("adaptive_icon_shape", ICON_SHAPES) ?: prefs.iconShape,
-            iconNormalize = nova.bool("sanify_icon_size") ?: prefs.iconNormalize,
-            iconPack = nova.text("theme_icon_pack") ?: prefs.iconPack
+            wallpaperScroll = if (wallpaper == null) prefs.wallpaperScroll else wallpaper != WallpaperScrollMode.OFF,
+            wallpaperScrollMode = wallpaper?.name ?: prefs.wallpaperScrollMode
         )
     }
+
+    private fun drawerAndDock(prefs: LauncherPrefs, nova: NovaValues): LauncherPrefs = prefs.copy(
+        dockEnabled = nova.bool("dock_enable") ?: prefs.dockEnabled,
+        dockBgBehindNav = nova.bool("dock_background_draw_behind_navbar") ?: prefs.dockBgBehindNav,
+        drawerStyle = nova.choice("drawer_style", DRAWER_STYLES) ?: prefs.drawerStyle,
+        drawerFastScroller = nova.bool("drawer_fastscroll") ?: prefs.drawerFastScroller,
+        drawerFrequentRow = nova.bool("drawer_predictive_apps") ?: prefs.drawerFrequentRow,
+        drawerFoldersFirst = nova.bool("drawer_folders_before_apps") ?: prefs.drawerFoldersFirst,
+        drawerTabBar = tabBar(prefs.drawerTabBar, nova.bool("drawer_enable_tabs"))
+    )
+
+    private fun system(prefs: LauncherPrefs, nova: NovaValues): LauncherPrefs = prefs.copy(
+        autoAddApps = nova.bool("auto_add_shortcuts") ?: prefs.autoAddApps,
+        dropTargets = nova.bool("show_drop_targets") ?: prefs.dropTargets,
+        undoRemove = nova.bool("show_undo_bar") ?: prefs.undoRemove,
+        transparentStatus = nova.bool("notification_bar_transparency") ?: prefs.transparentStatus,
+        transparentNav = nova.bool("navigation_bar_transparency") ?: prefs.transparentNav,
+        hideStatusBar = nova.bool("show_notification_bar")?.not() ?: prefs.hideStatusBar,
+        iconShape = nova.choice("adaptive_icon_shape", ICON_SHAPES) ?: prefs.iconShape,
+        iconNormalize = nova.bool("sanify_icon_size") ?: prefs.iconNormalize,
+        iconPack = nova.text("theme_icon_pack") ?: prefs.iconPack
+    )
 
     // Nova's tabs switch; a bar NovaRedux already shows stays where it is.
     private fun tabBar(current: DrawerTabBar, tabs: Boolean?): DrawerTabBar = when (tabs) {
