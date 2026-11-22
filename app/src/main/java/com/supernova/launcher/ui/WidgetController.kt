@@ -24,6 +24,7 @@ import androidx.core.view.children
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.supernova.launcher.R
+import com.supernova.launcher.data.FinePlacement
 import com.supernova.launcher.data.ItemType
 import com.supernova.launcher.data.LauncherItem
 import com.supernova.launcher.data.LauncherModel
@@ -537,9 +538,15 @@ class WidgetController(
     // press takes it down.
     fun showResizeFrame(item: LauncherItem, widgetView: View) {
         dismissResizeFrame()
-        // Subgrid positioning resizes in half cells; the frame counts in
-        // those steps.
-        val units = if (viewModel.state.value.prefs.subgrid) 2 else 1
+        // Subgrid positioning resizes in half cells, fine placement in
+        // sixteenths that are pulled onto half cells nearby; the frame counts
+        // in those steps.
+        val prefs = viewModel.state.value.prefs
+        val units = when {
+            prefs.widgetFinePlacement -> FinePlacement.UNITS
+            prefs.subgrid -> 2
+            else -> 1
+        }
         fun rect(cellX: Int, cellY: Int, spanX: Int, spanY: Int) = WorkspaceGeometry.CellRect(
             cellX / units.toFloat(), cellY / units.toFloat(),
             (cellX + spanX) / units.toFloat(), (cellY + spanY) / units.toFloat()
@@ -557,6 +564,7 @@ class WidgetController(
             },
             snapDurationMs = Animations.duration(viewModel.state.value.prefs, RESIZE_SNAP_MS),
             units = units,
+            snap = if (prefs.widgetFinePlacement) FinePlacement::snapSteps else { steps -> steps },
             onCommit = { cellX, cellY, spanX, spanY ->
                 val state = viewModel.state.value
                 val current = state.model.items.firstOrNull { it.id == item.id }

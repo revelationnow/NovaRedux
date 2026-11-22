@@ -661,6 +661,8 @@
     <string name="desktop_padding_h">Margen horizontal de la página</string>
     <string name="desktop_padding_v">Margen vertical de la página</string>
     <string name="desktop_locked">Bloquear el diseño</string>
+    <string name="widget_fine_placement">Colocación precisa de widgets</string>
+    <string name="widget_fine_placement_summary">Mueve los widgets y cambia su tamaño en pasos pequeños; se ajustan a las celdas y medias celdas cercanas</string>
     <string name="widget_overlap">Permitir colocar elementos sobre los widgets</string>
     <string name="widget_padding">Margen de los widgets</string>
     <string name="desktop_locked_toast">El diseño está bloqueado</string>

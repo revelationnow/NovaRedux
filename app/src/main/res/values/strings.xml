@@ -677,6 +677,8 @@
     <string name="desktop_padding_v">Vertical page padding</string>
     <string name="padding_dp_value">%1$d dp</string>
     <string name="desktop_locked">Lock layout</string>
+    <string name="widget_fine_placement">Fine widget placement</string>
+    <string name="widget_fine_placement_summary">Move and resize widgets in small steps; they snap to whole and half cells nearby</string>
     <string name="widget_overlap">Allow placing items over widgets</string>
     <string name="widget_padding">Widget padding</string>
     <string name="desktop_locked_toast">Layout is locked</string>

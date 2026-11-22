@@ -38,6 +38,9 @@ class WidgetResizeFrame(
     // cells. cellX, spanX and the rest, and what roomProvider and onCommit
     // are handed, all count these steps.
     private val units: Int = 1,
+    // Where an edge dragged to a step lands: that step, or with fine
+    // placement a whole or half cell close by.
+    private val snap: (Int) -> Int = { it },
     private val onCommit: (cellX: Int, cellY: Int, spanX: Int, spanY: Int) -> Unit
 ) : View(context) {
 
@@ -83,6 +86,8 @@ class WidgetResizeFrame(
     private var cellWidthPx = 1
     private var cellHeightPx = 1
     private var room = WorkspaceGeometry.ResizeRoom(0, 0, 0, 0)
+    // Never narrower than a step, nor than half a cell.
+    private val minSpan = maxOf(MIN_SPAN, units / 2)
     private var snapAnimator: android.animation.ValueAnimator? = null
     private val screenLocation = IntArray(2)
 
@@ -197,23 +202,26 @@ class WidgetResizeFrame(
     private fun applyDrag(dx: Float, dy: Float) {
         val cellsX = (dx / cellWidthPx).roundToInt()
         val cellsY = (dy / cellHeightPx).roundToInt()
+        // The dragged edge goes where snap puts it; the far edge stays.
+        val startRight = startCellX + startSpanX
+        val startBottom = startCellY + startSpanY
 
         var newCellX = cellX
         var newSpanX = spanX
         if (dragRight) {
-            newSpanX = (startSpanX + cellsX).coerceIn(MIN_SPAN, startSpanX + room.right)
+            newSpanX = (snap(startRight + cellsX) - startCellX).coerceIn(minSpan, startSpanX + room.right)
         } else if (dragLeft) {
-            newSpanX = (startSpanX - cellsX).coerceIn(MIN_SPAN, startSpanX + room.left)
-            newCellX = startCellX + (startSpanX - newSpanX)
+            newSpanX = (startRight - snap(startCellX + cellsX)).coerceIn(minSpan, startSpanX + room.left)
+            newCellX = startRight - newSpanX
         }
 
         var newCellY = cellY
         var newSpanY = spanY
         if (dragBottom) {
-            newSpanY = (startSpanY + cellsY).coerceIn(MIN_SPAN, startSpanY + room.bottom)
+            newSpanY = (snap(startBottom + cellsY) - startCellY).coerceIn(minSpan, startSpanY + room.bottom)
         } else if (dragTop) {
-            newSpanY = (startSpanY - cellsY).coerceIn(MIN_SPAN, startSpanY + room.top)
-            newCellY = startCellY + (startSpanY - newSpanY)
+            newSpanY = (startBottom - snap(startCellY + cellsY)).coerceIn(minSpan, startSpanY + room.top)
+            newCellY = startBottom - newSpanY
         }
 
         if (newSpanX == spanX && newSpanY == spanY && newCellX == cellX && newCellY == cellY) return

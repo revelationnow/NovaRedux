@@ -196,6 +196,7 @@ object Pref {
     val dockLabels = bool("dock_labels")
     val dockIconScale = float("dock_icon_scale", ICON_SCALE_MIN..ICON_SCALE_MAX)
     val widgetOverlap = bool("widget_overlap")
+    val widgetFinePlacement = bool("widget_fine_placement")
     val overlapWhenPlacing = bool("overlap_when_placing")
     val widgetPadding = int("widget_padding", 0..WIDGET_PADDING_MAX)
     val drawerStyle = choice("drawer_style", DrawerStyle.entries)

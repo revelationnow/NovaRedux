@@ -1271,7 +1271,7 @@ class LauncherRepository(private val context: Context) {
             val updated = current.copy(
                 items = current.items.map { item ->
                     val m = byId[item.id] ?: return@map item
-                    if (item.itemType == ItemType.WIDGET && item.halfCells) {
+                    if (WorkspaceGeometry.unitsOf(item) > 1) {
                         return@map WorkspaceGeometry.widgetOn(
                             item, WorkspaceGeometry.displaced(WorkspaceGeometry.itemRect(item, cols, rows), m)
                         )

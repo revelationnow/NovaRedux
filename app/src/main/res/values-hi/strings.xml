@@ -645,6 +645,8 @@
     <string name="desktop_padding_h">पेज की हॉरिज़ॉन्टल पैडिंग</string>
     <string name="desktop_padding_v">पेज की वर्टिकल पैडिंग</string>
     <string name="desktop_locked">लेआउट लॉक करें</string>
+    <string name="widget_fine_placement">विजेट को बारीकी से रखना</string>
+    <string name="widget_fine_placement_summary">विजेट को छोटे-छोटे कदमों में खिसकाएं और उनका साइज़ बदलें; वे पास के पूरे और आधे सेल पर चिपक जाते हैं</string>
     <string name="widget_overlap">विजेट के ऊपर आइटम रखने की अनुमति दें</string>
     <string name="widget_padding">विजेट की पैडिंग</string>
     <string name="desktop_locked_toast">लेआउट लॉक है</string>

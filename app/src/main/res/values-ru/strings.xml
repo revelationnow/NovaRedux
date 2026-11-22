@@ -677,6 +677,8 @@
     <string name="desktop_padding_h">Отступ страницы по горизонтали</string>
     <string name="desktop_padding_v">Отступ страницы по вертикали</string>
     <string name="desktop_locked">Заблокировать раскладку</string>
+    <string name="widget_fine_placement">Точное размещение виджетов</string>
+    <string name="widget_fine_placement_summary">Перемещайте виджеты и меняйте их размер мелкими шагами; они примагничиваются к ближайшим целым и половинным ячейкам</string>
     <string name="widget_overlap">Разрешить размещать элементы поверх виджетов</string>
     <string name="widget_padding">Отступы виджетов</string>
     <string name="desktop_locked_toast">Раскладка заблокирована</string>

@@ -37,12 +37,12 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 
 | Status | Features |
 | --- | --- |
-| ✅ Done | 162 |
+| ✅ Done | 163 |
 | 🟡 Partial | 3 |
 | ❌ Missing | 0 |
 | ❔ Needs a check on a device | 0 |
 | ⛔ Won't do | 2 |
-| **Total** | **167** |
+| **Total** | **168** |
 
 <details>
 <summary><b>Home screen</b> · 23 features · ✅ 23</summary>
@@ -302,7 +302,7 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 </details>
 
 <details>
-<summary><b>Beyond Nova</b> · 7 features · ✅ 7</summary>
+<summary><b>Beyond Nova</b> · 8 features · ✅ 8</summary>
 
 | Status | Feature | Since | Prime | Priority | What Nova did | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -313,6 +313,7 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 | ✅ | Feed page with cards |  |  | P2 | Calendar, media, contacts and widget cards | Feed package |
 | ✅ | Automatic backups and recovery |  |  | P2 | Restored if the store breaks | writeAutoBackup, StoreRecovery |
 | ✅ | Bring to front, send to back |  |  | P2 | Stacking order for overlaps | restackItem |
+| ✅ | Fine widget placement |  |  | P2 | Nova's subgrid stopped at half cells | Widgets move and resize in sixteenths of a cell, pulled onto whole and half cells nearby (FinePlacement); off by default, under Home screen > Editing. Another launcher's widgets placed between half cells come in that way |
 
 </details>
 

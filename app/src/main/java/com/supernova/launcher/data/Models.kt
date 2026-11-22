@@ -81,6 +81,10 @@ data class LauncherItem(
     // placed or sized with subgrid positioning on. WorkspaceGeometry.itemRect
     // reads it; nothing else should use those four fields raw.
     val halfCells: Boolean = false,
+    // Widgets only: those four fields count sixteenths of a cell instead
+    // (FinePlacement.UNITS), for a widget placed or sized with fine
+    // placement on, off the half cells. Wins over halfCells.
+    val fineCells: Boolean = false,
     // Custom icon override for folders: a drawable inside an icon pack.
     val customIconPack: String? = null,
     val customIconName: String? = null,
@@ -225,6 +229,10 @@ data class LauncherPrefs(
     val dockLabels: Boolean = false,
     val dockIconScale: Float = 1f,
     val widgetOverlap: Boolean = false,
+    // Widgets move and resize in sixteenths of a cell, pulled onto whole
+    // and half cells nearby (FinePlacement). Beyond Nova, whose subgrid
+    // stopped at half cells.
+    val widgetFinePlacement: Boolean = false,
     // Placement drops may land on occupied cells (grid bounds still apply);
     // auto-placement (new apps, pins) keeps looking for free cells.
     val overlapWhenPlacing: Boolean = false,

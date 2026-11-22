@@ -34,6 +34,26 @@ class WidgetHalfCellsTest {
     }
 
     @Test
+    fun aRectOffTheHalfCellsGoesToSixteenths() {
+        val rect = WorkspaceGeometry.CellRect(0.3125f, 0f, 2.3125f, 1.75f)
+        val placed = WorkspaceGeometry.widgetOn(widget(half = true), rect)
+        assertTrue(placed.fineCells)
+        assertFalse(placed.halfCells)
+        assertEquals(listOf(5, 0, 32, 28), listOf(placed.cellX, placed.cellY, placed.spanX, placed.spanY))
+        assertEquals(rect, WorkspaceGeometry.itemRect(placed, 5, 6))
+    }
+
+    @Test
+    fun aFineRectBackOnHalfCellsCountsHalves() {
+        val fine = widget().copy(fineCells = true)
+        val placed = WorkspaceGeometry.widgetOn(fine, WorkspaceGeometry.CellRect(0.5f, 1f, 2f, 3f))
+        assertFalse(placed.fineCells)
+        assertTrue(placed.halfCells)
+        assertEquals(16, WorkspaceGeometry.unitsOf(fine))
+        assertEquals(1, WorkspaceGeometry.unitsOf(LauncherItem(id = "i", itemType = ItemType.APP, halfCells = true)))
+    }
+
+    @Test
     fun resizeRoomCountsHalfSteps() {
         // A 2x2 widget at (0,0) on a 4x4 grid, an icon in the cell at (3,0).
         val icon = LauncherItem(id = "i", itemType = ItemType.APP, cellX = 3, cellY = 0)

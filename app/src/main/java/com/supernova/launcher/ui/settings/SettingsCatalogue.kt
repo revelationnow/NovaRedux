@@ -595,6 +595,12 @@ object SettingsCatalogue {
                     get = { it.undoRemove },
                     set = { viewModel.set(Pref.undoRemove, it) }
                 ),
+                SettingItem.Toggle(
+                    R.string.widget_fine_placement,
+                    get = { it.widgetFinePlacement },
+                    set = { viewModel.set(Pref.widgetFinePlacement, it) },
+                    subtitle = R.string.widget_fine_placement_summary
+                ),
                 SettingItem.Accordion(R.string.advanced),
                 SettingItem.Toggle(
                     R.string.desktop_locked,

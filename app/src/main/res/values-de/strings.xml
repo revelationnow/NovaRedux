@@ -645,6 +645,8 @@
     <string name="desktop_padding_h">Horizontaler Seitenabstand</string>
     <string name="desktop_padding_v">Vertikaler Seitenabstand</string>
     <string name="desktop_locked">Layout sperren</string>
+    <string name="widget_fine_placement">Feine Widget-Platzierung</string>
+    <string name="widget_fine_placement_summary">Widgets in kleinen Schritten verschieben und in der Größe ändern; sie rasten an nahen ganzen und halben Zellen ein</string>
     <string name="widget_overlap">Elemente über Widgets erlauben</string>
     <string name="widget_padding">Widget-Abstand</string>
     <string name="desktop_locked_toast">Das Layout ist gesperrt</string>

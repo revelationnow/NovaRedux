@@ -37,10 +37,21 @@ object WorkspaceGeometry {
         (cellY + spanY).toFloat()
     )
 
+    // How many steps a cell holds in an item's cellX/cellY/spanX/spanY: 1,
+    // or for a widget 2 on half cells and FinePlacement.UNITS placed finely.
+    fun unitsOf(item: LauncherItem): Int = when {
+        item.itemType != ItemType.WIDGET -> 1
+        item.fineCells -> FinePlacement.UNITS
+        item.halfCells -> 2
+        else -> 1
+    }
+
     fun itemRect(item: LauncherItem, cols: Int, rows: Int): CellRect {
-        return if (item.itemType == ItemType.WIDGET && item.halfCells) {
+        val units = unitsOf(item).toFloat()
+        return if (units > 1f) {
             CellRect(
-                item.cellX / 2f, item.cellY / 2f, (item.cellX + item.spanX) / 2f, (item.cellY + item.spanY) / 2f
+                item.cellX / units, item.cellY / units,
+                (item.cellX + item.spanX) / units, (item.cellY + item.spanY) / units
             )
         } else if (item.itemType == ItemType.WIDGET || item.workspaceX == null || item.workspaceY == null) {
             cellRect(item.cellX, item.cellY, item.spanX, item.spanY)
@@ -285,15 +296,24 @@ object WorkspaceGeometry {
 
     data class ResizeRoom(val left: Int, val top: Int, val right: Int, val bottom: Int)
 
-    // A widget on `rect` (in cells): whole cells where every edge is on one,
-    // half cells (halfCells) where any edge falls between two.
+    // A widget on `rect` (in cells), in the coarsest steps that hold it:
+    // whole cells where every edge is on one, half cells (halfCells) where
+    // one falls between two, and sixteenths (fineCells) where fine placement
+    // put one off the half cells.
     fun widgetOn(item: LauncherItem, rect: CellRect): LauncherItem {
-        val units = listOf(rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top)
-            .map { (it * 2).roundToInt() }
-        val half = units.any { it % 2 != 0 }
-        val cells = if (half) units else units.map { it / 2 }
-        val (x, y, w) = cells
-        return item.copy(cellX = x, cellY = y, spanX = max(1, w), spanY = max(1, cells.last()), halfCells = half)
+        val fine = FinePlacement.UNITS
+        val steps = listOf(rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top)
+            .map { (it * fine).roundToInt() }
+        val units = when {
+            steps.all { it % fine == 0 } -> 1
+            steps.all { it % (fine / 2) == 0 } -> 2
+            else -> fine
+        }
+        val (x, y, w, h) = steps.map { it / (fine / units) }
+        return item.copy(
+            cellX = x, cellY = y, spanX = max(1, w), spanY = max(1, h),
+            halfCells = units == 2, fineCells = units == fine
+        )
     }
 
     // resizeRoom in steps of `step` cells (a half with the subgrid on): how
@@ -535,9 +555,9 @@ object WorkspaceGeometry {
             val from = rects.getValue(b.id)
             val cx = (from.left + from.right) / 2f
             val cy = (from.top + from.bottom) / 2f
-            // A widget on half cells moves as the whole cells it needs, from
-            // its top-left cell (see displaced).
-            val half = b.itemType == ItemType.WIDGET && b.halfCells
+            // A widget on half cells or placed finely moves as the whole
+            // cells it needs, from its top-left cell (see displaced).
+            val half = unitsOf(b) > 1
             val (spanX, spanY) = if (half) wholeSpans(from) else b.spanX to b.spanY
             val originX = if (half) floor(from.left + EPSILON).toInt() else b.cellX
             val originY = if (half) floor(from.top + EPSILON).toInt() else b.cellY

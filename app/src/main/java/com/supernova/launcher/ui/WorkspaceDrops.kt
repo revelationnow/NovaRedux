@@ -11,6 +11,7 @@ import android.view.animation.PathInterpolator
 import android.widget.Toast
 import com.supernova.launcher.R
 import com.supernova.launcher.data.ContainerType
+import com.supernova.launcher.data.FinePlacement
 import com.supernova.launcher.data.ItemType
 import com.supernova.launcher.data.LaunchableApp
 import com.supernova.launcher.data.LauncherItem
@@ -220,9 +221,10 @@ class WorkspaceDrops(
     }
 
     // Where a placed widget dropped here lands, in cells, keeping its size:
-    // its top-left on the hovered cell, or with subgrid positioning on the
-    // nearest half cell. rawCellX is the drop point, half a cell in from the
-    // picture's top-left.
+    // its top-left on the hovered cell, with subgrid positioning on the
+    // nearest half cell, or with fine placement on the nearest sixteenth,
+    // pulled onto a whole or half cell close by. rawCellX is the drop point,
+    // half a cell in from the picture's top-left.
     private fun widgetDropRect(
         item: LauncherItem,
         cellX: Int,
@@ -236,7 +238,11 @@ class WorkspaceDrops(
         val height = rect.bottom - rect.top
         fun anchor(cell: Int, raw: Float, size: Float, count: Int): Float {
             val most = (count - size).coerceAtLeast(0f)
-            val start = if (prefs.subgrid) ((raw - HALF_CELL) * 2).roundToInt() / 2f else cell.toFloat()
+            val start = when {
+                prefs.widgetFinePlacement -> FinePlacement.snap(raw - HALF_CELL)
+                prefs.subgrid -> ((raw - HALF_CELL) * 2).roundToInt() / 2f
+                else -> cell.toFloat()
+            }
             return start.coerceIn(0f, most)
         }
         val left = anchor(cellX, rawCellX, width, prefs.gridCols)

@@ -6,6 +6,7 @@ import com.supernova.launcher.data.LauncherItem
 import com.supernova.launcher.data.LauncherPrefs
 import com.supernova.launcher.data.LauncherRepository
 import com.supernova.launcher.data.Pref
+import com.supernova.launcher.data.WorkspaceGeometry
 import com.supernova.launcher.gesture.ActionShortcut
 import com.supernova.launcher.gesture.GestureAction
 import java.util.UUID
@@ -57,6 +58,8 @@ internal object LayoutConverter {
         val out = ArrayList<LauncherItem>()
         var skipped = 0
         var halfCells = false
+        // A widget placed off the half cells: fine placement goes on.
+        var fineCells = false
         val pages = pageNumbers()
         val cols = gridSize(layout.grid.cols ?: base.gridCols, desktop.maxOfOrNull { it.x + it.spanX })
         val rows = gridSize(layout.grid.rows ?: base.gridRows, desktop.maxOfOrNull { it.y + it.spanY })
@@ -108,6 +111,7 @@ internal object LayoutConverter {
                 dockPages = Pref.dockPages.clamped(dockPages),
                 dockEnabled = base.dockEnabled || dock.isNotEmpty(),
                 subgrid = base.subgrid || grid.subgrid || halfCells,
+                widgetFinePlacement = base.widgetFinePlacement || fineCells,
                 drawerColumns = grid.drawerCols?.let { Pref.drawerColumns.clamped(max(1, it)) } ?: base.drawerColumns,
                 drawerRows = grid.drawerRows?.let { Pref.drawerRows.clamped(max(1, it)) } ?: base.drawerRows,
                 folderColumns = grid.folderCols?.let { Pref.folderColumns.clamped(max(1, it)) } ?: base.folderColumns,
@@ -162,7 +166,7 @@ internal object LayoutConverter {
             val onCells = x % 2 == 0 && y % 2 == 0
             return maker.make(item)?.copy(page = page)?.let { made ->
                 when {
-                    item.kind == ForeignKind.WIDGET -> widgetOn(made, x, y, halves(item.spanX), halves(item.spanY))
+                    item.kind == ForeignKind.WIDGET -> widgetOn(made, item)
                     onCells -> made.copy(cellX = x / 2, cellY = y / 2)
                     else -> {
                         halfCells = true
@@ -177,16 +181,16 @@ internal object LayoutConverter {
             }
         }
 
-        // A widget on its cells, given in half cells: whole ones where
-        // every edge sits on one.
-        private fun widgetOn(made: LauncherItem, x: Int, y: Int, spanX: Int, spanY: Int): LauncherItem {
-            val w = spanX.coerceAtLeast(1)
-            val h = spanY.coerceAtLeast(1)
-            val whole = listOf(x, y, w, h).all { it % 2 == 0 }
-            val unit = if (whole) 2 else 1
-            return made.copy(
-                cellX = x / unit, cellY = y / unit, spanX = w / unit, spanY = h / unit, halfCells = !whole
+        // A widget on the cells it had, in the coarsest steps that hold
+        // them: whole cells, half cells, or the sixteenths of fine placement
+        // for one another launcher put between those.
+        private fun widgetOn(made: LauncherItem, item: ForeignItem): LauncherItem {
+            val left = item.x.coerceAtLeast(0f)
+            val top = item.y.coerceAtLeast(0f)
+            val rect = WorkspaceGeometry.CellRect(
+                left, top, left + item.spanX.coerceAtLeast(HALF), top + item.spanY.coerceAtLeast(HALF)
             )
+            return WorkspaceGeometry.widgetOn(made, rect).also { if (it.fineCells) fineCells = true }
         }
 
         // Each dock item in its slot, the first to claim one keeping it and

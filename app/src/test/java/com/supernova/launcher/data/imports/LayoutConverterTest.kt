@@ -103,6 +103,25 @@ class LayoutConverterTest {
     }
 
     @Test
+    fun widgetsBetweenHalfCellsComeInFineAndTurnFinePlacementOn() {
+        val widget = ForeignItem(
+            1, ForeignKind.WIDGET, ForeignPlace.DESKTOP, x = 0f, y = 6.09f, spanX = 7f, spanY = 2.12f,
+            widgetProvider = "com.w/com.w.P"
+        )
+        val layout = ForeignLayout(listOf(widget), ForeignGrid(cols = 7, rows = 12))
+        val result = LayoutConverter.convert(layout, LauncherPrefs(), phone)
+        val placed = result.items.single()
+        assertTrue(placed.fineCells)
+        assertEquals(WorkspaceGeometry.CellRect(0f, 6.0625f, 7f, 8.1875f), WorkspaceGeometry.itemRect(placed, 7, 12))
+        assertTrue(result.prefs.widgetFinePlacement)
+        // Whole and half cells leave it as it was.
+        val whole = LayoutConverter.convert(
+            layout.copy(items = listOf(widget.copy(y = 6f, spanY = 2f))), LauncherPrefs(), phone
+        )
+        assertFalse(whole.prefs.widgetFinePlacement)
+    }
+
+    @Test
     fun gridGrowsToHoldWhatAnUnstatedOneHeld() {
         val base = LauncherPrefs(gridCols = 5, gridRows = 6)
         val result = convert(listOf(app(1, "com.a/.A", x = 6f, y = 7f)), base = base)
