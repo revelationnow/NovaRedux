@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.drawable.Drawable
 import android.view.View
 import androidx.core.graphics.Insets
+import androidx.core.view.isVisible
 import com.supernova.launcher.R
 import com.supernova.launcher.data.DockImage
 import com.supernova.launcher.data.LauncherPrefs
@@ -49,10 +50,10 @@ internal class DockChrome(
         val key = guardKey(prefs)
         if (applied == key) return
         applied = key
-        binding.dockBar.visibility = if (prefs.dockEnabled && !host.dockHidden) View.VISIBLE else View.GONE
+        binding.dockBar.isVisible = prefs.dockEnabled && !host.dockHidden
         syncArrow(prefs)
-        binding.scrimTop.visibility = if (prefs.showScrims) View.VISIBLE else View.GONE
-        binding.scrimBottom.visibility = if (prefs.showScrims) View.VISIBLE else View.GONE
+        binding.scrimTop.isVisible = prefs.showScrims
+        binding.scrimBottom.isVisible = prefs.showScrims
         val arrow = if (arrowWanted(prefs)) {
             SwipeArrowDrawable(
                 context.resources.displayMetrics.density,
@@ -79,8 +80,7 @@ internal class DockChrome(
     // It hides and comes back with the dock (auto-close, the dock toggle),
     // keeping its strip as the dock keeps its margins.
     fun syncArrow(prefs: LauncherPrefs) {
-        binding.dockSwipeIndicator.visibility =
-            if (arrowWanted(prefs) && binding.dockBar.visibility == View.VISIBLE) View.VISIBLE else View.GONE
+        binding.dockSwipeIndicator.isVisible = arrowWanted(prefs) && binding.dockBar.isVisible
     }
 
     private fun guardKey(prefs: LauncherPrefs): List<Any> = listOf(

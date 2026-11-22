@@ -3,9 +3,9 @@ package com.supernova.launcher.ui
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.view.Gravity
-import android.view.View
 import android.view.ViewGroup
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import com.supernova.launcher.data.LauncherPrefs
 import com.supernova.launcher.databinding.ActivityLauncherBinding
@@ -81,8 +81,8 @@ internal class ChromeMargins(
     // keeps driving the slot's geometry.
     private fun showBar(prefs: LauncherPrefs, config: DesktopSearchBarConfig, slot: BarSlot?) {
         val barWidget = if (slot == null) null else host.bindSearchBarWidget(prefs)
-        binding.desktopSearchWidget.visibility = if (barWidget == null) View.GONE else View.VISIBLE
-        binding.desktopSearchBar.visibility = if (slot == null || barWidget != null) View.GONE else View.VISIBLE
+        binding.desktopSearchWidget.isVisible = barWidget != null
+        binding.desktopSearchBar.isVisible = slot != null && barWidget == null
         if (slot != null) {
             binding.desktopSearchBar.apply(config, Styles.resolve(context, prefs).of(SurfaceId.SEARCH_BAR))
         }
