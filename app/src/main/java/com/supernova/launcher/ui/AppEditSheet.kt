@@ -312,6 +312,28 @@ object IconPickerSheet {
         }
     }
 
+    // Only the icon packs, then a pack's own drawables: for a picture that
+    // isn't an app's icon (the dock's background, as Nova took one from a
+    // pack or a dock theme).
+    fun showPacks(context: Context, scope: CoroutineScope, viewModel: LauncherViewModel, onPick: (String, String) -> Unit) {
+        scope.launch {
+            val packs = viewModel.availableIconPacks()
+            if (packs.isEmpty()) {
+                Toast.makeText(context, R.string.no_icon_packs, Toast.LENGTH_SHORT).show()
+                return@launch
+            }
+            MaterialAlertDialogBuilder(context)
+                .setTitle(R.string.icon_pack)
+                .setItems(packs.map { it.label }.toTypedArray()) { _, which ->
+                    scope.showGrid(context, viewModel, packs[which].packageName, emptyList()) { pack, name ->
+                        if (pack != null && name != null) onPick(pack, name)
+                    }
+                }
+                .setNegativeButton(R.string.cancel, null)
+                .showTracked()
+        }
+    }
+
     private fun CoroutineScope.showGrid(
         context: Context,
         viewModel: LauncherViewModel,

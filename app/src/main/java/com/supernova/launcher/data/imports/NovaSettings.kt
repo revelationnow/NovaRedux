@@ -3,6 +3,7 @@ package com.supernova.launcher.data.imports
 import com.supernova.launcher.data.IconShape
 import com.supernova.launcher.data.LauncherPrefs
 import com.supernova.launcher.ui.AnimationSpeed
+import com.supernova.launcher.ui.DiscoverTheme
 import com.supernova.launcher.ui.DrawerStyle
 import com.supernova.launcher.ui.DrawerTabBar
 import com.supernova.launcher.ui.IndicatorStyle
@@ -64,7 +65,10 @@ internal object NovaSettings {
         hideStatusBar = nova.bool("show_notification_bar")?.not() ?: prefs.hideStatusBar,
         iconShape = nova.choice("adaptive_icon_shape", ICON_SHAPES) ?: prefs.iconShape,
         iconNormalize = nova.bool("sanify_icon_size") ?: prefs.iconNormalize,
-        iconPack = nova.text("theme_icon_pack") ?: prefs.iconPack
+        iconPack = nova.text("theme_icon_pack") ?: prefs.iconPack,
+        // Nova's Discover theme. Its page itself comes from another app here,
+        // which the backup can't name: Feed > Page picks it.
+        discoverTheme = nova.choice("google_now_theme", DISCOVER_THEMES) ?: prefs.discoverTheme
     )
 
     // Nova's tabs switch; a bar NovaRedux already shows stays where it is.
@@ -100,6 +104,10 @@ internal object NovaSettings {
         "AUTO_TIME" to ThemeMode.AUTO, "SYSTEM" to ThemeMode.SYSTEM, "FOLLOW_SYSTEM" to ThemeMode.SYSTEM
     )
     private val WALLPAPER = named(WallpaperScrollMode.entries)
+    private val DISCOVER_THEMES = named(
+        DiscoverTheme.entries,
+        "NIGHT_MODE" to DiscoverTheme.AUTO, "FOLLOW_NIGHT_MODE" to DiscoverTheme.AUTO, "SYSTEM" to DiscoverTheme.AUTO
+    )
     private val DRAWER_STYLES = mapOf(
         "VERTICAL" to DrawerStyle.VERTICAL_GRID, "HORIZONTAL" to DrawerStyle.PAGED_GRID,
         "LIST" to DrawerStyle.VERTICAL_LIST

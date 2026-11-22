@@ -895,20 +895,40 @@ class SettingsActivity : AppCompatActivity() {
         if (onGroupsPage()) binding.settingsTitle.text = groupsPane?.title ?: getString(R.string.drawer_groups)
     }
 
-    // The dock's image: picked from the gallery, or, once there is one,
-    // picked again or taken away.
+    // The dock's image: from the gallery or from an icon pack's pictures, as
+    // Nova offered; once there is one, it can be taken away too.
     private fun chooseDockImage() {
-        if (viewModel.state.value.prefs.dockBgImage.isEmpty()) {
-            pickDockImage()
-            return
-        }
-        val choices = arrayOf(getString(R.string.dock_bg_image_choose), getString(R.string.dock_bg_image_remove))
+        val choices = listOfNotNull(
+            R.string.dock_bg_image_choose,
+            R.string.dock_bg_image_pack,
+            R.string.dock_bg_image_remove.takeIf { viewModel.state.value.prefs.dockBgImage.isNotEmpty() }
+        )
         MaterialAlertDialogBuilder(this)
             .setTitle(R.string.dock_bg_image)
-            .setItems(choices) { _, which ->
-                if (which == 0) pickDockImage() else viewModel.set(Pref.dockBgImage, "")
+            .setItems(choices.map(::getString).toTypedArray()) { _, which ->
+                when (choices[which]) {
+                    R.string.dock_bg_image_choose -> pickDockImage()
+                    R.string.dock_bg_image_pack -> pickDockImageFromPack()
+                    else -> viewModel.set(Pref.dockBgImage, "")
+                }
             }
             .show()
+    }
+
+    private fun pickDockImageFromPack() {
+        com.supernova.launcher.ui.IconPickerSheet.showPacks(this, lifecycleScope, viewModel) { pack, name ->
+            lifecycleScope.launch {
+                val encoded = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Default) {
+                    val picture = viewModel.appCatalog().packDrawable(pack, name)
+                    picture?.let { com.supernova.launcher.data.DockImage.encode(it) }
+                }
+                if (encoded == null) {
+                    Toast.makeText(this@SettingsActivity, R.string.photo_load_failed, Toast.LENGTH_SHORT).show()
+                } else {
+                    viewModel.set(Pref.dockBgImage, encoded)
+                }
+            }
+        }
     }
 
     private fun pickDockImage() {

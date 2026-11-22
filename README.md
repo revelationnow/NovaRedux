@@ -37,15 +37,15 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 
 | Status | Features |
 | --- | --- |
-| ✅ Done | 154 |
-| 🟡 Partial | 5 |
-| ❌ Missing | 3 |
+| ✅ Done | 158 |
+| 🟡 Partial | 3 |
+| ❌ Missing | 1 |
 | ❔ Needs a check on a device | 3 |
 | ⛔ Won't do | 2 |
 | **Total** | **167** |
 
 <details>
-<summary><b>Home screen</b> · 23 features · ✅ 20 · 🟡 1 · ❔ 2</summary>
+<summary><b>Home screen</b> · 23 features · ✅ 21 · ❔ 2</summary>
 
 | Status | Feature | Since | Prime | Priority | What Nova did | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -62,7 +62,7 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 | ✅ | Infinite scroll | 1.x |  | P1 | Last page wraps to the first | infinite_scroll |
 | ✅ | Scroll effects: Simple, Cube, Card stack | 1.x |  | P1 | Free page transitions | ScrollEffect enum |
 | ✅ | More scroll effects: Tablet, Revolving door, Flip, Flip vertical, In and out, Accordion, Glass, Zoom fade, Throw, Wipe | 1.x | Prime | P2 | Prime page transitions | All present in ScrollEffect |
-| 🟡 | Wallpaper scrolling modes | 1.x |  | P2 | On, off, reverse; early builds also static-only and delayed | On, off and reverse only |
+| ✅ | Wallpaper scrolling modes | 1.x |  | P2 | On, off, reverse; early builds also static-only and delayed | On, off and reverse, the values Nova 7 stores (wallpaper_scrolling; the Nova importer reads them); the early builds' static-only and delayed modes aren't offered |
 | ✅ | Lock layout | 7.0.15 |  | P1 | Stops accidental moves and removals | desktop_locked |
 | ✅ | Overlap when placing |  |  | P1 | Icons and widgets may overlap | overlap_when_placing, widget_overlap |
 | ✅ | Top and bottom shadow |  |  | P2 | Shade behind the status bar and dock | show_scrims |
@@ -89,7 +89,7 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 </details>
 
 <details>
-<summary><b>Dock</b> · 14 features · ✅ 13 · 🟡 1</summary>
+<summary><b>Dock</b> · 14 features · ✅ 14</summary>
 
 | Status | Feature | Since | Prime | Priority | What Nova did | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -104,7 +104,7 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 | ✅ | Remember the dock page |  |  | P2 | Return to the last dock page used | dock_remember_position |
 | ✅ | Dock background shapes: rectangle, rounded, arc, platform |  |  | P2 | Four shapes | Rectangle (rounded by the radius), Arc and Platform; the Nova importer maps all four |
 | ✅ | Dock background colour and transparency |  |  | P2 | Tint presets or any colour | dock_bg_opacity and colours |
-| 🟡 | Dock background image |  |  | P2 | From the gallery, dock theme apps or an icon pack | From the gallery, in the dock's shape and opacity, kept in backups; no dock theme apps or icon pack images |
+| ✅ | Dock background image |  |  | P2 | From the gallery, dock theme apps or an icon pack | From the gallery or an icon pack's pictures, in the dock's shape and opacity, kept in backups |
 | ✅ | Dock background behind the navigation bar | 5.0 |  | P2 | Background extends under the nav bar | dock_bg_behind_nav |
 | ✅ | Dock swipe actions | 1.x | Prime | P1 | A swipe on a dock icon runs a second action | Icon swipe actions; check on the dock |
 
@@ -268,11 +268,11 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 </details>
 
 <details>
-<summary><b>Integrations</b> · 2 features · ❌ 2</summary>
+<summary><b>Integrations</b> · 2 features · ✅ 1 · ❌ 1</summary>
 
 | Status | Feature | Since | Prime | Priority | What Nova did | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
-| ❌ | Google Discover page |  |  | P2 | Needs the Nova Google Companion app | Depends on Google's app; best effort |
+| ✅ | Google Discover page |  |  | P2 | Needs the Nova Google Companion app | Feed > Page: another app's page over the home screen, through the launcher overlay protocol. The Google app's Discover comes through a bridge app (AIDL Bridge, Lawnfeed), as Nova's came through its Google Companion; test builds reach it directly (seen on the CI emulator) |
 | ❌ | Discover theme: light, dark, follow night mode | 6.1 |  | P2 | Dark Discover cards | Depends on the Discover page |
 
 </details>
@@ -317,7 +317,7 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 </details>
 
 <details>
-<summary><b>Project</b> · 7 features · ✅ 2 · 🟡 3 · ❌ 1 · ❔ 1</summary>
+<summary><b>Project</b> · 7 features · ✅ 3 · 🟡 3 · ❔ 1</summary>
 
 | Status | Feature | Since | Prime | Priority | What Nova did | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -327,7 +327,7 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 | 🟡 | Translations |  |  | P1 | Nova shipped 74 languages | Ready for translators: per-app language settings, partial translations allowed and checked, docs/TRANSLATING.md. English only so far |
 | ❔ | TalkBack support |  |  | P1 | Accessible custom views | No accessibility lint findings left; needs a TalkBack pass on a device |
 | 🟡 | Split LauncherActivity |  |  | P1 | Move UI state into controllers | 5,333 lines, 291 functions |
-| ❌ | Give the layout its own store |  |  | P2 | Layout saves stop rewriting settings | One Preferences DataStore today |
+| ✅ | Give the layout its own store |  |  | P2 | Layout saves stop rewriting settings | The layout has its own store (supernova_layout), moved over from the settings store on the first read; layout edits and setting changes no longer rewrite each other |
 
 </details>
 

@@ -42,8 +42,8 @@ internal class LayoutMigration(
         StoreKeys.model in mainStore().data.first()
 
     override suspend fun migrate(currentData: Preferences): Preferences {
-        val layout = mainStore().data.first()[StoreKeys.model] ?: return currentData
-        if (StoreKeys.model in currentData) return currentData
+        val layout = mainStore().data.first()[StoreKeys.model]
+        if (layout == null || StoreKeys.model in currentData) return currentData
         return currentData.toMutablePreferences().apply { this[StoreKeys.model] = layout }
     }
 

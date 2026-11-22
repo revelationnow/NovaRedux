@@ -10,6 +10,7 @@ import com.supernova.launcher.gesture.GestureAction
 import com.supernova.launcher.gesture.GestureDefaults
 import com.supernova.launcher.ui.AnimationSpeed
 import com.supernova.launcher.ui.DockBgStyle
+import com.supernova.launcher.ui.DiscoverTheme
 import com.supernova.launcher.ui.DrawerStyle
 import com.supernova.launcher.ui.DrawerTabBar
 import com.supernova.launcher.ui.FolderMode
@@ -114,6 +115,15 @@ class NovaSettingsTest {
         assertTrue(applied.hideStatusBar)
         assertEquals(IconShape.SQUIRCLE, applied.iconShape)
         assertTrue(applied.iconNormalize)
+    }
+
+    @Test
+    fun theDiscoverThemeCarriesOver() {
+        assertEquals(DiscoverTheme.AUTO, applied.discoverTheme)
+        val dark = NovaSettings.applyTo(LauncherPrefs(), nova6 + ("google_now_theme" to "DARK"))
+        assertEquals(DiscoverTheme.DARK, dark.discoverTheme)
+        val light = NovaSettings.applyTo(LauncherPrefs(), nova6 + ("google_now_theme" to "light"))
+        assertEquals(DiscoverTheme.LIGHT, light.discoverTheme)
     }
 
     @Test

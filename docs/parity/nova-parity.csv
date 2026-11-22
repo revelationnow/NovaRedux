@@ -12,7 +12,7 @@ Home screen,Swipe-to-drawer indicator,5.0,No,Done,P2,Arrow hinting that a swipe 
 Home screen,Infinite scroll,1.x,No,Done,P1,Last page wraps to the first,infinite_scroll
 Home screen,"Scroll effects: Simple, Cube, Card stack",1.x,No,Done,P1,Free page transitions,ScrollEffect enum
 Home screen,"More scroll effects: Tablet, Revolving door, Flip, Flip vertical, In and out, Accordion, Glass, Zoom fade, Throw, Wipe",1.x,Yes,Done,P2,Prime page transitions,All present in ScrollEffect
-Home screen,Wallpaper scrolling modes,1.x,No,Partial,P2,"On, off, reverse; early builds also static-only and delayed","On, off and reverse only"
+Home screen,Wallpaper scrolling modes,1.x,No,Done,P2,"On, off, reverse; early builds also static-only and delayed","On, off and reverse, the values Nova 7 stores (wallpaper_scrolling; the Nova importer reads them); the early builds' static-only and delayed modes aren't offered"
 Home screen,Lock layout,7.0.15,No,Done,P1,Stops accidental moves and removals,desktop_locked
 Home screen,Overlap when placing,,No,Done,P1,Icons and widgets may overlap,"overlap_when_placing, widget_overlap"
 Home screen,Top and bottom shadow,,No,Done,P2,Shade behind the status bar and dock,show_scrims
@@ -38,7 +38,7 @@ Dock,Close the overlay dock after launching an app,,No,Done,P2,Needs dock as ove
 Dock,Remember the dock page,,No,Done,P2,Return to the last dock page used,dock_remember_position
 Dock,"Dock background shapes: rectangle, rounded, arc, platform",,No,Done,P2,Four shapes,"Rectangle (rounded by the radius), Arc and Platform; the Nova importer maps all four"
 Dock,Dock background colour and transparency,,No,Done,P2,Tint presets or any colour,dock_bg_opacity and colours
-Dock,Dock background image,,No,Partial,P2,"From the gallery, dock theme apps or an icon pack","From the gallery, in the dock's shape and opacity, kept in backups; no dock theme apps or icon pack images"
+Dock,Dock background image,,No,Done,P2,"From the gallery, dock theme apps or an icon pack","From the gallery or an icon pack's pictures, in the dock's shape and opacity, kept in backups"
 Dock,Dock background behind the navigation bar,5.0,No,Done,P2,Background extends under the nav bar,dock_bg_behind_nav
 Dock,Dock swipe actions,1.x,Yes,Done,P1,A swipe on a dock icon runs a second action,Icon swipe actions; check on the dock
 App drawer,"Drawer style: horizontal pages, vertical grid, list",1.x,No,Done,P0,Horizontal style returned in 7.0.10,DrawerStyle
@@ -142,7 +142,7 @@ Gestures,Icon swipe down action,7.0 beta,Yes,Done,P1,"Third action, different fr
 Shortcuts,App shortcuts on long-press,5.0,No,Done,P0,Android 7.1 launcher shortcuts,Popup shortcuts
 Shortcuts,Activities picker,,No,Done,P1,Launch any app activity,ActivitiesPickerSheet
 Shortcuts,Nova Actions as desktop shortcuts,,No,Done,P2,Place an action on the home screen,ActionShortcut
-Integrations,Google Discover page,,No,Missing,P2,Needs the Nova Google Companion app,Depends on Google's app; best effort
+Integrations,Google Discover page,,No,Done,P2,Needs the Nova Google Companion app,"Feed > Page: another app's page over the home screen, through the launcher overlay protocol. The Google app's Discover comes through a bridge app (AIDL Bridge, Lawnfeed), as Nova's came through its Google Companion; test builds reach it directly (seen on the CI emulator)"
 Integrations,"Discover theme: light, dark, follow night mode",6.1,No,Missing,P2,Dark Discover cards,Depends on the Discover page
 Backup and setup,Backup and restore,1.x,No,Done,P0,Layout and settings in one file,"exportBackup, importBackup"
 Backup and setup,Quick start,5.0,No,Done,P2,"Pick theme, drawer and dock style in one place",Onboarding wizard
@@ -165,4 +165,4 @@ Project,Release signing and F-Droid listing,,No,Partial,P1,Reproducible builds l
 Project,Translations,,No,Partial,P1,Nova shipped 74 languages,"Ready for translators: per-app language settings, partial translations allowed and checked, docs/TRANSLATING.md. English only so far"
 Project,TalkBack support,,No,Check,P1,Accessible custom views,No accessibility lint findings left; needs a TalkBack pass on a device
 Project,Split LauncherActivity,,No,Partial,P1,Move UI state into controllers,"5,333 lines, 291 functions"
-Project,Give the layout its own store,,No,Missing,P2,Layout saves stop rewriting settings,One Preferences DataStore today
+Project,Give the layout its own store,,No,Done,P2,Layout saves stop rewriting settings,"The layout has its own store (supernova_layout), moved over from the settings store on the first read; layout edits and setting changes no longer rewrite each other"
