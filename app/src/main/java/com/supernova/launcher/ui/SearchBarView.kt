@@ -36,6 +36,10 @@ class SearchBarView @JvmOverloads constructor(
     // Rebuilt from the config's chip list on every style change; the date
     // chip is remembered so midnight refreshes can find it.
     private var dateChip: TextView? = null
+    // The weather button, and the reading it last showed.
+    private var weatherChip: TextView? = null
+    private var weather: com.supernova.launcher.weather.WeatherNow? = null
+    private var chipColor = 0
     private var applied: List<Any?>? = null
 
 
@@ -90,9 +94,14 @@ class SearchBarView @JvmOverloads constructor(
         }
         view.tag = CHIP_TAG
         val size = dp(SearchBarButtons.BUTTON_DP)
-        val width = if (chip == SearchBarChip.DATE) LayoutParams.WRAP_CONTENT else size
+        val text = chip == SearchBarChip.DATE || chip == SearchBarChip.WEATHER
+        val width = if (text) LayoutParams.WRAP_CONTENT else size
         addView(view, chipIndex, LayoutParams(width, size).apply { marginStart = dp(2) })
         if (chip == SearchBarChip.DATE) dateChip = view as TextView
+        if (chip == SearchBarChip.WEATHER) {
+            weatherChip = view as TextView
+            WeatherLook.dress(view, weather, SearchBarButtons.iconTint(color))
+        }
     }
 
     // Chips go before the host's trailing button, if there is one.
@@ -143,6 +152,8 @@ class SearchBarView @JvmOverloads constructor(
                 if (getChildAt(index).tag == CHIP_TAG) removeViewAt(index)
             }
             dateChip = null
+            weatherChip = null
+            chipColor = resolved.text
             config.chips.mapNotNull(SearchBarChip::fromName).distinct().forEach { chip ->
                 addChip(chip, resolved.text)
             }
@@ -164,6 +175,13 @@ class SearchBarView @JvmOverloads constructor(
         val none = logo == SearchBarLogo.NONE
         searchIcon.visibility = if (none) GONE else VISIBLE
         (hint.layoutParams as LayoutParams).marginStart = if (none) 0 else dp(HINT_GAP_DP)
+    }
+
+    // A new reading for the weather button (WeatherChip), kept for when the
+    // buttons are rebuilt.
+    fun showWeather(now: com.supernova.launcher.weather.WeatherNow?) {
+        weather = now
+        weatherChip?.let { WeatherLook.dress(it, now, SearchBarButtons.iconTint(chipColor)) }
     }
 
     // The date chip must not go stale across midnight; window visibility is

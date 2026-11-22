@@ -24,6 +24,7 @@ most are off until you turn the feature on.
 | Accessibility service | Locking the screen, opening Recent apps and opening Quick settings from a gesture. It reads no screen content and nothing you type | Only after you agree in NovaRedux's dialog and switch it on in Android's settings |
 | Device admin (force lock only) | Locking the screen from a gesture, as an alternative to the accessibility service. It can't wipe data or change passwords | Only if you choose this lock method |
 | Phone (`CALL_PHONE`) | Direct dial shortcuts placed on the home screen | The first time you tap one |
+| Weather from Breezy Weather (`org.breezyweather.READ_PROVIDER`) | The temperature and conditions on the search bar's weather button, read from the Breezy Weather app on your phone for the first place in its list | Only when you add the weather button and allow it |
 | Post notifications | The "Test notification badge" row in Settings | Only when you tap that row |
 | Private space apps (`ACCESS_HIDDEN_PROFILES`) | Showing Android 15+ private space apps while NovaRedux is your home app | Granted at install |
 | Set wallpaper, close apps, request uninstall | Setting a wallpaper you picked, the optional Close app row, and uninstalling an app you chose | Granted at install; used only when you take that action |

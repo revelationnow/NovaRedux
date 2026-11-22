@@ -1224,7 +1224,7 @@ object SettingsCatalogue {
                 ) { logo -> rows.editDesktopBar { it.copy(logo = logo.name) } },
                 SettingItem.Header(R.string.search_bar_chips)
                 // The same buttons as the drawer field's, in the same order.
-            ) + SearchBarButtons.ROWS.map(rows::barChip)
+            ) + SearchBarButtons.HOME_ROWS.map(rows::barChip)
         ),
         // The drawer field's own page, opened from the App drawer page.
         SettingsSection(

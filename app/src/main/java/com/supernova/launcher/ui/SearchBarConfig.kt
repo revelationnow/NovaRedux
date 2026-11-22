@@ -23,7 +23,9 @@ enum class SearchBarPlacement {
 // field in drawerActionButtons order. An App drawer chip was removed; a
 // config still naming it decodes without it.
 enum class SearchBarChip {
-    VOICE, ASSISTANT, DATE, PLAY_STORE, SETTINGS;
+    VOICE, ASSISTANT, DATE, PLAY_STORE, SETTINGS,
+    // Breezy Weather's current conditions (WeatherChip); the home bar's only.
+    WEATHER;
 
     companion object {
         fun fromName(name: String): SearchBarChip? =

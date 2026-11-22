@@ -187,6 +187,7 @@
     <string name="drawer_bg_opacity">Background opacity</string>
     <string name="drawer_card">Card background</string>
     <string name="search_bar_logo">Logo</string>
+    <string name="search_bar_chip_weather">Weather (from Breezy Weather)</string>
     <string name="search_bar_logo_search">Magnifier</string>
     <string name="search_bar_logo_none">None</string>
     <string name="search_bar_logo_browser">Your browser\'s icon</string>

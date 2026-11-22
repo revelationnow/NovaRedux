@@ -1,6 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- The search bar's weather button reads Breezy Weather's shared weather,
+         with the user's leave; NovaRedux itself has no internet access. -->
+    <uses-permission android:name="org.breezyweather.READ_PROVIDER" />
     <uses-permission android:name="android.permission.EXPAND_STATUS_BAR" />
     <!-- The Activities picker (widget sheet > Supernova > Activities) lists
          every installed package, as a launcher's does: the activity people

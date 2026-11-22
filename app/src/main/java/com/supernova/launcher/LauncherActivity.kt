@@ -1618,6 +1618,16 @@ class LauncherActivity :
         // gestures still reach the global overlay.
         binding.desktopSearchBar.onTap = { openDrawer(forSearch = true) }
         binding.desktopSearchBar.onLongPress = { anchor -> showSearchBarMenu(anchor) }
+        // Nova's weather in the bar, read from Breezy Weather.
+        binding.desktopSearchBar.onChip = weatherChip::onChip
+        lifecycle.addObserver(weatherChip)
+    }
+
+    private val weatherChip by lazy {
+        com.supernova.launcher.ui.WeatherChip(this, binding.desktopSearchBar) {
+            SearchBarConfig.decode(viewModel.state.value.prefs.searchBarConfig).desktop.chips
+                .any { it == com.supernova.launcher.ui.SearchBarChip.WEATHER.name }
+        }
     }
 
     // The Direct dial intent waiting on the phone permission. Refused, it
@@ -4296,6 +4306,9 @@ class LauncherActivity :
         // never sees taps in a folder.
         cardSwipeClose.onCardShown()
         popup?.let { window ->
+            // Taps pass through to the card's own views (false unless a drag
+            // takes the stream), which accessibility services click as usual.
+            //noinspection ClickableViewAccessibility
             window.setTouchInterceptor { _, ev ->
                 cardSwipeClose.onTouch(ev.actionMasked)
                 drag.routeGesture(ev, window)

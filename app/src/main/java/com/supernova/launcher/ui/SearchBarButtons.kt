@@ -31,6 +31,9 @@ object SearchBarButtons {
         SearchBarChip.VOICE, SearchBarChip.SETTINGS
     )
 
+    // The home bar's page adds the weather, which only that bar reads.
+    val HOME_ROWS = ROWS + SearchBarChip.WEATHER
+
     // Sized like the magnifier on the left: a 36dp box with 8dp of padding
     // leaves its 20dp.
     const val BUTTON_DP = 36
@@ -49,9 +52,10 @@ object SearchBarButtons {
         SearchBarChip.DATE -> R.string.search_bar_chip_date
         SearchBarChip.PLAY_STORE -> R.string.chip_play_store
         SearchBarChip.SETTINGS -> R.string.settings
+        SearchBarChip.WEATHER -> R.string.search_bar_chip_weather
     }
 
-    // The date is text, so it has no icon.
+    // The date and the weather are text, so they have no icon here.
     @DrawableRes
     private fun icon(chip: SearchBarChip): Int? = when (chip) {
         SearchBarChip.VOICE -> R.drawable.ic_mic
@@ -59,6 +63,7 @@ object SearchBarButtons {
         SearchBarChip.DATE -> null
         SearchBarChip.PLAY_STORE -> R.drawable.ic_play_store
         SearchBarChip.SETTINGS -> R.drawable.ic_tab_settings
+        SearchBarChip.WEATHER -> null
     }
 
     // The drawer's stored list ("PLAY_STORE,SETTINGS"); unknown names drop.
@@ -86,6 +91,7 @@ object SearchBarButtons {
                 setPadding(context.dp(DATE_PAD_DP), pad, context.dp(DATE_PAD_DP), pad)
                 setTextColor(color)
                 text = dateText(context)
+                if (chip == SearchBarChip.WEATHER) WeatherLook.dress(this, null, iconTint(color))
             }
         } else {
             ImageView(context).apply {
@@ -134,6 +140,9 @@ object SearchBarButtons {
                     ?.let(context::startActivity)
             }
             SearchBarChip.SETTINGS -> context.startActivity(Intent(context, SettingsActivity::class.java))
+            SearchBarChip.WEATHER -> runLogged("open weather") {
+                context.startActivity(com.supernova.launcher.weather.BreezyWeather.openIntent(context))
+            }
         }
     }
 
