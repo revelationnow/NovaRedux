@@ -138,6 +138,11 @@ class NovaSettingsTest {
         assertEquals(128 / 255f, applied.drawerBgOpacity, DELTA)
         assertEquals("#FFFFFF", applied.drawerBgColor)
         assertTrue(applied.drawerCard)
+        val sideways = NovaSettings.applyTo(
+            LauncherPrefs(), nova6 + mapOf("drawer_app_grid_land_cols" to "7", "drawer_app_grid_land_rows" to "3")
+        )
+        assertEquals(7, sideways.drawerLandColumns)
+        assertEquals(3, sideways.drawerLandRows)
         assertEquals("#3F51B5", applied.drawerCardColor)
     }
 

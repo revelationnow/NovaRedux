@@ -174,9 +174,7 @@ object Styles {
                 SurfaceId.DOCK to resolved(
                     SurfaceId.DOCK, (0xFF shl 24) or DOCK_BASE_RGB, onWallpaper, prefs.dockBgOpacity
                 ),
-                SurfaceId.FOLDER to resolved(
-                    SurfaceId.FOLDER, folderLegacy, themeFor(SurfaceId.FOLDER).text, null
-                ),
+                SurfaceId.FOLDER to resolved(SurfaceId.FOLDER, folderLegacy, themeFor(SurfaceId.FOLDER).text, null),
                 SurfaceId.POPUP to popup,
                 SurfaceId.CARDS to cards,
                 SurfaceId.SEARCH_BAR to resolved(

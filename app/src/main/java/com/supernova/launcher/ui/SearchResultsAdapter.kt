@@ -69,7 +69,9 @@ class SearchResultsAdapter(
         // A web suggestion: a tap searches the web for it, and its arrow
         // types it into the field to go on from there.
         val onSuggestion: (SearchResult.Suggestion) -> Unit = {},
-        val onFillQuery: (String) -> Unit = {}
+        val onFillQuery: (String) -> Unit = {},
+        // A tab over the empty window's row of apps.
+        val onAppsTab: (AppsRowTab) -> Unit = {}
     )
 
     // The best match, shown as a card with the app's own shortcuts.
@@ -91,6 +93,7 @@ class SearchResultsAdapter(
         data class ProviderIcons(val query: String) : Row
         object RecentHeader : Row
         data class Recent(val query: String) : Row
+        data class AppsTabs(val tab: AppsRowTab) : Row
     }
 
     // Provider marks are raw app icons, so they go through the same renderer
@@ -158,6 +161,7 @@ class SearchResultsAdapter(
         is Row.ProviderIcons -> "providers"
         Row.RecentHeader -> "recent-header"
         is Row.Recent -> "recent/${row.query}"
+        is Row.AppsTabs -> "apps-tabs"
         is Row.Result -> when (val result = row.result) {
             is SearchResult.Calculation -> "calc"
             is SearchResult.Card -> "card/${result.card.id}"
@@ -234,12 +238,15 @@ class SearchResultsAdapter(
         notifyRowsChanged()
     }
 
+    // appsTab: the tabs over the row of apps, on the one picked; null for
+    // the row alone.
     fun submitZeroState(
         shortcuts: List<SuggestedShortcuts.Pill>,
         frequentApps: List<LaunchableApp>,
         allApps: List<LaunchableApp>,
         folders: List<SearchResult.Folder> = emptyList(),
-        recents: List<String> = emptyList()
+        recents: List<String> = emptyList(),
+        appsTab: AppsRowTab? = null
     ) {
         rows.clear()
         if (recents.isNotEmpty()) {
@@ -247,6 +254,8 @@ class SearchResultsAdapter(
             recents.mapTo(rows) { Row.Recent(it) }
         }
         if (shortcuts.isNotEmpty()) rows.add(Row.Shortcuts(shortcuts))
+        // The tabs stay when the one picked has nothing, to pick another.
+        if (appsTab != null) rows.add(Row.AppsTabs(appsTab))
         if (frequentApps.isNotEmpty()) rows.add(Row.Frequent(frequentApps))
         if (allApps.isNotEmpty() || folders.isNotEmpty()) {
             rows.add(Row.Divider)
@@ -267,6 +276,7 @@ class SearchResultsAdapter(
         is Row.ProviderIcons -> TYPE_PROVIDER_ICONS
         Row.RecentHeader -> TYPE_RECENT_HEADER
         is Row.Recent -> TYPE_ROW
+        is Row.AppsTabs -> TYPE_APPS_TABS
         is Row.Result -> when (row.result) {
             is SearchResult.Calculation -> TYPE_CALC
             is SearchResult.Card -> TYPE_CARD
@@ -291,6 +301,7 @@ class SearchResultsAdapter(
             TYPE_TOP -> TopHitHolder(ItemSearchTopHitBinding.inflate(inflater, parent, false))
             TYPE_HEADER -> HeaderHolder(ItemSearchHeaderBinding.inflate(inflater, parent, false))
             TYPE_RECENT_HEADER -> recentHeader(parent)
+            TYPE_APPS_TABS -> appsTabs(parent)
             TYPE_DIVIDER -> DividerHolder(ItemSearchDividerBinding.inflate(inflater, parent, false))
             TYPE_GRID -> GridHolder(fullWidth(SearchGridView(parent.context)) as SearchGridView)
             TYPE_SHORTCUTS -> ShortcutsHolder(fullWidth(FlowLayout(parent.context).apply {
@@ -310,6 +321,7 @@ class SearchResultsAdapter(
             is Row.Shortcuts -> (holder as ShortcutsHolder).bind(row.pills)
             is Row.ProviderIcons -> (holder as ProviderIconsHolder).bind(row.query)
             Row.RecentHeader -> (holder as RecentHeaderHolder).bind()
+            is Row.AppsTabs -> (holder as AppsTabsHolder).bind(row.tab)
             is Row.Recent -> (holder as RowHolder).bindRecent(row.query)
             Row.Divider -> (holder as DividerHolder).bind()
             is Row.AppGrid -> (holder as GridHolder).bind(row.apps, row.folders)
@@ -722,6 +734,54 @@ class SearchResultsAdapter(
         return RecentHeaderHolder(row, title, clear)
     }
 
+    // Recent, Frequent, New and updated over the row of apps: the one
+    // picked in the accent, the others in the text colour.
+    private inner class AppsTabsHolder(
+        row: android.widget.LinearLayout,
+        private val tabs: List<android.widget.TextView>
+    ) : RecyclerView.ViewHolder(row) {
+        fun bind(picked: AppsRowTab) {
+            AppsRowTab.entries.zip(tabs).forEach { (tab, view) ->
+                val isPicked = tab == picked
+                view.setTextColor(if (isPicked) accentColor else textColor)
+                view.typeface = if (isPicked) Typeface.DEFAULT_BOLD else Typeface.DEFAULT
+                view.isSelected = isPicked
+                view.setOnClickListener { if (!isPicked) callbacks.onAppsTab(tab) }
+            }
+        }
+    }
+
+    private fun appsTabs(parent: ViewGroup): AppsTabsHolder {
+        val context = parent.context
+        val side = context.resources.getDimensionPixelSize(R.dimen.space_md)
+        val ripple = android.util.TypedValue()
+        context.theme.resolveAttribute(android.R.attr.selectableItemBackground, ripple, true)
+        val tabs = AppsRowTab.entries.map { tab ->
+            android.widget.TextView(context).apply {
+                setText(appsTabLabel(tab))
+                setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, context.resources.getDimension(R.dimen.text_body))
+                gravity = android.view.Gravity.CENTER
+                minHeight = context.resources.getDimensionPixelSize(R.dimen.touch_min)
+                setPadding(side, 0, side, 0)
+                setBackgroundResource(ripple.resourceId)
+            }
+        }
+        val row = android.widget.LinearLayout(context).apply {
+            orientation = android.widget.LinearLayout.HORIZONTAL
+            setPadding(side / 2, 0, side / 2, 0)
+            tabs.forEach(::addView)
+        }
+        fullWidth(row)
+        return AppsTabsHolder(row, tabs)
+    }
+
+    @StringRes
+    private fun appsTabLabel(tab: AppsRowTab): Int = when (tab) {
+        AppsRowTab.RECENT -> R.string.search_apps_recent
+        AppsRowTab.FREQUENT -> R.string.search_apps_frequent
+        AppsRowTab.NEW -> R.string.search_apps_new
+    }
+
     private inner class HeaderHolder(
         private val binding: ItemSearchHeaderBinding
     ) : RecyclerView.ViewHolder(binding.root) {
@@ -782,6 +842,7 @@ class SearchResultsAdapter(
         const val TYPE_SHORTCUTS = 9
         const val TYPE_DIVIDER = 10
         const val TYPE_RECENT_HEADER = 11
+        const val TYPE_APPS_TABS = 12
         // The calculator's expression, a step back from its result.
         const val CALC_EXPRESSION_ALPHA = 0xB3
     }

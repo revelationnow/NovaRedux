@@ -4508,9 +4508,7 @@ class LauncherActivity :
             }
         )
         // A windowed folder greys the drawer out behind it, as Nova's did.
-        if (prefs.folderMode == com.supernova.launcher.ui.FolderMode.WINDOW && prefs.folderGreyBehind) {
-            drawer.greyBehindFolder(true)
-        }
+        drawer.greyBehindFolder(true)
         // Every touch on the card goes through the item gesture first: an
         // app held there, the drag it becomes, and the press that closes its
         // menu once modal (without also launching the app it lands on).

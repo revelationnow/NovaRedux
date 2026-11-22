@@ -15,7 +15,6 @@ import com.supernova.launcher.data.IconShape
 import com.supernova.launcher.data.LauncherPrefs
 import com.supernova.launcher.data.LockMethod
 import com.supernova.launcher.data.Pref
-import com.supernova.launcher.data.PrefSpec
 import com.supernova.launcher.data.SearchWindowMode
 import kotlin.math.roundToInt
 import com.supernova.launcher.ui.BadgePosition
@@ -91,6 +90,8 @@ object SettingsCatalogue {
         val editHiddenApps: () -> Unit = {},
         val editSearchChips: () -> Unit = {},
         val pickDrawerGrid: () -> Unit = {},
+        // The drawer's landscape grid, in the same dialog.
+        val pickDrawerLandGrid: () -> Unit = {},
         val editFolderIcon: () -> Unit = {},
         val editBadgedApps: () -> Unit = {},
         val postTestBadge: () -> Unit = {},
@@ -144,7 +145,7 @@ object SettingsCatalogue {
     // itself is the activity's (Actions.pickChoice), shown as a menu under
     // the row; what the row offers, what it shows as current and what a
     // pick writes all live here with the row.
-    private class Rows(
+    internal class Rows(
         private val context: Context,
         private val viewModel: LauncherViewModel,
         private val actions: Actions
@@ -794,6 +795,24 @@ object SettingsCatalogue {
                     },
                     onClick = actions.pickDrawerGrid
                 ).hiddenWhen { dependsOn(R.string.drawer_style, it.drawerStyle == DrawerStyle.VERTICAL_LIST) },
+                // Landscape's own grid; unset, the portrait one widens.
+                SettingItem.Row(
+                    R.string.drawer_land_grid,
+                    subtitle = { prefs ->
+                        if (prefs.drawerLandRows <= 0 && prefs.drawerLandColumns <= 0) {
+                            context.getString(R.string.drawer_land_grid_portrait)
+                        } else {
+                            val same = context.getString(R.string.drawer_land_grid_same)
+                            context.getString(
+                                R.string.drawer_grid_value,
+                                prefs.drawerLandRows.takeIf { it > 0 }?.toString() ?: same,
+                                prefs.drawerLandColumns.takeIf { it > 0 }?.toString() ?: same
+                            )
+                        }
+                    },
+                    onClick = actions.pickDrawerLandGrid
+                ).hiddenWhen { dependsOn(R.string.drawer_style, it.drawerStyle == DrawerStyle.VERTICAL_LIST) }
+                    .nested(),
                 SettingItem.Toggle(
                     R.string.drawer_auto_keyboard,
                     get = { it.drawerAutoKeyboard },
@@ -2064,7 +2083,7 @@ object SettingsCatalogue {
                 onClick = actions.editThemeSchedule,
                 look = SettingItem.RowLook(R.drawable.ic_style_schedule)
             ).hiddenWhen { dependsOn(R.string.theme_mode, it.themeMode != ThemeMode.SCHEDULE) }
-        ) + nightRows(viewModel, rows) + listOf(
+        ) + NightRows.of(viewModel, rows) + listOf(
             accentRow(context, viewModel, actions),
             SettingItem.Header(R.string.style_group_surfaces),
             SettingItem.StyleTarget(
@@ -2088,26 +2107,6 @@ object SettingsCatalogue {
             SettingItem.StyleTarget(R.string.settings, SurfaceId.SETTINGS, { actions.openStylePicker(SurfaceId.SETTINGS) })
         )
     )
-    }
-
-    // How dark night mode goes, and what it darkens (Nova 6.1's shades and
-    // 4.3's parts); not shown while the theme is always light.
-    private fun nightRows(viewModel: LauncherViewModel, rows: Rows): List<SettingItem> {
-        val lightOnly: (LauncherPrefs) -> SettingItem.HiddenBy? = {
-            dependsOn(R.string.theme_mode, it.themeMode == ThemeMode.LIGHT)
-        }
-        fun part(@StringRes title: Int, get: (LauncherPrefs) -> Boolean, pref: PrefSpec<Boolean>) =
-            SettingItem.Toggle(title, get = get, set = { viewModel.set(pref, it) }).hiddenWhen(lightOnly).nested()
-        return listOf(
-            rows.choice(
-                R.string.night_shade, com.supernova.launcher.ui.theme.NightShade.entries,
-                { it.nightShade }, { EnumLabels.of(it) }
-            ) { viewModel.set(Pref.nightShade, it) }.hiddenWhen(lightOnly).nested(),
-            part(R.string.night_search_bar, { it.nightSearchBar }, Pref.nightSearchBar),
-            part(R.string.night_drawer, { it.nightDrawer }, Pref.nightDrawer),
-            part(R.string.night_folders, { it.nightFolders }, Pref.nightFolders),
-            part(R.string.night_menus, { it.nightMenus }, Pref.nightMenus)
-        )
     }
 
     // A row saying what a setting still needs (a permission, a service):

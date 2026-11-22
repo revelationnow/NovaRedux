@@ -520,7 +520,8 @@ class SettingsActivity : AppCompatActivity() {
             },
             pickDesktopGrid = ::showDesktopGridDialog,
             editSearchChips = ::showSearchChipsEditor,
-            pickDrawerGrid = ::showDrawerGridDialog,
+            pickDrawerGrid = { showDrawerGridDialog(landscape = false) },
+            pickDrawerLandGrid = { showDrawerGridDialog(landscape = true) },
             editFolderIcon = ::showFolderIconEditor,
             editBadgedApps = ::showBadgedAppsPicker,
             postTestBadge = ::postTestBadge,
@@ -1576,15 +1577,18 @@ class SettingsActivity : AppCompatActivity() {
 
     // The drawer twin of the desktop grid dialog, on the same layout: rows
     // and columns step down to 0 = Auto (both apply to the two grid styles); the subgrid switch has no drawer meaning
-    // and hides. Only OK commits.
-    private fun showDrawerGridDialog() {
+    // and hides. Only OK commits. landscape: the landscape grid, where 0
+    // keeps the portrait count.
+    private fun showDrawerGridDialog(landscape: Boolean) {
         val dialogBinding = DialogDesktopGridBinding.inflate(layoutInflater)
         val prefs = viewModel.state.value.prefs
-        var rows = prefs.drawerRows
-        var cols = prefs.drawerColumns
+        val rowsPref = if (landscape) Pref.drawerLandRows else Pref.drawerRows
+        val colsPref = if (landscape) Pref.drawerLandColumns else Pref.drawerColumns
+        var rows = if (landscape) prefs.drawerLandRows else prefs.drawerRows
+        var cols = if (landscape) prefs.drawerLandColumns else prefs.drawerColumns
         dialogBinding.gridPreview.cellColor = (0x30 shl 24) or (getColor(R.color.textPrimary) and 0xFFFFFF)
         dialogBinding.subgridRow.visibility = View.GONE
-        val auto = getString(R.string.drawer_columns_auto)
+        val auto = getString(if (landscape) R.string.drawer_land_grid_same else R.string.drawer_columns_auto)
 
         fun refresh() {
             dialogBinding.rowsValue.text = rows.takeIf { it > 0 }?.toString() ?: auto
@@ -1604,12 +1608,12 @@ class SettingsActivity : AppCompatActivity() {
         refresh()
 
         MaterialAlertDialogBuilder(this)
-            .setTitle(R.string.drawer_grid)
-            .setMessage(R.string.drawer_grid_rows_note)
+            .setTitle(if (landscape) R.string.drawer_land_grid else R.string.drawer_grid)
+            .setMessage(if (landscape) R.string.drawer_land_grid_note else R.string.drawer_grid_rows_note)
             .setView(dialogBinding.root)
             .setPositiveButton(R.string.ok) { _, _ ->
-                viewModel.set(Pref.drawerRows, rows)
-                viewModel.set(Pref.drawerColumns, cols)
+                viewModel.set(rowsPref, rows)
+                viewModel.set(colsPref, cols)
             }
             .setNegativeButton(R.string.cancel, null)
             .show()

@@ -338,6 +338,10 @@
     <string name="folder_grey_behind">Grey out the drawer behind</string>
     <string name="folder_grey_behind_summary">A folder opened in the app drawer fades the drawer to grey</string>
     <string name="folder_animation">Folder animation</string>
+    <string name="drawer_land_grid">Landscape grid</string>
+    <string name="drawer_land_grid_portrait">As the portrait grid, widened</string>
+    <string name="drawer_land_grid_same">As portrait</string>
+    <string name="drawer_land_grid_note">The grid when the phone is sideways. Down to “As portrait”, a count follows the portrait grid.</string>
     <string name="night_shade">Night shade</string>
     <string name="night_shade_dark">Dark</string>
     <string name="night_shade_darker">Darker</string>
@@ -831,6 +835,9 @@
     <string name="search_suggestions">Web suggestions</string>
     <string name="search_suggestions_summary">Your search engine suggests searches as you type, through the NovaRedux Connect app</string>
     <string name="search_suggestion_fill">Put in the search field</string>
+    <string name="search_apps_recent">Recent</string>
+    <string name="search_apps_frequent">Frequent</string>
+    <string name="search_apps_new">New and updated</string>
     <string name="connect_title">NovaRedux Connect</string>
     <string name="connect_message">Web suggestions come through NovaRedux Connect, a small separate app. NovaRedux has no internet access of its own: Connect is the one part that goes online, and only to ask your search engine for suggestions while you type.</string>
     <string name="connect_get">Get NovaRedux Connect</string>

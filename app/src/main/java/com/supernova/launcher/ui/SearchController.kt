@@ -648,8 +648,16 @@ class SearchController(
         onRemoveRecent = ::removeRecentQuery,
         onClearRecents = ::clearRecentQueries,
         onSuggestion = { suggestion -> searchSuggestion(surface, suggestion) },
-        onFillQuery = { text -> fillQuery(surface, text) }
+        onFillQuery = { text -> fillQuery(surface, text) },
+        onAppsTab = ::pickAppsTab
     )
+
+    // A tab over the empty window's row of apps: kept, and shown at once
+    // (the store answers a moment later).
+    private fun pickAppsTab(tab: AppsRowTab) {
+        viewModel.set(com.supernova.launcher.data.Pref.searchAppsRow, tab)
+        showZeroState(tab)
+    }
 
     // A web suggestion tapped: searched for, and kept as the recent search.
     private fun searchSuggestion(surface: Surface, suggestion: SearchResult.Suggestion) {
@@ -662,11 +670,11 @@ class SearchController(
         surface.input.setSelection(text.length)
     }
 
-    // The empty search window: recent searches, suggested shortcuts, the
-    // recently opened apps, then - under a hairline - the drawer's folders
-    // and every app that isn't in one.
-    private fun showZeroState() {
-        val frequent = viewModel.recentApps(gridColumns())
+    // The empty search window: recent searches, suggested shortcuts, a row
+    // of apps (the tab's: recent, frequent or new), then - under a hairline -
+    // the drawer's folders and every app that isn't in one.
+    private fun showZeroState(tab: AppsRowTab = viewModel.state.value.prefs.searchAppsRow) {
+        val frequent = viewModel.appsRow(tab, gridColumns())
         val shortcuts = SuggestedShortcuts.pills(viewModel)
         // Folder members live inside their folder, as in the drawer.
         // A folder inside another (#229) lives inside it too.
@@ -684,7 +692,7 @@ class SearchController(
         ) { it.label }
         val surface = overlaySurface ?: return
         styleSurface(surface)
-        surface.adapter.submitZeroState(shortcuts, frequent, allApps, folders, recentQueries)
+        surface.adapter.submitZeroState(shortcuts, frequent, allApps, folders, recentQueries, tab)
     }
 
     private fun openContact(contact: SearchResult.Contact) {

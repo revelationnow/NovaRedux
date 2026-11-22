@@ -1202,6 +1202,13 @@ class LauncherViewModel(
     // in.
     fun recentApps(limit: Int): List<LaunchableApp> = DrawerOrder.recentRow(visibleApps(), usage(), limit)
 
+    // The search window's row of apps, for the tab picked above it.
+    fun appsRow(tab: com.supernova.launcher.ui.AppsRowTab, limit: Int): List<LaunchableApp> = when (tab) {
+        com.supernova.launcher.ui.AppsRowTab.RECENT -> recentApps(limit)
+        com.supernova.launcher.ui.AppsRowTab.FREQUENT -> DrawerOrder.mostUsedRow(visibleApps(), usage(), limit)
+        com.supernova.launcher.ui.AppsRowTab.NEW -> visibleApps().sortedByDescending(catalog::newestTime).take(limit)
+    }
+
     fun noteLaunch(app: LaunchableApp) = persist { preferences.recordLaunch(hiddenKey(app)) }
 
     fun personalApps(): List<LaunchableApp> = visibleApps().filterNot { it.work }

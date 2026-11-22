@@ -40,7 +40,7 @@ object DrawerOrder {
     }
 
     // Only apps opened at least once: a never-opened app is not "most used".
-    private fun mostUsedRow(apps: List<LaunchableApp>, usage: AppUsage, limit: Int): List<LaunchableApp> =
+    fun mostUsedRow(apps: List<LaunchableApp>, usage: AppUsage, limit: Int): List<LaunchableApp> =
         byName(apps.filter { usage.count(it) > 0 }).sortedByDescending(usage::count).take(limit)
 
     // The recently opened apps newest first, then the rest by how often they

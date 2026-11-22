@@ -86,7 +86,17 @@ class AppCatalog(
     private val profiles = ProfileState(launcherApps, userManager, ::serialFor)
     private val diskIcons = IconDiskCache(context)
 
+    // When each of the phone's own packages was last installed or updated,
+    // read with every listing, for the search window's New apps.
+    @Volatile
+    private var updateTimes: Map<String, Long> = emptyMap()
+
+    // The later of an app's first install and its last update.
+    fun newestTime(app: LaunchableApp): Long = maxOf(app.installTime, updateTimes[app.packageName] ?: 0L)
+
     fun listLaunchableApps(): List<LaunchableApp> {
+        updateTimes = runCatching { pm.getInstalledPackages(0).associate { it.packageName to it.lastUpdateTime } }
+            .getOrDefault(updateTimes)
         val infoCache = mutableMapOf<String, LauncherActivityInfo>()
         val privateUser = privateSpaceUser()
         val self = android.os.Process.myUserHandle()

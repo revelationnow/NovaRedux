@@ -66,6 +66,10 @@ internal object NovaLooks {
             drawerBgColor = nova.int("drawer_background_color")?.let(::rgb) ?: prefs.drawerBgColor,
             drawerCard = nova.bool("drawer_cards") ?: prefs.drawerCard,
             drawerCardColor = nova.int("drawer_card_color")?.let(::rgb) ?: prefs.drawerCardColor,
+            drawerLandColumns = nova.int("drawer_app_grid_land_cols")?.let(Pref.drawerLandColumns::clamped)
+                ?: prefs.drawerLandColumns,
+            drawerLandRows = nova.int("drawer_app_grid_land_rows")?.let(Pref.drawerLandRows::clamped)
+                ?: prefs.drawerLandRows,
             labelConfig = labels(prefs, LabelContext.DRAWER, spec)
         )
     }

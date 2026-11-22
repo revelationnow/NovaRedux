@@ -230,6 +230,10 @@ data class LauncherPrefs(
     val drawerColumns: Int = 0,
     // Rows for the paged drawer style; 0 = derive from the sheet height.
     val drawerRows: Int = 0,
+    // A grid of its own for landscape, as Nova had; 0 keeps the portrait
+    // one (columns scaled to the wider window, the rows as they are).
+    val drawerLandColumns: Int = 0,
+    val drawerLandRows: Int = 0,
     // Opening the drawer focuses search and shows the IME; the keyboard goes
     // back down with the sheet on close.
     val drawerAutoKeyboard: Boolean = true,
@@ -470,6 +474,8 @@ data class LauncherPrefs(
     // Sets IME_FLAG_NO_PERSONALIZED_LEARNING on the search field. On by
     // default.
     val searchPrivateKeyboard: Boolean = true,
+    // What the empty search window's row of apps holds (AppsRowTab).
+    val searchAppsRow: com.supernova.launcher.ui.AppsRowTab = com.supernova.launcher.ui.AppsRowTab.RECENT,
     // Web suggestions while typing, from the search engine through the
     // NovaRedux Connect app (NovaConnect). Off by default: what is typed
     // leaves the phone.

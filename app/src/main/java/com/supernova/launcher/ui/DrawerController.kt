@@ -1345,10 +1345,11 @@ class DrawerController(
     }
 
     // A windowed folder opened in the drawer greys the drawer out behind it,
-    // as Nova 7's did, and its close brings the colour back.
+    // as Nova 7's did, when that is on; its close brings the colour back.
     fun greyBehindFolder(grey: Boolean) {
         val prefs = viewModel.state.value.prefs
-        greyFade.fadeTo(grey, Animations.duration(prefs, GREY_MS))
+        val wanted = grey && prefs.folderGreyBehind && prefs.folderMode == FolderMode.WINDOW
+        greyFade.fadeTo(wanted, Animations.duration(prefs, GREY_MS))
     }
 
     // The Circle transition's reveal in or out, when it is the transition and
@@ -2141,7 +2142,7 @@ class DrawerController(
     // the drawer-affecting prefs change; guarded so emissions are cheap.
     private fun applyStyle(prefs: LauncherPrefs) {
         val key = listOf(
-            prefs.drawerStyle, prefs.drawerColumns, prefs.drawerRows,
+            prefs.drawerStyle, prefs.drawerColumns, prefs.drawerRows, prefs.drawerLandColumns, prefs.drawerLandRows,
             prefs.drawerBgOpacity, prefs.drawerCard, prefs.drawerCardColor,
             prefs.drawerFastScroller, prefs.drawerBgColor,
             prefs.styleConfig, prefs.paletteSource, prefs.paletteSeed,
@@ -2341,7 +2342,7 @@ class DrawerController(
                 adapter.prefillPool(recycler, columns)
                 refreshGridRows(prefs)
                 // Before the first layout there is no height to share out.
-                if (prefs.drawerRows > 0 && recycler.height == 0) {
+                if (rowCount(prefs) > 0 && recycler.height == 0) {
                     recycler.doOnLayout { refreshGridRows(viewModel.state.value.prefs) }
                 }
                 recycler.layoutManager = DrawerLayoutManager(context, columns).apply {
@@ -2448,6 +2449,8 @@ class DrawerController(
         val baseCellDp = if (com.supernova.launcher.data.DeviceProfile.isWide(context)) WIDE_CELL_DP else MIN_CELL_DP
         val minCellPx = (metrics.density * baseCellDp * iconScale(prefs).coerceAtLeast(1f)).toInt().coerceAtLeast(1)
         val width = gridWidthPx(padded = false)
+        // Landscape's own count, when one is set.
+        if (isLandscape() && prefs.drawerLandColumns > 0) return prefs.drawerLandColumns
         if (prefs.drawerColumns <= 0) return (width / minCellPx).coerceAtLeast(3)
         if (!isLandscape()) return prefs.drawerColumns
         // The portrait window is the short edge of this display, minus the
@@ -2615,7 +2618,7 @@ class DrawerController(
     private fun refreshGridRows(prefs: LauncherPrefs) {
         if (currentStyle != DrawerStyle.VERTICAL_GRID) return
         val recycler = binding.drawerRecycler
-        val rows = prefs.drawerRows
+        val rows = rowCount(prefs)
         val height = recycler.height - recycler.paddingTop - recycler.paddingBottom
         if (height > 0) IconFitRoom.drawerHeightPx = height
         val measured = if (rows > 0 && height > 0) adapter.measureTile(recycler) else null
@@ -2639,10 +2642,15 @@ class DrawerController(
         val rowHeight = minTileHeightPx(prefs)
         // The pager's bottom padding keeps the navigation bar's strip.
         val fits = ((pager.height - pager.paddingTop - pager.paddingBottom) / rowHeight).coerceAtLeast(2)
-        return prefs.drawerRows.takeIf { it > 0 }
+        return rowCount(prefs).takeIf { it > 0 }
             ?.let { if (isLandscape()) minOf(it, fits) else it }
             ?: fits.coerceAtLeast(3)
     }
+
+    // The rows set for this orientation: landscape's own when set, else the
+    // portrait count; 0 for Auto.
+    private fun rowCount(prefs: LauncherPrefs): Int =
+        if (isLandscape() && prefs.drawerLandRows > 0) prefs.drawerLandRows else prefs.drawerRows
 
 
     private val context: Context get() = binding.root.context
