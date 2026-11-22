@@ -76,8 +76,10 @@
     <color name="onAccentCustom">#FFFFFFFF</color>
     <!-- A hairline around unfocused text fields; reads on both surfaces. -->
     <color name="textInputStroke">#4D808080</color>
-    <!-- The app icons' background, the logo's warm paper. -->
+    <!-- The launcher action icons' background (ic_action_*): warm paper. -->
     <color name="launcherIconBackground">#F4F0E9</color>
+    <!-- NovaRedux's own icon (ic_launcher, ic_launcher_settings): navy. -->
+    <color name="appIconBackground">#14213D</color>
     <!-- First run: the page (the wallpaper shows only in the preview), its
          text, the progress segments' track, and the summaries. -->
     <color name="onboardingBackground">#0E1014</color>

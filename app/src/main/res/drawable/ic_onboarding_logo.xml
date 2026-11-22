@@ -1,18 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- The welcome page's mark: the launcher icon's spark in the logo's
-     colours, brick red over denim blue (ic_launcher_spark), with the home
-     cut out of the centre (even-odd holes) so the page shows through. -->
+<!-- The welcome page's mark: the launcher icon whole, its grid and burst
+     (ic_launcher_mark) on the navy, as a rounded square that reads on a
+     light page or a dark one. -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="120dp"
     android:height="120dp"
     android:viewportWidth="120"
     android:viewportHeight="120">
     <path
-        android:fillColor="#3F72AF"
-        android:fillType="evenOdd"
-        android:pathData="M8,60Q54,54 60,8Q66,54 112,60Q66,66 60,112Q54,66 8,60Z M58.5,50.25Q60,49 61.5,50.25L69.69,57.07Q71,58.17 71,59.88L71,69.29Q71,71 69.29,71L63.18,71Q62.44,71 62.44,70.27L62.44,64.64Q62.44,63.67 61.47,63.67L58.53,63.67Q57.56,63.67 57.56,64.64L57.56,70.27Q57.56,71 56.82,71L50.71,71Q49,71 49,69.29L49,59.88Q49,58.17 50.31,57.07Z" />
-    <path
-        android:fillColor="#D4574B"
-        android:fillType="evenOdd"
-        android:pathData="M8,60Q54,54 60,8Q66,54 112,60Z M49,60L49,59.88Q49,58.17 50.31,57.07L58.5,50.25Q60,49 61.5,50.25L69.69,57.07Q71,58.17 71,59.88L71,60Z" />
+        android:fillColor="#14213D"
+        android:pathData="M30,0H90A30,30 0,0 1,120,30V90A30,30 0,0 1,90,120H30A30,30 0,0 1,0,90V30A30,30 0,0 1,30,0Z" />
+    <group
+        android:pivotX="54"
+        android:pivotY="54"
+        android:scaleX="1.3"
+        android:scaleY="1.3"
+        android:translateX="6"
+        android:translateY="6">
+        <path
+            android:fillColor="#F4F0E9"
+            android:pathData="M38,32.5H46A5.5,5.5 0,0 1,51.5,38V46A5.5,5.5 0,0 1,46,51.5H38A5.5,5.5 0,0 1,32.5,46V38A5.5,5.5 0,0 1,38,32.5ZM38,56.5H46A5.5,5.5 0,0 1,51.5,62V70A5.5,5.5 0,0 1,46,75.5H38A5.5,5.5 0,0 1,32.5,70V62A5.5,5.5 0,0 1,38,56.5ZM62,56.5H70A5.5,5.5 0,0 1,75.5,62V70A5.5,5.5 0,0 1,70,75.5H62A5.5,5.5 0,0 1,56.5,70V62A5.5,5.5 0,0 1,62,56.5Z" />
+        <path
+            android:fillColor="#FCA311"
+            android:pathData="M66,29.5L68.07,37.01L74.84,33.16L70.99,39.93L78.5,42L70.99,44.07L74.84,50.84L68.07,46.99L66,54.5L63.93,46.99L57.16,50.84L61.01,44.07L53.5,42L61.01,39.93L57.16,33.16L63.93,37.01Z" />
+    </group>
 </vector>

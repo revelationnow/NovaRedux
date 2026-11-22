@@ -1,0 +1,10 @@
+<p>NovaRedux Connect is the optional companion to the NovaRedux launcher, and the only part of NovaRedux that goes online. NovaRedux itself has no internet permission; it asks this app for what needs the network.</p>
+
+<p>Today that is one thing: <b>web search suggestions</b>. With Web suggestions turned on in NovaRedux's search settings, what you type in search goes, through this app, to the suggestion service of the search engine you chose in NovaRedux (Google, DuckDuckGo, Brave, Bing, Ecosia, Startpage, Qwant, Yahoo, Yandex or Kagi), and the suggested searches come back.</p>
+
+<ul>
+<li>Sends nothing else: no account, no identifiers, no history, no cookies</li>
+<li>Answers NovaRedux only; other apps are refused</li>
+<li>Keeps recent answers in memory for a few minutes, and stores nothing</li>
+<li>No launcher icon: its App info page has a gear that says what it sends</li>
+</ul>
