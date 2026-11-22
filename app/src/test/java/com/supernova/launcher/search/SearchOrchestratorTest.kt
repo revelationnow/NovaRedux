@@ -3,7 +3,9 @@ package com.supernova.launcher.search
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestScope
+import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -170,6 +172,51 @@ class SearchOrchestratorTest {
         assertTrue(delivered[1] is SearchResult.App)
         assertTrue(delivered[2] is SearchResult.Web)
         assertTrue(delivered[3] is SearchResult.ProviderChips)
+    }
+
+    // A provider that waits for the typing to pause, as web suggestions do.
+    private class DebouncedProvider(override val debounceMillis: Long) : SearchProvider {
+        override val id: String = "suggestions"
+        val asked = mutableListOf<String>()
+
+        override fun search(query: String): List<SearchResult> {
+            asked += query
+            return listOf(SearchResult.Suggestion("$query!", query, WebEngine(WebProvider.GOOGLE)))
+        }
+    }
+
+    @Test
+    fun aSlowProviderDoesNotHoldBackTheOthers() = runTest {
+        val slow = DebouncedProvider(debounceMillis = 1_000L)
+        val fast = FakeProvider("shortcuts") { listOf(shortcutResult("Compose")) }
+        val subject = orchestrator(this, emptyList(), listOf(slow, fast))
+
+        val deliveries = mutableListOf<List<SearchResult>>()
+        subject.search("co") { deliveries.add(it) }
+        runCurrent()
+        // The shortcuts are on screen while the slow one still waits.
+        assertEquals(listOf<SearchResult>(shortcutResult("Compose")), deliveries.last())
+
+        advanceUntilIdle()
+        assertEquals(
+            listOf(shortcutResult("Compose"), SearchResult.Suggestion("co!", "co", WebEngine(WebProvider.GOOGLE))),
+            deliveries.last()
+        )
+    }
+
+    @Test
+    fun aDebouncedProviderIsAskedOnceForQuickTyping() = runTest {
+        val debounced = DebouncedProvider(debounceMillis = 250L)
+        val subject = orchestrator(this, emptyList(), listOf(debounced))
+
+        subject.search("c") {}
+        advanceTimeBy(100L)
+        subject.search("co") {}
+        advanceTimeBy(100L)
+        subject.search("cof") {}
+        advanceUntilIdle()
+
+        assertEquals(listOf("cof"), debounced.asked)
     }
 
     @Test

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- NovaRedux's denim blue: the launcher's icon has it in its spark. -->
+    <color name="icon_background">#3F72AF</color>
+</resources>

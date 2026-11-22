@@ -815,6 +815,14 @@
     <string name="search_calculator">Calculator</string>
     <string name="search_hidden_apps">Search hidden apps</string>
     <string name="search_hidden_apps_summary">Hidden apps will appear in search results</string>
+    <string name="search_suggestions">Web suggestions</string>
+    <string name="search_suggestions_summary">Your search engine suggests searches as you type, through the NovaRedux Connect app</string>
+    <string name="search_suggestion_fill">Put in the search field</string>
+    <string name="connect_title">NovaRedux Connect</string>
+    <string name="connect_message">Web suggestions come through NovaRedux Connect, a small separate app. NovaRedux has no internet access of its own: Connect is the one part that goes online, and only to ask your search engine for suggestions while you type.</string>
+    <string name="connect_get">Get NovaRedux Connect</string>
+    <string name="connect_installed">Installed. Tap for what it sends, and to whom</string>
+    <string name="connect_missing">Not installed, and web suggestions need it. Tap to get it</string>
     <string name="search_private_keyboard">Private keyboard mode</string>
     <string name="search_private_keyboard_summary">Asks the keyboard not to learn from your searches</string>
     <string name="home_button_action">Home button action</string>

@@ -586,6 +586,8 @@ class SettingsActivity : AppCompatActivity() {
                     requestContactsPermission.launch(android.Manifest.permission.READ_CONTACTS)
                 }
             },
+            onSearchSuggestionsEnabled = { com.supernova.launcher.ui.ConnectPrompt.explainIfMissing(this) },
+            openConnect = { com.supernova.launcher.ui.ConnectPrompt.open(this) },
             editPopupRows = ::showPopupRowsDialog,
             onFeedCalendarEnabled = ::requestFeedCalendarIfNeeded,
             onFeedContactsEnabled = ::requestFeedContactsIfNeeded,

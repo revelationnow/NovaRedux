@@ -16,4 +16,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "NovaRedux"
 include(":app")
+// NovaRedux Connect, the companion app that goes online for NovaRedux.
+include(":connect")
 include(":baselineprofile")

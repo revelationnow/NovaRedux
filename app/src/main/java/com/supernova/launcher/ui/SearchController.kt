@@ -107,8 +107,12 @@ class SearchController(
             onLaunched()
         }
 
-        fun dismiss() {
-            rememberQuery(input.text?.toString().orEmpty())
+        fun dismiss() = dismissAfter(input.text?.toString().orEmpty())
+
+        // As dismiss, keeping query rather than what was typed: a web
+        // suggestion that was searched for.
+        fun dismissAfter(query: String) {
+            rememberQuery(query)
             onDismissed()
         }
 
@@ -425,6 +429,11 @@ class SearchController(
             ),
             ContactSearchProvider(context.applicationContext) {
                 viewModel.state.value.prefs.searchContactCards
+            },
+            com.supernova.launcher.search.SuggestionSearchProvider(
+                engine = { com.supernova.launcher.search.WebEngine.of(viewModel.state.value.prefs) }
+            ) { query, engine ->
+                com.supernova.launcher.connect.NovaConnect.suggestions(context.applicationContext, query, engine.name)
             }
         )
         return SearchOrchestrator(
@@ -443,6 +452,7 @@ class SearchController(
             com.supernova.launcher.search.FolderSearchProvider.ID -> prefs.searchFolders
             com.supernova.launcher.search.CardSearchProvider.ID -> prefs.searchCards && hasCards
             ContactSearchProvider.ID -> prefs.searchContacts
+            com.supernova.launcher.search.SuggestionSearchProvider.ID -> prefs.searchSuggestions
             else -> true
         }
     }
@@ -636,7 +646,14 @@ class SearchController(
         onFolderLongPress = onFolderLongPress,
         onRecent = ::runRecentQuery,
         onRemoveRecent = ::removeRecentQuery,
-        onClearRecents = ::clearRecentQueries
+        onClearRecents = ::clearRecentQueries,
+        onSuggestion = { suggestion ->
+            if (onOpenUri(suggestion.engine.searchUrl(suggestion.text), null)) surface.dismissAfter(suggestion.text)
+        },
+        onFillQuery = { text ->
+            surface.input.setText(text)
+            surface.input.setSelection(text.length)
+        }
     )
 
     // The empty search window: recent searches, suggested shortcuts, the

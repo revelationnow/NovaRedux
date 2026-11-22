@@ -7,6 +7,11 @@ package com.supernova.launcher.search
 interface SearchProvider {
     val id: String
     fun search(query: String): List<SearchResult>
+
+    // How long the async tier waits after a keystroke before asking: for a
+    // source that costs something per query (web suggestions go out to the
+    // network), so a word typed quickly is asked about once.
+    val debounceMillis: Long get() = 0L
 }
 
 // Result variants for the global search surface. Drawables ride along where
@@ -52,6 +57,10 @@ sealed class SearchResult {
 
     data class Web(val query: String, val provider: WebEngine) : SearchResult()
     data class ProviderChips(val query: String) : SearchResult()
+
+    // A search the web engine suggests for what was typed (query), asked
+    // through NovaRedux Connect; a tap searches the web for text.
+    data class Suggestion(val text: String, val query: String, val engine: WebEngine) : SearchResult()
 
     companion object {
         // What Enter opens: the first row the results list shows that one tap

@@ -120,6 +120,10 @@ object SettingsCatalogue {
         // Fired on a genuine user enable, so the activity can run the
         // READ_CONTACTS runtime request when it isn't granted yet.
         val onSearchContactsEnabled: () -> Unit = {},
+        // Web suggestions turned on, and NovaRedux Connect (the app they
+        // come through): its own page once installed, else where to get it.
+        val onSearchSuggestionsEnabled: () -> Unit = {},
+        val openConnect: () -> Unit = {},
         val editPopupRows: () -> Unit = {},
         // Feed page: contextual permission requests on genuine enables (the
         // contacts-search pattern), the custom-cards manager, and the
@@ -1084,6 +1088,28 @@ object SettingsCatalogue {
                     onClick = { actions.editSearchUrl(false) },
                     visibleIf = { it.searchWebProvider == WebProvider.CUSTOM }
                 ),
+                // From the engine above, through the companion app: turned on
+                // without it, the activity says what it is and where to get it.
+                SettingItem.Toggle(
+                    R.string.search_suggestions,
+                    get = { it.searchSuggestions },
+                    set = { enabled ->
+                        viewModel.set(Pref.searchSuggestions, enabled)
+                        if (enabled) actions.onSearchSuggestionsEnabled()
+                    },
+                    subtitle = R.string.search_suggestions_summary
+                ),
+                // The companion itself: what it sends once installed, where
+                // to get it until then.
+                SettingItem.Row(
+                    R.string.connect_title,
+                    subtitle = {
+                        val installed = com.supernova.launcher.connect.NovaConnect.installed(context)
+                        context.getString(if (installed) R.string.connect_installed else R.string.connect_missing)
+                    },
+                    onClick = actions.openConnect,
+                    visibleIf = { it.searchSuggestions }
+                ).nested(),
                 SettingItem.Toggle(
                     R.string.search_contacts,
                     get = { it.searchContacts },

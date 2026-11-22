@@ -2,6 +2,7 @@ package com.supernova.launcher
 
 import android.content.Intent
 import android.util.Base64
+import android.widget.EditText
 import androidx.datastore.preferences.core.MutablePreferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
@@ -38,7 +39,8 @@ import org.junit.runner.RunWith
 //   pref.s64.<key> <base64 of the text>, for values with spaces or quotes.
 // `shots` lists the screens, comma-separated: home, drawer, search, settings,
 // and settings.searchbar (the search bar's settings page). The default is the
-// first four.
+// first four. `query` is typed into search before its shot, with time for web
+// suggestions to come back (through NovaRedux Connect, when installed).
 @RunWith(AndroidJUnit4::class)
 class ScreenshotTour {
 
@@ -109,11 +111,19 @@ class ScreenshotTour {
         "search" -> {
             val bar = device.findObject(By.res(appId, "desktopSearchBar"))
             bar?.click()
-            bar != null && shows("drawerSheet")
+            (bar != null && shows("drawerSheet")).also { opened -> if (opened) typeQuery() }
         }
         "settings" -> startSettings(Intent())
         "settings.searchbar" -> startSettings(Intent().putExtra(SettingsActivity.EXTRA_OPEN_SEARCH_BAR, true))
         else -> false
+    }
+
+    // Into whichever search field has the focus.
+    private fun typeQuery() {
+        val query = args.getString("query") ?: return
+        val field = device.wait(Until.findObject(By.focused(true).clazz(EditText::class.java)), WAIT_MS) ?: return
+        field.text = query
+        Thread.sleep(QUERY_WAIT_MS)
     }
 
     // A slow swipe up from the lower page; failing that, the search bar's
@@ -167,6 +177,7 @@ class ScreenshotTour {
         val DEFAULT_SHOTS = listOf("home", "drawer", "search", "settings")
         const val WAIT_MS = 8_000L
         const val SETTLE_MS = 1_500L
+        const val QUERY_WAIT_MS = 4_000L
         const val SLOW_SWIPE_STEPS = 60
         const val BACK_PRESSES = 2
     }

@@ -1,6 +1,7 @@
 # Checks every push to main or dev and every pull request: lint, detekt,
-# unit tests and a debug APK. Release signing and F-Droid's reproducible
-# build are untouched; this only builds the debug variant.
+# unit tests and debug APKs of NovaRedux and of NovaRedux Connect (its
+# companion app). Release signing and F-Droid's reproducible build are
+# untouched; this only builds the debug variants.
 name: CI
 
 on:
@@ -52,11 +53,15 @@ jobs:
 
       - name: Lint, detekt, unit tests and debug build
         run: >
-          ./gradlew --stacktrace
+          ./gradlew --stacktrace --continue
           :app:lintDebug
           :app:detekt
           :app:testDebugUnitTest
           :app:assembleDebug
+          :connect:lintDebug
+          :connect:detekt
+          :connect:testDebugUnitTest
+          :connect:assembleDebug
 
       - name: Upload reports
         if: always()
@@ -66,6 +71,8 @@ jobs:
           path: |
             app/build/reports/
             app/build/test-results/
+            connect/build/reports/
+            connect/build/test-results/
           if-no-files-found: ignore
 
       - name: Upload debug APK
@@ -73,4 +80,11 @@ jobs:
         with:
           name: novaredux-debug-apk
           path: app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
+
+      - name: Upload NovaRedux Connect debug APK
+        uses: actions/upload-artifact@v7
+        with:
+          name: novaredux-connect-debug-apk
+          path: connect/build/outputs/apk/debug/*.apk
           if-no-files-found: error

@@ -5,22 +5,25 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.ensureActive
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 // Two-tier fan-out for the global search overlay. The immediate tier (apps,
 // calculator, web fallback) runs synchronously on the caller so
 // every keystroke paints without a frame of latency; the async tier
-// (shortcuts, contacts - binder and content-provider backed) runs in a
-// cancel-and-restart coroutine and re-delivers the merged list. A new query
+// (shortcuts, contacts and web suggestions - binder, content-provider and
+// network backed) runs in a cancel-and-restart coroutine, each provider on
+// its own, and re-delivers the merged list as each answers. A new query
 // cancels the previous async pass; a stale pass that already finished is
 // dropped by the generation check on the main dispatcher.
 class SearchOrchestrator(
     private val immediateProviders: List<SearchProvider>,
     private val asyncProviders: List<SearchProvider>,
     private val scope: CoroutineScope,
-    private val backgroundDispatcher: CoroutineDispatcher = Dispatchers.Default,
+    // IO: the async providers block on binder calls and, through the
+    // companion app, on the network.
+    private val backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private val mainDispatcher: CoroutineDispatcher = Dispatchers.Main,
     // Per-provider enable flags, keyed by SearchProvider.id; the controller
     // backs this with the search prefs.
@@ -48,15 +51,21 @@ class SearchOrchestrator(
 
         val active = asyncProviders.filter { isEnabled(it.id) }
         if (active.isEmpty()) return
-        asyncJob = scope.launch(backgroundDispatcher) {
-            val async = active.flatMap { provider ->
-                runLogged("search provider") { provider.search(trimmed) }.getOrDefault(emptyList())
-            }
-            ensureActive()
-            if (async.isEmpty()) return@launch
-            withContext(mainDispatcher) {
-                if (generation == startedGeneration) {
-                    onResults(sectioned(immediate + async))
+        // A slow provider (web suggestions) never holds back the ones that
+        // answer at once. The slots keep the providers' own order, whatever
+        // order they answer in.
+        val answers = arrayOfNulls<List<SearchResult>>(active.size)
+        asyncJob = scope.launch(mainDispatcher) {
+            active.forEachIndexed { index, provider ->
+                launch {
+                    if (provider.debounceMillis > 0) delay(provider.debounceMillis)
+                    val found = withContext(backgroundDispatcher) {
+                        runLogged("search provider") { provider.search(trimmed) }.getOrDefault(emptyList())
+                    }
+                    if (found.isNotEmpty() && generation == startedGeneration) {
+                        answers[index] = found
+                        onResults(sectioned(immediate + answers.filterNotNull().flatten()))
+                    }
                 }
             }
         }
@@ -87,6 +96,7 @@ class SearchOrchestrator(
         is SearchResult.Shortcut -> 4
         is SearchResult.Contact -> 5
         is SearchResult.Web -> 6
-        is SearchResult.ProviderChips -> 7
+        is SearchResult.Suggestion -> 7
+        is SearchResult.ProviderChips -> 8
     }
 }

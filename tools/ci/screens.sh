@@ -15,6 +15,9 @@ out=screens
 
 adb install -r -g "$apk"
 adb install -r "$tests"
+# NovaRedux Connect, when built, for web suggestions in the search shot.
+connect=connect/build/outputs/apk/debug/connect-debug.apk
+if [ -f "$connect" ]; then adb install -r "$connect"; fi
 adb shell cmd role add-role-holder --user 0 android.app.role.HOME "$app" \
     || echo "Could not make $app the home app; the tour starts it by class"
 adb logcat -c

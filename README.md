@@ -19,7 +19,7 @@ NovaRedux keeps what made Nova great and leaves out everything that came after t
 - **Target:** Nova 7.0.57 (December 2021), the last stable release before the sale, plus the Nova 8.0 beta of 15 July 2022.
 - **Out of scope:** Branch's search and app-discovery features, and Instabridge's ads, trackers and AI assistant.
 - **No paid tier:** everything that needed Nova Launcher Prime is free.
-- **Offline by design:** like Supernova, NovaRedux has no internet permission. A Nova feature that needs the network only comes in if it can work through another app on the phone.
+- **Offline by design:** like Supernova, NovaRedux has no internet permission. A Nova feature that needs the network only comes in if it can work through another app on the phone: weather comes from [Breezy Weather](https://github.com/breezy-weather/breezy-weather), and web suggestions from NovaRedux Connect (below).
 
 ## Status
 
@@ -339,21 +339,25 @@ The tracker is generated. To change a row, edit [`docs/parity/nova-parity.csv`](
 python3 tools/parity_readme.py
 ```
 
+## NovaRedux Connect
+
+[`connect/`](connect) is a small, optional companion app, and the only part of NovaRedux with internet access. NovaRedux asks it, through a content provider that answers NovaRedux alone, for what its search engine suggests while a search is typed; it sends nothing else and stores nothing. Without it, NovaRedux works the same, minus web suggestions. [PRIVACY.md](PRIVACY.md) says exactly what it sends.
+
 ## Building
 
 You need JDK 17 or newer and the Android SDK with the compile SDK the project uses (37).
 
 ```sh
-./gradlew :app:assembleDebug
+./gradlew :app:assembleDebug :connect:assembleDebug
 ```
 
-The debug APK lands in `app/build/outputs/apk/debug/`. Debug builds install beside release builds, because they use a `.debug` application ID suffix. Release signing is described in `app/build.gradle.kts`.
+The debug APKs land in `app/build/outputs/apk/debug/` and `connect/build/outputs/apk/debug/`. NovaRedux's debug build installs beside its release build, because it uses a `.debug` application ID suffix; Connect has one ID for both, and answers either. Release signing is described in `app/build.gradle.kts`.
 
 ## Contributing
 
 - Pick a ❌ or 🟡 row and open an issue before starting anything large.
 - Have Nova 7.0.57 on a spare phone? Check ✅ rows side by side and correct their status.
-- Keep the offline design: no internet permission, no analytics.
+- Keep the offline design: no internet permission in NovaRedux, no analytics. What truly needs the network goes through another app (Connect, or an app the user already has).
 - If a change would suit Supernova too, offer it upstream as well.
 
 ## Credits and licence

@@ -65,7 +65,11 @@ class SearchResultsAdapter(
         // long-press forgets it, the header's Clear forgets them all.
         val onRecent: (String) -> Unit = {},
         val onRemoveRecent: (String) -> Unit = {},
-        val onClearRecents: () -> Unit = {}
+        val onClearRecents: () -> Unit = {},
+        // A web suggestion: a tap searches the web for it, and its arrow
+        // types it into the field to go on from there.
+        val onSuggestion: (SearchResult.Suggestion) -> Unit = {},
+        val onFillQuery: (String) -> Unit = {}
     )
 
     // The best match, shown as a card with the app's own shortcuts.
@@ -162,6 +166,7 @@ class SearchResultsAdapter(
             is SearchResult.Contact -> "contact/${result.contactId}"
             is SearchResult.App -> "app/${result.app.userSerial}/${result.app.packageName}/${result.app.className}"
             is SearchResult.Web -> "web"
+            is SearchResult.Suggestion -> "suggestion/${result.text}"
             is SearchResult.ProviderChips -> "chips"
         }
     }
@@ -206,14 +211,18 @@ class SearchResultsAdapter(
         // Every query ends with the providers; the web engine leads them.
         // With every provider off it's the web engine alone, as a plain row.
         // Only Google has a mark among them, so another engine keeps its row.
+        // The engine's own suggestions follow its row.
         val webRows = results.filterIsInstance<SearchResult.Web>().map { Row.Result(it) }
+        val suggestionRows = results.filterIsInstance<SearchResult.Suggestion>().map { Row.Result(it) }
         if (SearchMarks.hasProviders(prefs)) {
             val engine = prefs?.searchWebProvider ?: com.supernova.launcher.search.WebProvider.GOOGLE
             if (engine != com.supernova.launcher.search.WebProvider.GOOGLE) rows.addAll(webRows)
+            rows.addAll(suggestionRows)
             rows.add(Row.Header(R.string.search_with))
             rows.add(Row.ProviderIcons(query))
         } else {
             rows.addAll(webRows)
+            rows.addAll(suggestionRows)
         }
         notifyRowsChanged()
     }
@@ -312,6 +321,7 @@ class SearchResultsAdapter(
                 is SearchResult.Folder -> (holder as RowHolder).bindFolder(result)
                 is SearchResult.Card -> (holder as CardHolder).bind(result)
                 is SearchResult.Web -> (holder as RowHolder).bindWeb(result)
+                is SearchResult.Suggestion -> (holder as RowHolder).bindSuggestion(result)
                 is SearchResult.App, is SearchResult.ProviderChips -> Unit
             }
         }
@@ -616,6 +626,24 @@ class SearchResultsAdapter(
             binding.resultLabel.text =
                 binding.root.context.getString(R.string.search_web_for, web.provider.name, web.query)
             binding.root.setOnClickListener { callbacks.onWeb(web) }
+        }
+
+        // What was typed plain and the engine's addition bold, as the
+        // engines show their own suggestions.
+        fun bindSuggestion(suggestion: SearchResult.Suggestion) {
+            reset()
+            binding.resultIcon.setImageResource(R.drawable.ic_search)
+            tintIcon()
+            binding.resultLabel.text = highlighted(
+                suggestion.text,
+                com.supernova.launcher.search.SuggestionSearchProvider.completion(suggestion.text, suggestion.query)
+            )
+            binding.root.contentDescription = binding.root.context
+                .getString(R.string.search_web_for, suggestion.engine.name, suggestion.text)
+            binding.root.setOnClickListener { callbacks.onSuggestion(suggestion) }
+            addActionButton(R.drawable.ic_north_west, R.string.search_suggestion_fill) {
+                callbacks.onFillQuery(suggestion.text)
+            }
         }
 
         fun bindFolder(folder: SearchResult.Folder) {

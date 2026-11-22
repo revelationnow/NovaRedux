@@ -46,8 +46,8 @@ jobs:
           fi
           yes | "$sdkmanager" --licenses > /dev/null
 
-      - name: Build the app and the tour
-        run: ./gradlew --stacktrace :app:assembleDebug :app:assembleDebugAndroidTest
+      - name: Build the app, the tour and NovaRedux Connect
+        run: ./gradlew --stacktrace :app:assembleDebug :app:assembleDebugAndroidTest :connect:assembleDebug
 
       - name: Enable KVM and ImageMagick
         run: |

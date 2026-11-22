@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">NovaRedux Connect</string>
+    <string name="about_what">NovaRedux has no internet access of its own. This app is the one part of NovaRedux that goes online, and only for web suggestions.</string>
+    <string name="about_sends">While you type a search in NovaRedux with Web suggestions on, what you have typed goes to the suggestion service of the search engine you chose in NovaRedux. It answers with suggested searches, which NovaRedux shows under its web search row.</string>
+    <string name="about_not_sent">Nothing else is sent: no account, no identifiers, no history. This app answers NovaRedux and no other app, and keeps recent answers in memory only, for a few minutes.</string>
+    <string name="about_stop">To stop it, turn off Web suggestions in NovaRedux’s search settings, or uninstall this app.</string>
+    <string name="about_source">Source code</string>
+</resources>

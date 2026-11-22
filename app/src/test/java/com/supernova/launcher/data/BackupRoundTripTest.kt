@@ -106,6 +106,7 @@ class BackupRoundTripTest {
         searchHiddenApps = true,
         searchHistory = false,
         searchPrivateKeyboard = true,
+        searchSuggestions = true,
         homeSearch = true,
         homeButtonAction = "EXPAND_NOTIFICATIONS",
         searchBarConfig = """{"desktop":{"placement":"DOCK_ABOVE","chips":["VOICE","DATE"]}}""",

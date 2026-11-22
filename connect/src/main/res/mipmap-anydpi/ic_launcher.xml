@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- NovaRedux's spark in paper on its denim blue, with a globe cut into its
+     centre where the launcher's icon has a home: the part of NovaRedux that
+     goes online. -->
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+    <background android:drawable="@color/icon_background" />
+    <foreground android:drawable="@drawable/ic_connect_spark" />
+    <monochrome android:drawable="@drawable/ic_connect_spark_mono" />
+</adaptive-icon>

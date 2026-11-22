@@ -1,14 +1,19 @@
 # Privacy policy
 
-Effective 21 November 2026. Applies to the NovaRedux launcher app
+Effective 22 November 2026. Applies to the NovaRedux launcher app
 (`io.github.revelationnow.novaredux`), a modified version of the Supernova
-launcher, wherever it is installed from.
+launcher, and to its optional companion app NovaRedux Connect
+(`io.github.revelationnow.novaredux.connect`), wherever they are installed
+from.
 
 ## In short
 
 NovaRedux collects no data. It has no internet permission, no analytics, no
 ads, no accounts and no tracking. Everything it reads stays on your phone,
-and nothing is sent to the developer or anyone else.
+and nothing is sent to the developer or anyone else. The one exception is
+optional: with web suggestions turned on and the NovaRedux Connect app
+installed, what you type in search goes to your chosen search engine to
+suggest searches.
 
 ## What NovaRedux reads locally
 
@@ -42,6 +47,11 @@ Only when you do it yourself:
 - **Web search.** Tapping a web search result opens your browser with your
   query on the search engine you picked. From then on that search engine's
   and that browser's privacy policies apply.
+- **Web suggestions** (off unless you turn them on, and only with NovaRedux
+  Connect installed). While you type a search, NovaRedux passes what you
+  have typed (two letters or more, after a pause) to NovaRedux Connect, which
+  asks the suggestion service of the search engine you picked and hands the
+  suggestions back. See below.
 - **Sharing.** Export backup and Share crash log hand a file to the app you
   choose. The crash log holds the error, the app version and the device
   model, and is sent only if you share it.
@@ -52,6 +62,25 @@ Only when you do it yourself:
   NovaRedux's settings in your device backup (for example to your Google
   account) or copy them to a new phone. NovaRedux doesn't send these
   itself; your device backup settings control it.
+
+## NovaRedux Connect
+
+NovaRedux Connect is a separate, optional app, and the only part of
+NovaRedux with internet access. It exists so that the launcher itself never
+needs that permission. It does one thing: when NovaRedux asks, it sends
+what you have typed in NovaRedux's search to the suggestion service of the
+search engine you picked in NovaRedux (Google, DuckDuckGo, Brave, Bing,
+Ecosia, Startpage, Qwant, Yahoo, Yandex or Kagi), over HTTPS, and returns
+the suggested searches. That search engine's privacy policy applies to
+what it receives.
+
+It sends no cookies, accounts, identifiers or history. Requests carry its
+own name as the user agent and your phone's language, so the suggestions
+come in it, and the search engine sees your IP address as with any web
+request. It answers only NovaRedux (other apps are refused), keeps recent
+answers in memory for a few minutes so the same words aren't asked twice,
+and stores nothing. Turn off Web suggestions in NovaRedux's search settings,
+or uninstall NovaRedux Connect, to stop it.
 
 ## Children
 

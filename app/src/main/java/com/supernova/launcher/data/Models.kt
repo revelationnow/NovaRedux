@@ -454,6 +454,10 @@ data class LauncherPrefs(
     // Sets IME_FLAG_NO_PERSONALIZED_LEARNING on the search field. On by
     // default.
     val searchPrivateKeyboard: Boolean = true,
+    // Web suggestions while typing, from the search engine through the
+    // NovaRedux Connect app (NovaConnect). Off by default: what is typed
+    // leaves the phone.
+    val searchSuggestions: Boolean = false,
     // Long-pressing a recent search offers to keep it as a home-screen
     // shortcut that re-runs the query.
     val searchQueryShortcuts: Boolean = true,

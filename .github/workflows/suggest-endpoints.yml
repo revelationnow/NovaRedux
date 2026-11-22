@@ -1,0 +1,45 @@
+# Asks every web search engine NovaRedux Connect knows for suggestions, for
+# real, and prints what each said: an engine that moves its suggestion
+# address or changes its answer shows up here before users notice. Weekly,
+# and on demand. (connect/.../LiveEndpointsTest.kt; it is skipped elsewhere.)
+name: Suggestion endpoints
+
+on:
+  schedule:
+    - cron: "23 7 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ask:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v6
+        with:
+          cache-provider: basic
+
+      - name: Accept Android SDK licences
+        run: |
+          : "${ANDROID_HOME:?ANDROID_HOME is not set on this runner}"
+          sdkmanager="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+          if [ ! -x "$sdkmanager" ]; then
+            sdkmanager="$(find "$ANDROID_HOME/cmdline-tools" -path '*/bin/sdkmanager' | sort -V | tail -n 1)"
+          fi
+          yes | "$sdkmanager" --licenses > /dev/null
+
+      - name: Ask the engines
+        env:
+          NOVAREDUX_LIVE_SUGGEST: "1"
+        run: ./gradlew --stacktrace :connect:testDebugUnitTest --tests '*LiveEndpointsTest*'

@@ -307,6 +307,7 @@ object Pref {
     val searchHiddenApps = bool("search_hidden_apps")
     val searchHistory = bool("search_history")
     val searchPrivateKeyboard = bool("search_private_keyboard")
+    val searchSuggestions = bool("search_suggestions")
     val searchQueryShortcuts = bool("search_query_shortcuts")
     val searchBarWidgetId = int("search_bar_widget_id")
     val searchBarWidgetProvider = text("search_bar_widget_provider")

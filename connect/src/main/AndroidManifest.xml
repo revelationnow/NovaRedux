@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Why this app exists: NovaRedux holds no internet permission, and
+         asks this app for what needs it. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- Nothing to back up: it keeps no data. -->
+    <application
+        android:allowBackup="false"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Connect">
+
+        <!-- What this app does and sends: from the gear on its App info
+             page, and from NovaRedux's search settings. It has no launcher
+             icon, so it stays out of the app drawer. -->
+        <activity
+            android:name=".AboutActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.APPLICATION_PREFERENCES" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- Web suggestions, answered only to NovaRedux's own packages (see
+             Callers). Exported, so NovaRedux can ask, and with no permission
+             to hold: a permission defined here would never reach a NovaRedux
+             installed before this app. -->
+        <provider
+            android:name=".SuggestionsProvider"
+            android:authorities="io.github.revelationnow.novaredux.connect.suggestions"
+            android:exported="true"
+            tools:ignore="ExportedContentProvider" />
+    </application>
+</manifest>
