@@ -101,7 +101,7 @@ internal object LayoutConverter {
         private fun prefs(dockPages: Int): LauncherPrefs {
             val grid = layout.grid
             val groups = layout.groups
-            return base.copy(
+            val laidOut = base.copy(
                 gridCols = cols,
                 gridRows = rows,
                 dockCount = dockCount,
@@ -115,6 +115,8 @@ internal object LayoutConverter {
                 drawerGroups = groups?.let { DrawerGroupConverter.merged(it, base.drawerGroups, maker.phone) }
                     ?: base.drawerGroups
             )
+            // Nova's own settings, where it says what they were.
+            return NovaSettings.applyTo(laidOut, layout.settings)
         }
 
         // Page numbers as Supernova counts them. Ids that only order the
@@ -217,13 +219,18 @@ internal object LayoutConverter {
 
         // Null for what Supernova can't hold.
         fun make(item: ForeignItem): LauncherItem? {
+            // A swipe up on the icon carries over to whatever it becomes.
+            val swipe = NovaGestures.swipeAction(item.swipeUp)
             val start = LauncherItem(
-                id = phone.newId(), itemType = ItemType.APP, label = item.title, userSerial = item.userSerial
+                id = phone.newId(), itemType = ItemType.APP, label = item.title, userSerial = item.userSerial,
+                swipeAction = swipe?.first, swipeLabel = swipe?.second
             )
             return when (item.kind) {
                 // A folder keeps an icon only where it was given one.
-                ForeignKind.FOLDER ->
-                    start.copy(itemType = ItemType.FOLDER, iconBase64 = item.icon?.let(phone.encodeIcon))
+                ForeignKind.FOLDER -> start.copy(
+                    itemType = ItemType.FOLDER, iconBase64 = item.icon?.let(phone.encodeIcon),
+                    swipeToOpen = item.swipeToOpen
+                )
                 ForeignKind.WIDGET -> widget(item, start)
                 ForeignKind.APP -> app(item, start)
                 ForeignKind.APP_SHORTCUT -> appShortcut(item, start)
@@ -285,7 +292,7 @@ internal object LayoutConverter {
     private fun halves(cells: Float): Int = (cells * 2f).roundToInt().coerceAtLeast(0)
 
     // The launcher's own settings screen is named after it, so by its ending.
-    private fun ownAction(name: String): GestureAction? =
+    internal fun ownAction(name: String): GestureAction? =
         OWN_ACTIONS[name] ?: GestureAction.OPEN_SETTINGS.takeIf { name.endsWith("_SETTINGS") }
 
     private val OWN_ACTIONS = mapOf(

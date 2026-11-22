@@ -44,7 +44,11 @@ internal data class ForeignItem(
     // 0 is the phone's owner; a work profile carries its serial number.
     val userSerial: Long = 0L,
     // The icon the launcher kept for it, as an image file's bytes.
-    val icon: ByteArray? = null
+    val icon: ByteArray? = null,
+    // A swipe up on the icon, as the launcher wrote it ("Label$#Intent;...").
+    val swipeUp: String? = null,
+    // A folder whose tap opens its first app and whose swipe opens it.
+    val swipeToOpen: Boolean = false
 )
 
 // What the backup says about sizes; null where it says nothing, which keeps
@@ -94,5 +98,8 @@ internal data class ForeignLayout(
     val unread: Int = 0,
     // The app drawer's tabs and folders; null where the backup holds no
     // table of them.
-    val groups: List<ForeignGroup>? = null
+    val groups: List<ForeignGroup>? = null,
+    // The backup's preference entries, for the settings a launcher's own
+    // reader knows (NovaSettings).
+    val settings: Map<String, String> = emptyMap()
 )

@@ -36,7 +36,7 @@ internal object BackupLayouts {
             SplitLayout.TABLES.take(2).all { it in contents.tables } -> SplitLayout(contents).read()
             else -> null
         }
-        return layout?.copy(groups = DrawerGroupTables.read(contents))
+        return layout?.copy(groups = DrawerGroupTables.read(contents), settings = contents.prefs)
     }
 
     // A work profile carries its serial number; anything below 1 is the
@@ -74,6 +74,9 @@ private object FavoritesLayout {
     // page numbers that are real ones; without it the dock is one row whose
     // "screen" is the slot, and pages are ids.
     private const val STACKING = "zOrder"
+
+    // How a true flag column reads, as text or as a number.
+    private val TRUE = setOf("true", "1")
 
     private const val INFO_GRID = 7
     private const val GRID_SIZE = 1
@@ -124,7 +127,9 @@ private object FavoritesLayout {
                 shortcutId = intent?.extras?.get(SHORTCUT_ID),
                 widgetProvider = row.text("appWidgetProvider"),
                 userSerial = BackupLayouts.userSerial(row.long("profileId")),
-                icon = row.blob("icon")
+                icon = row.blob("icon"),
+                swipeUp = row.text("flingUpIntent")?.takeIf { it.isNotBlank() },
+                swipeToOpen = row.text("flingAsTap")?.trim()?.lowercase() in TRUE
             )
         }
     }
@@ -140,13 +145,16 @@ private object FavoritesLayout {
         val stated = BackupLayouts.size(state?.text(GRID_SIZE), ',')
             ?: BackupLayouts.size(prefs["migration_src_workspace_size"], ',')
         val settings = typedSettings(contents.settings)
+        // Nova 6 keeps each number on its own.
         return ForeignGrid(
-            cols = desktop?.second ?: stated?.first ?: prefs["pref_workspaceColumns"]?.toIntOrNull(),
-            rows = desktop?.first ?: stated?.second ?: prefs["pref_workspaceRows"]?.toIntOrNull(),
+            cols = desktop?.second ?: stated?.first ?: prefs["pref_workspaceColumns"]?.toIntOrNull()
+                ?: prefs["desktop_grid_cols"]?.toIntOrNull(),
+            rows = desktop?.first ?: stated?.second ?: prefs["pref_workspaceRows"]?.toIntOrNull()
+                ?: prefs["desktop_grid_rows"]?.toIntOrNull(),
             dockSlots = dockSlots(prefs, state),
             pageCount = prefs["workspace_screen_count"]?.toIntOrNull(),
-            drawerCols = drawer?.second ?: settings["drawer_columns"],
-            drawerRows = drawer?.first,
+            drawerCols = drawer?.second ?: settings["drawer_columns"] ?: prefs["drawer_app_grid_cols"]?.toIntOrNull(),
+            drawerRows = drawer?.first ?: prefs["drawer_app_grid_rows"]?.toIntOrNull(),
             folderCols = settings["folder_columns"],
             subgrid = prefs["desktop_grid"]?.contains("subgrid") == true
         )
