@@ -105,11 +105,7 @@ class ScreenshotTour {
     // False for a screen it doesn't know or couldn't reach, which it skips.
     private fun open(shot: String): Boolean = when (shot) {
         "home" -> true
-        "drawer" -> {
-            device.swipe(device.displayWidth / 2, device.displayHeight * 2 / 3, device.displayWidth / 2,
-                device.displayHeight / 5, SWIPE_STEPS)
-            shows("drawerSheet")
-        }
+        "drawer" -> openDrawer()
         "search" -> {
             val bar = device.findObject(By.res(appId, "desktopSearchBar"))
             bar?.click()
@@ -118,6 +114,21 @@ class ScreenshotTour {
         "settings" -> startSettings(Intent())
         "settings.searchbar" -> startSettings(Intent().putExtra(SettingsActivity.EXTRA_OPEN_SEARCH_BAR, true))
         else -> false
+    }
+
+    // A slow swipe up from the lower page; failing that, the search bar's
+    // tap opens the drawer too, and Back puts the keyboard away.
+    private fun openDrawer(): Boolean {
+        val x = device.displayWidth / 2
+        device.swipe(x, device.displayHeight * 3 / 4, x, device.displayHeight / 4, SLOW_SWIPE_STEPS)
+        if (shows("drawerSheet")) return true
+        device.findObject(By.res(appId, "desktopSearchBar"))?.click() ?: return false
+        val opened = shows("drawerSheet")
+        if (opened) {
+            device.pressBack()
+            settle()
+        }
+        return opened && device.hasObject(By.res(appId, "drawerSheet"))
     }
 
     private fun startSettings(extras: Intent): Boolean {
@@ -156,7 +167,7 @@ class ScreenshotTour {
         val DEFAULT_SHOTS = listOf("home", "drawer", "search", "settings")
         const val WAIT_MS = 8_000L
         const val SETTLE_MS = 1_500L
-        const val SWIPE_STEPS = 20
+        const val SLOW_SWIPE_STEPS = 60
         const val BACK_PRESSES = 2
     }
 }
