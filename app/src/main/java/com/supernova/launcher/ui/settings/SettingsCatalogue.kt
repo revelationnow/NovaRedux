@@ -92,6 +92,8 @@ object SettingsCatalogue {
         val pickDrawerGrid: () -> Unit = {},
         // The drawer's landscape grid, in the same dialog.
         val pickDrawerLandGrid: () -> Unit = {},
+        // The dock's background image: pick one, or take it away.
+        val pickDockImage: () -> Unit = {},
         val editFolderIcon: () -> Unit = {},
         val editBadgedApps: () -> Unit = {},
         val postTestBadge: () -> Unit = {},
@@ -657,6 +659,13 @@ object SettingsCatalogue {
                     get = { it.dockBgStyle != DockBgStyle.NONE },
                     set = { viewModel.set(Pref.dockBgStyle, if (it) DockBgStyle.ROUNDED else DockBgStyle.NONE) }
                 ).hiddenWhen(dockHidden),
+                // Nova's shapes: a rectangle (rounded by the radius below),
+                // an arc or a platform.
+                rows.choice(
+                    R.string.dock_bg_shape, listOf(DockBgStyle.ROUNDED, DockBgStyle.ARC, DockBgStyle.PLATFORM),
+                    { if (it.dockBgStyle == DockBgStyle.SQUARE) DockBgStyle.ROUNDED else it.dockBgStyle },
+                    { if (it == DockBgStyle.ROUNDED) R.string.dock_bg_rectangle else EnumLabels.of(it) }
+                ) { viewModel.set(Pref.dockBgStyle, it) }.hiddenWhen(dockBgHidden).nested(),
                 SettingItem.Slider(
                     R.string.dock_bg_opacity,
                     min = 0, max = 100,
@@ -682,6 +691,19 @@ object SettingsCatalogue {
                     },
                     display = { context.getString(R.string.padding_dp_value, it) },
                     preview = { p, v -> p.copy(dockBgRadius = v, dockBgStyle = DockBgStyle.ROUNDED) }
+                ).hiddenWhen {
+                    dockBgHidden(it) ?: dependsOn(
+                        R.string.dock_bg_shape, it.dockBgStyle in setOf(DockBgStyle.ARC, DockBgStyle.PLATFORM)
+                    )
+                }.nested(),
+                // An image filling it, from the gallery, as Nova offered.
+                SettingItem.Row(
+                    R.string.dock_bg_image,
+                    subtitle = {
+                        val set = it.dockBgImage.isNotEmpty()
+                        context.getString(if (set) R.string.dock_bg_image_set else R.string.option_none)
+                    },
+                    onClick = actions.pickDockImage
                 ).hiddenWhen(dockBgHidden).nested(),
                 SettingItem.Toggle(
                     R.string.dock_bg_behind_nav,
@@ -1306,6 +1328,18 @@ object SettingsCatalogue {
                     display = { context.getString(R.string.padding_dp_value, it) },
                     preview = { p, v -> SearchBarPrefs.withDrawerBar(p) { it.copy(radius = v) } }
                 ),
+                SettingItem.Slider(
+                    R.string.style_opacity, min = 0, max = 100, step = 5,
+                    get = { (SearchBarPrefs.drawerBar(it).alpha.coerceIn(0f, 1f) * 100f).roundToInt() },
+                    set = { v -> rows.editDrawerBar { it.copy(alpha = v / 100f) } },
+                    display = { context.getString(R.string.opacity_percent, it) },
+                    preview = { p, v -> SearchBarPrefs.withDrawerBar(p) { it.copy(alpha = v / 100f) } }
+                ),
+                SettingItem.Toggle(
+                    R.string.search_bar_shadow,
+                    get = { SearchBarPrefs.drawerBar(it).shadow },
+                    set = { on -> rows.editDrawerBar { it.copy(shadow = on) } }
+                ).hiddenWhen(drawerGlassHidden),
                 SettingItem.Toggle(
                     R.string.drawer_bar_hint_text,
                     get = { SearchBarPrefs.drawerBar(it).hint },

@@ -190,6 +190,7 @@ object Pref {
     val dockBgStyle = choice("dock_bg_style", DockBgStyle.entries)
     val dockBgOpacity = float("dock_bg_opacity", 0f..1f)
     val dockBgRadius = int("dock_bg_radius", 0..DOCK_BG_RADIUS_MAX)
+    val dockBgImage = text("dock_bg_image")
     val dockBgBehindNav = bool("dock_bg_behind_nav")
     val dockBgPadding = bool("dock_bg_padding")
     val dockLabels = bool("dock_labels")

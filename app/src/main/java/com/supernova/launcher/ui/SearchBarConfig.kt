@@ -111,7 +111,11 @@ data class DrawerSearchBarConfig(
     val hint: Boolean = true,
     // IconGlass name: the field as the icons' glass, as the home bar's
     // glass. It takes the place of the filled box and the outline.
-    val glass: String = "OFF"
+    val glass: String = "OFF",
+    // Opacity of the field, over its colour's own, and a shadow under it,
+    // as the home bar has (Nova styled both bars alike).
+    val alpha: Float = 1f,
+    val shadow: Boolean = false
 ) {
     companion object {
         // Half the field's height; a radius saved against the 52dp field

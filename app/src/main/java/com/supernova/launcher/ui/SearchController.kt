@@ -692,7 +692,8 @@ class SearchController(
         ) { it.label }
         val surface = overlaySurface ?: return
         styleSurface(surface)
-        surface.adapter.submitZeroState(shortcuts, frequent, allApps, folders, recentQueries, tab)
+        surface.adapter.appsTab = tab
+        surface.adapter.submitZeroState(shortcuts, frequent, allApps, folders, recentQueries)
     }
 
     private fun openContact(contact: SearchResult.Contact) {

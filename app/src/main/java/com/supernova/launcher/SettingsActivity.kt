@@ -522,6 +522,7 @@ class SettingsActivity : AppCompatActivity() {
             editSearchChips = ::showSearchChipsEditor,
             pickDrawerGrid = { showDrawerGridDialog(landscape = false) },
             pickDrawerLandGrid = { showDrawerGridDialog(landscape = true) },
+            pickDockImage = ::chooseDockImage,
             editFolderIcon = ::showFolderIconEditor,
             editBadgedApps = ::showBadgedAppsPicker,
             postTestBadge = ::postTestBadge,
@@ -892,6 +893,38 @@ class SettingsActivity : AppCompatActivity() {
     // A group's own page goes by the group's name.
     private fun applyGroupsTitle() {
         if (onGroupsPage()) binding.settingsTitle.text = groupsPane?.title ?: getString(R.string.drawer_groups)
+    }
+
+    // The dock's image: picked from the gallery, or, once there is one,
+    // picked again or taken away.
+    private fun chooseDockImage() {
+        if (viewModel.state.value.prefs.dockBgImage.isEmpty()) {
+            pickDockImage()
+            return
+        }
+        val choices = arrayOf(getString(R.string.dock_bg_image_choose), getString(R.string.dock_bg_image_remove))
+        MaterialAlertDialogBuilder(this)
+            .setTitle(R.string.dock_bg_image)
+            .setItems(choices) { _, which ->
+                if (which == 0) pickDockImage() else viewModel.set(Pref.dockBgImage, "")
+            }
+            .show()
+    }
+
+    private fun pickDockImage() {
+        pickPhoto(fromFiles = false) { uri ->
+            if (uri == null) return@pickPhoto
+            lifecycleScope.launch {
+                val encoded = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
+                    com.supernova.launcher.data.DockImage.encode(applicationContext, uri)
+                }
+                if (encoded == null) {
+                    Toast.makeText(this@SettingsActivity, R.string.photo_load_failed, Toast.LENGTH_SHORT).show()
+                } else {
+                    viewModel.set(Pref.dockBgImage, encoded)
+                }
+            }
+        }
     }
 
     private fun pickPhoto(fromFiles: Boolean, onPicked: (android.net.Uri?) -> Unit) {

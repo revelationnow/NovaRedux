@@ -308,6 +308,8 @@ object EnumLabels {
         DockBgStyle.NONE -> R.string.dock_bg_none
         DockBgStyle.ROUNDED -> R.string.dock_bg_rounded
         DockBgStyle.SQUARE -> R.string.dock_bg_square
+        DockBgStyle.ARC -> R.string.dock_bg_arc
+        DockBgStyle.PLATFORM -> R.string.dock_bg_platform
     }
 
     @StringRes

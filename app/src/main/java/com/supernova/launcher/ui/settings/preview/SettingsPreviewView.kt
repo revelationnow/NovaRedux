@@ -706,15 +706,16 @@ class SettingsPreviewView @JvmOverloads constructor(
     private fun dockBackground(
         prefs: LauncherPrefs,
         resolved: com.supernova.launcher.ui.theme.ResolvedSurface
-    ): Drawable? {
-        val radius = when (prefs.dockBgStyle) {
-            DockBgStyle.NONE -> return null
-            DockBgStyle.ROUNDED -> dp(prefs.dockBgRadius).toFloat()
-            DockBgStyle.SQUARE -> 0f
+    ): Drawable? = when (prefs.dockBgStyle) {
+        DockBgStyle.NONE -> null
+        DockBgStyle.ARC, DockBgStyle.PLATFORM ->
+            com.supernova.launcher.ui.DockShapeDrawable(prefs.dockBgStyle, resolved.surface)
+        DockBgStyle.ROUNDED, DockBgStyle.SQUARE -> {
+            val radius = if (prefs.dockBgStyle == DockBgStyle.ROUNDED) dp(prefs.dockBgRadius).toFloat() else 0f
+            com.supernova.launcher.ui.theme.SurfaceShapes.background(
+                resolved.surface, if (dockSquareBottom) floatArrayOf(radius, radius, 0f, 0f) else null, radius
+            )
         }
-        return com.supernova.launcher.ui.theme.SurfaceShapes.background(
-            resolved.surface, if (dockSquareBottom) floatArrayOf(radius, radius, 0f, 0f) else null, radius
-        )
     }
 
     // The navigation bar's height, which the dock clears or runs under.

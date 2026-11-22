@@ -206,6 +206,9 @@ data class LauncherPrefs(
     val dockBgOpacity: Float = 0.3f,
     // The dock background's corner radius, in dp.
     val dockBgRadius: Int = 14,
+    // An image filling the dock's background (DockImage), inline WebP in
+    // base64; "" for none. Shown while the dock has a background.
+    val dockBgImage: String = "",
     // Dock background runs flush to the window's bottom edge (no side or
     // bottom margins, square bottom corners), meeting the transparent nav
     // bar the way a draw-behind-navigation option reads. The window

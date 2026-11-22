@@ -1344,6 +1344,12 @@ class DrawerController(
         }
     }
 
+    // A colour with its own alpha scaled by the drawer field's opacity.
+    private fun scaledAlpha(color: Int, by: Float): Int =
+        androidx.core.graphics.ColorUtils.setAlphaComponent(
+            color, (android.graphics.Color.alpha(color) * by).roundToInt()
+        )
+
     // A windowed folder opened in the drawer greys the drawer out behind it,
     // as Nova 7's did, when that is on; its close brings the colour back.
     fun greyBehindFolder(grey: Boolean) {
@@ -2218,21 +2224,25 @@ class DrawerController(
         searchPill.cornerRadius =
             (searchConfig.radius ?: DrawerSearchBarConfig.MAX_RADIUS).coerceIn(0, DrawerSearchBarConfig.MAX_RADIUS) * density
         val glass = com.supernova.launcher.data.IconGlass.fromName(searchConfig.glass)
+        val fieldAlpha = searchConfig.alpha.coerceIn(0f, 1f)
         binding.drawerSearchField.background = if (glass == com.supernova.launcher.data.IconGlass.OFF) {
             searchPill
         } else {
-            GlassPillDrawable(glass, searchPill.cornerRadius)
+            GlassPillDrawable(glass, searchPill.cornerRadius).also { it.alpha = (fieldAlpha * OPAQUE).roundToInt() }
         }
         if (searchConfig.filled) {
-            searchPill.setColor(resolvedField.surface)
+            searchPill.setColor(scaledAlpha(resolvedField.surface, fieldAlpha))
             searchPill.setStroke(0, android.graphics.Color.TRANSPARENT)
         } else {
             searchPill.setColor(android.graphics.Color.TRANSPARENT)
             searchPill.setStroke(
                 (2 * density).toInt(),
-                (0x5A shl 24) or (resolvedField.text and 0xFFFFFF)
+                scaledAlpha((0x5A shl 24) or (resolvedField.text and 0xFFFFFF), fieldAlpha)
             )
         }
+        // Glass draws no shadow: one would show through it.
+        val shadowed = searchConfig.shadow && glass == com.supernova.launcher.data.IconGlass.OFF
+        binding.drawerSearchField.elevation = if (shadowed) FIELD_SHADOW_DP * density else 0f
         // The magnifier on the left is fixed, in the drawer's text colour.
         binding.drawerSearchIcon.visibility = View.VISIBLE
         binding.drawerSearchIcon.setImageResource(R.drawable.ic_search)
@@ -2715,6 +2725,9 @@ class DrawerController(
         const val ZOOM_FROM = DrawerOpenCurve.ZOOM_FROM
         // The fade to grey behind a windowed folder, and back.
         const val GREY_MS = 220L
+        // The drawer field's shadow, as the home bar's.
+        const val FIELD_SHADOW_DP = 4f
+        const val OPAQUE = 255f
         const val PULL_TO_SEARCH_DP = 56f
     }
 }

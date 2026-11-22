@@ -238,15 +238,16 @@ class SearchResultsAdapter(
         notifyRowsChanged()
     }
 
-    // appsTab: the tabs over the row of apps, on the one picked; null for
-    // the row alone.
+    // The tabs over the empty window's row of apps, on the one picked; null
+    // for the row alone. Read by the next submitZeroState.
+    var appsTab: AppsRowTab? = null
+
     fun submitZeroState(
         shortcuts: List<SuggestedShortcuts.Pill>,
         frequentApps: List<LaunchableApp>,
         allApps: List<LaunchableApp>,
         folders: List<SearchResult.Folder> = emptyList(),
-        recents: List<String> = emptyList(),
-        appsTab: AppsRowTab? = null
+        recents: List<String> = emptyList()
     ) {
         rows.clear()
         if (recents.isNotEmpty()) {
@@ -255,7 +256,7 @@ class SearchResultsAdapter(
         }
         if (shortcuts.isNotEmpty()) rows.add(Row.Shortcuts(shortcuts))
         // The tabs stay when the one picked has nothing, to pick another.
-        if (appsTab != null) rows.add(Row.AppsTabs(appsTab))
+        appsTab?.let { rows.add(Row.AppsTabs(it)) }
         if (frequentApps.isNotEmpty()) rows.add(Row.Frequent(frequentApps))
         if (allApps.isNotEmpty() || folders.isNotEmpty()) {
             rows.add(Row.Divider)
@@ -277,11 +278,13 @@ class SearchResultsAdapter(
         Row.RecentHeader -> TYPE_RECENT_HEADER
         is Row.Recent -> TYPE_ROW
         is Row.AppsTabs -> TYPE_APPS_TABS
-        is Row.Result -> when (row.result) {
-            is SearchResult.Calculation -> TYPE_CALC
-            is SearchResult.Card -> TYPE_CARD
-            else -> TYPE_ROW
-        }
+        is Row.Result -> resultType(row.result)
+    }
+
+    private fun resultType(result: SearchResult): Int = when (result) {
+        is SearchResult.Calculation -> TYPE_CALC
+        is SearchResult.Card -> TYPE_CARD
+        else -> TYPE_ROW
     }
 
     private fun fullWidth(view: View): View = view.apply {

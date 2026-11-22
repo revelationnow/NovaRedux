@@ -130,8 +130,7 @@ internal object NovaLooks {
     private val DOCK_SHAPES = mapOf(
         "RECT" to DockBgStyle.SQUARE, "RECTANGLE" to DockBgStyle.SQUARE, "ROUNDED" to DockBgStyle.ROUNDED,
         "ROUNDRECT" to DockBgStyle.ROUNDED, "ROUNDED_RECT" to DockBgStyle.ROUNDED,
-        // Until NovaRedux draws arcs and platforms, the nearest it has.
-        "ARC" to DockBgStyle.ROUNDED, "PLATFORM" to DockBgStyle.ROUNDED
+        "ARC" to DockBgStyle.ARC, "PLATFORM" to DockBgStyle.PLATFORM
     )
     private val FOLDER_MODES = mapOf(
         "WINDOW" to FolderMode.WINDOW, "FULLSCREEN" to FolderMode.IMMERSIVE,

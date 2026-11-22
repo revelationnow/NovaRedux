@@ -9,7 +9,10 @@ import com.supernova.launcher.data.SettingEnumSerializer
 enum class DockBgStyle {
     NONE,
     ROUNDED,
-    SQUARE;
+    SQUARE,
+    // Nova's other two (DockShapeDrawable): a curved top, and a shelf.
+    ARC,
+    PLATFORM;
 
     // Its name in the store and in a backup, read back leniently.
     // Pill was removed; a dock that had it keeps a background, rounded.

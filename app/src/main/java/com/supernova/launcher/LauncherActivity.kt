@@ -2406,6 +2406,9 @@ class LauncherActivity :
     private fun applyDockChrome(prefs: LauncherPrefs) {
         val key = listOf(
             prefs.dockEnabled, prefs.dockBgStyle, prefs.dockBgOpacity, prefs.dockBgRadius,
+            // The image by identity: the string is long, and only its
+            // replacement matters.
+            System.identityHashCode(prefs.dockBgImage),
             prefs.dockOverlay, prefs.showScrims,
             prefs.styleConfig, prefs.paletteSource, prefs.paletteSeed,
             prefs.searchBarConfig, prefs.searchBarWidgetId,
@@ -2604,12 +2607,26 @@ class LauncherActivity :
         )
         val resolvedDock = com.supernova.launcher.ui.theme.Styles.resolve(this, prefs)
             .of(com.supernova.launcher.ui.theme.SurfaceId.DOCK)
-        binding.dockBar.background = when (prefs.dockBgStyle) {
-            DockBgStyle.NONE -> null
-            DockBgStyle.ROUNDED -> dockBackgroundDrawable(
-                resolvedDock, dp(prefs.dockBgRadius).toFloat(), dockBehindNav || dockFullBleed
+        binding.dockBar.background = dockBackground(prefs, resolvedDock, dockBehindNav || dockFullBleed)
+    }
+
+    // Nova's shapes, filled with the dock's colour or its image; a plain
+    // rectangle with no image keeps the style engine's own background.
+    private fun dockBackground(
+        prefs: LauncherPrefs,
+        resolved: com.supernova.launcher.ui.theme.ResolvedSurface,
+        squareBottom: Boolean
+    ): android.graphics.drawable.Drawable? {
+        val radius = if (prefs.dockBgStyle == DockBgStyle.ROUNDED) dp(prefs.dockBgRadius).toFloat() else 0f
+        val image = com.supernova.launcher.data.DockImage.decode(prefs.dockBgImage)
+        val shaped = prefs.dockBgStyle == DockBgStyle.ARC || prefs.dockBgStyle == DockBgStyle.PLATFORM
+        return when {
+            prefs.dockBgStyle == DockBgStyle.NONE -> null
+            image == null && !shaped -> dockBackgroundDrawable(resolved, radius, squareBottom)
+            else -> com.supernova.launcher.ui.DockShapeDrawable(
+                prefs.dockBgStyle, resolved.surface, image,
+                floatArrayOf(radius, radius, if (squareBottom) 0f else radius, if (squareBottom) 0f else radius)
             )
-            DockBgStyle.SQUARE -> dockBackgroundDrawable(resolvedDock, 0f, dockBehindNav || dockFullBleed)
         }
     }
 

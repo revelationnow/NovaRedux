@@ -640,6 +640,14 @@
     <string name="dock_bg_none">None</string>
     <string name="dock_bg_rounded">Rounded rectangle</string>
     <string name="dock_bg_square">Square</string>
+    <string name="dock_bg_arc">Arc</string>
+    <string name="dock_bg_platform">Platform</string>
+    <string name="dock_bg_shape">Shape</string>
+    <string name="dock_bg_rectangle">Rectangle</string>
+    <string name="dock_bg_image">Image</string>
+    <string name="dock_bg_image_set">An image from the gallery</string>
+    <string name="dock_bg_image_choose">Choose another image</string>
+    <string name="dock_bg_image_remove">Remove the image</string>
     <string name="opacity_percent">%1$d%%</string>
     <string name="color_with_opacity">%1$s, %2$d%%</string>
     <string name="color_hue">Color</string>

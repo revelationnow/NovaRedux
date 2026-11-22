@@ -154,7 +154,8 @@ class NovaSettingsTest {
         assertEquals(DockBgStyle.NONE, applied.dockBgStyle)
         assertEquals(1f, applied.dockBgOpacity, DELTA)
         val styled = NovaSettings.applyTo(LauncherPrefs(), nova6 + ("dock_styled" to "true"))
-        assertEquals(DockBgStyle.ROUNDED, styled.dockBgStyle)
+        // Nova's Platform, as Nova drew it.
+        assertEquals(DockBgStyle.PLATFORM, styled.dockBgStyle)
     }
 
     @Test
