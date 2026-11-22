@@ -32,19 +32,29 @@ internal object LauncherOverlayBinder {
     const val STATUS_CHANGED = IBinder.FIRST_CALL_TRANSACTION + 1
 
     // What the launcher hands the service to hear back on: how far the page
-    // is open, and its status. Called on a binder thread.
-    class Callback(
-        private val onScroll: (Float) -> Unit,
-        private val onStatus: (Int) -> Unit
-    ) : Binder() {
+    // is open, and its status. Called on a binder thread. The service may
+    // hold on to it after the launcher lets go, so clear() drops what it
+    // calls (and the activity behind it) as the launcher unbinds.
+    class Callback(onScroll: (Float) -> Unit, onStatus: (Int) -> Unit) : Binder() {
+        @Volatile
+        private var scroll: ((Float) -> Unit)? = onScroll
+
+        @Volatile
+        private var status: ((Int) -> Unit)? = onStatus
+
         init {
             attachInterface(null, CALLBACK)
+        }
+
+        fun clear() {
+            scroll = null
+            status = null
         }
 
         override fun onTransact(code: Int, data: Parcel, reply: Parcel?, flags: Int): Boolean {
             if (code != SCROLL_CHANGED && code != STATUS_CHANGED) return super.onTransact(code, data, reply, flags)
             data.enforceInterface(CALLBACK)
-            if (code == SCROLL_CHANGED) onScroll(data.readFloat()) else onStatus(data.readInt())
+            if (code == SCROLL_CHANGED) scroll?.invoke(data.readFloat()) else status?.invoke(data.readInt())
             return true
         }
     }

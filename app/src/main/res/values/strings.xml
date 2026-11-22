@@ -527,6 +527,7 @@
     <string name="group_folder_icon_change">Change</string>
     <string name="group_put_in">Put it in</string>
     <string name="group_put_in_nowhere">No tab or folder</string>
+    <string name="home_page_description">Home screen, page %1$d</string>
     <string name="feed_page">Page</string>
     <string name="feed_page_own">NovaRedux feed</string>
     <string name="feed_page_discover">Google Discover</string>

@@ -479,6 +479,9 @@ class WorkspacePagerAdapter(private val host: Host) : RecyclerView.Adapter<Recyc
             val state = host.state()
             renderedPages[page] = pageSignature(state, page)
             val canvas = binding.workspaceCanvas
+            // What TalkBack calls the page, which takes a long press (edit
+            // mode) like any home screen space.
+            canvas.contentDescription = itemView.context.getString(R.string.home_page_description, page + 1)
             val rows = state.prefs.gridRows
             val cols = state.prefs.gridCols
 

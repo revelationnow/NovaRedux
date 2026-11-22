@@ -64,13 +64,8 @@ class DiscoverClient(
         }
     }
 
-    private val callback = Overlay.Callback(
-        onScroll = { value -> main.post { moved(value) } },
-        onStatus = { status ->
-            Log.i(TAG, "status $status")
-            main.post { ready = status and STATUS_HAS_PAGE != 0 }
-        }
-    )
+    // The service's line back, one per binding (unbind clears it).
+    private var callback: Overlay.Callback? = null
 
     // The provider's package, or null for none (NovaRedux's own feed), and
     // the page's theme. A new provider is bound afresh; a new theme is sent
@@ -122,6 +117,13 @@ class DiscoverClient(
     }
 
     private fun bind(packageName: String) {
+        callback = Overlay.Callback(
+            onScroll = { value -> main.post { moved(value) } },
+            onStatus = { status ->
+                Log.i(TAG, "status $status")
+                main.post { ready = status and STATUS_HAS_PAGE != 0 }
+            }
+        )
         val intent = serviceIntent(activity, packageName)
         serviceVersion = runCatching {
             @Suppress("DEPRECATION")
@@ -135,8 +137,10 @@ class DiscoverClient(
     }
 
     private fun unbind() {
-        overlay.send(Overlay.WINDOW_DETACHED) { writeInt(0) }
+        overlay.send(Overlay.WINDOW_DETACHED) { writeInt(if (activity.isChangingConfigurations) 1 else 0) }
         if (bound) runCatching { activity.unbindService(connection) }
+        callback?.clear()
+        callback = null
         bound = false
         overlay = null
         ready = false
@@ -147,6 +151,7 @@ class DiscoverClient(
     // provider older than windowAttached2 takes the window alone.
     private fun attach() {
         val attrs = windowAttrs ?: return
+        val callback = callback ?: return
         if (serviceVersion < WINDOW_ATTACHED2_VERSION) {
             overlay.send(Overlay.WINDOW_ATTACHED) {
                 writeTypedObject(attrs, 0)

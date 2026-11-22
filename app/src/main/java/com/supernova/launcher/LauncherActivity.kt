@@ -2206,8 +2206,10 @@ class LauncherActivity :
                 clipChildren = false
                 clipToPadding = false
                 // An empty slot takes its own taps, so they don't fall
-                // through to whatever lies behind the dock.
+                // through to whatever lies behind the dock. TalkBack passes
+                // over the slot itself: the item in it speaks for itself.
                 isClickable = true
+                importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
                 // The drag layer turns "the slot under the finger" into a rank.
                 setTag(R.id.tag_dock_rank, rank)
             }

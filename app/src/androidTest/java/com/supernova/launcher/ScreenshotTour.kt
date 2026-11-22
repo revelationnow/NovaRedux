@@ -73,8 +73,13 @@ class ScreenshotTour {
                 settle()
                 val name = String.format(Locale.ROOT, "%02d-%s", index + 1, shot)
                 device.takeScreenshot(File(dir, "$name.png"))
-                // For tools/ci/a11y_audit.py: what TalkBack would find here.
-                if (args.getString("a11y") == "true") device.dumpWindowHierarchy(File(dir, "$name.xml"))
+                // For tools/ci/a11y_audit.py: what TalkBack would find here,
+                // views kept out of accessibility left out.
+                if (args.getString("a11y") == "true") {
+                    device.setCompressedLayoutHierarchy(true)
+                    device.dumpWindowHierarchy(File(dir, "$name.xml"))
+                    device.setCompressedLayoutHierarchy(false)
+                }
             }
             showHome()
         }
@@ -159,6 +164,8 @@ class ScreenshotTour {
         val x = device.displayWidth / 2
         device.swipe(x, device.displayHeight * 3 / 4, x, device.displayHeight / 4, SLOW_SWIPE_STEPS)
         if (shows("drawerSheet")) return true
+        // What the swipe left on screen, for a look at why it didn't open.
+        device.takeScreenshot(File(context.getExternalFilesDir(null), "screens/00-drawer-swipe.png"))
         device.findObject(By.res(appId, "desktopSearchBar"))?.click() ?: return false
         val opened = shows("drawerSheet")
         if (opened) {
