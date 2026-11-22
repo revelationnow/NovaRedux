@@ -82,6 +82,9 @@ class ScreenshotTour {
         }
         graph.preferences.markOnboardingDone()
         context.supernovaStore.edit { store ->
+            // Coming back home between shots is a Home press while home is in
+            // front, which would open the drawer; an argument can set it back.
+            store[stringPreferencesKey(Pref.homeButtonAction.key.name)] = "NONE"
             args.keySet().filter { it.startsWith(PREF) }.forEach { name -> applyArgument(store, name) }
         }
     }
@@ -132,8 +135,12 @@ class ScreenshotTour {
                 .addCategory(Intent.CATEGORY_HOME)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
         )
+        device.wait(Until.hasObject(By.res(appId, "workspacePager")), WAIT_MS)
+        // Whatever a shot left open: the drawer, search, a sheet.
+        repeat(BACK_PRESSES) {
+            if (device.hasObject(By.res(appId, "drawerSheet"))) device.pressBack()
+        }
         assertTrue("the home screen didn't draw", shows("workspacePager"))
-        if (device.hasObject(By.res(appId, "drawerSheet"))) device.pressBack()
         settle()
     }
 
@@ -150,5 +157,6 @@ class ScreenshotTour {
         const val WAIT_MS = 8_000L
         const val SETTLE_MS = 1_500L
         const val SWIPE_STEPS = 20
+        const val BACK_PRESSES = 2
     }
 }
