@@ -37,15 +37,15 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 
 | Status | Features |
 | --- | --- |
-| ✅ Done | 159 |
+| ✅ Done | 162 |
 | 🟡 Partial | 3 |
 | ❌ Missing | 0 |
-| ❔ Needs a check on a device | 3 |
+| ❔ Needs a check on a device | 0 |
 | ⛔ Won't do | 2 |
 | **Total** | **167** |
 
 <details>
-<summary><b>Home screen</b> · 23 features · ✅ 21 · ❔ 2</summary>
+<summary><b>Home screen</b> · 23 features · ✅ 23</summary>
 
 | Status | Feature | Since | Prime | Priority | What Nova did | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -70,8 +70,8 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 | ✅ | Default page; Home returns to it |  |  | P1 | Home button jumps to the chosen page | home_return_to_default_page |
 | ✅ | Desktop previews: add, remove, reorder, set default page |  |  | P1 | Page overview for editing | Page drag and default-page controls |
 | ✅ | Screen rotation |  |  | P1 | Portrait, landscape or auto-rotate | HomeOrientation |
-| ❔ | Tablet and foldable layouts | 8.0 beta |  | P1 | 8.0 beta moved to the Android 12L launcher base | Wide-screen code exists (DeviceProfile.isWide, WideScreen); needs a tablet and a foldable |
-| ❔ | Edge-to-edge display support | 7.0.37 |  | P2 | Layouts that respect curved and edge displays | Lays out behind the system bars with insets; check cut-outs and curved edges on a device |
+| ✅ | Tablet and foldable layouts | 8.0 beta |  | P1 | 8.0 beta moved to the Android 12L launcher base | Checked on tablet (2560x1600) and foldable (2208x1840) emulators: home, drawer (11 and 7 columns), search and settings fit the width, the drawer opens by swipe and by tap, and the accessibility audit is clean. DeviceProfile.isWide, WideScreen |
+| ✅ | Edge-to-edge display support | 7.0.37 |  | P2 | Layouts that respect curved and edge displays | Lays out behind the system bars with insets. Checked on the emulator with a tall cutout in landscape (home, the dock beside the search bar, the drawer) and curved (waterfall) edges in portrait: the chrome stays clear, the wallpaper runs edge to edge |
 
 </details>
 
@@ -126,7 +126,7 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 | ✅ | Drawer scroll effects in paged mode | 1.x |  | P2 | Same effects as the desktop | drawer_page_effect |
 | ✅ | Fast scroller and scroll accent colour | 4.2 beta |  | P2 | Letter scrubber along the edge | drawer_fast_scroller, drawer_scrubber_color |
 | ✅ | Frequently used apps row | 4.2 beta |  | P2 | Most-used apps at the top | drawer_frequent_row |
-| ✅ | Search bar in the drawer | 4.2 beta |  | P1 | Persistent bar at the top of the drawer | Drawer bar |
+| ✅ | Search bar in the drawer | 4.2 beta |  | P1 | Persistent bar at the top of the drawer | Drawer bar. The drawer opens without the keyboard, as Nova's did; Show keyboard when opened is an option, off by default |
 | ✅ | Drawer search bar styled like the desktop bar | 6.0 |  | P2 | Same style options as the desktop bar | Radius, filled or outline, glass, hint, top or bottom, opacity, shadow, colour from Styles and the same buttons as the home bar |
 | ✅ | Search and tab bars at the bottom | 7.0 beta |  | P1 | Easier reach on tall phones | DrawerTabBar TOP, BOTTOM |
 | ✅ | Pull to search | 7.0.11 |  | P2 | Pull down in the drawer to search | drawer_pull_to_search |
@@ -284,7 +284,7 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 | --- | --- | --- | --- | --- | --- | --- |
 | ✅ | Backup and restore | 1.x |  | P0 | Layout and settings in one file | exportBackup, importBackup |
 | ✅ | Quick start | 5.0 |  | P2 | Pick theme, drawer and dock style in one place | Onboarding wizard |
-| ✅ | Import from other launchers |  |  | P1 | Start from your current home screen | BackupLayouts |
+| ✅ | Import from other launchers |  |  | P1 | Start from your current home screen | Lawnchair and other launchers built on Launcher3 (their favorites table), and Smart Launcher (its own layout tables, its drawer categories as groups). BackupLayouts, DrawerGroupTables; not yet tried with a real Smart Launcher backup |
 | ✅ | Reset to defaults |  |  | P2 | Start over | resetToDefaults |
 
 </details>
@@ -317,7 +317,7 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 </details>
 
 <details>
-<summary><b>Project</b> · 7 features · ✅ 3 · 🟡 3 · ❔ 1</summary>
+<summary><b>Project</b> · 7 features · ✅ 4 · 🟡 3</summary>
 
 | Status | Feature | Since | Prime | Priority | What Nova did | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -325,8 +325,8 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 | ✅ | Own app ID, name and icon |  |  | P0 | Installs beside Supernova; no Nova branding | io.github.revelationnow.novaredux, named NovaRedux, with its own icon (a grid of apps with one gone nova), store icon and store screenshots |
 | 🟡 | Release signing and F-Droid listing |  |  | P1 | Reproducible builds like upstream | Release workflow signs and publishes tagged builds; F-Droid metadata and docs/RELEASING.md ready. The signing key (repository secrets) and the fdroiddata merge request are the owner's |
 | 🟡 | Translations |  |  | P1 | Nova shipped 74 languages | Ready for translators: per-app language settings, partial translations allowed and checked, docs/TRANSLATING.md. English only so far |
-| ❔ | TalkBack support |  |  | P1 | Accessible custom views | No accessibility lint findings left; needs a TalkBack pass on a device |
-| 🟡 | Split LauncherActivity |  |  | P1 | Move UI state into controllers | 5,333 lines, 291 functions |
+| ✅ | TalkBack support |  |  | P1 | Accessible custom views | No accessibility lint findings; the Screens workflow's audit (-e a11y true) finds every clickable view named on phone, tablet and foldable. A pass with TalkBack on a device is still worth doing |
+| 🟡 | Split LauncherActivity |  |  | P1 | Move UI state into controllers | About 5,100 lines (from 5,470): the dock's chrome, margins and geometry are now DockChrome, ChromeMargins and DockGeometry. Next: the folder cards (about 450 lines), item menus (400) and touch routing (400) |
 | ✅ | Give the layout its own store |  |  | P2 | Layout saves stop rewriting settings | The layout has its own store (supernova_layout), moved over from the settings store on the first read; layout edits and setting changes no longer rewrite each other |
 
 </details>

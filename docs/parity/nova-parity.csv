@@ -20,8 +20,8 @@ Home screen,Add new apps to the home screen,,No,Done,P2,New installs placed auto
 Home screen,Default page; Home returns to it,,No,Done,P1,Home button jumps to the chosen page,home_return_to_default_page
 Home screen,"Desktop previews: add, remove, reorder, set default page",,No,Done,P1,Page overview for editing,Page drag and default-page controls
 Home screen,Screen rotation,,No,Done,P1,"Portrait, landscape or auto-rotate",HomeOrientation
-Home screen,Tablet and foldable layouts,8.0 beta,No,Check,P1,8.0 beta moved to the Android 12L launcher base,"Wide-screen code exists (DeviceProfile.isWide, WideScreen); needs a tablet and a foldable"
-Home screen,Edge-to-edge display support,7.0.37,No,Check,P2,Layouts that respect curved and edge displays,Lays out behind the system bars with insets; check cut-outs and curved edges on a device
+Home screen,Tablet and foldable layouts,8.0 beta,No,Done,P1,8.0 beta moved to the Android 12L launcher base,"Checked on tablet (2560x1600) and foldable (2208x1840) emulators: home, drawer (11 and 7 columns), search and settings fit the width, the drawer opens by swipe and by tap, and the accessibility audit is clean. DeviceProfile.isWide, WideScreen"
+Home screen,Edge-to-edge display support,7.0.37,No,Done,P2,Layouts that respect curved and edge displays,"Lays out behind the system bars with insets. Checked on the emulator with a tall cutout in landscape (home, the dock beside the search bar, the drawer) and curved (waterfall) edges in portrait: the chrome stays clear, the wallpaper runs edge to edge"
 Widgets,Resize any widget,,No,Done,P0,Including widgets that don't declare resizing,Resize from any edge; check non-resizable widgets
 Widgets,Widget padding,,No,Done,P1,Per-widget padding from the long-press menu,widget_padding
 Widgets,Widget corner radius,7.0.39,No,Done,P2,Custom corner radius for widgets,widget_corner_radius
@@ -52,7 +52,7 @@ App drawer,"Open animation: circle reveal, slide up, zoom, fade",2014 beta,No,Do
 App drawer,Drawer scroll effects in paged mode,1.x,No,Done,P2,Same effects as the desktop,drawer_page_effect
 App drawer,Fast scroller and scroll accent colour,4.2 beta,No,Done,P2,Letter scrubber along the edge,"drawer_fast_scroller, drawer_scrubber_color"
 App drawer,Frequently used apps row,4.2 beta,No,Done,P2,Most-used apps at the top,drawer_frequent_row
-App drawer,Search bar in the drawer,4.2 beta,No,Done,P1,Persistent bar at the top of the drawer,Drawer bar
+App drawer,Search bar in the drawer,4.2 beta,No,Done,P1,Persistent bar at the top of the drawer,"Drawer bar. The drawer opens without the keyboard, as Nova's did; Show keyboard when opened is an option, off by default"
 App drawer,Drawer search bar styled like the desktop bar,6.0,No,Done,P2,Same style options as the desktop bar,"Radius, filled or outline, glass, hint, top or bottom, opacity, shadow, colour from Styles and the same buttons as the home bar"
 App drawer,Search and tab bars at the bottom,7.0 beta,No,Done,P1,Easier reach on tall phones,"DrawerTabBar TOP, BOTTOM"
 App drawer,Pull to search,7.0.11,No,Done,P2,Pull down in the drawer to search,drawer_pull_to_search
@@ -146,7 +146,7 @@ Integrations,Google Discover page,,No,Done,P2,Needs the Nova Google Companion ap
 Integrations,"Discover theme: light, dark, follow night mode",6.1,No,Done,P2,Dark Discover cards,"Feed > Page theme: follow night mode, light or dark, sent to the page with the home window; the Google app's Discover follows it (seen dark on the CI emulator)"
 Backup and setup,Backup and restore,1.x,No,Done,P0,Layout and settings in one file,"exportBackup, importBackup"
 Backup and setup,Quick start,5.0,No,Done,P2,"Pick theme, drawer and dock style in one place",Onboarding wizard
-Backup and setup,Import from other launchers,,No,Done,P1,Start from your current home screen,BackupLayouts
+Backup and setup,Import from other launchers,,No,Done,P1,Start from your current home screen,"Lawnchair and other launchers built on Launcher3 (their favorites table), and Smart Launcher (its own layout tables, its drawer categories as groups). BackupLayouts, DrawerGroupTables; not yet tried with a real Smart Launcher backup"
 Backup and setup,Reset to defaults,,No,Done,P2,Start over,resetToDefaults
 Labs,Hidden Labs menu,,No,Done,P2,Held volume-down in Nova Settings,labs_enabled
 Labs,Big grid sizes,,No,Done,P2,Lifts the grid caps,labs_big_grid
@@ -163,6 +163,6 @@ Project,CI on every pull request,,No,Done,P0,"Lint, detekt, unit tests and a deb
 Project,"Own app ID, name and icon",,No,Done,P0,Installs beside Supernova; no Nova branding,"io.github.revelationnow.novaredux, named NovaRedux, with its own icon (a grid of apps with one gone nova), store icon and store screenshots"
 Project,Release signing and F-Droid listing,,No,Partial,P1,Reproducible builds like upstream,Release workflow signs and publishes tagged builds; F-Droid metadata and docs/RELEASING.md ready. The signing key (repository secrets) and the fdroiddata merge request are the owner's
 Project,Translations,,No,Partial,P1,Nova shipped 74 languages,"Ready for translators: per-app language settings, partial translations allowed and checked, docs/TRANSLATING.md. English only so far"
-Project,TalkBack support,,No,Check,P1,Accessible custom views,No accessibility lint findings left; needs a TalkBack pass on a device
-Project,Split LauncherActivity,,No,Partial,P1,Move UI state into controllers,"5,333 lines, 291 functions"
+Project,TalkBack support,,No,Done,P1,Accessible custom views,"No accessibility lint findings; the Screens workflow's audit (-e a11y true) finds every clickable view named on phone, tablet and foldable. A pass with TalkBack on a device is still worth doing"
+Project,Split LauncherActivity,,No,Partial,P1,Move UI state into controllers,"About 5,100 lines (from 5,470): the dock's chrome, margins and geometry are now DockChrome, ChromeMargins and DockGeometry. Next: the folder cards (about 450 lines), item menus (400) and touch routing (400)"
 Project,Give the layout its own store,,No,Done,P2,Layout saves stop rewriting settings,"The layout has its own store (supernova_layout), moved over from the settings store on the first read; layout edits and setting changes no longer rewrite each other"

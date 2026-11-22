@@ -240,8 +240,10 @@ data class LauncherPrefs(
     val drawerLandColumns: Int = 0,
     val drawerLandRows: Int = 0,
     // Opening the drawer focuses search and shows the IME; the keyboard goes
-    // back down with the sheet on close.
-    val drawerAutoKeyboard: Boolean = true,
+    // back down with the sheet on close. Off, as Nova's drawer opened: its
+    // preferences have no such setting, and the keyboard hid half the drawer.
+    // The App search action and a tap on the home bar still bring it up.
+    val drawerAutoKeyboard: Boolean = false,
     // Paged drawer style only, the Horizontal Scroll group:
     // wrap past the last page, and the effect used between pages.
     val drawerInfiniteScroll: Boolean = false,
