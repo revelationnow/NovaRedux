@@ -38,6 +38,8 @@ adb shell cmd role add-role-holder --user 0 android.app.role.HOME "$app" \
 adb shell pm disable-user --user 0 com.google.android.apps.nexuslauncher || true
 adb shell am broadcast -a android.intent.action.CLOSE_SYSTEM_DIALOGS || true
 adb logcat -c
+# TouchTrace: where the home screen's touches go (printed after the tour).
+adb shell setprop log.tag.NovaTouch DEBUG || true
 
 read -r -a extra <<< "${TOUR_ARGS:-}"
 adb shell am instrument -w -r "${extra[@]}" -e class com.supernova.launcher.ScreenshotTour \
@@ -68,8 +70,10 @@ for png in "$out"/*.png; do
     echo "SCREEN-END $name"
 done
 
-# What another app's feed page said, when one was set (pref.s.feed_provider).
+# What another app's feed page said, when one was set (pref.s.feed_provider),
+# and the last of the home screen's touches.
 adb logcat -d -s DiscoverClient:V | tail -n 40 || true
+adb logcat -d -s NovaTouch:D | tail -n 60 || true
 
 failed=0
 if ! grep -q "^OK (" tour.txt; then

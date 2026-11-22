@@ -116,6 +116,7 @@ import com.supernova.launcher.ui.BottomChrome.BarSlot
 import com.supernova.launcher.ui.PageTransformers
 import com.supernova.launcher.ui.pagePaddingVPx
 import com.supernova.launcher.ui.CustomCardEditorSheet
+import com.supernova.launcher.ui.TouchTrace
 import com.supernova.launcher.ui.DockBgStyle
 import com.supernova.launcher.ui.DrawerController
 import com.supernova.launcher.ui.FeedController
@@ -182,7 +183,10 @@ class LauncherActivity :
     private val gestureDetector by lazy {
         HomeGestureDetector(
             this,
-            { actions.runGesture(it) },
+            {
+                TouchTrace.log { "gesture $it" }
+                actions.runGesture(it)
+            },
             ::workspaceCanScroll,
             ::pressOnItem,
             pageTookSwipe = { pageSwipeGuard.pageTookStream }
@@ -1035,6 +1039,7 @@ class LauncherActivity :
 
     override fun onResume() {
         super.onResume()
+        TouchTrace.refresh()
         discover.activityState(started = true, resumed = true)
         // Cleared after onNewIntent, which runs first on the way back in.
         startedSinceResume = false
@@ -1058,6 +1063,7 @@ class LauncherActivity :
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+        if (ev.actionMasked != MotionEvent.ACTION_MOVE) TouchTrace.log { touchState(ev) }
         // Ahead of every route below: it has to see each stream's lift.
         if (::binding.isInitialized) pageSwipeGuard.onTouch(ev)
         // A press on the home screen: a home press after it is the user's
@@ -1127,6 +1133,7 @@ class LauncherActivity :
         // Swipe-up bound to the drawer: once the drag reads as a swipe-up the
         // sheet comes in under the finger instead of on the lift.
         if (trackDrawerPull(ev)) {
+            TouchTrace.log { "drawer pull" }
             val cancel = MotionEvent.obtain(ev)
             cancel.action = MotionEvent.ACTION_CANCEL
             super.dispatchTouchEvent(cancel)
@@ -1143,6 +1150,14 @@ class LauncherActivity :
         trackDockSwipe(ev)
         return super.dispatchTouchEvent(ev)
     }
+
+    // What decides where a touch goes, for TouchTrace.
+    private fun touchState(ev: MotionEvent): String =
+        "${MotionEvent.actionToString(ev.action)} ${ev.x.toInt()},${ev.y.toInt()} " +
+            "drawer=${::drawer.isInitialized && drawer.isVisible} search=${::search.isInitialized && search.isOpen} " +
+            "edit=${::editMode.isInitialized && editMode.isOpen} feed=${::feed.isInitialized && feed.isOpen} " +
+            "pull=$drawerPullArmed/$drawerPullActive strip=${::binding.isInitialized && inGestureStrip(ev)} " +
+            "drag=${::drag.isInitialized && (drag.isArmed || drag.isActive)} held=$swipeOwnsStream"
 
     // The drawer pull's stream, from the move that started it to the lift.
     private fun continueDrawerPull(ev: MotionEvent): Boolean {

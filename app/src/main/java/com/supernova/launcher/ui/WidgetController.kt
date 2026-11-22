@@ -334,6 +334,10 @@ class WidgetController(
             MotionEvent.ACTION_DOWN -> {
                 touchedWidget = widgetHostUnder(ev.rawX, ev.rawY)
                 scrollingWidget = touchedWidget?.takeIf { it.hasScrollableContent() }
+                TouchTrace.log {
+                    "widget ${touchedWidget?.appWidgetInfo?.provider?.flattenToShortString()} " +
+                        "scrolls=${scrollingWidget != null}"
+                }
             }
             MotionEvent.ACTION_MOVE -> if (scrollingWidget == null) {
                 touchedWidget?.takeIf { it.contentOwnsTouch }?.let {
