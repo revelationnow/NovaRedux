@@ -144,6 +144,8 @@ class DrawerController(
     private var progressAnimator: android.animation.ValueAnimator? = null
     // The Circle transition's reveal, while it plays.
     private var circle: android.animation.Animator? = null
+    // The sheet greyed behind a windowed folder (greyBehindFolder).
+    private val greyFade by lazy { GreyFade(binding.drawerSheet) }
     // Last progress the desktop and scrim were drawn at, so a park from an
     // already-closed state leaves views something else may be animating alone.
     private var homeProgress = -1f
@@ -1340,6 +1342,13 @@ class DrawerController(
                 .withEndAction(finish)
                 .start()
         }
+    }
+
+    // A windowed folder opened in the drawer greys the drawer out behind it,
+    // as Nova 7's did, and its close brings the colour back.
+    fun greyBehindFolder(grey: Boolean) {
+        val prefs = viewModel.state.value.prefs
+        greyFade.fadeTo(grey, Animations.duration(prefs, GREY_MS))
     }
 
     // The Circle transition's reveal in or out, when it is the transition and
@@ -2696,6 +2705,8 @@ class DrawerController(
         // The search window's plate opens in 160 ms; the desktop goes with it.
         const val SEARCH_HOLD_MS = 160L
         const val ZOOM_FROM = DrawerOpenCurve.ZOOM_FROM
+        // The fade to grey behind a windowed folder, and back.
+        const val GREY_MS = 220L
         const val PULL_TO_SEARCH_DP = 56f
     }
 }

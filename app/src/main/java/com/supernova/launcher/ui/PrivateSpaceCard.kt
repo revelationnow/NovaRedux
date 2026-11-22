@@ -171,6 +171,8 @@ class PrivateSpaceCard(
             speed = Animations.factor(prefs),
             titleEditable = false,
             keepAboveScreenY = host.dockTopOnScreen(),
+            circle = prefs.folderAnimation == FolderAnimation.CIRCLE,
+            alignBottom = prefs.folderAlignBottom,
             actionLabel = activity.getString(R.string.private_space_lock),
             onAction = {
                 viewModel.setPrivateSpaceLocked(true)

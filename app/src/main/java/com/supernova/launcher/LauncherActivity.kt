@@ -4249,6 +4249,8 @@ class LauncherActivity :
             animate = Animations.enabled(prefs),
             speed = Animations.factor(prefs),
             keepAboveScreenY = dockTopOnScreen(),
+            circle = prefs.folderAnimation == com.supernova.launcher.ui.FolderAnimation.CIRCLE,
+            alignBottom = prefs.folderAlignBottom,
             onRename = { viewModel.renameFolder(folder.id, it) },
             // The title row's overflow: Select apps and Sort, as the folder's
             // long-press has them. Opened by a tap, so modal at once, and the
@@ -4477,6 +4479,8 @@ class LauncherActivity :
             shadow = prefs.folderShadow,
             animate = Animations.enabled(prefs),
             speed = Animations.factor(prefs),
+            circle = prefs.folderAnimation == com.supernova.launcher.ui.FolderAnimation.CIRCLE,
+            alignBottom = prefs.folderAlignBottom,
             onRename = { newName -> groupName = viewModel.renameGroup(group, newName) },
             onMenu = {
                 // The group editor rewrites the members pref; the drawer
@@ -4497,11 +4501,16 @@ class LauncherActivity :
                 drag.onWindowDismissed(popup)
                 activeFolderPopup = null
                 activeFolderAdapter = null
+                drawer.greyBehindFolder(false)
                 // The drawer sheet is usually still open underneath; only
                 // release the wallpaper zoom when it isn't.
                 if (!drawer.isExpanded) animateWallpaperZoom(0f)
             }
         )
+        // A windowed folder greys the drawer out behind it, as Nova's did.
+        if (prefs.folderMode == com.supernova.launcher.ui.FolderMode.WINDOW && prefs.folderGreyBehind) {
+            drawer.greyBehindFolder(true)
+        }
         // Every touch on the card goes through the item gesture first: an
         // app held there, the drag it becomes, and the press that closes its
         // menu once modal (without also launching the app it lands on).

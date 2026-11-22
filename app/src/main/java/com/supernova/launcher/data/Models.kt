@@ -11,6 +11,7 @@ import com.supernova.launcher.ui.DrawerTabBar
 import com.supernova.launcher.ui.DrawerTabContent
 import com.supernova.launcher.ui.DrawerTabStyle
 import com.supernova.launcher.ui.DrawerTransition
+import com.supernova.launcher.ui.FolderAnimation
 import com.supernova.launcher.ui.FolderMode
 import com.supernova.launcher.ui.FolderPreviewStyle
 import com.supernova.launcher.ui.FolderScroll
@@ -374,6 +375,14 @@ data class LauncherPrefs(
     // Drop shadow under the folder card. Off flattens it onto the wallpaper,
     // which is what a translucent folder surface usually wants.
     val folderShadow: Boolean = true,
+    // How a folder opens and closes (FolderAnimation): zoom or circle.
+    val folderAnimation: FolderAnimation = FolderAnimation.ZOOM,
+    // A full-screen folder sits at the bottom of the screen, in reach of
+    // the thumb, rather than in the middle (Nova 8's Align bottom).
+    val folderAlignBottom: Boolean = false,
+    // The app drawer fades to grey behind a windowed folder opened in it,
+    // as Nova 7's did. On by default.
+    val folderGreyBehind: Boolean = true,
     // VERTICAL scrolls the folder grid; HORIZONTAL, the default, pages it
     // (FolderScroll).
     val folderScroll: FolderScroll = FolderScroll.HORIZONTAL,
@@ -391,6 +400,13 @@ data class LauncherPrefs(
     // Badge folder icons with the summed unread count of their members.
     val folderBadges: Boolean = false,
     val themeMode: ThemeMode = ThemeMode.SYSTEM,
+    // How dark night mode goes (NightShade), and which parts it darkens
+    // (NightParts); a part left out keeps its day colours at night.
+    val nightShade: com.supernova.launcher.ui.theme.NightShade = com.supernova.launcher.ui.theme.NightShade.DARK,
+    val nightSearchBar: Boolean = true,
+    val nightDrawer: Boolean = true,
+    val nightFolders: Boolean = true,
+    val nightMenus: Boolean = true,
     // SCHEDULE mode's dark window, minutes since midnight; end < start wraps
     // past midnight (defaults: 19:00-07:00).
     val themeScheduleStart: Int = 1140,

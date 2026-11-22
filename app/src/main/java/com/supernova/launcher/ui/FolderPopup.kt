@@ -25,7 +25,8 @@ import kotlin.math.min
 // WINDOW mode is the classic anchored card; IMMERSIVE fills the screen over a
 // dimmed scrim. Content lives in a RecyclerView grid that scrolls vertically
 // or pages horizontally per FolderScroll. Reveal: the card expands
-// out of the folder icon that was tapped and collapses back into it.
+// out of the folder icon that was tapped and collapses back into it, or with
+// circle, widens out of it as a circle and narrows back into it.
 class FolderPopup(private val context: Context) {
 
     fun show(
@@ -73,7 +74,12 @@ class FolderPopup(private val context: Context) {
         // The screen y the card stays above: the dock's top, so a folder
         // opened from the dock or the home grid never covers the dock's
         // icons. Null leaves the whole screen to it.
-        keepAboveScreenY: Int? = null
+        keepAboveScreenY: Int? = null,
+        // FolderAnimation.CIRCLE: a circular reveal from the icon instead of
+        // the zoom.
+        circle: Boolean = false,
+        // folderAlignBottom: a full-screen card sits at the bottom.
+        alignBottom: Boolean = false
     ): PopupWindow {
         // A drawer folder can be opened with the drawer's search keyboard up;
         // the card takes focus and would drop it a step late otherwise.
@@ -230,7 +236,11 @@ class FolderPopup(private val context: Context) {
         binding.folderCard.layoutParams = FrameLayout.LayoutParams(
             if (immersive) ViewGroup.LayoutParams.MATCH_PARENT else ViewGroup.LayoutParams.WRAP_CONTENT,
             ViewGroup.LayoutParams.WRAP_CONTENT,
-            if (immersive) Gravity.CENTER else Gravity.TOP or Gravity.START
+            when {
+                !immersive -> Gravity.TOP or Gravity.START
+                alignBottom -> Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL
+                else -> Gravity.CENTER
+            }
         ).apply { if (immersive) setMargins(context.dp(24), context.dp(24), context.dp(24), context.dp(24)) }
         // The card swallows taps; only true outside taps reach the scrim.
         binding.folderCard.isClickable = true
@@ -243,6 +253,8 @@ class FolderPopup(private val context: Context) {
         // pivot/scale captured at open time make close the exact reverse.
         var openScale = 0.3f
         var closing = false
+        // The circle's centre and the icon's radius, from the open.
+        var circleAt: FolderCircle.Origin? = null
         fun animateClose() {
             if (closing) return
             if (!animate) {
@@ -251,14 +263,19 @@ class FolderPopup(private val context: Context) {
             }
             closing = true
             binding.root.animate().alpha(0f).setDuration((CLOSE_MS * speed).toLong()).start()
-            binding.folderCard.animate()
-                .scaleX(openScale).scaleY(openScale)
-                // Down from above the keyboard too, if the title had it up.
-                .translationY(restingY)
-                .setDuration((CLOSE_MS * speed).toLong())
-                .setInterpolator(COLLAPSE)
-                .withEndAction { popup.dismiss() }
-                .start()
+            val narrowed = circleAt?.let { origin ->
+                FolderCircle.close(binding.folderCard, origin, (CLOSE_MS * speed).toLong()) { popup.dismiss() }
+            } == true
+            if (!narrowed) {
+                binding.folderCard.animate()
+                    .scaleX(openScale).scaleY(openScale)
+                    // Down from above the keyboard too, if the title had it up.
+                    .translationY(restingY)
+                    .setDuration((CLOSE_MS * speed).toLong())
+                    .setInterpolator(COLLAPSE)
+                    .withEndAction { popup.dismiss() }
+                    .start()
+            }
         }
         binding.folderScrim.setOnClickListener { animateClose() }
 
@@ -329,6 +346,10 @@ class FolderPopup(private val context: Context) {
                 .coerceIn(0f, card.width.toFloat())
             card.pivotY = (anchorCenterY - (rootAt[1] + card.top + card.translationY))
                 .coerceIn(0f, card.height.toFloat())
+            if (circle) {
+                circleAt = FolderCircle.open(card, anchor, (OPEN_MS * speed).toLong())
+                if (circleAt != null) return
+            }
             openScale = (anchor.width.toFloat() / card.width.coerceAtLeast(1))
                 .coerceIn(0.15f, 0.45f)
             card.scaleX = openScale

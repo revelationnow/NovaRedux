@@ -13,6 +13,7 @@ import com.supernova.launcher.ui.DockBgStyle
 import com.supernova.launcher.ui.DrawerStyle
 import com.supernova.launcher.ui.DrawerTabBar
 import com.supernova.launcher.ui.FolderMode
+import com.supernova.launcher.ui.FolderAnimation
 import com.supernova.launcher.ui.FolderScroll
 import com.supernova.launcher.ui.IndicatorStyle
 import com.supernova.launcher.ui.LabelConfig
@@ -56,6 +57,7 @@ class NovaSettingsTest {
             <string name="drawer_scroll_effect">SIMPLE</string>
             <boolean name="dock_enable" value="true" />
             <string name="folder_window_config">WINDOW:172:-1:24:true:true:3:4:VERTICAL</string>
+            <string name="folder_animation">CIRCLE</string>
             <string name="desktop_scroll_indicator">DOTS</string>
             <string name="screen_orientation">LANDSCAPE</string>
             <boolean name="show_drop_targets" value="true" />
@@ -154,6 +156,7 @@ class NovaSettingsTest {
     fun foldersKeepTheirStyleAndScrolling() {
         assertEquals(FolderMode.WINDOW, applied.folderMode)
         assertEquals(FolderScroll.VERTICAL, applied.folderScroll)
+        assertEquals(FolderAnimation.CIRCLE, applied.folderAnimation)
     }
 
     @Test

@@ -15,6 +15,7 @@ import com.supernova.launcher.data.IconShape
 import com.supernova.launcher.data.LauncherPrefs
 import com.supernova.launcher.data.LockMethod
 import com.supernova.launcher.data.Pref
+import com.supernova.launcher.data.PrefSpec
 import com.supernova.launcher.data.SearchWindowMode
 import kotlin.math.roundToInt
 import com.supernova.launcher.ui.BadgePosition
@@ -1496,6 +1497,23 @@ object SettingsCatalogue {
                     R.string.folder_mode, FolderMode.entries,
                     { it.folderMode }, { EnumLabels.of(it) }
                 ) { viewModel.set(Pref.folderMode, it) },
+                // Full screen only: low on the screen, in reach of the thumb.
+                SettingItem.Toggle(
+                    R.string.folder_align_bottom,
+                    get = { it.folderAlignBottom },
+                    set = { viewModel.set(Pref.folderAlignBottom, it) }
+                ).hiddenWhen { dependsOn(R.string.folder_mode, it.folderMode != FolderMode.IMMERSIVE) }.nested(),
+                // Window only: a full-screen folder dims what is behind it.
+                SettingItem.Toggle(
+                    R.string.folder_grey_behind,
+                    get = { it.folderGreyBehind },
+                    set = { viewModel.set(Pref.folderGreyBehind, it) },
+                    subtitle = R.string.folder_grey_behind_summary
+                ).hiddenWhen { dependsOn(R.string.folder_mode, it.folderMode != FolderMode.WINDOW) }.nested(),
+                rows.choice(
+                    R.string.folder_animation, com.supernova.launcher.ui.FolderAnimation.entries,
+                    { it.folderAnimation }, { EnumLabels.of(it) }
+                ) { viewModel.set(Pref.folderAnimation, it) }.blockedWhen(animationsOff),
                 SettingItem.Toggle(
                     R.string.folder_shadow,
                     get = { it.folderShadow },
@@ -2045,7 +2063,8 @@ object SettingsCatalogue {
                 },
                 onClick = actions.editThemeSchedule,
                 look = SettingItem.RowLook(R.drawable.ic_style_schedule)
-            ).hiddenWhen { dependsOn(R.string.theme_mode, it.themeMode != ThemeMode.SCHEDULE) },
+            ).hiddenWhen { dependsOn(R.string.theme_mode, it.themeMode != ThemeMode.SCHEDULE) }
+        ) + nightRows(viewModel, rows) + listOf(
             accentRow(context, viewModel, actions),
             SettingItem.Header(R.string.style_group_surfaces),
             SettingItem.StyleTarget(
@@ -2069,6 +2088,26 @@ object SettingsCatalogue {
             SettingItem.StyleTarget(R.string.settings, SurfaceId.SETTINGS, { actions.openStylePicker(SurfaceId.SETTINGS) })
         )
     )
+    }
+
+    // How dark night mode goes, and what it darkens (Nova 6.1's shades and
+    // 4.3's parts); not shown while the theme is always light.
+    private fun nightRows(viewModel: LauncherViewModel, rows: Rows): List<SettingItem> {
+        val lightOnly: (LauncherPrefs) -> SettingItem.HiddenBy? = {
+            dependsOn(R.string.theme_mode, it.themeMode == ThemeMode.LIGHT)
+        }
+        fun part(@StringRes title: Int, get: (LauncherPrefs) -> Boolean, pref: PrefSpec<Boolean>) =
+            SettingItem.Toggle(title, get = get, set = { viewModel.set(pref, it) }).hiddenWhen(lightOnly).nested()
+        return listOf(
+            rows.choice(
+                R.string.night_shade, com.supernova.launcher.ui.theme.NightShade.entries,
+                { it.nightShade }, { EnumLabels.of(it) }
+            ) { viewModel.set(Pref.nightShade, it) }.hiddenWhen(lightOnly).nested(),
+            part(R.string.night_search_bar, { it.nightSearchBar }, Pref.nightSearchBar),
+            part(R.string.night_drawer, { it.nightDrawer }, Pref.nightDrawer),
+            part(R.string.night_folders, { it.nightFolders }, Pref.nightFolders),
+            part(R.string.night_menus, { it.nightMenus }, Pref.nightMenus)
+        )
     }
 
     // A row saying what a setting still needs (a permission, a service):

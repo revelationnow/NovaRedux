@@ -43,7 +43,9 @@ object Styles {
         val folderBgColor: String,
         val drawerAlpha: Float,
         val dockAlpha: Float,
-        val generation: Int
+        val generation: Int,
+        // Night mode's shade and parts (NightParts.key), at night only.
+        val nightLook: String = ""
     )
 
     private var cachedKey: Key? = null
@@ -96,16 +98,16 @@ object Styles {
         val key = Key(
             prefs.styleConfig, prefs.paletteSource.name, prefs.paletteSeed, night,
             prefs.accentColor.name, prefs.drawerBgColor, prefs.folderBgColor,
-            prefs.drawerBgOpacity, prefs.dockBgOpacity, wallpaperGeneration
+            prefs.drawerBgOpacity, prefs.dockBgOpacity, wallpaperGeneration,
+            if (night) NightParts.key(prefs) else ""
         )
         cachedStyles?.let { if (key == cachedKey) return it }
 
         val palette = paletteFor(context, prefs, key)
         val config = StyleConfig.decode(prefs.styleConfig)
         val accent = ThemeEngine.accentColor(context, prefs.accentColor)
-        val themeText = context.getColor(R.color.textPrimary)
         val onWallpaper = context.getColor(R.color.onWallpaper)
-        val themeSurface = context.getColor(R.color.surface)
+        val themeFor = themeColors(context, prefs, night)
 
         fun resolved(
             id: SurfaceId,
@@ -141,22 +143,22 @@ object Styles {
         }
 
         val drawerLegacy = LabelStyler.parseColor(
-            prefs.drawerBgColor, context.getColor(R.color.drawerBackground)
+            prefs.drawerBgColor, themeFor(SurfaceId.DRAWER).drawer
         )
         // The FOLDER surface colors the folder *window*, so its default is the
         // opaque theme surface; the translucent preview-plate default lives in
         // the plate drawable itself (folderMatchWindowColor pulls this color in
         // explicitly).
         val folderLegacy = LabelStyler.parseColor(
-            prefs.folderBgColor, themeSurface
+            prefs.folderBgColor, themeFor(SurfaceId.FOLDER).surface
         )
 
         val drawer = resolved(
-            SurfaceId.DRAWER, drawerLegacy, themeText, prefs.drawerBgOpacity,
+            SurfaceId.DRAWER, drawerLegacy, themeFor(SurfaceId.DRAWER).text, prefs.drawerBgOpacity,
             textFor = { base, alpha -> drawerText(base, alpha, onWallpaper) }
         )
 
-        val popup = resolved(SurfaceId.POPUP, themeSurface, themeText, null)
+        val popup = resolved(SurfaceId.POPUP, themeFor(SurfaceId.POPUP).surface, themeFor(SurfaceId.POPUP).text, null)
         val cardsText = cardText(config, onWallpaper)
         val cards = resolved(SurfaceId.CARDS, popup.surface, popup.text, null, popup.accent, cardsText)
 
@@ -173,15 +175,17 @@ object Styles {
                     SurfaceId.DOCK, (0xFF shl 24) or DOCK_BASE_RGB, onWallpaper, prefs.dockBgOpacity
                 ),
                 SurfaceId.FOLDER to resolved(
-                    SurfaceId.FOLDER, folderLegacy, themeText, null
+                    SurfaceId.FOLDER, folderLegacy, themeFor(SurfaceId.FOLDER).text, null
                 ),
                 SurfaceId.POPUP to popup,
                 SurfaceId.CARDS to cards,
                 SurfaceId.SEARCH_BAR to resolved(
-                    SurfaceId.SEARCH_BAR, themeSurface, themeText, null
+                    SurfaceId.SEARCH_BAR, themeFor(SurfaceId.SEARCH_BAR).surface, themeFor(SurfaceId.SEARCH_BAR).text,
+                    null
                 ),
                 SurfaceId.SETTINGS to resolved(
-                    SurfaceId.SETTINGS, context.getColor(R.color.background), themeText, null
+                    SurfaceId.SETTINGS, themeFor(SurfaceId.SETTINGS).background, themeFor(SurfaceId.SETTINGS).text,
+                    null
                 ),
                 SurfaceId.HOME to resolved(
                     SurfaceId.HOME, android.graphics.Color.TRANSPARENT, onWallpaper, null
@@ -203,6 +207,17 @@ object Styles {
             { base, alpha -> drawerText(base, alpha, onWallpaper) }
         }
 
+    // The theme's colours for each surface: at night, the night ones in the
+    // chosen shade for the parts night mode darkens, and the day ones for
+    // the rest.
+    private fun themeColors(context: Context, prefs: LauncherPrefs, night: Boolean): (SurfaceId) -> ThemeColors {
+        val theme = ThemeColors.of(context)
+        if (!night) return { theme }
+        val dark = theme.shaded(prefs.nightShade)
+        val day = ThemeColors.of(ThemeColors.dayContext(context))
+        return { id -> if (NightParts.darkens(prefs, id)) dark else day }
+    }
+
     private fun colorFor(spec: ColorSpec, palette: TonalPalette): Int? = when {
         spec.fixed != null -> runCatching { android.graphics.Color.parseColor(spec.fixed) }.getOrNull()
         spec.role != null && spec.tone != null -> palette.tone(spec.role, spec.tone)
@@ -210,7 +225,9 @@ object Styles {
     }
 
     private fun paletteFor(context: Context, prefs: LauncherPrefs, key: Key): TonalPalette {
-        val paletteKey = key.copy(config = "", drawerBgColor = "", folderBgColor = "", drawerAlpha = 0f, dockAlpha = 0f)
+        val paletteKey = key.copy(
+            config = "", drawerBgColor = "", folderBgColor = "", drawerAlpha = 0f, dockAlpha = 0f, nightLook = ""
+        )
         cachedPalette?.let { if (paletteKey == cachedPaletteKey) return it }
         val fallback = ThemeEngine.accentColor(context, prefs.accentColor)
         val palette = PaletteFactory.resolve(
@@ -219,5 +236,30 @@ object Styles {
         cachedPaletteKey = paletteKey
         cachedPalette = palette
         return palette
+    }
+}
+
+// The theme's own surface colours: the page, a surface, the drawer, and the
+// text on them, as the current configuration has them.
+class ThemeColors(val background: Int, val surface: Int, val drawer: Int, val text: Int) {
+
+    // The same in a night shade; the text stays as it is.
+    fun shaded(shade: NightShade): ThemeColors =
+        ThemeColors(shade.of(background), shade.of(surface), shade.of(drawer), text)
+
+    companion object {
+        fun of(context: Context): ThemeColors = ThemeColors(
+            background = context.getColor(R.color.background),
+            surface = context.getColor(R.color.surface),
+            drawer = context.getColor(R.color.drawerBackground),
+            text = context.getColor(R.color.textPrimary)
+        )
+
+        // A context reading the day theme's resources, whatever the mode.
+        fun dayContext(context: Context): Context {
+            val config = Configuration(context.resources.configuration)
+            config.uiMode = (config.uiMode and Configuration.UI_MODE_NIGHT_MASK.inv()) or Configuration.UI_MODE_NIGHT_NO
+            return context.createConfigurationContext(config)
+        }
     }
 }

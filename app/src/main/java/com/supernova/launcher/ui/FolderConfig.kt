@@ -17,6 +17,22 @@ enum class FolderMode {
     }
 }
 
+// How a folder opens and closes (folderAnimation pref), as Nova offered:
+// ZOOM grows the card out of the folder's icon and shrinks it back; CIRCLE
+// reveals it as a circle widening from the icon, and closes it into the icon.
+@kotlinx.serialization.Serializable(with = FolderAnimation.Names::class)
+enum class FolderAnimation {
+    ZOOM,
+    CIRCLE;
+
+    // Its name in the store and in a backup, read back leniently.
+    object Names : SettingEnumSerializer<FolderAnimation>("FolderAnimation", entries, ZOOM)
+
+    companion object {
+        fun fromName(name: String): FolderAnimation = Names.parse(name)
+    }
+}
+
 // How folder content moves when it overflows: vertical scrolling or
 // horizontal paging.
 @kotlinx.serialization.Serializable(with = FolderScroll.Names::class)

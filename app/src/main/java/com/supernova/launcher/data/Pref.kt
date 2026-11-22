@@ -18,6 +18,7 @@ import com.supernova.launcher.ui.DrawerTabBar
 import com.supernova.launcher.ui.DrawerTabContent
 import com.supernova.launcher.ui.DrawerTabStyle
 import com.supernova.launcher.ui.DrawerTransition
+import com.supernova.launcher.ui.FolderAnimation
 import com.supernova.launcher.ui.FolderMode
 import com.supernova.launcher.ui.FolderPreviewStyle
 import com.supernova.launcher.ui.FolderScroll
@@ -266,6 +267,9 @@ object Pref {
     val folderShowCount = bool("folder_show_count")
     val folderMode = choice("folder_mode", FolderMode.entries)
     val folderShadow = bool("folder_shadow")
+    val folderAnimation = choice("folder_animation", FolderAnimation.entries)
+    val folderAlignBottom = bool("folder_align_bottom")
+    val folderGreyBehind = bool("folder_grey_behind")
     val folderScroll = choice("folder_scroll", FolderScroll.entries)
     val folderIconShape = text("folder_icon_shape")
     val folderIconOutline = bool("folder_icon_outline")
@@ -273,6 +277,11 @@ object Pref {
     val folderPlateColor = text("folder_plate_color")
     val folderBadges = bool("folder_badges")
     val themeMode = choice("theme_mode", ThemeMode.entries)
+    val nightShade = choice("night_shade", com.supernova.launcher.ui.theme.NightShade.entries)
+    val nightSearchBar = bool("night_search_bar")
+    val nightDrawer = bool("night_drawer")
+    val nightFolders = bool("night_folders")
+    val nightMenus = bool("night_menus")
     val themeScheduleStart = int("theme_schedule_start", 0..DAY_LAST_MINUTE)
     val themeScheduleEnd = int("theme_schedule_end", 0..DAY_LAST_MINUTE)
     val accentColor = choice("accent_color", AccentColor.entries)

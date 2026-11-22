@@ -4,6 +4,7 @@ import com.supernova.launcher.data.LauncherPrefs
 import com.supernova.launcher.data.Pref
 import com.supernova.launcher.ui.DesktopSearchBarConfig
 import com.supernova.launcher.ui.DockBgStyle
+import com.supernova.launcher.ui.FolderAnimation
 import com.supernova.launcher.ui.FolderMode
 import com.supernova.launcher.ui.FolderScroll
 import com.supernova.launcher.ui.LabelConfig
@@ -79,6 +80,7 @@ internal object NovaLooks {
             folderLabels = spec?.labels ?: prefs.folderLabels,
             folderMode = window.firstOrNull()?.let(FOLDER_MODES::get) ?: prefs.folderMode,
             folderScroll = window.lastOrNull()?.let(FOLDER_SCROLLS::get) ?: prefs.folderScroll,
+            folderAnimation = nova.choice("folder_animation", FOLDER_ANIMATIONS) ?: prefs.folderAnimation,
             labelConfig = labels(prefs, LabelContext.FOLDER, spec)
         )
     }
@@ -132,6 +134,7 @@ internal object NovaLooks {
         "FULL_SCREEN" to FolderMode.IMMERSIVE, "IMMERSIVE" to FolderMode.IMMERSIVE
     )
     private val FOLDER_SCROLLS = mapOf("VERTICAL" to FolderScroll.VERTICAL, "HORIZONTAL" to FolderScroll.HORIZONTAL)
+    private val FOLDER_ANIMATIONS = mapOf("CIRCLE" to FolderAnimation.CIRCLE, "ZOOM" to FolderAnimation.ZOOM)
     private val PLACEMENTS = SearchBarPlacement.entries.associateBy { it.name } + mapOf(
         "DOCK_BOTTOM" to SearchBarPlacement.DOCK_BELOW, "BELOW_DOCK" to SearchBarPlacement.DOCK_BELOW,
         "DOCK_TOP" to SearchBarPlacement.DOCK_ABOVE, "ABOVE_DOCK" to SearchBarPlacement.DOCK_ABOVE,

@@ -13,6 +13,7 @@ import com.supernova.launcher.ui.BadgeStyle
 import com.supernova.launcher.ui.DockBgStyle
 import com.supernova.launcher.ui.DrawerSort
 import com.supernova.launcher.ui.DrawerTabBar
+import com.supernova.launcher.ui.FolderAnimation
 import com.supernova.launcher.ui.FolderMode
 import com.supernova.launcher.ui.FolderPreviewStyle
 import com.supernova.launcher.ui.FolderScroll
@@ -220,6 +221,19 @@ object EnumLabels {
     fun of(mode: FolderMode): Int = when (mode) {
         FolderMode.WINDOW -> R.string.folder_mode_window
         FolderMode.IMMERSIVE -> R.string.folder_mode_immersive
+    }
+
+    @StringRes
+    fun of(shade: com.supernova.launcher.ui.theme.NightShade): Int = when (shade) {
+        com.supernova.launcher.ui.theme.NightShade.DARK -> R.string.night_shade_dark
+        com.supernova.launcher.ui.theme.NightShade.DARKER -> R.string.night_shade_darker
+        com.supernova.launcher.ui.theme.NightShade.BLACK -> R.string.night_shade_black
+    }
+
+    @StringRes
+    fun of(animation: FolderAnimation): Int = when (animation) {
+        FolderAnimation.ZOOM -> R.string.transition_zoom
+        FolderAnimation.CIRCLE -> R.string.transition_circle
     }
 
     @StringRes
