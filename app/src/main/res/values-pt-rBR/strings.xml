@@ -933,7 +933,7 @@
     <string name="undo_remove">Barra de desfazer ao remover</string>
     <string name="item_removed">Removido</string>
     <string name="undo">Desfazer</string>
-    <string name="folder_sorted">Ordenada de A a Z</string>
+    <string name="folder_sorted">Em ordem alfabética</string>
     <string name="popup_menu_rows">Itens do menu pop-up</string>
     <string name="popup_rows_summary">%1$d na tela inicial · %2$d na gaveta</string>
     <string name="popup_notifications">Notificações no menu pop-up</string>
