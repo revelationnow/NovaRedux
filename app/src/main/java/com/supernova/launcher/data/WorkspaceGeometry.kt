@@ -309,9 +309,10 @@ object WorkspaceGeometry {
             steps.all { it % (fine / 2) == 0 } -> 2
             else -> fine
         }
-        val (x, y, w, h) = steps.map { it / (fine / units) }
+        val per = fine / units
         return item.copy(
-            cellX = x, cellY = y, spanX = max(1, w), spanY = max(1, h),
+            cellX = steps[0] / per, cellY = steps[1] / per,
+            spanX = max(1, steps[2] / per), spanY = max(1, steps[3] / per),
             halfCells = units == 2, fineCells = units == fine
         )
     }

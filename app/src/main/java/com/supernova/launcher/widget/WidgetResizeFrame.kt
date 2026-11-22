@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.view.View
+import com.supernova.launcher.data.FinePlacement
 import com.supernova.launcher.data.WorkspaceGeometry
 import com.supernova.launcher.ui.WorkspaceCanvas
 import com.supernova.launcher.ui.cellSize
@@ -38,9 +39,6 @@ class WidgetResizeFrame(
     // cells. cellX, spanX and the rest, and what roomProvider and onCommit
     // are handed, all count these steps.
     private val units: Int = 1,
-    // Where an edge dragged to a step lands: that step, or with fine
-    // placement a whole or half cell close by.
-    private val snap: (Int) -> Int = { it },
     private val onCommit: (cellX: Int, cellY: Int, spanX: Int, spanY: Int) -> Unit
 ) : View(context) {
 
@@ -88,6 +86,10 @@ class WidgetResizeFrame(
     private var room = WorkspaceGeometry.ResizeRoom(0, 0, 0, 0)
     // Never narrower than a step, nor than half a cell.
     private val minSpan = maxOf(MIN_SPAN, units / 2)
+
+    // Where an edge dragged to a step lands: that step, or in fine
+    // placement's sixteenths a whole or half cell close by.
+    private val snap: (Int) -> Int = if (units == FinePlacement.UNITS) FinePlacement::snapSteps else { steps -> steps }
     private var snapAnimator: android.animation.ValueAnimator? = null
     private val screenLocation = IntArray(2)
 
