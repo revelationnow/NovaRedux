@@ -76,7 +76,7 @@ class SearchBarView @JvmOverloads constructor(
         hint.setText(R.string.search_hint)
         hint.textSizeOf(R.dimen.text_body)
         hint.maxLines = 1
-        addView(hint, LayoutParams(0, LayoutParams.WRAP_CONTENT, 1f).apply { marginStart = dp(12) })
+        addView(hint, LayoutParams(0, LayoutParams.WRAP_CONTENT, 1f).apply { marginStart = dp(HINT_GAP_DP) })
 
     }
 
@@ -103,7 +103,11 @@ class SearchBarView @JvmOverloads constructor(
     fun apply(config: DesktopSearchBarConfig, resolved: ResolvedSurface) {
         // The accent too: a coloured logo wears it, and changing the bar's
         // accent in the Style tab left the old colour on the logo.
-        val key = listOf(config, resolved.surface, resolved.text, resolved.accent)
+        val logo = SearchBarLogo.fromName(config.logo)
+        // The browser is looked up each pass, so a change of default browser
+        // shows; the same browser hands back the same drawable.
+        val browser = if (logo == SearchBarLogo.BROWSER) BrowserIcon.of(context) else null
+        val key = listOf(config, resolved.surface, resolved.text, resolved.accent, browser)
         if (key != applied) {
             applied = key
 
@@ -128,10 +132,7 @@ class SearchBarView @JvmOverloads constructor(
                 elevation = if (config.shadow) dp(4).toFloat() else 0f
             }
 
-            // The magnifier on the left is fixed (set in init), in the
-            // bar's text colour dimmed a little, like its buttons.
-            val tint = ColorStateList.valueOf(SearchBarButtons.iconTint(resolved.text))
-            ImageViewCompat.setImageTintList(searchIcon, tint)
+            applyLogo(logo, browser, SearchBarButtons.iconTint(resolved.text))
             hint.setTextColor((0x99 shl 24) or (resolved.text and 0xFFFFFF))
             // Hidden, not gone: it still holds the chips to the right edge.
             hint.visibility = if (config.hint) VISIBLE else INVISIBLE
@@ -149,6 +150,22 @@ class SearchBarView @JvmOverloads constructor(
         refreshDate()
     }
 
+    // The magnifier, in the bar's text colour dimmed a little like its
+    // buttons; the browser's icon in its own colours; or nothing, and the hint
+    // starts at the edge.
+    private fun applyLogo(logo: SearchBarLogo, browser: android.graphics.drawable.Drawable?, tint: Int) {
+        if (browser != null) {
+            searchIcon.setImageDrawable(browser)
+            ImageViewCompat.setImageTintList(searchIcon, null)
+        } else {
+            searchIcon.setImageResource(R.drawable.ic_search)
+            ImageViewCompat.setImageTintList(searchIcon, ColorStateList.valueOf(tint))
+        }
+        val none = logo == SearchBarLogo.NONE
+        searchIcon.visibility = if (none) GONE else VISIBLE
+        (hint.layoutParams as LayoutParams).marginStart = if (none) 0 else dp(HINT_GAP_DP)
+    }
+
     // The date chip must not go stale across midnight; window visibility is
     // the cheapest "home came back" signal.
     override fun onWindowVisibilityChanged(visibility: Int) {
@@ -164,6 +181,7 @@ class SearchBarView @JvmOverloads constructor(
 
     private companion object {
         const val CHIP_TAG = "search-bar-chip"
+        const val HINT_GAP_DP = 12
         const val CHIP_DP = SearchBarButtons.BUTTON_DP
         // Leaves the 20dp box the magnifier on the left has.
         const val CHIP_PAD_DP = 8

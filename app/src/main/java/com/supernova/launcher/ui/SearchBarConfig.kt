@@ -31,6 +31,18 @@ enum class SearchBarChip {
     }
 }
 
+// What the home bar shows at its left: Nova let the bar's logo be chosen.
+// BROWSER is the icon of the app web searches open in, as installed, so no
+// search engine's logo ships with NovaRedux.
+enum class SearchBarLogo {
+    SEARCH, NONE, BROWSER;
+
+    companion object {
+        fun fromName(name: String): SearchBarLogo =
+            entries.firstOrNull { it.name.equals(name, ignoreCase = true) } ?: SEARCH
+    }
+}
+
 @Serializable
 data class DesktopSearchBarConfig(
     // SearchBarPlacement name; tolerated free-form, unknown decodes as NONE.
@@ -44,8 +56,9 @@ data class DesktopSearchBarConfig(
     val shadow: Boolean = false,
     // SearchBarChip names; unknown entries are ignored.
     val chips: List<String> = emptyList(),
-    // The left icon used to be a choice; it is always the magnifier now.
-    // This and logoMonochrome stay so older configs and backups decode.
+    // SearchBarLogo name: the magnifier, nothing, or the browser's icon.
+    // Names from before the choice came back (it was one once) read as the
+    // magnifier. logoMonochrome stays so older configs and backups decode.
     val logo: String = "SEARCH",
     val logoMonochrome: Boolean = true,
     // The "Search" text beside the magnifier. The fresh bar has none.

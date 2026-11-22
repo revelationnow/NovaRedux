@@ -186,6 +186,10 @@
     <string name="drawer_icon_scale">Icon size</string>
     <string name="drawer_bg_opacity">Background opacity</string>
     <string name="drawer_card">Card background</string>
+    <string name="search_bar_logo">Logo</string>
+    <string name="search_bar_logo_search">Magnifier</string>
+    <string name="search_bar_logo_none">None</string>
+    <string name="search_bar_logo_browser">Your browser\'s icon</string>
     <string name="drawer_card_subtitle">Apps sit on a rounded card over the drawer\'s background</string>
     <string name="drawer_card_color">Card color</string>
     <string name="drawer_fast_scroller">Fast scroller</string>

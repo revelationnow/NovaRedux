@@ -40,6 +40,7 @@ import com.supernova.launcher.ui.DrawerSearchBarConfig
 import com.supernova.launcher.ui.SearchBarButtons
 import com.supernova.launcher.ui.SearchBarChip
 import com.supernova.launcher.ui.SearchBarConfig
+import com.supernova.launcher.ui.SearchBarLogo
 import com.supernova.launcher.ui.SearchBarPlacement
 import com.supernova.launcher.ui.DrawerStyle
 import com.supernova.launcher.ui.IndicatorStyle
@@ -1210,6 +1211,17 @@ object SettingsCatalogue {
                     get = { SearchBarPrefs.desktopBar(it).hint },
                     set = { on -> rows.editDesktopBar { it.copy(hint = on) } }
                 ),
+                rows.choice(
+                    R.string.search_bar_logo, SearchBarLogo.entries,
+                    { SearchBarLogo.fromName(SearchBarPrefs.desktopBar(it).logo) },
+                    {
+                        when (it) {
+                            SearchBarLogo.SEARCH -> R.string.search_bar_logo_search
+                            SearchBarLogo.NONE -> R.string.search_bar_logo_none
+                            SearchBarLogo.BROWSER -> R.string.search_bar_logo_browser
+                        }
+                    }
+                ) { logo -> rows.editDesktopBar { it.copy(logo = logo.name) } },
                 SettingItem.Header(R.string.search_bar_chips)
                 // The same buttons as the drawer field's, in the same order.
             ) + SearchBarButtons.ROWS.map(rows::barChip)
