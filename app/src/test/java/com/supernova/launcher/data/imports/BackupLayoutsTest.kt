@@ -1,5 +1,8 @@
 package com.supernova.launcher.data.imports
 
+import com.supernova.launcher.data.LauncherPrefs
+import com.supernova.launcher.gesture.ActionShortcut
+import com.supernova.launcher.gesture.GestureAction
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
@@ -354,6 +357,37 @@ class BackupLayoutsTest {
         assertEquals(1, byTitle.getValue("Camera").page)
         assertEquals(3f, byTitle.getValue("Camera").x)
         assertNull(byTitle["Other"])
+    }
+
+    @Test
+    fun splitFamilyTurnsTheAppPageButtonIntoTheDrawer() {
+        val contents = BackupContents(
+            tables = mapOf(
+                "homeitem" to listOf(
+                    placed(listOf(1, 0, 0), 0.0, 0.0, launchable = 1),
+                    placed(listOf(2, 0, 0), 1.0, 0.0, launchable = 2),
+                    placed(listOf(3, 0, 0), 2.0, 0.0, launchable = 3)
+                ),
+                "action" to listOf(
+                    action(1, 7, appIntent("com.mail/.Main"), "Mail"),
+                    // The launcher's own buttons: its app page, and one with
+                    // no twin here.
+                    action(2, 8, "#Intent;action=ginlemon.flower.SL_ACTION;package=ginlemon.flowerfree;" +
+                        "i.slAction=0;end", "App page"),
+                    action(3, 8, "#Intent;action=ginlemon.flower.SL_ACTION;package=ginlemon.flowerfree;" +
+                        "i.slAction=99;end", "Something else")
+                )
+            )
+        )
+        val layout = BackupLayouts.layout(contents)!!
+        val appPage = layout.items.single { it.title == "App page" }
+        assertEquals(ForeignKind.INTENT, appPage.kind)
+        assertEquals("APP_DRAWER", appPage.intent?.extras?.get(LayoutConverter.OWN_ACTION))
+        assertNull(layout.items.firstOrNull { it.title == "Something else" })
+        assertEquals(1, layout.unread)
+
+        val made = LayoutConverter.convert(layout, LauncherPrefs()).items.single { it.label == "App page" }
+        assertEquals(ActionShortcut.encode(GestureAction.OPEN_DRAWER), made.intentUri)
     }
 
     @Test

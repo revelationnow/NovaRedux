@@ -145,6 +145,47 @@ class DrawerGroupsImportTest {
     }
 
     @Test
+    fun categoryFoldersBecomeDrawerFoldersHeldByTheirTab() {
+        val read = groups(
+            mapOf(
+                "category" to listOf(
+                    row("id" to "utility", "customLabel" to null, "enabled" to 1L, "position" to 0L),
+                    // Nothing loose in it, only a folder.
+                    row("id" to "games", "customLabel" to null, "enabled" to 1L, "position" to 1L)
+                ),
+                "draweritem" to listOf(
+                    row("id" to 1L, "categoryId" to "utility", "packageName" to "com.notes",
+                        "activityName" to "com.notes.N"),
+                    // A folder: no app of its own, and the parent of two.
+                    row("id" to 2L, "categoryId" to "games", "label" to "Puzzles", "position" to 3L),
+                    row("id" to 3L, "parentId" to 2L, "categoryId" to "games", "packageName" to "com.b",
+                        "activityName" to "com.b.B", "position" to 1L),
+                    row("id" to 4L, "parentId" to 2L, "categoryId" to "games", "packageName" to "com.a",
+                        "activityName" to "com.a.A", "position" to 0L),
+                    // The notes app's shortcut names the app as its parent:
+                    // that makes the app no folder.
+                    row("id" to 5L, "parentId" to 1L, "packageName" to "com.notes", "deepShortcutId" to "new")
+                )
+            )
+        )
+        val puzzles = read.single { it.folder }
+        assertEquals("Puzzles", puzzles.title)
+        assertEquals(false, puzzles.keepInMain)
+        assertEquals(listOf("com.a", "com.b"), puzzles.apps.map { it.packageName })
+        val games = read.single { it.title == "Games" }
+        assertEquals(listOf(puzzles.id), games.folders)
+        assertTrue(games.apps.isEmpty())
+        assertEquals(listOf("com.notes"), read.single { it.title == "Utilities" }.apps.map { it.packageName })
+        // Tabs and folders never share an id.
+        assertEquals(read.size, read.map { it.id }.toSet().size)
+
+        // The tab holds the folder once both are drawer groups.
+        val made = DrawerGroupConverter.convert(read, phone)
+        val folder = made.single { it.type == DrawerGroupType.FOLDER }
+        assertTrue(TabFolders.keyOf(folder.id) in made.single { it.name == "Games" }.members)
+    }
+
+    @Test
     fun layoutCarriesItsDrawerGroups() {
         val layout = BackupLayouts.layout(
             BackupContents(

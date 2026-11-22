@@ -312,7 +312,8 @@ internal object LayoutConverter {
     private val NOT_IN_FOLDERS = setOf(ForeignKind.FOLDER, ForeignKind.WIDGET)
     private const val EDGE = 0.05f
     private const val HALF = 0.5f
-    private const val OWN_ACTION = "LAUNCHER_ACTION"
+    // The extra naming one of the other launcher's own actions.
+    const val OWN_ACTION = "LAUNCHER_ACTION"
     private const val ACTION_MAIN = "android.intent.action.MAIN"
     private const val CATEGORY_LAUNCHER = "android.intent.category.LAUNCHER"
 }

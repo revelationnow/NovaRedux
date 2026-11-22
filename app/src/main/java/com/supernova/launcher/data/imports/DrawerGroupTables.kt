@@ -97,7 +97,8 @@ private object DrawerFolders {
     }
 }
 
-// Categories the drawer sorts every app into, each shown as a tab. The
+// Categories the drawer sorts every app into, each shown as a tab, and the
+// folders a category's apps may be gathered into, each held by its tab. The
 // launcher's own categories have no label stored, only their id.
 private object Categories {
     const val TABLE = "category"
@@ -114,30 +115,58 @@ private object Categories {
     )
 
     fun read(tables: Map<String, List<Row>>): List<ForeignGroup> {
-        // Apps only: an app's shortcut or anything inside another item is
-        // no member of a category's tab.
-        val apps = tables[APPS].orEmpty()
-            .filter { it.long("parentId") == null && it.text("deepShortcutId").isNullOrEmpty() }
-            .groupBy { it.text("categoryId") }
-        // A category the launcher made that no app is sorted into would be
+        // An app's shortcut is no member of a tab or a folder.
+        val rows = tables[APPS].orEmpty().filter { it.text("deepShortcutId").isNullOrEmpty() }
+        val inside = rows.groupBy { it.long("parentId") }
+        // A folder launches nothing itself, and holds the rows naming it.
+        val folderIds: Set<Long?> = rows.filter { it.text("packageName").isNullOrEmpty() }
+            .mapNotNull { it.long("id") }.filter { it in inside }.toSet()
+        return tabs(tables[TABLE].orEmpty(), inside[null].orEmpty(), folderIds) + folders(rows, inside, folderIds)
+    }
+
+    private fun tabs(categories: List<Row>, loose: List<Row>, folderIds: Set<Long?>): List<ForeignGroup> {
+        val apps = loose.filterNot { it.long("id") in folderIds }.groupBy { it.text("categoryId") }
+        val folders = loose.filter { it.long("id") in folderIds }.groupBy { it.text("categoryId") }
+        // A category the launcher made that nothing is sorted into would be
         // an empty tab.
-        return tables[TABLE].orEmpty()
-            .filter { it.long("enabled") != 0L && (it.text("id") in apps || !it.text("customLabel").isNullOrBlank()) }
+        val filled = apps.keys + folders.keys
+        return categories
+            .filter { it.long("enabled") != 0L && (it.text("id") in filled || !it.text("customLabel").isNullOrBlank()) }
             .mapIndexedNotNull { index, row ->
                 row.text("id")?.let { id ->
                     ForeignGroup(
-                        id = index.toLong(),
+                        // Below zero, as the folders have the table's own ids.
+                        id = -1L - index,
                         title = row.text("customLabel")?.takeIf { it.isNotBlank() } ?: name(id),
                         folder = false,
                         order = row.int("position") ?: index,
                         // Every app is in some category, so the main list
                         // keeps them all.
                         keepInMain = true,
-                        apps = apps[id].orEmpty().mapNotNull(::app)
+                        apps = apps[id].orEmpty().mapNotNull(::app),
+                        folders = folders[id].orEmpty().mapNotNull { it.long("id") }
                     )
                 }
             }
     }
+
+    // Each folder with its apps in their order. They show in it, not loose
+    // in the main list beside it, as they did there.
+    private fun folders(rows: List<Row>, inside: Map<Long?, List<Row>>, folderIds: Set<Long?>): List<ForeignGroup> =
+        rows.filter { it.long("id") in folderIds }.mapNotNull { row ->
+            row.long("id")?.let { id ->
+                val held = inside[id].orEmpty().sortedBy { it.int("position") ?: 0 }
+                ForeignGroup(
+                    id = id,
+                    title = row.text("label").orEmpty(),
+                    folder = true,
+                    order = row.int("position") ?: 0,
+                    keepInMain = false,
+                    apps = held.filterNot { it.long("id") in folderIds }.mapNotNull(::app),
+                    folders = held.mapNotNull { it.long("id") }.filter { it in folderIds }
+                )
+            }
+        }
 
     private fun app(row: Row): ForeignApp? = row.text("packageName")?.takeIf { it.isNotEmpty() }?.let {
         val activity = row.text("activityName")?.takeIf(String::isNotEmpty)

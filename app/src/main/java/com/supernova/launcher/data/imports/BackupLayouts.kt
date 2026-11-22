@@ -279,7 +279,7 @@ private class SplitLayout(contents: BackupContents) {
 
     private fun launchable(id: Long, spot: ForeignItem): ForeignItem? {
         val action = actions[id]
-        val intent = IntentText.parse(action?.text("intentUri"))
+        val intent = intentOf(action)
         val shortcutId = action?.text("deepShortcutId")?.takeIf { it.isNotBlank() }
         val kind = when {
             action == null -> null
@@ -300,6 +300,17 @@ private class SplitLayout(contents: BackupContents) {
                 shortcutId = shortcutId,
                 userSerial = BackupLayouts.userSerial(action?.long("userId"))
             )
+        }
+    }
+
+    // What the action starts. One of the launcher's own buttons (its app
+    // page) becomes the intent of Supernova's own action, and one Supernova
+    // has no twin for is nothing: kept, it would open the old launcher.
+    private fun intentOf(action: Row?): IntentText? {
+        val intent = IntentText.parse(action?.text("intentUri"))
+        if (intent?.action != OWN_BUTTON) return intent
+        return OWN_BUTTONS[intent.extras[BUTTON_EXTRA]]?.let {
+            IntentText.parse("#Intent;S.${LayoutConverter.OWN_ACTION}=$it;end")
         }
     }
 
@@ -333,6 +344,11 @@ private class SplitLayout(contents: BackupContents) {
         private val APP_TYPES = (0..5) + TYPE_APP
         private const val MAIN_ACTION = 1
         private const val EDGE = 0.05f
+        // The launcher's own buttons: an action of its own, the button in an
+        // extra. Its app page is the app drawer.
+        private const val OWN_BUTTON = "ginlemon.flower.SL_ACTION"
+        private const val BUTTON_EXTRA = "slAction"
+        private val OWN_BUTTONS = mapOf("0" to "APP_DRAWER")
         // The first layout profile's grids, wherever in its document they
         // sit.
         private fun sizes(prefs: Map<String, String>): Sizes {
