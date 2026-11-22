@@ -89,14 +89,17 @@ class SearchOrchestrator(
         results.sortedBy(::sectionRank)
 
     private fun sectionRank(result: SearchResult): Int = when (result) {
-        is SearchResult.Calculation -> 0
-        is SearchResult.App -> 1
-        is SearchResult.Card -> 2
-        is SearchResult.Folder -> 3
-        is SearchResult.Shortcut -> 4
-        is SearchResult.Contact -> 5
-        is SearchResult.Web -> 6
-        is SearchResult.Suggestion -> 7
-        is SearchResult.ProviderChips -> 8
-    }
+        is SearchResult.Calculation -> Section.CALCULATION
+        is SearchResult.App -> Section.APPS
+        is SearchResult.Card -> Section.CARDS
+        is SearchResult.Folder -> Section.FOLDERS
+        is SearchResult.Shortcut -> Section.SHORTCUTS
+        is SearchResult.Contact -> Section.CONTACTS
+        is SearchResult.Web -> Section.WEB
+        is SearchResult.Suggestion -> Section.SUGGESTIONS
+        is SearchResult.ProviderChips -> Section.PROVIDERS
+    }.ordinal
+
+    // The display sections, top to bottom.
+    private enum class Section { CALCULATION, APPS, CARDS, FOLDERS, SHORTCUTS, CONTACTS, WEB, SUGGESTIONS, PROVIDERS }
 }

@@ -11,6 +11,10 @@ on:
         description: 'Extra instrumentation arguments, e.g. "-e pref.b.dock_enabled false -e shots home,drawer"'
         required: false
         default: ""
+      width:
+        description: "Width the screenshots are printed at (1080 for store screenshots)"
+        required: false
+        default: "540"
 
 permissions:
   contents: read
@@ -61,6 +65,7 @@ jobs:
         uses: reactivecircus/android-emulator-runner@v2
         env:
           TOUR_ARGS: ${{ inputs.args }}
+          SHOT_WIDTH: ${{ inputs.width }}
         with:
           api-level: 35
           target: google_apis

@@ -23,7 +23,10 @@ class SuggestionSearchProviderTest {
 
         assertEquals(listOf("cat" to WebProvider.DUCKDUCKGO), asked)
         assertEquals(
-            listOf(SearchResult.Suggestion("cats", "cat", engine), SearchResult.Suggestion("cat videos", "cat", engine)),
+            listOf(
+                SearchResult.Suggestion("cats", "cat", engine),
+                SearchResult.Suggestion("cat videos", "cat", engine)
+            ),
             results
         )
     }

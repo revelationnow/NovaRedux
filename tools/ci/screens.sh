@@ -6,6 +6,8 @@
 #
 # TOUR_ARGS holds extra instrumentation arguments, e.g.
 #   -e pref.b.dock_enabled false -e shots home,drawer
+# SHOT_WIDTH is the width the screenshots are printed at (540 unless set;
+# 1080 for store screenshots).
 set -euo pipefail
 
 app=io.github.revelationnow.novaredux.debug
@@ -32,7 +34,7 @@ adb pull "/sdcard/Android/data/$app/files/screens/." "$out/" || echo "No screens
 for png in "$out"/*.png; do
     [ -e "$png" ] || continue
     name=$(basename "$png" .png)
-    convert "$png" -resize 540x -quality 72 "$out/$name.jpg"
+    convert "$png" -resize "${SHOT_WIDTH:-540}x" -quality 72 "$out/$name.jpg"
     echo "SCREEN-BEGIN $name"
     base64 -w 4000 "$out/$name.jpg"
     echo "SCREEN-END $name"

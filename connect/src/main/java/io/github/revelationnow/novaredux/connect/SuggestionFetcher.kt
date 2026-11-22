@@ -27,12 +27,17 @@ class SuggestionFetcher(
         language: String,
         onCancel: (stop: () -> Unit) -> Unit = {}
     ): List<String> =
-        cache.get(engine, query) ?: ask(engine.url(query), language, onCancel).suggestions.also { found ->
+        cache.get(engine, query) ?: ask(engine, query, language, onCancel).suggestions.also { found ->
             if (found.isNotEmpty()) cache.put(engine, query, found)
         }
 
-    internal fun ask(url: String, language: String, onCancel: (stop: () -> Unit) -> Unit = {}): Answer {
-        val connection = open(url)
+    internal fun ask(
+        engine: SuggestionEngine,
+        query: String,
+        language: String,
+        onCancel: (stop: () -> Unit) -> Unit = {}
+    ): Answer {
+        val connection = open(engine.url(query))
         onCancel { connection.disconnect() }
         return runCatching {
             connection.connectTimeout = TIMEOUT_MS
@@ -44,7 +49,7 @@ class SuggestionFetcher(
             val status = connection.responseCode
             val suggestions = if (status == HttpURLConnection.HTTP_OK) {
                 val charset = charsetOf(connection.contentType)
-                connection.inputStream.use { OpenSearchSuggestions.parse(readCapped(it, charset)) }
+                connection.inputStream.use { engine.format.parse(readCapped(it, charset)) }
             } else {
                 emptyList()
             }

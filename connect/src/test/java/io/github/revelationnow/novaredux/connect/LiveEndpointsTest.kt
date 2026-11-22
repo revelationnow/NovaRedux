@@ -15,7 +15,7 @@ class LiveEndpointsTest {
         assumeTrue(System.getenv("NOVAREDUX_LIVE_SUGGEST") == "1")
         val fetcher = SuggestionFetcher()
         val silent = SuggestionEngine.entries.filter { engine ->
-            val answer = fetcher.ask(engine.url(QUERY), "en-US")
+            val answer = fetcher.ask(engine, QUERY, "en-US")
             println("${engine.name}: HTTP ${answer.status}, ${answer.suggestions.take(SHOWN)}")
             answer.suggestions.isEmpty()
         }

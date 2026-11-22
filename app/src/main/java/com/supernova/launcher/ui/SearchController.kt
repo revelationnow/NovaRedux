@@ -647,14 +647,20 @@ class SearchController(
         onRecent = ::runRecentQuery,
         onRemoveRecent = ::removeRecentQuery,
         onClearRecents = ::clearRecentQueries,
-        onSuggestion = { suggestion ->
-            if (onOpenUri(suggestion.engine.searchUrl(suggestion.text), null)) surface.dismissAfter(suggestion.text)
-        },
-        onFillQuery = { text ->
-            surface.input.setText(text)
-            surface.input.setSelection(text.length)
-        }
+        onSuggestion = { suggestion -> searchSuggestion(surface, suggestion) },
+        onFillQuery = { text -> fillQuery(surface, text) }
     )
+
+    // A web suggestion tapped: searched for, and kept as the recent search.
+    private fun searchSuggestion(surface: Surface, suggestion: SearchResult.Suggestion) {
+        if (onOpenUri(suggestion.engine.searchUrl(suggestion.text), null)) surface.dismissAfter(suggestion.text)
+    }
+
+    // A suggestion's arrow: it becomes the query, to go on from.
+    private fun fillQuery(surface: Surface, text: String) {
+        surface.input.setText(text)
+        surface.input.setSelection(text.length)
+    }
 
     // The empty search window: recent searches, suggested shortcuts, the
     // recently opened apps, then - under a hairline - the drawer's folders

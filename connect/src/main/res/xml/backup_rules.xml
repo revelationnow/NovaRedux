@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- As data_extraction_rules, for Android 11 and older: NovaRedux Connect
+     writes no files, so the one place named here is empty. -->
+<full-backup-content>
+    <include domain="file" path="." />
+</full-backup-content>
