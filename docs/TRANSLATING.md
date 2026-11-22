@@ -35,3 +35,28 @@ addressed, no exclamation marks, and the names of Nova's own features as Nova
 used them (Dock, App drawer, Gestures). Translations work best the same way:
 the words the phone's own settings use in that language, rather than a literal
 rendering.
+
+## Machine translations
+
+Spanish, Brazilian Portuguese, French, German, Hindi and Russian started as
+machine translations, so the app has more than English while translators get
+going. Each of those files says so at the top. They read well enough to use,
+but a native speaker will find wording to fix: a pull request that corrects
+one is as welcome as a new language, and can drop the note at the top.
+
+Two scripts in `tools/i18n` do the file handling for a translation made
+outside Android Studio, by a person or a machine:
+
+- `strings_list.py` writes the English as a plain list, one `name|text` line
+  per string (a plural one line per quantity, `name#one|...`), with
+  apostrophes and quotes as they are.
+- `strings_build.py` turns a translated copy of that list into
+  `values-<language>/strings.xml`, escaping what Android needs escaped. It
+  stops without writing on a name the English file lacks, placeholders that
+  don't match the English, or markup that differs. Pass `--machine` to add
+  the note that a machine translated it.
+
+A language's plurals need the quantities Android lint expects for it: `one`
+and `other` for German or Hindi, `one`, `many` and `other` for Spanish,
+French, Italian or Portuguese, `one`, `few`, `many` and `other` for Russian
+or Polish, and `other` alone for Japanese or Chinese.

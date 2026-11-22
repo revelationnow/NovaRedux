@@ -66,6 +66,9 @@ class ScreenshotTour {
             mkdirs()
         }
         prepare()
+        // "-e locale ru": the app in another of its languages, through the
+        // per-app language setting.
+        args.getString("locale")?.let { device.executeShellCommand("cmd locale set-app-locales $appId --locales $it") }
         val shots = args.getString("shots")?.split(',')?.map { it.trim() }?.filter { it.isNotEmpty() }
             ?: DEFAULT_SHOTS
         // "-e rotate left": the phone on its side, for landscape layouts and
