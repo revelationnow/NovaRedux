@@ -46,6 +46,13 @@ adb shell am instrument -w -r "${extra[@]}" -e class com.supernova.launcher.Scre
 mkdir -p "$out"
 adb pull "/sdcard/Android/data/$app/files/screens/." "$out/" || echo "No screenshots to pull"
 
+# A swipe up that didn't open the drawer: the drawer's views as they stood.
+for dump in "$out"/*.dump; do
+    [ -e "$dump" ] || continue
+    echo "DRAWER-SWIPE views:"
+    grep -o '<node[^>]*\(drawerSheet\|drawerScrim\|workspacePager\|dockBar\)[^>]*>' "$dump" || true
+done
+
 # With "-e a11y true": the views on each screen TalkBack couldn't name.
 for xml in "$out"/*.xml; do
     [ -e "$xml" ] || continue

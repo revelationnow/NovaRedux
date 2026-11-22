@@ -48,7 +48,8 @@ import org.junit.runner.RunWith
 // `hide_own true`, for store screenshots: this debug build's own entries
 // (NovaRedux Debug, Debug Settings) are off the home screen and the drawer.
 // `a11y true` saves each screen's window dump beside its picture, for the
-// workflow to list the views TalkBack couldn't name.
+// workflow to list the views TalkBack couldn't name. `rotate left` turns the
+// phone on its side first.
 @RunWith(AndroidJUnit4::class)
 class ScreenshotTour {
 
@@ -67,6 +68,9 @@ class ScreenshotTour {
         prepare()
         val shots = args.getString("shots")?.split(',')?.map { it.trim() }?.filter { it.isNotEmpty() }
             ?: DEFAULT_SHOTS
+        // "-e rotate left": the phone on its side, for landscape layouts and
+        // a cutout along the long edge.
+        if (args.getString("rotate") == "left") device.setOrientationLeft()
         showHome()
         shots.forEachIndexed { index, shot ->
             if (open(shot)) {
@@ -164,8 +168,11 @@ class ScreenshotTour {
         val x = device.displayWidth / 2
         device.swipe(x, device.displayHeight * 3 / 4, x, device.displayHeight / 4, SLOW_SWIPE_STEPS)
         if (shows("drawerSheet")) return true
-        // What the swipe left on screen, for a look at why it didn't open.
-        device.takeScreenshot(File(context.getExternalFilesDir(null), "screens/00-drawer-swipe.png"))
+        // What the swipe left on screen, and the views then, for a look at
+        // why it didn't open.
+        val screens = File(context.getExternalFilesDir(null), "screens")
+        device.takeScreenshot(File(screens, "00-drawer-swipe.png"))
+        device.dumpWindowHierarchy(File(screens, "00-drawer-swipe.dump"))
         device.findObject(By.res(appId, "desktopSearchBar"))?.click() ?: return false
         val opened = shows("drawerSheet")
         if (opened) {
