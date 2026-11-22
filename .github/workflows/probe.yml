@@ -1,0 +1,33 @@
+# Temporary: tries suggestion addresses for the engines that answered
+# nothing in the Suggestion endpoints run. To be removed.
+name: Probe
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Try addresses
+        run: |
+          ours='NovaReduxConnect/1 (Android)'
+          ff='Mozilla/5.0 (Android 15; Mobile; rv:140.0) Gecko/140.0 Firefox/140.0'
+          try() {
+            ua="$1"; url="$2"
+            code=$(curl -s -o /tmp/body -w '%{http_code} %{content_type}' -A "$ua" -H 'Accept-Language: en-US' "$url")
+            echo "== [$code] ua=${ua:0:20} $url"
+            head -c 300 /tmp/body; echo
+          }
+          for ua in "$ours" "$ff"; do
+            try "$ua" 'https://www.bing.com/osjson.aspx?query=weather'
+            try "$ua" 'https://www.bing.com/osjson.aspx?query=weather&form=OSDJAS'
+            try "$ua" 'https://api.bing.com/osjson.aspx?query=weather'
+            try "$ua" 'https://www.bing.com/osjson.aspx?query=weather&language=en-US'
+            try "$ua" 'https://www.startpage.com/suggestions?format=opensearch&q=weather'
+            try "$ua" 'https://www.startpage.com/suggestions?q=weather&segment=startpage.udog&format=opensearch'
+            try "$ua" 'https://www.startpage.com/suggestions?q=weather&segment=startpage.defaultffx&format=opensearch'
+            try "$ua" 'https://www.startpage.com/suggestions?q=weather&segment=startpage.vivaldi&format=opensearch'
+            try "$ua" 'https://www.startpage.com/suggestions?q=weather&format=json'
+            try "$ua" 'https://www.startpage.com/osuggestions?q=weather'
+          done
