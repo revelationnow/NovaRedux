@@ -66,5 +66,5 @@ body:
     attributes:
       label: Before you post
       options:
-        - label: I'm on the newest version and searched the open and closed issues.
+        - label: I'm on the newest version ([releases](https://github.com/revelationnow/NovaRedux/releases)) and searched the open and closed issues.
           required: true

@@ -21,12 +21,18 @@ object AboutLinks {
         }
     }
 
-    // A new GitHub issue, its body started with what a report needs first:
-    // the app's version and the phone's Android version and model. The
+    // A new issue on the bug report form, its version and device fields
+    // filled in: the form takes a field's value from the query, by the
+    // field's id in .github/ISSUE_TEMPLATE/bug_report.yml. A plain new issue
+    // would land on the template chooser, as blank issues are off. The
     // person sees all of it before anything is sent.
     fun newIssueUrl(context: Context): String {
-        val body = context.getString(R.string.about_report_issue_body, deviceDetails(context))
-        return context.getString(R.string.about_source_url) + "/issues/new?body=" + android.net.Uri.encode(body)
+        val version = SupernovaApp.versionLabel(context).orEmpty()
+        val device = "${Build.MANUFACTURER} ${Build.MODEL}, " +
+            "Android ${Build.VERSION.RELEASE} (API ${Build.VERSION.SDK_INT})"
+        return context.getString(R.string.about_source_url) + "/issues/new?template=bug_report.yml" +
+            "&version=" + android.net.Uri.encode(version) +
+            "&device=" + android.net.Uri.encode(device)
     }
 
     // One line a report needs: Supernova's version, Android's version and
