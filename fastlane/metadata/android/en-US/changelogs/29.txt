@@ -1,0 +1,7 @@
+NovaRedux's first release: Supernova reworked to match Nova Launcher 7.
+
+- Nova's look: dock shapes and images, drawer card, circle reveals, night mode by part, folder animations
+- Google Discover or a feed app as the page left of home, through a bridge app
+- Web suggestions through the optional NovaRedux Connect app; NovaRedux stays offline
+- Category tabs, two-finger gestures over widgets, adaptive icon animations
+- Imports Nova backups, settings included

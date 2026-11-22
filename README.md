@@ -23,7 +23,7 @@ NovaRedux keeps what made Nova great and leaves out everything that came after t
 
 ## Status
 
-NovaRedux currently matches upstream Supernova v0.2.8 (commit `5b63c43`). There are no NovaRedux releases yet; meanwhile, [Supernova is on F-Droid](https://f-droid.org/packages/com.supernova.launcher/).
+NovaRedux is built on upstream Supernova v0.2.8 (commit `5b63c43`) and adds the Nova features in the tracker below. There are no NovaRedux releases yet: the first, v0.3.0, is ready to tag ([docs/RELEASING.md](docs/RELEASING.md)). Meanwhile, [Supernova is on F-Droid](https://f-droid.org/packages/com.supernova.launcher/).
 
 ## Nova parity tracker
 

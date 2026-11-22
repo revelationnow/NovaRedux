@@ -315,7 +315,12 @@ object IconPickerSheet {
     // Only the icon packs, then a pack's own drawables: for a picture that
     // isn't an app's icon (the dock's background, as Nova took one from a
     // pack or a dock theme).
-    fun showPacks(context: Context, scope: CoroutineScope, viewModel: LauncherViewModel, onPick: (String, String) -> Unit) {
+    fun showPacks(
+        context: Context,
+        scope: CoroutineScope,
+        viewModel: LauncherViewModel,
+        onPick: (String, String) -> Unit
+    ) {
         scope.launch {
             val packs = viewModel.availableIconPacks()
             if (packs.isEmpty()) {

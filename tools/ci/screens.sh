@@ -32,6 +32,11 @@ connect=connect/build/outputs/apk/debug/connect-debug.apk
 if [ -f "$connect" ]; then adb install -r "$connect"; fi
 adb shell cmd role add-role-holder --user 0 android.app.role.HOME "$app" \
     || echo "Could not make $app the home app; the tour starts it by class"
+# The emulator's own launcher has hung at boot on these runners, and its
+# "isn't responding" dialog covered the tour: with NovaRedux installed as a
+# home app, it goes, and any dialog it left with it.
+adb shell pm disable-user --user 0 com.google.android.apps.nexuslauncher || true
+adb shell am broadcast -a android.intent.action.CLOSE_SYSTEM_DIALOGS || true
 adb logcat -c
 
 read -r -a extra <<< "${TOUR_ARGS:-}"
