@@ -26,7 +26,7 @@ Widgets,Resize any widget,,No,Done,P0,Including widgets that don't declare resiz
 Widgets,Widget padding,,No,Done,P1,Per-widget padding from the long-press menu,widget_padding
 Widgets,Widget corner radius,7.0.39,No,Done,P2,Custom corner radius for widgets,widget_corner_radius
 Widgets,"Widget long-press menu: remove, padding, resize, app info",7.0.11,No,Done,P2,App info target added in 7.0.11,"Resize, Padding, Bring to front, Send to back, Remove, App info and Widget settings"
-Widgets,Desktop gestures work on top of widgets,7.0.41,Yes,Partial,P2,Two-finger gestures over widgets,"Work over ordinary widgets; over a scrollable widget (a list) every home gesture stands aside, two-finger ones too"
+Widgets,Desktop gestures work on top of widgets,7.0.41,Yes,Done,P2,Two-finger gestures over widgets,"Home gestures over any widget; a second finger takes the stream from a widget, a list widget included, for two-finger swipes, pinches and rotations"
 Dock,Dock on or off,1.x,No,Done,P0,Dock toggle,dock_enabled
 Dock,Dock pages,1.x,No,Done,P0,One to five swipeable dock pages,"dock_pages, up to 5"
 Dock,Icons per dock page,1.x,No,Done,P0,Up to 7 per page in Nova,"dock_count, 3 to 12"
@@ -60,7 +60,7 @@ App drawer,"Tab bar on or off, and its style",,No,Done,P1,Tab styles such as col
 App drawer,Scrolling tab bar and tab menu action icons,7.0.10,No,Done,P2,Many tabs scroll; icons in the tab menu,Scrollable TabLayout; every tab-menu row has an icon
 App drawer,Custom tabs (drawer groups),,Yes,Done,P0,Unlimited custom tabs,drawer_groups
 App drawer,"Apps only in their tab, or also in All apps",,Yes,Done,P1,Per-tab choice,drawer_isolate_tabs
-App drawer,Category tabs,7.0 beta,Yes,Partial,P2,Tabs sorted by app category,Smart folders group apps by category; one turned into a tab stops updating
+App drawer,Category tabs,7.0 beta,Yes,Done,P2,Tabs sorted by app category,"A tab or folder can take its apps from a category (Apps from a category, on its page) and keeps up as apps install and go; a Smart Folder turned into a tab keeps updating"
 App drawer,Folders in the drawer,,Yes,Done,P0,"Drawer folders, inside tabs too",Nested drawer folders
 App drawer,Hide apps,1.x,Yes,Done,P0,Hidden without uninstalling,hidden_apps
 App drawer,Hide from the long-press menu,7.0.10,Yes,Done,P2,One-tap hide,PopupExtraRow HIDE
@@ -101,7 +101,7 @@ Look and feel,"Flower, pebble, vessel, pentagon, hexagon, heptagon, octagon shap
 Look and feel,Reshape legacy icons,5.5,No,Done,P1,"Only adaptive icons, or force all","ReshapeLegacy OFF, AUTO, ON"
 Look and feel,Normalize icon size,4.1,No,Done,P2,Even out icon sizes,icon_normalize
 Look and feel,"Reshape themed icons, toggle per icon",7.0.39,No,Done,P2,Per-icon reshape switch,"themed_icons, reshape_legacy"
-Look and feel,Adaptive icon animations,,No,Missing,P2,Animated adaptive icons,No adaptive-layer animation; a dragged icon only scales as a whole picture
+Look and feel,Adaptive icon animations,,No,Done,P2,Animated adaptive icons,"While dragged, an app's adaptive icon parts its layers under its shape on a spring, after Launcher3; an icon from a pack, themed, glass or picked is carried as its picture"
 Look and feel,Bypass system icon theme,,No,Done,P2,Labs: skip OEM icon frames,Labs: Bypass system icon theme shows each app's own icon without the OEM frame
 Look and feel,"Night mode: off, always, auto by sunrise, set times",4.3,No,Done,P1,Schedules for the dark theme,"ThemeMode, theme_schedule_*"
 Look and feel,Night mode follows the system dark theme,6.2.2,No,Done,P1,Android 10 dark theme,ThemeMode SYSTEM
@@ -122,7 +122,7 @@ Notification badges,Numeric dots,6.1,Yes,Done,P1,Counts tied to the notification
 Notification badges,Badge position and size,5.21,No,Done,P2,Corner and size,"badge_position, badge_scale"
 Notification badges,Badge colours,,No,Done,P2,Badge and text colour,"badge_color, badge_text_color"
 Notification badges,Notifications in the long-press menu,5.5,No,Done,P1,Oreo-style notification popup,popup_notifications
-Notification badges,Dynamic badges on folders show the app's icon,5.1,No,Partial,P2,A small app icon on the folder,"Folder badges sum their apps' counts, but a Dynamic badge on a folder is a plain dot"
+Notification badges,Dynamic badges on folders show the app's icon,5.1,No,Done,P2,A small app icon on the folder,"A folder's Dynamic badge shows the icon of the member app with the newest notification, on its colour; Dots and Numeric sum the counts"
 Notification badges,TeslaUnread unread counts,1.x,Yes,Won't do,Skip,"Legacy plugin, pulled from the Play Store in 2019",Replaced by notification access
 Gestures,Swipe up and down,1.x,Yes,Done,P0,Desktop gestures,"Gesture SWIPE_UP, SWIPE_DOWN"
 Gestures,Pinch in and out,1.x,Yes,Done,P1,Desktop gestures,"PINCH_IN, PINCH_OUT"
@@ -160,9 +160,9 @@ Beyond Nova,Feed page with cards,,No,Done,P2,"Calendar, media, contacts and widg
 Beyond Nova,Automatic backups and recovery,,No,Done,P2,Restored if the store breaks,"writeAutoBackup, StoreRecovery"
 Beyond Nova,"Bring to front, send to back",,No,Done,P2,Stacking order for overlaps,restackItem
 Project,CI on every pull request,,No,Done,P0,"Lint, detekt, unit tests and a debug APK",GitHub Actions workflow in #2; passing
-Project,"Own app ID, name and icon",,No,Partial,P0,Installs beside Supernova; no Nova branding,"io.github.revelationnow.novaredux, named NovaRedux, with its own icon (a grid of apps with one gone nova) and store icon; store screenshots still upstream's"
-Project,Release signing and F-Droid listing,,No,Missing,P1,Reproducible builds like upstream,Upstream setup to copy
-Project,Translations,,No,Missing,P1,Nova shipped 74 languages,English only
+Project,"Own app ID, name and icon",,No,Done,P0,Installs beside Supernova; no Nova branding,"io.github.revelationnow.novaredux, named NovaRedux, with its own icon (a grid of apps with one gone nova), store icon and store screenshots"
+Project,Release signing and F-Droid listing,,No,Partial,P1,Reproducible builds like upstream,Release workflow signs and publishes tagged builds; F-Droid metadata and docs/RELEASING.md ready. The signing key (repository secrets) and the fdroiddata merge request are the owner's
+Project,Translations,,No,Partial,P1,Nova shipped 74 languages,"Ready for translators: per-app language settings, partial translations allowed and checked, docs/TRANSLATING.md. English only so far"
 Project,TalkBack support,,No,Check,P1,Accessible custom views,No accessibility lint findings left; needs a TalkBack pass on a device
 Project,Split LauncherActivity,,No,Partial,P1,Move UI state into controllers,"5,333 lines, 291 functions"
 Project,Give the layout its own store,,No,Missing,P2,Layout saves stop rewriting settings,One Preferences DataStore today

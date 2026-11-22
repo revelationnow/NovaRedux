@@ -9,17 +9,19 @@ import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 
-// An unreadable file is replaced rather than thrown on every read
-// (StoreRecovery).
+// The settings and the install's own flags. An unreadable file is replaced
+// rather than thrown on every read (StoreRecovery).
 val Context.supernovaStore by preferencesDataStore(
     name = "supernova_store",
     corruptionHandler = ReplaceFileCorruptionHandler { failure ->
-        StoreRecovery.onCorrupt(failure)
+        StoreRecovery.onCorrupt(failure, "supernova_store")
         emptyPreferences()
     }
 )
 
 object StoreKeys {
+    // The layout document, in its own store (supernovaLayoutStore); an
+    // install from before the split has it here until its first read.
     val model: Preferences.Key<String> = stringPreferencesKey("launcher_model")
     // Set once the first-run grid has been chosen for this screen; see DeviceProfile.
     val deviceProfileApplied: Preferences.Key<Boolean> = booleanPreferencesKey("device_profile_applied")

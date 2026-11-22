@@ -52,6 +52,7 @@ class DiscoverClient(
 
     private val connection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+            Log.i(TAG, "connected to ${name?.flattenToShortString()}, service version $serviceVersion")
             overlay = service
             attach()
         }
@@ -65,7 +66,10 @@ class DiscoverClient(
 
     private val callback = Overlay.Callback(
         onScroll = { value -> main.post { moved(value) } },
-        onStatus = { status -> main.post { ready = status and STATUS_HAS_PAGE != 0 } }
+        onStatus = { status ->
+            Log.i(TAG, "status $status")
+            main.post { ready = status and STATUS_HAS_PAGE != 0 }
+        }
     )
 
     // The provider's package, or null for none (NovaRedux's own feed), and

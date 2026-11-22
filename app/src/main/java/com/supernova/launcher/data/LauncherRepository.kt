@@ -37,7 +37,7 @@ class LauncherRepository(private val context: Context) {
     // build can't read shows as an empty one, but stays as it is (decode).
     // The store re-emits on every write to it, a changed setting included:
     // the document is decoded only when its own text has moved.
-    val modelFlow: Flow<LauncherModel> = context.supernovaStore.data
+    val modelFlow: Flow<LauncherModel> = context.supernovaLayoutStore.data
         .map { prefs -> prefs[StoreKeys.model] }
         .distinctUntilChanged()
         .map { raw -> decode(raw) ?: LauncherModel(version = CURRENT_MODEL_VERSION) }
@@ -79,20 +79,24 @@ class LauncherRepository(private val context: Context) {
     // the key goes. Not over a layout this build can't read.
     suspend fun retireFolderSortAz() {
         lock.withLock {
-            val values = context.supernovaStore.data.first()
-            val on = values[StoreKeys.retiredFolderSortAz] ?: return
-            val current = decode(values[StoreKeys.model]) ?: return
+            val on = context.supernovaStore.data.first()[StoreKeys.retiredFolderSortAz] ?: return
+            val current = decode(storedLayout()) ?: return
             val sorted = if (on) FolderSort.allSorted(current) else current
-            context.supernovaStore.edit { prefs ->
-                if (sorted != current) prefs[StoreKeys.model] = json.encodeToString(sorted)
-                prefs.remove(StoreKeys.retiredFolderSortAz)
-            }
+            if (sorted != current) writeLayout(sorted)
+            context.supernovaStore.edit { prefs -> prefs.remove(StoreKeys.retiredFolderSortAz) }
         }
     }
 
     // False while the stored layout can't be decoded: nothing may act on the
     // empty stand-in, like the widget sweep freeing every id it doesn't see.
-    suspend fun modelReadable(): Boolean = decode(context.supernovaStore.data.first()[StoreKeys.model]) != null
+    suspend fun modelReadable(): Boolean = decode(storedLayout()) != null
+
+    // The layout document as stored, and storing one (its own store).
+    private suspend fun storedLayout(): String? = context.supernovaLayoutStore.data.first()[StoreKeys.model]
+
+    private suspend fun writeLayout(model: LauncherModel) {
+        context.supernovaLayoutStore.edit { it[StoreKeys.model] = json.encodeToString(model) }
+    }
 
     suspend fun addAppToWorkspace(
         app: LaunchableApp,
@@ -993,8 +997,8 @@ class LauncherRepository(private val context: Context) {
             check(writeAutoBackup(currentPrefs)) { "couldn't save a backup of the current layout first" }
         }
         lock.withLock {
+            writeLayout(validated)
             context.supernovaStore.edit { prefs ->
-                prefs[StoreKeys.model] = json.encodeToString(validated)
                 LauncherPreferences.writeAll(prefs, restoredPrefs)
                 prefs.remove(StoreKeys.retiredFolderSortAz)
             }
@@ -1037,10 +1041,8 @@ class LauncherRepository(private val context: Context) {
         // No snapshot, no reset: the reset has to be undoable.
         check(writeAutoBackup(prefs)) { "couldn't save a backup first" }
         lock.withLock {
-            context.supernovaStore.edit { target ->
-                target[StoreKeys.model] = json.encodeToString(LauncherModel(version = CURRENT_MODEL_VERSION))
-                LauncherPreferences.writeAll(target, fresh)
-            }
+            writeLayout(LauncherModel(version = CURRENT_MODEL_VERSION))
+            context.supernovaStore.edit { target -> LauncherPreferences.writeAll(target, fresh) }
         }
     }
 
@@ -1200,12 +1202,10 @@ class LauncherRepository(private val context: Context) {
             lock.withLock {
                 // Never over a layout this build couldn't read: an edit to the
                 // empty stand-in would replace it for good.
-                val current = decode(context.supernovaStore.data.first()[StoreKeys.model]) ?: return@withLock
+                val current = decode(storedLayout()) ?: return@withLock
                 val next = AppItemEdits.stampNew(current, LargeIcons.withSmallIconsOffDesktop(block(current)))
                 if (next == current) return@withLock
-                context.supernovaStore.edit { prefs ->
-                    prefs[StoreKeys.model] = json.encodeToString(next)
-                }
+                writeLayout(next)
             }
         }
     }

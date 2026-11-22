@@ -37,9 +37,9 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 
 | Status | Features |
 | --- | --- |
-| ✅ Done | 149 |
-| 🟡 Partial | 7 |
-| ❌ Missing | 6 |
+| ✅ Done | 154 |
+| 🟡 Partial | 5 |
+| ❌ Missing | 3 |
 | ❔ Needs a check on a device | 3 |
 | ⛔ Won't do | 2 |
 | **Total** | **167** |
@@ -76,7 +76,7 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 </details>
 
 <details>
-<summary><b>Widgets</b> · 5 features · ✅ 4 · 🟡 1</summary>
+<summary><b>Widgets</b> · 5 features · ✅ 5</summary>
 
 | Status | Feature | Since | Prime | Priority | What Nova did | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -84,7 +84,7 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 | ✅ | Widget padding |  |  | P1 | Per-widget padding from the long-press menu | widget_padding |
 | ✅ | Widget corner radius | 7.0.39 |  | P2 | Custom corner radius for widgets | widget_corner_radius |
 | ✅ | Widget long-press menu: remove, padding, resize, app info | 7.0.11 |  | P2 | App info target added in 7.0.11 | Resize, Padding, Bring to front, Send to back, Remove, App info and Widget settings |
-| 🟡 | Desktop gestures work on top of widgets | 7.0.41 | Prime | P2 | Two-finger gestures over widgets | Work over ordinary widgets; over a scrollable widget (a list) every home gesture stands aside, two-finger ones too |
+| ✅ | Desktop gestures work on top of widgets | 7.0.41 | Prime | P2 | Two-finger gestures over widgets | Home gestures over any widget; a second finger takes the stream from a widget, a list widget included, for two-finger swipes, pinches and rotations |
 
 </details>
 
@@ -111,7 +111,7 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 </details>
 
 <details>
-<summary><b>App drawer</b> · 27 features · ✅ 26 · 🟡 1</summary>
+<summary><b>App drawer</b> · 27 features · ✅ 27</summary>
 
 | Status | Feature | Since | Prime | Priority | What Nova did | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -134,7 +134,7 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 | ✅ | Scrolling tab bar and tab menu action icons | 7.0.10 |  | P2 | Many tabs scroll; icons in the tab menu | Scrollable TabLayout; every tab-menu row has an icon |
 | ✅ | Custom tabs (drawer groups) |  | Prime | P0 | Unlimited custom tabs | drawer_groups |
 | ✅ | Apps only in their tab, or also in All apps |  | Prime | P1 | Per-tab choice | drawer_isolate_tabs |
-| 🟡 | Category tabs | 7.0 beta | Prime | P2 | Tabs sorted by app category | Smart folders group apps by category; one turned into a tab stops updating |
+| ✅ | Category tabs | 7.0 beta | Prime | P2 | Tabs sorted by app category | A tab or folder can take its apps from a category (Apps from a category, on its page) and keeps up as apps install and go; a Smart Folder turned into a tab keeps updating |
 | ✅ | Folders in the drawer |  | Prime | P0 | Drawer folders, inside tabs too | Nested drawer folders |
 | ✅ | Hide apps | 1.x | Prime | P0 | Hidden without uninstalling | hidden_apps |
 | ✅ | Hide from the long-press menu | 7.0.10 | Prime | P2 | One-tap hide | PopupExtraRow HIDE |
@@ -187,7 +187,7 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 </details>
 
 <details>
-<summary><b>Look and feel</b> · 24 features · ✅ 23 · ❌ 1</summary>
+<summary><b>Look and feel</b> · 24 features · ✅ 24</summary>
 
 | Status | Feature | Since | Prime | Priority | What Nova did | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -199,7 +199,7 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 | ✅ | Reshape legacy icons | 5.5 |  | P1 | Only adaptive icons, or force all | ReshapeLegacy OFF, AUTO, ON |
 | ✅ | Normalize icon size | 4.1 |  | P2 | Even out icon sizes | icon_normalize |
 | ✅ | Reshape themed icons, toggle per icon | 7.0.39 |  | P2 | Per-icon reshape switch | themed_icons, reshape_legacy |
-| ❌ | Adaptive icon animations |  |  | P2 | Animated adaptive icons | No adaptive-layer animation; a dragged icon only scales as a whole picture |
+| ✅ | Adaptive icon animations |  |  | P2 | Animated adaptive icons | While dragged, an app's adaptive icon parts its layers under its shape on a spring, after Launcher3; an icon from a pack, themed, glass or picked is carried as its picture |
 | ✅ | Bypass system icon theme |  |  | P2 | Labs: skip OEM icon frames | Labs: Bypass system icon theme shows each app's own icon without the OEM frame |
 | ✅ | Night mode: off, always, auto by sunrise, set times | 4.3 |  | P1 | Schedules for the dark theme | ThemeMode, theme_schedule_* |
 | ✅ | Night mode follows the system dark theme | 6.2.2 |  | P1 | Android 10 dark theme | ThemeMode SYSTEM |
@@ -219,7 +219,7 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 </details>
 
 <details>
-<summary><b>Notification badges</b> · 7 features · ✅ 5 · 🟡 1 · ⛔ 1</summary>
+<summary><b>Notification badges</b> · 7 features · ✅ 6 · ⛔ 1</summary>
 
 | Status | Feature | Since | Prime | Priority | What Nova did | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -228,7 +228,7 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 | ✅ | Badge position and size | 5.21 |  | P2 | Corner and size | badge_position, badge_scale |
 | ✅ | Badge colours |  |  | P2 | Badge and text colour | badge_color, badge_text_color |
 | ✅ | Notifications in the long-press menu | 5.5 |  | P1 | Oreo-style notification popup | popup_notifications |
-| 🟡 | Dynamic badges on folders show the app's icon | 5.1 |  | P2 | A small app icon on the folder | Folder badges sum their apps' counts, but a Dynamic badge on a folder is a plain dot |
+| ✅ | Dynamic badges on folders show the app's icon | 5.1 |  | P2 | A small app icon on the folder | A folder's Dynamic badge shows the icon of the member app with the newest notification, on its colour; Dots and Numeric sum the counts |
 | ⛔ | TeslaUnread unread counts | 1.x | Prime | Skip | Legacy plugin, pulled from the Play Store in 2019 | Replaced by notification access |
 
 </details>
@@ -317,14 +317,14 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 </details>
 
 <details>
-<summary><b>Project</b> · 7 features · ✅ 1 · 🟡 2 · ❌ 3 · ❔ 1</summary>
+<summary><b>Project</b> · 7 features · ✅ 2 · 🟡 3 · ❌ 1 · ❔ 1</summary>
 
 | Status | Feature | Since | Prime | Priority | What Nova did | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
 | ✅ | CI on every pull request |  |  | P0 | Lint, detekt, unit tests and a debug APK | GitHub Actions workflow in #2; passing |
-| 🟡 | Own app ID, name and icon |  |  | P0 | Installs beside Supernova; no Nova branding | io.github.revelationnow.novaredux, named NovaRedux, with its own icon (a grid of apps with one gone nova) and store icon; store screenshots still upstream's |
-| ❌ | Release signing and F-Droid listing |  |  | P1 | Reproducible builds like upstream | Upstream setup to copy |
-| ❌ | Translations |  |  | P1 | Nova shipped 74 languages | English only |
+| ✅ | Own app ID, name and icon |  |  | P0 | Installs beside Supernova; no Nova branding | io.github.revelationnow.novaredux, named NovaRedux, with its own icon (a grid of apps with one gone nova), store icon and store screenshots |
+| 🟡 | Release signing and F-Droid listing |  |  | P1 | Reproducible builds like upstream | Release workflow signs and publishes tagged builds; F-Droid metadata and docs/RELEASING.md ready. The signing key (repository secrets) and the fdroiddata merge request are the owner's |
+| 🟡 | Translations |  |  | P1 | Nova shipped 74 languages | Ready for translators: per-app language settings, partial translations allowed and checked, docs/TRANSLATING.md. English only so far |
 | ❔ | TalkBack support |  |  | P1 | Accessible custom views | No accessibility lint findings left; needs a TalkBack pass on a device |
 | 🟡 | Split LauncherActivity |  |  | P1 | Move UI state into controllers | 5,333 lines, 291 functions |
 | ❌ | Give the layout its own store |  |  | P2 | Layout saves stop rewriting settings | One Preferences DataStore today |

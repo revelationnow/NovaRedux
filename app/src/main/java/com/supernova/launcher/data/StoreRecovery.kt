@@ -25,15 +25,14 @@ object StoreRecovery {
         filesDir = context.filesDir
     }
 
-    // DataStore's corruption handler: the unreadable file is about to be
-    // replaced.
-    fun onCorrupt(failure: CorruptionException) {
+    // DataStore's corruption handler, for the settings store and the layout
+    // store (`name`): the unreadable file is about to be replaced.
+    fun onCorrupt(failure: CorruptionException, name: String) {
         corrupted = true
-        Diagnostics.caught("read settings store", failure)
-        runLogged("keep unreadable settings store") {
+        Diagnostics.caught("read $name", failure)
+        runLogged("keep unreadable $name") {
             val dir = File(filesDir ?: return@runLogged, "datastore")
-            File(dir, "supernova_store.preferences_pb")
-                .copyTo(File(dir, "supernova_store.unreadable"), overwrite = true)
+            File(dir, "$name.preferences_pb").copyTo(File(dir, "$name.unreadable"), overwrite = true)
         }
     }
 

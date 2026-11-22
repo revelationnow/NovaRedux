@@ -41,6 +41,12 @@ adb shell am instrument -w -r "${extra[@]}" -e class com.supernova.launcher.Scre
 mkdir -p "$out"
 adb pull "/sdcard/Android/data/$app/files/screens/." "$out/" || echo "No screenshots to pull"
 
+# With "-e a11y true": the views on each screen TalkBack couldn't name.
+for xml in "$out"/*.xml; do
+    [ -e "$xml" ] || continue
+    python3 -I tools/ci/a11y_audit.py "$xml" "$app" || true
+done
+
 for png in "$out"/*.png; do
     [ -e "$png" ] || continue
     name=$(basename "$png" .png)
@@ -50,9 +56,21 @@ for png in "$out"/*.png; do
     echo "SCREEN-END $name"
 done
 
+# What another app's feed page said, when one was set (pref.s.feed_provider).
+adb logcat -d -s DiscoverClient:V | tail -n 40 || true
+
 failed=0
 if ! grep -q "^OK (" tour.txt; then
     echo "::error::The screenshot tour failed; see the instrumentation output above."
+    # What was on the screen, and which windows were up, when it gave up.
+    adb exec-out screencap -p > failed.png || true
+    if [ -s failed.png ]; then
+        convert failed.png -resize "${SHOT_WIDTH:-540}x" -quality 72 failed.jpg
+        echo "SCREEN-BEGIN 99-failed"
+        base64 -w 4000 failed.jpg
+        echo "SCREEN-END 99-failed"
+    fi
+    adb shell dumpsys window windows | grep -E "Window #|mOwnerUid|isOnScreen|mViewVisibility|ty=" | head -n 80 || true
     failed=1
 fi
 crashes=$(adb logcat -d -b crash | grep -A 40 -E "Process: $app" || true)

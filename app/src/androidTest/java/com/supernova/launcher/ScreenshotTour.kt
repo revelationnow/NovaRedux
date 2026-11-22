@@ -47,6 +47,8 @@ import org.junit.runner.RunWith
 // suggestions to come back (through NovaRedux Connect, when installed).
 // `hide_own true`, for store screenshots: this debug build's own entries
 // (NovaRedux Debug, Debug Settings) are off the home screen and the drawer.
+// `a11y true` saves each screen's window dump beside its picture, for the
+// workflow to list the views TalkBack couldn't name.
 @RunWith(AndroidJUnit4::class)
 class ScreenshotTour {
 
@@ -69,7 +71,10 @@ class ScreenshotTour {
         shots.forEachIndexed { index, shot ->
             if (open(shot)) {
                 settle()
-                device.takeScreenshot(File(dir, String.format(Locale.ROOT, "%02d-%s.png", index + 1, shot)))
+                val name = String.format(Locale.ROOT, "%02d-%s", index + 1, shot)
+                device.takeScreenshot(File(dir, "$name.png"))
+                // For tools/ci/a11y_audit.py: what TalkBack would find here.
+                if (args.getString("a11y") == "true") device.dumpWindowHierarchy(File(dir, "$name.xml"))
             }
             showHome()
         }
