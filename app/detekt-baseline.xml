@@ -868,6 +868,7 @@
     <ID>TooManyFunctions:SettingsPreviewView.kt$SettingsPreviewView : FrameLayout</ID>
     <ID>TooManyFunctions:SupernovaNotificationListener.kt$SupernovaNotificationListener : NotificationListenerService</ID>
     <ID>TooManyFunctions:SupernovaPopupMenu.kt$SupernovaPopupMenu</ID>
+    <ID>TooManyFunctions:SupernovaWidgetHost.kt$SupernovaWidgetHostView : AppWidgetHostView</ID>
     <ID>TooManyFunctions:WidgetController.kt$WidgetController</ID>
     <ID>TooManyFunctions:WorkspaceDrops.kt$WorkspaceDrops : DropTarget</ID>
     <ID>TooManyFunctions:WorkspaceGeometry.kt$WorkspaceGeometry</ID>
