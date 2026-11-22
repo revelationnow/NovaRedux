@@ -4505,7 +4505,11 @@ class LauncherActivity :
         // Every touch on the card goes through the item gesture first: an
         // app held there, the drag it becomes, and the press that closes its
         // menu once modal (without also launching the app it lands on).
-        popup?.let { window -> window.setTouchInterceptor { _, ev -> drag.routeGesture(ev, window) } }
+        // Accessibility services click the card's views directly, past this.
+        popup?.let { window ->
+            //noinspection ClickableViewAccessibility
+            window.setTouchInterceptor { _, ev -> drag.routeGesture(ev, window) }
+        }
         activeFolderPopup = popup
         activeFolderAdapter = adapter
     }

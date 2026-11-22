@@ -128,6 +128,9 @@ class SupernovaWidgetHostView(context: Context) : AppWidgetHostView(context) {
     // way accessibility services click, by calling it.
     override fun performClick(): Boolean = super.performClick()
 
+    // It never acts on a tap itself (a tap is the widget's own views'), so
+    // there is no click here to pass on to performClick.
+    @android.annotation.SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(ev: MotionEvent): Boolean {
         when (ev.actionMasked) {
             // A press no child took comes here directly, past the intercept
