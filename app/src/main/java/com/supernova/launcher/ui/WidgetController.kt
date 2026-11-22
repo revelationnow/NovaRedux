@@ -356,6 +356,18 @@ class WidgetController(
         return scrollingWidget != null
     }
 
+    // A second finger on a widget: two fingers are the home screen's, as in
+    // Nova 7.0.41, so the widget lets go of the stream (a list widget held
+    // it whole, and a tap in a widget could land as well as the swipe). True
+    // when the caller is to take the rest of the stream for the home gestures.
+    fun secondFingerOnWidget(ev: MotionEvent): Boolean {
+        val second = ev.actionMasked == MotionEvent.ACTION_POINTER_DOWN && ev.pointerCount == 2
+        if (!second || touchedWidget == null) return false
+        scrollingWidget = null
+        touchedWidget = null
+        return true
+    }
+
     // Widget host views are laid out inside the pager pages, so a plain
     // screen-rect test is enough - and it skips the pages parked off-screen.
     private fun widgetHostUnder(rawX: Float, rawY: Float): SupernovaWidgetHostView? {

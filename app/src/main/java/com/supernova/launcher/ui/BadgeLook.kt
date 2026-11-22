@@ -115,6 +115,21 @@ class BadgeFaces(private val context: Context) {
         return bitmap
     }
 
+    // An app's icon as a folder's Dynamic badge shows it, drawn once at the
+    // picture's size. Keyed by the app and the icon object, so a new icon
+    // (a pack, a shape) draws afresh. The shared icon's bounds are put back.
+    fun bitmapForIcon(appKey: String, icon: Drawable): Bitmap {
+        val key = "icon:$appKey@${System.identityHashCode(icon)}"
+        cache.get(key)?.let { return it }
+        val bitmap = createBitmap(SIZE_PX, SIZE_PX)
+        val bounds = icon.copyBounds()
+        icon.setBounds(0, 0, SIZE_PX, SIZE_PX)
+        icon.draw(Canvas(bitmap))
+        icon.bounds = bounds
+        cache.put(key, bitmap)
+        return bitmap
+    }
+
     private fun drawCentreCropped(picture: Drawable, canvas: Canvas) {
         val width = picture.intrinsicWidth
         val height = picture.intrinsicHeight

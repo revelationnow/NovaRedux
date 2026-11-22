@@ -1110,6 +1110,7 @@ class LauncherActivity :
             if (feed.isOpen) return super.dispatchTouchEvent(ev)
         }
         if (heldBySwipe(ev)) return true
+        if (twoFingersOverWidget(ev)) return true
         // A widget scrolling its own content owns the vertical stream. The
         // detector observes without consuming, so otherwise a drag inside a
         // list widget also read as the home swipe-up/down binding and fired
@@ -1164,6 +1165,41 @@ class LauncherActivity :
 
     // Set while a home swipe that ran mid-stream owns the rest of it.
     private var swipeOwnsStream = false
+
+    // Set while two fingers that landed on a widget own the rest of the
+    // stream, for the home gestures alone.
+    private var twoFingersOwnStream = false
+
+    // Two-finger gestures on top of widgets, as Nova 7.0.41 fixed them: a
+    // second finger on a widget takes the stream from it, and the home
+    // gestures read the rest of it. The detector may not have seen the
+    // press (a list widget held the stream from its down), so it is reset
+    // and starts from this moment, the two fingers' midpoint included.
+    private fun twoFingersOverWidget(ev: MotionEvent): Boolean {
+        val held = twoFingersOwnStream && ev.actionMasked != MotionEvent.ACTION_DOWN
+        val ends = ev.actionMasked == MotionEvent.ACTION_UP || ev.actionMasked == MotionEvent.ACTION_CANCEL
+        twoFingersOwnStream = held && !ends
+        when {
+            held -> gestureDetector.onTouchEvent(ev)
+            widgets.secondFingerOnWidget(ev) -> takeStreamForTwoFingers(ev)
+            else -> return false
+        }
+        return true
+    }
+
+    private fun takeStreamForTwoFingers(ev: MotionEvent) {
+        drawerPullArmed = false
+        val cancel = MotionEvent.obtain(ev)
+        cancel.action = MotionEvent.ACTION_CANCEL
+        super.dispatchTouchEvent(cancel)
+        gestureDetector.onTouchEvent(cancel)
+        cancel.recycle()
+        val down = MotionEvent.obtain(ev.downTime, ev.eventTime, MotionEvent.ACTION_DOWN, ev.getX(0), ev.getY(0), 0)
+        gestureDetector.onTouchEvent(down)
+        down.recycle()
+        gestureDetector.onTouchEvent(ev)
+        twoFingersOwnStream = true
+    }
 
     // The rest of a stream a home swipe ran in is the swipe's: true to drop
     // the event. A new press also finishes a nearly settled page first.
@@ -4768,8 +4804,7 @@ class LauncherActivity :
         icon: android.graphics.drawable.Drawable?
     ): android.graphics.drawable.Drawable? =
         if (item.itemType == ItemType.FOLDER) {
-            val count = itemIcons.folderBadgeCount(item)
-            if (count > 0 && icon != null) itemIcons.badgeDrawable(icon, count) else icon
+            icon?.let { itemIcons.withHomeFolderBadge(it, item) }
         } else {
             itemIcons.withBadge(icon, item.packageName, item.className, item.userSerial)
         }

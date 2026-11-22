@@ -64,45 +64,54 @@ class ItemIcons(private val context: Context, private val viewModel: LauncherVie
         return BadgeLook(prefs, context.resources.displayMetrics.density).wrap(shown, count, iconColor, face)
     }
 
-    // Summed unread count over a folder's members, honoring the badge
-    // allowlist; 0 unless folder badges are on.
-    fun folderBadgeCount(folder: LauncherItem): Int {
-        val prefs = viewModel.state.value.prefs
-        if (!prefs.badges || !prefs.folderBadges) return 0
-        return viewModel.folderMembers(folder.id).sumOf { member ->
-            val pkg = member.packageName ?: return@sumOf 0
-            if (prefs.badgeApps.isNotEmpty() &&
-                "${member.userSerial}/$pkg/${member.className.orEmpty()}" !in prefs.badgeApps
-            ) {
-                return@sumOf 0
+    // A home or dock folder's icon with its badge (see folderBadged).
+    fun withHomeFolderBadge(icon: Drawable, folder: LauncherItem): Drawable =
+        folderBadged(
+            icon,
+            viewModel.folderMembers(folder.id).mapNotNull { member ->
+                member.packageName?.let { BadgeMember(it, member.className.orEmpty(), member.userSerial) }
             }
-            val user = viewModel.appCatalog().userForSerial(member.userSerial) ?: Process.myUserHandle()
-            SupernovaNotificationListener.countFor(pkg, user.hashCode())
-        }
+        )
+
+    // A drawer folder's icon with its badge (see folderBadged).
+    fun withFolderBadge(icon: Drawable, members: List<LaunchableApp>): Drawable =
+        folderBadged(icon, members.map { BadgeMember(it.packageName, it.className, it.userSerial) })
+
+    // An app in a folder, as its badge is looked up.
+    private class BadgeMember(val packageName: String, val className: String, val userSerial: Long) {
+        val filterKey get() = "$userSerial/$packageName/$className"
     }
 
-    // Wraps an icon in a badge with a known count. Folders have no single
-    // app, so a Dynamic badge is a dot in the badge color there.
-    fun badgeDrawable(icon: Drawable, count: Int): Drawable =
-        BadgeLook(viewModel.state.value.prefs, context.resources.displayMetrics.density).wrap(icon, count)
-
-    // A drawer folder's icon with its members' summed count, when folder
-    // badges are on.
-    fun withFolderBadge(
-        icon: Drawable,
-        members: List<LaunchableApp>
-    ): Drawable {
+    // A folder's badge, when folder badges are on: its members' counts
+    // summed, honoring the badge allowlist. A Dynamic one shows the icon of
+    // the member whose notification is newest, as in Nova 5.1 (a folder has
+    // no notification picture of its own); a dot until that icon is drawn.
+    private fun folderBadged(icon: Drawable, members: List<BadgeMember>): Drawable {
         val prefs = viewModel.state.value.prefs
-        if (!prefs.badges || !prefs.folderBadges) return icon
-        val count = members.sumOf { app ->
-            val key = "${app.userSerial}/${app.packageName}/${app.className}"
-            if (prefs.badgeApps.isNotEmpty() && key !in prefs.badgeApps) {
-                return@sumOf 0
-            }
-            val user = viewModel.appCatalog().userForSerial(app.userSerial) ?: Process.myUserHandle()
-            SupernovaNotificationListener.countFor(app.packageName, user.hashCode())
+        val catalog = viewModel.appCatalog()
+        val badged = if (prefs.badges && prefs.folderBadges) members else emptyList()
+        val counted = badged
+            .filter { prefs.badgeApps.isEmpty() || it.filterKey in prefs.badgeApps }
+            .associateWith { (catalog.userForSerial(it.userSerial) ?: Process.myUserHandle()).hashCode() }
+        val count = counted.entries.sumOf { (member, user) ->
+            SupernovaNotificationListener.countFor(member.packageName, user)
         }
-        return if (count > 0) badgeDrawable(icon, count) else icon
+        if (count <= 0) return icon
+        val newest = if (BadgeStyle.effective(prefs) == BadgeStyle.DYNAMIC) {
+            counted.entries
+                .filter { (member, user) -> SupernovaNotificationListener.countFor(member.packageName, user) > 0 }
+                .maxByOrNull { (member, user) ->
+                    SupernovaNotificationListener.faceFor(member.packageName, user)?.postTime ?: 0L
+                }?.key
+        } else {
+            null
+        }
+        val face = newest?.let { member ->
+            catalog.cachedIcon(LaunchableApp(member.packageName, member.className, "", member.userSerial))
+                ?.let { badgeFaces.bitmapForIcon(member.filterKey, it) }
+        }
+        val color = newest?.let { catalog.dominantColorFor(it.userSerial, it.packageName, it.className) }
+        return BadgeLook(prefs, context.resources.displayMetrics.density).wrap(icon, count, color, face)
     }
 
     // An app's icon for a bind on the main thread: from the cache, or null
