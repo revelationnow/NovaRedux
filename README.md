@@ -37,9 +37,9 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 
 | Status | Features |
 | --- | --- |
-| ✅ Done | 158 |
+| ✅ Done | 159 |
 | 🟡 Partial | 3 |
-| ❌ Missing | 1 |
+| ❌ Missing | 0 |
 | ❔ Needs a check on a device | 3 |
 | ⛔ Won't do | 2 |
 | **Total** | **167** |
@@ -268,12 +268,12 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 </details>
 
 <details>
-<summary><b>Integrations</b> · 2 features · ✅ 1 · ❌ 1</summary>
+<summary><b>Integrations</b> · 2 features · ✅ 2</summary>
 
 | Status | Feature | Since | Prime | Priority | What Nova did | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
 | ✅ | Google Discover page |  |  | P2 | Needs the Nova Google Companion app | Feed > Page: another app's page over the home screen, through the launcher overlay protocol. The Google app's Discover comes through a bridge app (AIDL Bridge, Lawnfeed), as Nova's came through its Google Companion; test builds reach it directly (seen on the CI emulator) |
-| ❌ | Discover theme: light, dark, follow night mode | 6.1 |  | P2 | Dark Discover cards | Depends on the Discover page |
+| ✅ | Discover theme: light, dark, follow night mode | 6.1 |  | P2 | Dark Discover cards | Feed > Page theme: follow night mode, light or dark, sent to the page with the home window; the Google app's Discover follows it (seen dark on the CI emulator) |
 
 </details>
 

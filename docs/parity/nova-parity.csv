@@ -143,7 +143,7 @@ Shortcuts,App shortcuts on long-press,5.0,No,Done,P0,Android 7.1 launcher shortc
 Shortcuts,Activities picker,,No,Done,P1,Launch any app activity,ActivitiesPickerSheet
 Shortcuts,Nova Actions as desktop shortcuts,,No,Done,P2,Place an action on the home screen,ActionShortcut
 Integrations,Google Discover page,,No,Done,P2,Needs the Nova Google Companion app,"Feed > Page: another app's page over the home screen, through the launcher overlay protocol. The Google app's Discover comes through a bridge app (AIDL Bridge, Lawnfeed), as Nova's came through its Google Companion; test builds reach it directly (seen on the CI emulator)"
-Integrations,"Discover theme: light, dark, follow night mode",6.1,No,Missing,P2,Dark Discover cards,Depends on the Discover page
+Integrations,"Discover theme: light, dark, follow night mode",6.1,No,Done,P2,Dark Discover cards,"Feed > Page theme: follow night mode, light or dark, sent to the page with the home window; the Google app's Discover follows it (seen dark on the CI emulator)"
 Backup and setup,Backup and restore,1.x,No,Done,P0,Layout and settings in one file,"exportBackup, importBackup"
 Backup and setup,Quick start,5.0,No,Done,P2,"Pick theme, drawer and dock style in one place",Onboarding wizard
 Backup and setup,Import from other launchers,,No,Done,P1,Start from your current home screen,BackupLayouts

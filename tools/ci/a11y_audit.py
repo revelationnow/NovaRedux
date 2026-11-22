@@ -26,12 +26,15 @@ def main(path, package):
         if node.get("package") != package:
             continue
         acts = node.get("clickable") == "true" or node.get("long-clickable") == "true"
-        if acts and node.get("enabled") == "true" and not named(node):
+        # A view kept out of accessibility (importantForAccessibility="no")
+        # is one TalkBack never lands on: it needs no name.
+        hidden = node.get("important") == "false"
+        if acts and not hidden and node.get("enabled") == "true" and not named(node):
             unnamed.append(node)
     for node in unnamed:
         print(
             f"A11Y {shot}: {node.get('class')} {node.get('resource-id') or '(no id)'} "
-            f"at {node.get('bounds')} has no name"
+            f"at {node.get('bounds')} has no name; {dict(node.attrib)}"
         )
     print(f"A11Y {shot}: {len(unnamed)} unnamed of the app's clickable views")
 
