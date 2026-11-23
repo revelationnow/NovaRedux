@@ -7,6 +7,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.supernova.launcher.R
 import com.supernova.launcher.data.ContainerType
 import com.supernova.launcher.data.FolderMove
+import com.supernova.launcher.data.ItemRemovalModel
 import com.supernova.launcher.data.ItemType
 import com.supernova.launcher.data.LabelOrder
 import com.supernova.launcher.data.LauncherItem
@@ -52,6 +53,9 @@ class ItemRemoval(private val surfaces: ItemSurfaces, private val host: Host) {
         // Capture before removal: the exact item plus folder members, so undo
         // restores the same ids into the same cells (or the nearest free).
         val members = if (item.itemType == ItemType.FOLDER) viewModel.folderMembers(item.id) else emptyList()
+        // An app whose folder gives way as it goes (one app left in it):
+        // Undo brings back the folder, every app in it, as it was.
+        val folder = ItemRemovalModel.givingWayFolder(viewModel.state.value.model, item)
         viewModel.removeItem(item.id)
         if (!viewModel.state.value.prefs.undoRemove) {
             if (widget) widgets.releaseWidget(item)
@@ -61,7 +65,7 @@ class ItemRemoval(private val surfaces: ItemSurfaces, private val host: Host) {
         val bar = Snackbar.make(window ?: binding.root, R.string.item_removed, UNDO_DURATION_MS)
             .setAction(R.string.undo) {
                 val before = viewModel.state.value.model
-                viewModel.restoreItems(listOf(item) + members)
+                if (folder != null) viewModel.replaceItems(folder) else viewModel.restoreItems(listOf(item) + members)
                 onUndo?.invoke(before)
             }
         overDock(bar, window)

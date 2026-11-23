@@ -90,8 +90,13 @@ class WorkspacePagerAdapter(private val host: Host) : RecyclerView.Adapter<Recyc
         fun state(): LauncherUiState
         fun viewForItem(item: LauncherItem): View
         fun reportWidgetSize(item: LauncherItem, view: View)
-        fun onCanvasLongPress()
+        // `page`: the page held, which in edit mode may be a neighbour
+        // peeking in beside the one in view.
+        fun onCanvasLongPress(page: Int)
         fun onCanvasTap(page: Int, cellX: Int, cellY: Int, workspaceX: Float, workspaceY: Float)
+
+        // Edit mode is up: a page's items don't take touches (WorkspaceCanvas).
+        val editModeOpen: Boolean
 
         // Edit mode's add-page slot: its "+" asks for a real page; a tap on
         // the rest of the slot is a tap on empty page space.
@@ -615,9 +620,10 @@ class WorkspacePagerAdapter(private val host: Host) : RecyclerView.Adapter<Recyc
             }
 
             canvas.setOnLongClickListener {
-                host.onCanvasLongPress()
+                host.onCanvasLongPress(page)
                 true
             }
+            canvas.holdsChildren = { host.editModeOpen }
             // Drops arrive through the activity's drag layer, which finds the
             // page under the finger itself; the page tags itself so it can.
             canvas.setTag(R.id.tag_page, page)

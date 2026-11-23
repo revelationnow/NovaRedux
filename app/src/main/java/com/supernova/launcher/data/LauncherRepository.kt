@@ -437,16 +437,7 @@ class LauncherRepository(private val context: Context) {
     }
 
     suspend fun removeItem(itemId: String) {
-        mutate { current ->
-            val removedItem = current.items.firstOrNull { it.id == itemId }
-            val removeIds = mutableSetOf(itemId)
-            if (removedItem?.itemType == ItemType.FOLDER) {
-                current.items.filter { it.folderId == itemId }.forEach { removeIds.add(it.id) }
-            }
-            current.copy(
-                items = current.items.filterNot { it.id in removeIds }
-            )
-        }
+        mutate { current -> ItemRemovalModel.applied(current, itemId) }
     }
 
     // Undo for a removal: re-adds the captured items verbatim. The first

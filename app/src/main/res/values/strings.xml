@@ -876,7 +876,6 @@
     <string name="settings_search_hint">Search settings</string>
     <string name="desktop_search_bar">Desktop search bar</string>
     <string name="search_bar_placement">Placement</string>
-    <string name="search_bar_none">None</string>
     <string name="search_bar_above_dock">Above dock</string>
     <string name="search_bar_below_dock">Below dock</string>
     <string name="search_bar_persistent">Always show at bottom</string>

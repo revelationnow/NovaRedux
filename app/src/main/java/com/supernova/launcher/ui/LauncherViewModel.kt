@@ -979,6 +979,17 @@ class LauncherViewModel(
         }
     }
 
+    // Undo of a removal that made a folder give way (ItemRemovalModel): the
+    // folder and every app it held, as they were.
+    fun replaceItems(items: List<LauncherItem>) {
+        val prefs = state.value.prefs
+        viewModelScope.launch {
+            repository.replaceItems(
+                items, prefs.gridCols, prefs.gridRows, prefs.dockCount * prefs.dockPages.coerceAtLeast(1)
+            )
+        }
+    }
+
     // A home or dock folder moved into the drawer (FolderToDrawer). Null,
     // and nothing moved, when the folder holds no app a drawer group can.
     fun moveFolderToDrawer(folder: LauncherItem, target: DrawerTarget): FolderMove? {

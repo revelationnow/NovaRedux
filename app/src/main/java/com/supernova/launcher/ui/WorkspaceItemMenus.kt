@@ -155,11 +155,13 @@ class WorkspaceItemMenus(private val surfaces: ItemSurfaces) {
                 val before = viewModel.state.value.model
                 // The folder's last app takes the folder with it. A member's
                 // Undo bar shows in the folder's own window, as Sort's does;
-                // the last one closes the folder with it.
-                if (viewModel.folderMembers(folder.id).size <= 1) {
-                    surfaces.removal.remove(folder)
-                } else {
-                    surfaces.removal.remove(member, memberView, applied)
+                // the last one closes the folder with it. With one app left,
+                // the folder gives way to it (#345) and closes: the bar shows
+                // on the home screen.
+                when (viewModel.folderMembers(folder.id).size) {
+                    0, 1 -> surfaces.removal.remove(folder)
+                    2 -> surfaces.removal.remove(member)
+                    else -> surfaces.removal.remove(member, memberView, applied)
                 }
                 applied(before)
             }

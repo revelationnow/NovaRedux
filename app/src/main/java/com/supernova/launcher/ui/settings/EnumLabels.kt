@@ -415,7 +415,8 @@ object EnumLabels {
 
     @StringRes
     fun of(placement: SearchBarPlacement): Int = when (placement) {
-        SearchBarPlacement.NONE -> R.string.search_bar_none
+        // Hidden, as the drawer field's placement says it (#323).
+        SearchBarPlacement.NONE -> R.string.placement_hidden
         SearchBarPlacement.DOCK_ABOVE -> R.string.search_bar_above_dock
         SearchBarPlacement.DOCK_BELOW -> R.string.search_bar_below_dock
         SearchBarPlacement.PERSISTENT -> R.string.search_bar_persistent

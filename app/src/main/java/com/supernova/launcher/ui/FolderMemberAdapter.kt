@@ -2,6 +2,7 @@ package com.supernova.launcher.ui
 
 import android.annotation.SuppressLint
 import android.graphics.drawable.Drawable
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -78,6 +79,11 @@ class FolderMemberAdapter(
         binding.root.layoutParams = binding.root.layoutParams.apply {
             width = if (cellWidthPx > 0) cellWidthPx else ViewGroup.LayoutParams.MATCH_PARENT
         }
+        // A row's tiles are all as tall as its tallest (the grid measures
+        // them again at that height), so a one-line label centred its icon
+        // lower than a two-line one beside it (#346): the icons line up at
+        // the top, as in the drawer.
+        binding.root.gravity = Gravity.TOP or Gravity.CENTER_HORIZONTAL
         return MemberViewHolder(binding)
     }
 

@@ -3,6 +3,7 @@ package com.supernova.launcher.ui
 import android.content.Context
 import android.util.AttributeSet
 import android.view.Gravity
+import android.view.MotionEvent
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import kotlin.math.max
@@ -81,6 +82,14 @@ class WorkspaceCanvas @JvmOverloads constructor(
     init {
         clipChildren = false
     }
+
+    // While edit mode is up the page is one thing, to hold and move or to
+    // tap out of edit mode (#348): its icons, folders and widgets take no
+    // touch of their own, so nothing on it launches or opens.
+    var holdsChildren: () -> Boolean = { false }
+
+    override fun onInterceptTouchEvent(ev: MotionEvent): Boolean =
+        holdsChildren() || super.onInterceptTouchEvent(ev)
 
     // A one-cell icon's room at its own size, `needW` x `needH`, its icon
     // box and padding, and how it sets its parts: the icon to `iconPx`, the

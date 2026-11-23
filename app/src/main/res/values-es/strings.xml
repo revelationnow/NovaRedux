@@ -846,7 +846,6 @@
     <string name="settings_search_hint">Buscar ajustes</string>
     <string name="desktop_search_bar">Barra de búsqueda del escritorio</string>
     <string name="search_bar_placement">Ubicación</string>
-    <string name="search_bar_none">Ninguna</string>
     <string name="search_bar_above_dock">Encima del dock</string>
     <string name="search_bar_below_dock">Debajo del dock</string>
     <string name="search_bar_persistent">Siempre abajo</string>

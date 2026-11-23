@@ -77,13 +77,13 @@ object AppEditSheet {
         }
         bindSwitchRows(binding, current, workApp = app?.work == true && shortcut == null)
 
-        // The name with no edit: shown in the empty field, and saved when the
-        // field is left empty.
+        // The name with no edit: shown in the field once it is emptied, and
+        // saved when the field is left empty.
         val defaultLabel = shortcut?.let { it.originalLabel ?: it.label } ?: rawLabel
         binding.editLabelLayout.placeholderText = defaultLabel
-        // Only a name of the user's own is in the field; the real one is
-        // the placeholder.
-        binding.editLabel.setText((shortcut?.label ?: current.customLabel)?.takeIf { it != defaultLabel }.orEmpty())
+        // The name it has now is in the field to change, as a folder's is
+        // (#343); left as it is, the app's own name saves no edit.
+        binding.editLabel.setText(shortcut?.label ?: current.customLabel ?: defaultLabel)
         val draft = AppEditDraft(binding, scope, viewModel, defaultLabel, saved = current)
         draft.preview = shortcut?.preview ?: app?.let { a -> { edit -> viewModel.appCatalog().previewIcon(a, edit) } }
         draft.bind()

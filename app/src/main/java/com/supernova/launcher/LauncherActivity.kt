@@ -3245,13 +3245,19 @@ class LauncherActivity :
     // (DESKTOP_PREVIEWS); backup lives in Settings.
     // Empty-space long-press: edit mode (zoomed page, home marker,
     // Wallpapers/Settings chips, peeking add sheet).
-    override fun onCanvasLongPress() {
+    // In edit mode a press anywhere on the page in view lifts it, over an
+    // icon or a widget too (its items take no touches then); one on a
+    // neighbouring page peeking at the edge doesn't lift the page in view.
+    override fun onCanvasLongPress(page: Int) {
         if (editMode.isOpen) {
-            startPageDrag()
+            if (page == workspaceAdapter.realPage(binding.workspacePager.currentItem)) startPageDrag()
             return
         }
         editMode.enter()
     }
+
+    override val editModeOpen: Boolean
+        get() = ::editMode.isInitialized && editMode.isOpen
 
     // A long-press on a page in edit mode: the rest of the stream moves the
     // page, so the pager and the canvas let it go.

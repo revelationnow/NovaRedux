@@ -323,6 +323,10 @@ object SettingsCatalogue {
     private val drawerGlassHidden: (LauncherPrefs) -> SettingItem.HiddenBy? = {
         dependsOn(R.string.icon_glass, IconGlass.fromName(SearchBarPrefs.drawerBar(it).glass) != IconGlass.OFF)
     }
+    // What glass replaces, out of sight with the field too.
+    private val drawerLookHidden: (LauncherPrefs) -> SettingItem.HiddenBy? = {
+        drawerFieldHidden(it) ?: drawerGlassHidden(it)
+    }
 
     // A stored color's name: Default, a curated color by name, any other by
     // hex, with its opacity when it isn't solid ("Red, 50%", "#3F51B5").
@@ -1311,18 +1315,19 @@ object SettingsCatalogue {
                     get = { SearchBarPrefs.drawerBar(it).globalOnTap },
                     set = { on -> rows.editDrawerBar { it.copy(globalOnTap = on) } }
                 ).hiddenWhen(drawerFieldHidden),
-                SettingItem.Header(R.string.group_appearance),
+                // The field's look goes with the field (#323).
+                SettingItem.Header(R.string.group_appearance).hiddenWhen(drawerFieldHidden),
                 rows.choice(
                     R.string.icon_glass, IconGlass.entries,
                     { IconGlass.fromName(SearchBarPrefs.drawerBar(it).glass) },
                     { EnumLabels.of(it) }
-                ) { glass -> rows.editDrawerBar { it.copy(glass = glass.name) } },
+                ) { glass -> rows.editDrawerBar { it.copy(glass = glass.name) } }.hiddenWhen(drawerFieldHidden),
                 // Glass takes the place of the filled box and the outline.
                 SettingItem.Toggle(
                     R.string.drawer_bar_filled,
                     get = { SearchBarPrefs.drawerBar(it).filled },
                     set = { on -> rows.editDrawerBar { it.copy(filled = on) } }
-                ).hiddenWhen(drawerGlassHidden),
+                ).hiddenWhen(drawerLookHidden),
                 // An unset radius draws as the full pill, so it reads as one.
                 SettingItem.Slider(
                     R.string.style_corner_radius, min = 0, max = DrawerSearchBarConfig.MAX_RADIUS, step = 2,
@@ -1333,24 +1338,24 @@ object SettingsCatalogue {
                     set = { v -> rows.editDrawerBar { it.copy(radius = v) } },
                     display = { context.getString(R.string.padding_dp_value, it) },
                     preview = { p, v -> SearchBarPrefs.withDrawerBar(p) { it.copy(radius = v) } }
-                ),
+                ).hiddenWhen(drawerFieldHidden),
                 SettingItem.Slider(
                     R.string.style_opacity, min = 0, max = 100, step = 5,
                     get = { (SearchBarPrefs.drawerBar(it).alpha.coerceIn(0f, 1f) * 100f).roundToInt() },
                     set = { v -> rows.editDrawerBar { it.copy(alpha = v / 100f) } },
                     display = { context.getString(R.string.opacity_percent, it) },
                     preview = { p, v -> SearchBarPrefs.withDrawerBar(p) { it.copy(alpha = v / 100f) } }
-                ),
+                ).hiddenWhen(drawerFieldHidden),
                 SettingItem.Toggle(
                     R.string.search_bar_shadow,
                     get = { SearchBarPrefs.drawerBar(it).shadow },
                     set = { on -> rows.editDrawerBar { it.copy(shadow = on) } }
-                ).hiddenWhen(drawerGlassHidden),
+                ).hiddenWhen(drawerLookHidden),
                 SettingItem.Toggle(
                     R.string.drawer_bar_hint_text,
                     get = { SearchBarPrefs.drawerBar(it).hint },
                     set = { on -> rows.editDrawerBar { it.copy(hint = on) } }
-                ),
+                ).hiddenWhen(drawerFieldHidden),
                 // The buttons inside the field, at its right end; gone with it.
                 SettingItem.Header(R.string.search_bar_chips, visibleIf = { SearchBarPrefs.drawerFieldShown(it) }),
             ) + SearchBarButtons.ROWS.map { drawerButton(viewModel, it) }

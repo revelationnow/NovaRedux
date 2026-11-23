@@ -863,7 +863,6 @@
     <string name="settings_search_hint">Поиск настроек</string>
     <string name="desktop_search_bar">Строка поиска на рабочем столе</string>
     <string name="search_bar_placement">Расположение</string>
-    <string name="search_bar_none">Нет</string>
     <string name="search_bar_above_dock">Над доком</string>
     <string name="search_bar_below_dock">Под доком</string>
     <string name="search_bar_persistent">Всегда внизу</string>

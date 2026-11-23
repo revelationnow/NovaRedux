@@ -846,7 +846,6 @@
     <string name="settings_search_hint">Pesquisar configurações</string>
     <string name="desktop_search_bar">Barra de pesquisa da área de trabalho</string>
     <string name="search_bar_placement">Posição</string>
-    <string name="search_bar_none">Nenhuma</string>
     <string name="search_bar_above_dock">Acima do dock</string>
     <string name="search_bar_below_dock">Abaixo do dock</string>
     <string name="search_bar_persistent">Sempre embaixo</string>

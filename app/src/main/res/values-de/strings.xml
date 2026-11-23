@@ -829,7 +829,6 @@
     <string name="settings_search_hint">Einstellungen durchsuchen</string>
     <string name="desktop_search_bar">Desktop-Suchleiste</string>
     <string name="search_bar_placement">Position</string>
-    <string name="search_bar_none">Keine</string>
     <string name="search_bar_above_dock">Über dem Dock</string>
     <string name="search_bar_below_dock">Unter dem Dock</string>
     <string name="search_bar_persistent">Immer unten anzeigen</string>
