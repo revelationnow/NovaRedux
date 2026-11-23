@@ -45,8 +45,10 @@ import org.junit.runner.RunWith
 // `shots` lists the screens, comma-separated: home, drawer, search, settings,
 // settings.searchbar (the search bar's settings page), feed (the page to the
 // left of home), menu.home (the first home icon's menu), menu.drawer (the
-// first drawer app's) and folder.drawer (the first drawer folder's card). The
-// default is the first four. `query` is typed into search before its shot, with time for web
+// first drawer app's) and folder.drawer (the first drawer folder's card; with
+// pref.b.disable_animations true, as the software-rendered emulator may not
+// have drawn its zoom by the time of the picture). The default is the first
+// four. `query` is typed into search before its shot, with time for web
 // suggestions to come back (through NovaRedux Connect, when installed).
 // `hide_own true`, for store screenshots: this debug build's own entries
 // (NovaRedux Debug, Debug Settings) are off the home screen and the drawer.
