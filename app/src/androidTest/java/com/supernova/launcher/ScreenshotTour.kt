@@ -16,6 +16,7 @@ import androidx.datastore.preferences.core.stringSetPreferencesKey
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.By
+import androidx.test.uiautomator.BySelector
 import androidx.test.uiautomator.UiDevice
 import androidx.test.uiautomator.Until
 import com.supernova.launcher.data.Pref
@@ -43,8 +44,9 @@ import org.junit.runner.RunWith
 //   pref.s64.<key> <base64 of the text>, for values with spaces or quotes.
 // `shots` lists the screens, comma-separated: home, drawer, search, settings,
 // settings.searchbar (the search bar's settings page), feed (the page to the
-// left of home), menu.home (the first home icon's menu) and menu.drawer (the
-// first drawer app's). The default is the first four. `query` is typed into search before its shot, with time for web
+// left of home), menu.home (the first home icon's menu), menu.drawer (the
+// first drawer app's) and folder.drawer (the first drawer folder's card). The
+// default is the first four. `query` is typed into search before its shot, with time for web
 // suggestions to come back (through NovaRedux Connect, when installed).
 // `hide_own true`, for store screenshots: this debug build's own entries
 // (NovaRedux Debug, Debug Settings) are off the home screen and the drawer.
@@ -155,6 +157,7 @@ class ScreenshotTour {
         "feed" -> openFeed()
         "menu.home" -> holdFirst("icon")
         "menu.drawer" -> openDrawer() && holdFirst("appLabel")
+        "folder.drawer" -> openDrawer() && tapFirst(By.descStartsWith(FOLDER_DESC))
         "settings" -> startSettings(Intent())
         "settings.searchbar" -> startSettings(Intent().putExtra(SettingsActivity.EXTRA_OPEN_SEARCH_BAR, true))
         else -> false
@@ -165,6 +168,12 @@ class ScreenshotTour {
     private fun holdFirst(viewId: String): Boolean {
         val view = device.wait(Until.findObject(By.res(appId, viewId)), WAIT_MS) ?: return false
         view.longClick()
+        return true
+    }
+
+    private fun tapFirst(selector: BySelector): Boolean {
+        val view = device.wait(Until.findObject(selector), WAIT_MS) ?: return false
+        view.click()
         return true
     }
 
@@ -258,5 +267,8 @@ class ScreenshotTour {
         const val EDGE_SHARE = 10
         const val FEED_WAIT_MS = 4_000L
         const val BACK_PRESSES = 2
+
+        // A drawer folder tile's description (folder_desc), in English.
+        const val FOLDER_DESC = "Folder: "
     }
 }
