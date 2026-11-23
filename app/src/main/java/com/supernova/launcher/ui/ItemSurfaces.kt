@@ -2,6 +2,8 @@ package com.supernova.launcher.ui
 
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.supernova.launcher.data.LaunchableApp
+import com.supernova.launcher.data.LauncherItem
 import com.supernova.launcher.databinding.ActivityLauncherBinding
 
 // What the item menus, the edit sheets and the removals reach the home
@@ -24,11 +26,17 @@ interface ItemSurfaces {
     val removal: ItemRemoval
     val moveToDrawer: FolderToDrawerPrompt
     val pickers: GroupPickers
+    val workspaceMenus: WorkspaceItemMenus
+    val drawerMenus: DrawerItemMenus
+    val folderCards: FolderCards
+    val iconSwipes: IconSwipes
 
     // X of the last touch-down, in window coordinates: an item's menu opens
     // there.
     val menuTouchX: Float
 
+    fun launchApp(app: LaunchableApp, anchor: View? = null)
+    fun launchItem(item: LauncherItem, anchor: View? = null)
     fun launchShortcut(packageName: String, shortcutId: String, userSerial: Long, anchor: View? = null)
 
     // What a new item's menu closes as it sends the item home: the drawer,

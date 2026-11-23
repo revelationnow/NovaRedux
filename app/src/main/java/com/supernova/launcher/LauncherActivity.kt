@@ -41,6 +41,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.supernova.launcher.ui.AppActions
 import com.supernova.launcher.ui.AppShortcuts
+import com.supernova.launcher.ui.CardSwipeClose
+import com.supernova.launcher.ui.FolderCards
+import com.supernova.launcher.ui.IconSwipes
 import com.supernova.launcher.ui.DrawerItemMenus
 import com.supernova.launcher.ui.FolderToDrawerPrompt
 import com.supernova.launcher.ui.GroupPickers
@@ -96,9 +99,7 @@ import com.supernova.launcher.ui.BadgeStyle
 import com.supernova.launcher.ui.LabelStyler
 import com.supernova.launcher.ui.FolderIconDrawable
 import com.supernova.launcher.ui.FolderMemberAdapter
-import com.supernova.launcher.ui.FolderTileSwipeHold
 import com.supernova.launcher.ui.FolderPopup
-import com.supernova.launcher.ui.FolderReorderDrag
 import com.supernova.launcher.ui.PausedIcon
 import com.supernova.launcher.ui.LauncherUiState
 import com.supernova.launcher.ui.LauncherViewModel
@@ -216,12 +217,12 @@ class LauncherActivity :
 
                 override fun homeIsClear(): Boolean =
                     !drawer.isVisible && !search.isOpen && !feed.isOpen && !desktopPreviews.isShowing &&
-                        activeFolderPopup == null && drag.activeItemPopup == null && homeMenuDialog == null &&
+                        folderCards.openCard == null && drag.activeItemPopup == null && homeMenuDialog == null &&
                         !(::editMode.isInitialized && editMode.isOpen)
 
                 override fun closeOtherCards() {
-                    activeFolderPopup?.dismiss()
-                    activeFolderPopup = null
+                    folderCards.openCard?.dismiss()
+                    folderCards.openCard = null
                 }
 
                 override fun launchApp(app: LaunchableApp) = this@LauncherActivity.launchApp(app)
@@ -256,8 +257,8 @@ class LauncherActivity :
                         cardSwipeClose.onTouch(ev.actionMasked)
                         drag.routeGesture(ev, card)
                     }
-                    activeFolderPopup = card
-                    activeFolderAdapter = adapter
+                    folderCards.openCard = card
+                    folderCards.openMembers = adapter
                 }
 
                 override fun onClosed(card: android.widget.PopupWindow?) {
@@ -268,9 +269,9 @@ class LauncherActivity :
                     drag.activeItemPopup?.dismiss()
                     drag.activeItemPopup = null
                     drag.onWindowDismissed(card)
-                    if (activeFolderPopup === card) {
-                        activeFolderPopup = null
-                        activeFolderAdapter = null
+                    if (folderCards.openCard === card) {
+                        folderCards.openCard = null
+                        folderCards.openMembers = null
                     }
                     animateWallpaperZoom(0f)
                 }
@@ -325,14 +326,9 @@ class LauncherActivity :
     }
     private var homeMenuDialog: com.google.android.material.bottomsheet.BottomSheetDialog? = null
     private val folderPopup by lazy { FolderPopup(this) }
-    // The open folder card, if any. A PopupWindow outlives a home press on its
-    // own, so onNewIntent has to close it like every other overlay.
-    private var activeFolderPopup: android.widget.PopupWindow? = null
-    // The open folder's members, so a badge moving redraws them too.
-    private var activeFolderAdapter: FolderMemberAdapter? = null
     // A home folder's card, or the private space's, closed by the press the
     // system's home swipe began with: that swipe's home press counts it.
-    private val cardSwipeClose = com.supernova.launcher.ui.CardSwipeClose()
+    private val cardSwipeClose = CardSwipeClose()
     // True from onStart until the activity is resumed. Pressing home in
     // another app restarts the launcher, so onStart runs before the home
     // intent is delivered; pressing home on the launcher itself only pauses
@@ -397,7 +393,15 @@ class LauncherActivity :
         override val removal: ItemRemoval get() = this@LauncherActivity.removal
         override val moveToDrawer: FolderToDrawerPrompt get() = this@LauncherActivity.moveToDrawer
         override val pickers: GroupPickers get() = this@LauncherActivity.pickers
+        override val workspaceMenus: WorkspaceItemMenus get() = this@LauncherActivity.workspaceMenus
+        override val drawerMenus: DrawerItemMenus get() = this@LauncherActivity.drawerMenus
+        override val folderCards: FolderCards get() = this@LauncherActivity.folderCards
+        override val iconSwipes: IconSwipes get() = this@LauncherActivity.iconSwipes
         override val menuTouchX: Float get() = this@LauncherActivity.menuTouchX
+
+        override fun launchApp(app: LaunchableApp, anchor: View?) = this@LauncherActivity.launchApp(app, anchor)
+
+        override fun launchItem(item: LauncherItem, anchor: View?) = this@LauncherActivity.launchItem(item, anchor)
 
         override fun launchShortcut(packageName: String, shortcutId: String, userSerial: Long, anchor: View?) =
             this@LauncherActivity.launchShortcut(packageName, shortcutId, userSerial, anchor)
@@ -416,6 +420,37 @@ class LauncherActivity :
     private val pickers: GroupPickers by lazy { GroupPickers(surfaces) }
     private val workspaceMenus: WorkspaceItemMenus by lazy { WorkspaceItemMenus(surfaces) }
     private val drawerMenus: DrawerItemMenus by lazy { DrawerItemMenus(surfaces) }
+    private val folderCards: FolderCards by lazy {
+        FolderCards(
+            surfaces,
+            object : FolderCards.Host {
+                override val folderPopup: FolderPopup get() = this@LauncherActivity.folderPopup
+                override val cardSwipeClose: CardSwipeClose get() = this@LauncherActivity.cardSwipeClose
+
+                override fun dockTopOnScreen(): Int? = this@LauncherActivity.dockTopOnScreen()
+
+                override fun animateWallpaperZoom(target: Float) = this@LauncherActivity.animateWallpaperZoom(target)
+            }
+        )
+    }
+    private val iconSwipes: IconSwipes by lazy {
+        IconSwipes(
+            surfaces,
+            object : IconSwipes.Host {
+                override val gestures: HomeGestureDetector get() = gestureDetector
+
+                override fun disarmDrawerPull() {
+                    drawerPullArmed = false
+                }
+
+                override fun runAction(action: GestureBinding) {
+                    actions.run(action)
+                }
+
+                override fun launchIntentUri(uri: String) = this@LauncherActivity.launchIntentUri(uri, null)
+            }
+        )
+    }
     private val removal: ItemRemoval by lazy {
         ItemRemoval(
             surfaces,
@@ -678,8 +713,8 @@ class LauncherActivity :
         homeMenuDialog = null
         drag.activeItemPopup?.dismiss()
         drag.activeItemPopup = null
-        activeFolderPopup?.dismiss()
-        activeFolderPopup = null
+        folderCards.openCard?.dismiss()
+        folderCards.openCard = null
         widgets.dismissResizeFrame()
         if (desktopPreviews.isShowing) desktopPreviews.dismiss()
         // Edit mode's page zoom, sheet height and chip row were all worked
@@ -785,7 +820,7 @@ class LauncherActivity :
             renderDock(viewModel.state.value, force = true)
         }
         drawer.onBadgeChanged()
-        activeFolderAdapter?.refreshIcons()
+        folderCards.openMembers?.refreshIcons()
     }
 
     // Phase 8 first-run gate. GRANDFATHERING: existing users must never see
@@ -1483,7 +1518,7 @@ class LauncherActivity :
                 itemIcons.drawerFolderIcon(group, members, onLate = onLate)
             },
             decorateFolderIcon = itemIcons::withFolderBadge,
-            onFolderClick = { view, group, members -> showDrawerFolderPopup(view, group, members) },
+            onFolderClick = { view, group, members -> folderCards.showDrawerFolder(view, group, members) },
             onFolderLongPress = drawerMenus::longPressFolder,
             onTabMenu = pickers::tabMenu,
             onSelectTabApps = pickers::groupApps,
@@ -1550,10 +1585,11 @@ class LauncherActivity :
                     privateSpaceCard.open(null)
                 } else if (folder.itemId != null) {
                     viewModel.state.value.model.items.firstOrNull { it.id == folder.itemId }
-                        ?.let { showFolderPopup(binding.workspacePager, it) }
+                        ?.let { folderCards.showFolder(binding.workspacePager, it) }
                 } else {
-                    viewModel.drawerFolderGroups().firstOrNull { it.id == folder.groupId }
-                        ?.let { showDrawerFolderPopup(binding.workspacePager, it, viewModel.drawerFolderApps(it)) }
+                    viewModel.drawerFolderGroups().firstOrNull { it.id == folder.groupId }?.let {
+                        folderCards.showDrawerFolder(binding.workspacePager, it, viewModel.drawerFolderApps(it))
+                    }
                 }
             },
             // A card launch from search hides the overlay, as every result does.
@@ -2394,11 +2430,11 @@ class LauncherActivity :
             closed = true
         }
         drag.activeItemPopup = null
-        activeFolderPopup?.let {
+        folderCards.openCard?.let {
             it.dismiss()
             closed = true
         }
-        activeFolderPopup = null
+        folderCards.openCard = null
         if (::editMode.isInitialized && editMode.isOpen) {
             editMode.exit()
             closed = true
@@ -2676,7 +2712,7 @@ class LauncherActivity :
 
     private fun launchItem(item: LauncherItem, anchor: View? = null) {
         when (item.itemType) {
-            ItemType.FOLDER -> showFolderPopup(anchor ?: binding.root, item)
+            ItemType.FOLDER -> folderCards.showFolder(anchor ?: binding.root, item)
             ItemType.WIDGET -> Unit
             ItemType.APP -> item.toLaunchableApp()?.let { launchApp(it, anchor) }
             ItemType.SHORTCUT -> {
@@ -2818,7 +2854,7 @@ class LauncherActivity :
         // A folder card is a window of its own: a shortcut dragged out of a
         // member's menu left it standing over the home screen. Not the card
         // a drag is carried by, which closes with the drop.
-        activeFolderPopup?.takeUnless { drag.ownsGestureIn(it) }?.dismiss()
+        folderCards.openCard?.takeUnless { drag.ownsGestureIn(it) }?.dismiss()
         hideDrawer()
         if (::search.isInitialized && search.isOpen) search.hide()
         if (::feed.isInitialized && feed.isOpen) feed.close()
@@ -2836,312 +2872,6 @@ class LauncherActivity :
     // short), and that drag is under way by the time this runs.
     override fun onDragFinished(sourcePage: Int?) {
         binding.root.post { removal.removeEmptyPages(emptied = sourcePage) }
-    }
-
-    private fun showFolderPopup(anchor: View, folder: LauncherItem) {
-        var folderAdapter: FolderMemberAdapter? = null
-        var popup: android.widget.PopupWindow? = null
-        // Moving an app inside the card, before it is taken out past the
-        // card's edge (FolderReorderDrag).
-        var reorder: FolderReorderDrag? = null
-        // A member's long-press menu, closed with the folder: Back, Home,
-        // the screen going off and rotation all close the folder, and the
-        // menu used to float on over the home screen, its rows still aimed
-        // at the closed folder.
-        var memberMenu: SupernovaPopupMenu? = null
-
-        // The folder shows its members again once a change is saved - waited
-        // for, not guessed at with a delay.
-        fun applied(before: com.supernova.launcher.data.LauncherModel) {
-            lifecycleScope.launch {
-                withTimeoutOrNull(FOLDER_SAVE_WAIT_MS) { viewModel.state.first { it.model !== before } }
-                val remaining = viewModel.folderMembers(folder.id)
-                if (remaining.isEmpty()) popup?.dismiss() else folderAdapter?.submit(remaining)
-            }
-        }
-
-        val folderPrefs = viewModel.state.value.prefs
-        val adapter = FolderMemberAdapter(
-            appCatalog = viewModel.appCatalog(),
-            showLabels = folderPrefs.folderLabels,
-            labelPrefs = folderPrefs,
-            iconScale = if (folderPrefs.folderMatchDesktop) folderPrefs.iconScale else folderPrefs.folderIconScale,
-            onClick = {
-                if (viewModel.state.value.prefs.folderCloseOnLaunch) popup?.dismiss()
-                launchItem(it)
-            },
-            // An app in a home folder is a home icon like any other: its
-            // menu while the finger is held, and a drag once it moves - to
-            // another place in the folder, or out past the card's edge onto
-            // the home screen or the dock. The card is its own
-            // window, so the gesture's touches come in through its
-            // interceptor (below), not dispatchTouchEvent.
-            onLongPress = { memberView, member ->
-                memberMenu?.dismiss()
-                drag.arm(memberView, DragPayload.ExistingItem(member.id), window = popup) {
-                    workspaceMenus.folderMember(folder, member, memberView, { popup?.dismiss() }, ::applied).also {
-                        it.show(memberView, menuTouchX)
-                        memberMenu = it
-                    }
-                }
-                reorder?.let(drag::armWindowDrag)
-            }
-        )
-        adapter.decorateIcon = { icon, member ->
-            itemIcons.withBadge(icon, member.packageName, member.className, member.userSerial)
-        }
-        adapter.shortcutIcon = { member ->
-            member.takeIf { it.itemType == ItemType.SHORTCUT }?.let(itemIcons::intentItemIcon)
-        }
-        // An app's swipes work in the open folder too, as on the home screen.
-        adapter.attachSwipe = { tile, member ->
-            attachIconSwipe(tile, member) {
-                if (viewModel.state.value.prefs.folderCloseOnLaunch) popup?.dismiss()
-            }
-        }
-        folderAdapter = adapter
-
-        animateWallpaperZoom(1f)
-        val prefs = viewModel.state.value.prefs
-        popup = folderPopup.show(
-            anchor = anchor,
-            title = folder.label,
-            members = viewModel.folderMembers(folder.id),
-            adapter = adapter,
-            columnsOverride = prefs.folderColumns,
-            mode = prefs.folderMode,
-            scroll = prefs.folderScroll,
-            surfaceColor = com.supernova.launcher.ui.theme.Styles.resolve(this, prefs)
-                .of(com.supernova.launcher.ui.theme.SurfaceId.FOLDER).surface,
-            textColor = com.supernova.launcher.ui.theme.Styles.resolve(this, prefs)
-                .of(com.supernova.launcher.ui.theme.SurfaceId.FOLDER).text,
-            cornerRadiiDp = com.supernova.launcher.ui.theme.Styles.resolve(this, prefs)
-                .of(com.supernova.launcher.ui.theme.SurfaceId.FOLDER).cornerRadiiDp,
-            showTitle = prefs.folderShowName,
-            showCount = prefs.folderShowCount,
-            shadow = prefs.folderShadow,
-            animate = Animations.enabled(prefs),
-            speed = Animations.factor(prefs),
-            keepAboveScreenY = dockTopOnScreen(),
-            circle = prefs.folderAnimation == com.supernova.launcher.ui.FolderAnimation.CIRCLE,
-            alignBottom = prefs.folderAlignBottom,
-            onRename = { viewModel.renameFolder(folder.id, it) },
-            // The title row's overflow: Select apps and Sort, as the folder's
-            // long-press has them. Opened by a tap, so modal at once, and the
-            // card's touch interceptor closes it on a tap outside it.
-            onMenu = menu@{ button ->
-                memberMenu?.dismiss()
-                // Every row changes the layout, as the long-press menu's
-                // locked state has none of them.
-                if (com.supernova.launcher.ui.DesktopLock.refused(this@LauncherActivity, viewModel)) return@menu
-                val menu = menuKit.popup()
-                menu.addRow(getString(R.string.select_apps), R.drawable.ic_menu_select_apps) {
-                    // The folder closes first: as a focusable window it stays
-                    // the IME target even under the dialog, so the checklist's
-                    // rename field could never summon the keyboard while it
-                    // was up.
-                    popup?.dismiss()
-                    pickers.folderApps(folder)
-                }
-                menu.addRow(getString(R.string.sort), R.drawable.ic_menu_sort) {
-                    // The folder's window covers the activity's, so its
-                    // Undo bar shows in the folder's own window.
-                    removal.sortFolder(folder.id, popup?.contentView, ::applied)
-                }
-                moveToDrawer.addRow(menu, folder) { popup?.dismiss() }
-                drag.activeItemPopup = menu
-                menu.show(button)
-                menu.makeModal()
-                memberMenu = menu
-            },
-            onDismiss = {
-                // A shortcut being dragged out of a member's menu closes the
-                // card too, and that close is the drag's as well.
-                val menuCarried = memberMenu?.let { drag.ownsGestureIn(it.window) } == true
-                cardSwipeClose.onCardClosed(
-                    SystemClock.uptimeMillis(), carried = popup?.let(drag::ownsGestureIn) == true || menuCarried
-                )
-                // That menu carries the rest of the gesture, and closes with
-                // its drop.
-                if (!menuCarried) memberMenu?.dismiss()
-                memberMenu = null
-                // Closed under a held app or its drag (a home press, Back, a
-                // rotation): the rest of that gesture would only ever have
-                // come through this card, so it ends here.
-                drag.onWindowDismissed(popup)
-                activeFolderPopup = null
-                activeFolderAdapter = null
-                animateWallpaperZoom(0f)
-            }
-        )
-        // Every touch on the card goes through the item gesture first: an
-        // app held there, the drag it becomes, and the press that closes its
-        // menu once modal, swallowed so it doesn't also launch the app it
-        // lands on. A modal menu leaves outside taps to its host (see
-        // makeModal), and the card's window is the host here: the activity
-        // never sees taps in a folder.
-        cardSwipeClose.onCardShown()
-        popup?.let { window ->
-            // Taps pass through to the card's own views (false unless a drag
-            // takes the stream), which accessibility services click as usual.
-            //noinspection ClickableViewAccessibility
-            window.setTouchInterceptor { _, ev ->
-                cardSwipeClose.onTouch(ev.actionMasked)
-                drag.routeGesture(ev, window)
-            }
-        }
-        reorder = (popup?.contentView as? ViewGroup)?.let { content ->
-            FolderReorderDrag(content, adapter, { viewModel.state.value.prefs }) { order ->
-                viewModel.reorderFolder(folder.id, order)
-            }
-        }
-        activeFolderPopup = popup
-        activeFolderAdapter = adapter
-    }
-
-    // A drawer folder card's tiles: its apps as transient APP items, and the
-    // folders inside it as FOLDER items, each put in held by its item id.
-    private fun drawerFolderItems(
-        group: DrawerGroup,
-        members: List<LaunchableApp>,
-        held: MutableMap<String, DrawerGroup>
-    ): List<LauncherItem> = viewModel.drawerFolderContents(group, members).map { pick ->
-        when (pick) {
-            is com.supernova.launcher.data.GroupPick.App -> pick.app.let { app ->
-                LauncherItem(
-                    id = "drawer-folder/${app.userSerial}/${app.packageName}/${app.className}",
-                    itemType = ItemType.APP,
-                    label = app.label,
-                    packageName = app.packageName,
-                    className = app.className,
-                    userSerial = app.userSerial
-                )
-            }
-            is com.supernova.launcher.data.GroupPick.Folder -> {
-                val id = "drawer-folder/folder/${pick.group.id}"
-                held[id] = pick.group
-                LauncherItem(id = id, itemType = ItemType.FOLDER, label = pick.group.name)
-            }
-        }
-    }
-
-    // Drawer folders (FOLDER-type groups): the same popup chrome fed from
-    // LaunchableApps via transient items - nothing here touches the model.
-    private fun showDrawerFolderPopup(anchor: View, group: DrawerGroup, members: List<LaunchableApp>) {
-        val prefs = viewModel.state.value.prefs
-        // Its apps, and the drawer folders inside it (#229) as folder tiles.
-        val held = HashMap<String, DrawerGroup>()
-        val items = drawerFolderItems(group, members, held)
-        var popup: android.widget.PopupWindow? = null
-        // An app's menu open over the card, if any: it closes with the card.
-        var memberMenu: SupernovaPopupMenu? = null
-        // The group's name as of now: a rename typed into the title is saved
-        // as the popup closes, which Edit does before opening the checklist.
-        var groupName = group.name
-        val adapter = FolderMemberAdapter(
-            appCatalog = viewModel.appCatalog(),
-            showLabels = prefs.folderLabels,
-            labelPrefs = prefs,
-            iconScale = if (prefs.folderMatchDesktop) prefs.iconScale else prefs.folderIconScale,
-            onClick = { item ->
-                // A folder inside opens in this card's place; Back then
-                // closes it, not back to this one.
-                val child = held[item.id]
-                if (child != null || viewModel.state.value.prefs.folderCloseOnLaunch) popup?.dismiss()
-                child?.let { showDrawerFolderPopup(anchor, it, viewModel.drawerFolderApps(it)) }
-                item.toLaunchableApp()?.let { launchApp(it) }
-            },
-            // An app in a drawer folder is a drawer icon like any other: its
-            // menu, and a drag to the home screen once the finger moves. The
-            // card is its own window, so the gesture's touches come in
-            // through its interceptor (below), not dispatchTouchEvent.
-            onLongPress = { memberView, item ->
-                // A folder inside: the drawer folder's menu, and a drag of
-                // its apps to the home screen.
-                held[item.id]?.let { child ->
-                    val apps = viewModel.drawerFolderApps(child)
-                    val payload = DragPayload.DrawerFolder(child, apps)
-                    drag.arm(memberView, payload, window = popup, draggable = apps.isNotEmpty()) {
-                        drawerMenus.folderMenu(memberView, child, apps).also { memberMenu = it }
-                    }
-                }
-                item.toLaunchableApp()?.let { app ->
-                    drag.arm(memberView, DragPayload.DrawerApp(app), window = popup) {
-                        drawerMenus.appMenu(memberView, app, source = popup).also { memberMenu = it }
-                    }
-                }
-            }
-        )
-        adapter.decorateIcon = { icon, member ->
-            itemIcons.withBadge(icon, member.packageName, member.className, member.userSerial)
-        }
-        val heldIcons = HashMap<String, android.graphics.drawable.Drawable>()
-        adapter.shortcutIcon = { member ->
-            held[member.id]?.let { child ->
-                heldIcons.getOrPut(member.id) {
-                    itemIcons.drawerFolderIcon(child, viewModel.drawerFolderApps(child), nested = false)
-                }
-            }
-        }
-        popup = folderPopup.show(
-            anchor = anchor,
-            title = group.name,
-            members = items,
-            adapter = adapter,
-            columnsOverride = prefs.folderColumns,
-            mode = prefs.folderMode,
-            scroll = prefs.folderScroll,
-            surfaceColor = com.supernova.launcher.ui.theme.Styles.resolve(this, prefs)
-                .of(com.supernova.launcher.ui.theme.SurfaceId.FOLDER).surface,
-            textColor = com.supernova.launcher.ui.theme.Styles.resolve(this, prefs)
-                .of(com.supernova.launcher.ui.theme.SurfaceId.FOLDER).text,
-            cornerRadiiDp = com.supernova.launcher.ui.theme.Styles.resolve(this, prefs)
-                .of(com.supernova.launcher.ui.theme.SurfaceId.FOLDER).cornerRadiiDp,
-            showTitle = prefs.folderShowName,
-            showCount = prefs.folderShowCount,
-            shadow = prefs.folderShadow,
-            animate = Animations.enabled(prefs),
-            speed = Animations.factor(prefs),
-            circle = prefs.folderAnimation == com.supernova.launcher.ui.FolderAnimation.CIRCLE,
-            alignBottom = prefs.folderAlignBottom,
-            onRename = { newName -> groupName = viewModel.renameGroup(group, newName) },
-            onMenu = {
-                // The group editor rewrites the members pref; the drawer
-                // rebuilds from the emission, so close the stale popup.
-                popup?.dismiss()
-                // Titled with the name it has now: a rename in the title may
-                // not be stored yet.
-                pickers.groupApps(group, groupName)
-            },
-            onDismiss = {
-                // A menu a shortcut is being dragged out of carries the rest
-                // of that gesture, and closes with its drop.
-                memberMenu?.takeUnless { drag.ownsGestureIn(it.window) }?.dismiss()
-                memberMenu = null
-                // Closed under a held app or its drag (a home press, Back, a
-                // rotation): the rest of that gesture would only ever have
-                // come through this card, so it ends here.
-                drag.onWindowDismissed(popup)
-                activeFolderPopup = null
-                activeFolderAdapter = null
-                drawer.greyBehindFolder(false)
-                // The drawer sheet is usually still open underneath; only
-                // release the wallpaper zoom when it isn't.
-                if (!drawer.isExpanded) animateWallpaperZoom(0f)
-            }
-        )
-        // A windowed folder greys the drawer out behind it, as Nova's did.
-        drawer.greyBehindFolder(true)
-        // Every touch on the card goes through the item gesture first: an
-        // app held there, the drag it becomes, and the press that closes its
-        // menu once modal (without also launching the app it lands on).
-        // Accessibility services click the card's views directly, past this.
-        popup?.let { window ->
-            //noinspection ClickableViewAccessibility
-            window.setTouchInterceptor { _, ev -> drag.routeGesture(ev, window) }
-        }
-        activeFolderPopup = popup
-        activeFolderAdapter = adapter
     }
 
     // Full screen over the desktop, the search window keeps it faded as the
@@ -3427,20 +3157,20 @@ class LauncherActivity :
 
         val swipeToOpen = item.itemType == ItemType.FOLDER && item.swipeToOpen
         iconBinding.root.setOnClickListener {
-            if (swipeToOpen) launchFolderFirstItem(item, it) else launchItem(item, it)
+            if (swipeToOpen) iconSwipes.launchFolderFirstItem(item, it) else launchItem(item, it)
         }
         iconBinding.root.setOnLongClickListener { v ->
             if (liftPageFromItem(v, item)) return@setOnLongClickListener true
             drag.arm(v, DragPayload.ExistingItem(item.id)) { workspaceMenus.show(v, item) }
             true
         }
-        attachIconSwipe(iconBinding.root, item)
+        iconSwipes.attach(iconBinding.root, item)
         itemMoves.attach(iconBinding.root, item.id)
         if (swipeToOpen) {
             // A tap no longer opens it, so a screen reader gets the swipe as
             // an action of its own.
             ViewCompat.addAccessibilityAction(iconBinding.root, getString(R.string.open_folder)) { view, _ ->
-                showFolderPopup(view, item)
+                folderCards.showFolder(view, item)
                 true
             }
         }
@@ -3499,145 +3229,6 @@ class LauncherActivity :
         }
         runLogged("open wallpaper crop") { startActivity(intent) }
             .onFailure { Toast.makeText(this, R.string.launch_failed, Toast.LENGTH_SHORT).show() }
-    }
-
-    // Per-icon swipe: a short vertical flick on the icon runs its bound app
-    // (up and down independently), while taps and long-presses keep working
-    // through the normal listeners. `inFolder` is set for an app in an open
-    // folder (#224) and runs just before the action (the folder's close on
-    // launch).
-    private fun attachIconSwipe(view: View, item: LauncherItem, inFolder: (() -> Unit)? = null) {
-        // A swipe-to-open folder's swipe up is its own: it opens the folder,
-        // whatever swipe-up action it still holds.
-        val opensOnSwipe = item.itemType == ItemType.FOLDER && item.swipeToOpen
-        val claimsUp = opensOnSwipe || item.swipeAction != null
-        val claimsDown = item.swipeActionDown != null
-        if (!claimsUp && !claimsDown) return
-        var startY = 0f
-        var startX = 0f
-        // The swipe ran: the rest of the stream is the icon's, so the lift
-        // can't also tap it.
-        var swiped = false
-        val hold = inFolder?.let { FolderTileSwipeHold(view, claimsUp, claimsDown) }
-        // It only claims a swipe; a tap falls through to the icon's own
-        // click handling, which accessibility services reach as usual.
-        //noinspection ClickableViewAccessibility
-        view.setOnTouchListener { v, event ->
-            // In an open folder the grid is held off until the finger has
-            // gone one way.
-            hold?.onTouch(v, event)
-            when (event.actionMasked) {
-                MotionEvent.ACTION_DOWN -> {
-                    startY = event.rawY
-                    startX = event.rawX
-                    swiped = false
-                    // An open folder's window never feeds the home detector
-                    // or the drawer pull.
-                    if (hold == null) claimHomeSwipe(claimsUp, claimsDown)
-                }
-                // Decided as the finger crosses the home swipe's distance,
-                // not on the lift: waiting for the lift needed twice that
-                // distance, and a short flick still inside the icon read
-                // as a tap, a slow one as a long-press.
-                // The lift too, for a flick whose last move fell just short.
-                MotionEvent.ACTION_MOVE, MotionEvent.ACTION_UP -> if (!swiped) {
-                    val up = iconSwipeAt(event.rawX - startX, startY - event.rawY, claimsUp, claimsDown)
-                    if (up != null) {
-                        swiped = true
-                        runIconSwipe(v, event, item, up, inFolder)
-                    }
-                }
-            }
-            swiped
-        }
-    }
-
-    // The lift's swipe on an icon: true up, false down, null for neither.
-    // dy is the finger's rise.
-    // The home swipes' own distance (HomeGestureDetector.minSwipeDistance).
-    private fun iconSwipeAt(dx: Float, dy: Float, claimsUp: Boolean, claimsDown: Boolean): Boolean? {
-        val min = gestureDetector.minSwipeDistance
-        return when {
-            claimsUp && dy >= min && dy > abs(dx) -> true
-            claimsDown && -dy >= min && -dy > abs(dx) -> false
-            else -> null
-        }
-    }
-
-    private fun claimHomeSwipe(claimsUp: Boolean, claimsDown: Boolean) {
-        // Both the icon's listener and the home detector decide on the same
-        // lift, so the icon claims the directions it binds - otherwise one
-        // swipe ran the icon's action AND the home binding. dispatchTouchEvent
-        // feeds the detector before the press reaches the icon, so this lands
-        // after the detector has cleared the flags for this gesture.
-        gestureDetector.suppressSwipe(up = claimsUp, down = claimsDown)
-        // The drawer pull arms on the same down, before the press reaches the
-        // icon, and takes the stream once the finger rises past the slop:
-        // every icon's swipe up went to the drawer while a swipe up opens it.
-        // The icon takes it back.
-        if (claimsUp) drawerPullArmed = false
-    }
-
-    private fun runIconSwipe(
-        v: View,
-        event: MotionEvent,
-        item: LauncherItem,
-        up: Boolean,
-        inFolder: (() -> Unit)?
-    ) {
-        val opensOnSwipe = item.itemType == ItemType.FOLDER && item.swipeToOpen
-        // The rest of the stream never reaches the icon's own handler, so its
-        // press state and pending long-press are cancelled by hand; a folder
-        // opening in place would keep the ripple.
-        val cancel = MotionEvent.obtain(event)
-        cancel.action = MotionEvent.ACTION_CANCEL
-        v.onTouchEvent(cancel)
-        cancel.recycle()
-        v.performHapticFeedback(android.view.HapticFeedbackConstants.LONG_PRESS)
-        inFolder?.invoke()
-        when {
-            up && opensOnSwipe -> showFolderPopup(v, item)
-            up -> launchSwipeAction(item, item.swipeAction, item.swipeLabel)
-            else -> launchSwipeAction(item, item.swipeActionDown, item.swipeLabelDown)
-        }
-    }
-
-    // A swipe-to-open folder's tap: the first app its window shows, launched
-    // from the folder's icon. A folder with nothing to launch opens instead.
-    private fun launchFolderFirstItem(folder: LauncherItem, anchor: View) {
-        val first = viewModel.folderFirstMember(folder.id)
-        if (first == null) {
-            showFolderPopup(anchor, folder)
-            return
-        }
-        launchItem(first, anchor)
-    }
-
-    private fun launchSwipeAction(item: LauncherItem, action: String?, label: String?) {
-        action ?: return
-        // A launcher-action uri runs through the shared action dispatcher.
-        com.supernova.launcher.gesture.ActionShortcut.decode(action)?.let {
-            actions.run(it)
-            return
-        }
-        // An intent an app's shortcut screen made (a direct dial, a route).
-        if (com.supernova.launcher.ui.CreatedShortcuts.isIntentUri(action)) {
-            launchIntentUri(action, null)
-            return
-        }
-        // Shortcut targets are stored "pkg|shortcutId"; anything else is a
-        // flattened component, as written before shortcuts were supported.
-        // Either carries its app's profile ("@serial"); older ones don't,
-        // and open in the swiped icon's.
-        val (target, storedSerial) = com.supernova.launcher.data.LaunchTarget.parse(action)
-        val serial = storedSerial ?: item.userSerial
-        if (target.contains('|')) {
-            launchShortcut(target.substringBefore('|'), target.substringAfter('|'), serial)
-            return
-        }
-        val component = ComponentName.unflattenFromString(target) ?: return
-        val app = LaunchableApp(component.packageName, component.className, label.orEmpty(), serial)
-        launchApp(app)
     }
 
     override fun onCanvasTap(page: Int, cellX: Int, cellY: Int, workspaceX: Float, workspaceY: Float) {
