@@ -362,6 +362,10 @@ data class LauncherPrefs(
     // Synthesize a monochrome layer for apps that ship none (D8). On, so
     // Themed icons alone themes every app.
     val themedIconsAutogen: Boolean = true,
+    // The glyphs apps ship drawn at one size (#332): theirs run from a third
+    // of the icon to most of it, and mixed, some looked shrunk and some
+    // swollen. Off by default.
+    val themedIconsNormalize: Boolean = false,
     // Screen-lock mechanism: ACCESSIBILITY (default) or DEVICE_ADMIN.
     val lockMethod: LockMethod = LockMethod.ACCESSIBILITY,
     val badgeColor: String = "",

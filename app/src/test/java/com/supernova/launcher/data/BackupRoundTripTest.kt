@@ -53,6 +53,7 @@ class BackupRoundTripTest {
         iconSwipeIndicator = false,
         themedIcons = true,
         themedIconsAutogen = false,
+        themedIconsNormalize = true,
         lockMethod = LockMethod.DEVICE_ADMIN,
         hiddenApps = setOf("0/com.a/com.a.Main"),
         gestureBindings = setOf("SWIPE_UP:OPEN_SETTINGS", "DOUBLE_TAP:LOCK_SCREEN"),

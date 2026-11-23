@@ -560,6 +560,7 @@
     <string name="theme_schedule_from">Sombre à partir de</string>
     <string name="theme_schedule_until">Sombre jusqu\'à</string>
     <string name="themed_icons_autogen">Générer les icônes à thème manquantes</string>
+    <string name="themed_icons_normalize">Uniformiser la taille des icônes à thème</string>
     <string name="search_window_mode">Style de la fenêtre de recherche</string>
     <string name="search_window_immersive">Immersive</string>
     <string name="search_window_window">Fenêtre</string>

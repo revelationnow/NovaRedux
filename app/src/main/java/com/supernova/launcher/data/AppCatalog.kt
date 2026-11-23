@@ -47,6 +47,7 @@ class AppCatalog(
     // resources past any frame or theme the phone's maker puts on them.
     @Volatile private var bypassTheme: Boolean = false
     @Volatile private var themedIconsAutogen: Boolean = false
+    @Volatile private var themedIconsNormalize: Boolean = false
     private var themedIconBg: Int = 0
     private var themedIconFg: Int = 0
     // An eighth of the heap holds every icon of a large app list; the old
@@ -312,7 +313,8 @@ class AppCatalog(
     private fun diskSignature(): String =
         "$DISK_FORMAT|${context.resources.displayMetrics.densityDpi}|$iconShape|${customShapeSpec?.encode()}|" +
             "${iconRenderer.reshapeLegacy}|${iconRenderer.shadow}|${iconRenderer.glass}|$themedIcons|" +
-            "$themedIconsAutogen|${iconPacks.loadedPack()}|$packStamp|${iconPacks.themeKey()}|$bypassTheme"
+            "$themedIconsAutogen|$themedIconsNormalize|${iconPacks.loadedPack()}|$packStamp|${iconPacks.themeKey()}|" +
+            bypassTheme
 
     // The loaded pack's own install time: an updated pack draws afresh.
     private var packStamp = 0L
@@ -528,16 +530,18 @@ class AppCatalog(
         enabled: Boolean,
         background: Int,
         foreground: Int,
-        autogen: Boolean = false
+        autogen: Boolean = false,
+        normalize: Boolean = false
     ): Boolean = synchronized(renderLock) {
         if (enabled == themedIcons && background == themedIconBg && foreground == themedIconFg &&
-            autogen == themedIconsAutogen
+            autogen == themedIconsAutogen && normalize == themedIconsNormalize
         ) return false
         val wasEnabled = themedIcons
         themedIcons = enabled
         themedIconBg = background
         themedIconFg = foreground
         themedIconsAutogen = autogen
+        themedIconsNormalize = normalize
         if (!wasEnabled && !enabled) return evictForcedThemed()
         iconCache.evictAll()
         dominantColors.clear()
@@ -603,7 +607,7 @@ class AppCatalog(
         val shipsMono = (icon as? android.graphics.drawable.AdaptiveIconDrawable)?.monochrome != null
         return if (shipsMono || themedIconsAutogen || force) {
             runLogged("tint themed icon") {
-                val painter = ThemedIconPainter(context.resources, themedIconBg, themedIconFg)
+                val painter = ThemedIconPainter(context.resources, themedIconBg, themedIconFg, themedIconsNormalize)
                 painter.themedLayer(icon, ThemedGlyph::forApp) ?: painter.tintedCopy(icon)
             }.getOrNull()
         } else {
@@ -803,7 +807,7 @@ class AppCatalog(
         return synchronized(renderLock) {
             runLogged("render shortcut icon") {
                 ShortcutIcons(iconRenderer, customShapeSpec, iconShape, ::packDrawable, ::pickedPicture) {
-                    ThemedIconPainter(context.resources, themedIconBg, themedIconFg)
+                    ThemedIconPainter(context.resources, themedIconBg, themedIconFg, themedIconsNormalize)
                         .themedLayer(it, ThemedGlyph::forShortcut) ?: it
                 }.draw(edit, live ?: own?.toDrawable(context.resources), own.takeIf { item.shortcutId != null })
             }.getOrNull()

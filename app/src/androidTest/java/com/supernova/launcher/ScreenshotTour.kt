@@ -43,7 +43,8 @@ import org.junit.runner.RunWith
 //   pref.b.<key> true · pref.i.<key> 5 · pref.f.<key> 1.5 · pref.s.<key> TEXT
 //   pref.s64.<key> <base64 of the text>, for values with spaces or quotes.
 // `shots` lists the screens, comma-separated: home, drawer, search, settings,
-// settings.searchbar (the search bar's settings page), feed (the page to the
+// settings.searchbar (the search bar's settings page), settings.search (the
+// Search page, at its search window rows), feed (the page to the
 // left of home), menu.home (the first home icon's menu), menu.drawer (the
 // first drawer app's) and folder.drawer (the first drawer folder's card; with
 // pref.b.disable_animations true, as the software-rendered emulator may not
@@ -162,6 +163,10 @@ class ScreenshotTour {
         "folder.drawer" -> openDrawer() && tapFirst(By.descStartsWith(FOLDER_DESC))
         "settings" -> startSettings(Intent())
         "settings.searchbar" -> startSettings(Intent().putExtra(SettingsActivity.EXTRA_OPEN_SEARCH_BAR, true))
+        "settings.search" -> startSettings(
+            Intent().putExtra(SettingsActivity.EXTRA_SECTION_TITLE_RES, R.string.settings_section_search)
+                .putExtra(SettingsActivity.EXTRA_HIGHLIGHT_TITLE_RES, R.string.search_show_apps_row)
+        )
         else -> false
     }
 

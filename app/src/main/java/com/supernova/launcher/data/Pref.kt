@@ -253,6 +253,7 @@ object Pref {
     val iconSwipeIndicator = bool("icon_swipe_indicator")
     val themedIcons = bool("themed_icons")
     val themedIconsAutogen = bool("themed_icons_autogen")
+    val themedIconsNormalize = bool("themed_icons_normalize")
     val lockMethod = choice("lock_method", LockMethod.entries)
     val badgeColor = text("badge_color")
     val badgePosition = choice("badge_position", BadgePosition.entries)

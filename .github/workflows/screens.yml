@@ -23,6 +23,10 @@ on:
         description: 'A display cutout to emulate: "", corner, double, hole, tall or waterfall'
         required: false
         default: ""
+      nav:
+        description: 'The navigation bar: "" (gestures, the emulator''s own), threebutton or twobutton'
+        required: false
+        default: ""
 
 permissions:
   contents: read
@@ -75,6 +79,7 @@ jobs:
           TOUR_ARGS: ${{ inputs.args }}
           SHOT_WIDTH: ${{ inputs.width }}
           SHOT_CUTOUT: ${{ inputs.cutout }}
+          SHOT_NAV: ${{ inputs.nav }}
         with:
           api-level: 35
           target: google_apis

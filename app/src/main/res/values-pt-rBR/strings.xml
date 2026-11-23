@@ -560,6 +560,7 @@
     <string name="theme_schedule_from">Escuro a partir de</string>
     <string name="theme_schedule_until">Escuro até</string>
     <string name="themed_icons_autogen">Gerar os ícones temáticos que faltam</string>
+    <string name="themed_icons_normalize">Igualar o tamanho dos ícones temáticos</string>
     <string name="search_window_mode">Estilo da janela de pesquisa</string>
     <string name="search_window_immersive">Imersiva</string>
     <string name="search_window_window">Janela</string>

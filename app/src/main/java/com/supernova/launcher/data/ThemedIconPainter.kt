@@ -1,18 +1,29 @@
 package com.supernova.launcher.data
 
+import android.content.res.ColorStateList
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.ColorFilter
 import android.graphics.Paint
+import android.graphics.PixelFormat
+import android.graphics.Rect
 import android.graphics.RectF
 import android.graphics.drawable.AdaptiveIconDrawable
 import android.graphics.drawable.Drawable
 import androidx.core.graphics.createBitmap
 import androidx.core.graphics.drawable.toDrawable
+import androidx.core.graphics.withScale
 
 // Draws an icon's themed look in the plate and glyph colours: its shipped
 // monochrome layer, or one generated from its picture (see ThemedGlyph).
-internal class ThemedIconPainter(private val resources: Resources, private val plate: Int, private val glyph: Int) {
+// `normalize` draws a shipped layer's glyph at one size (#332).
+internal class ThemedIconPainter(
+    private val resources: Resources,
+    private val plate: Int,
+    private val glyph: Int,
+    private val normalize: Boolean = false
+) {
 
     // Any icon's themed look: its monochrome layer in the themed colours
     // when it ships one, else the glyph `pick` reads off its picture (see
@@ -25,10 +36,20 @@ internal class ThemedIconPainter(private val resources: Resources, private val p
         }
         val fg = if (mono != null) {
             (mono.constantState?.newDrawable()?.mutate() ?: mono).apply { setTint(glyph) }
+                .let { if (normalize) evened(it) else it }
         } else {
             generatedGlyph(icon, pick) ?: return null
         }
         return AdaptiveIconDrawable(ThemedPlate(plate), fg)
+    }
+
+    // A shipped glyph at the size every other one is drawn at: its ink
+    // measured off a reading of it, then the glyph, still the app's own
+    // drawing, scaled about the middle to span GLYPH_SPAN of the canvas.
+    private fun evened(layer: Drawable): Drawable {
+        val span = GlyphSpan.of(layersPixels(listOf(layer), inset = 0), GLYPH_PX) ?: return layer
+        val scale = GlyphSpan.scaleFor(span, GLYPH_SPAN)
+        return if (scale == 1f) layer else ScaledGlyph(layer, scale)
     }
 
     // Lets `pick` choose a glyph's alpha off the icon's foreground (see
@@ -106,5 +127,45 @@ internal class ThemedIconPainter(private val resources: Resources, private val p
         const val GLYPH_PX = 192
         const val LEGACY_INSET = 0.2f
         const val LEGACY_GLYPH_SCALE = 0.8f
+
+        // The share of the canvas a normalized glyph spans: 43dp of the
+        // adaptive icon's 108, about three fifths of the 72 that show.
+        const val GLYPH_SPAN = 0.4f
+    }
+}
+
+// A glyph drawn `scale` times its size about its middle; the adaptive icon
+// sizes it, and it draws on within that.
+private class ScaledGlyph(private val glyph: Drawable, private val scale: Float) : Drawable() {
+
+    override fun onBoundsChange(bounds: Rect) {
+        glyph.bounds = bounds
+    }
+
+    override fun draw(canvas: Canvas) {
+        canvas.withScale(scale, scale, bounds.exactCenterX(), bounds.exactCenterY()) { glyph.draw(this) }
+    }
+
+    override fun setAlpha(alpha: Int) {
+        glyph.alpha = alpha
+    }
+
+    override fun setColorFilter(colorFilter: ColorFilter?) {
+        glyph.colorFilter = colorFilter
+    }
+
+    override fun setTintList(tint: ColorStateList?) {
+        glyph.setTintList(tint)
+    }
+
+    @Deprecated("Deprecated in Drawable", ReplaceWith("PixelFormat.TRANSLUCENT"))
+    override fun getOpacity(): Int = PixelFormat.TRANSLUCENT
+
+    override fun getConstantState(): ConstantState? = glyph.constantState?.let { State(it, scale) }
+
+    private class State(private val glyph: ConstantState, private val scale: Float) : ConstantState() {
+        override fun newDrawable(): Drawable = ScaledGlyph(glyph.newDrawable().mutate(), scale)
+
+        override fun getChangingConfigurations(): Int = glyph.changingConfigurations
     }
 }

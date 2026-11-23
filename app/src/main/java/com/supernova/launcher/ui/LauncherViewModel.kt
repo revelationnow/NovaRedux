@@ -267,7 +267,9 @@ class LauncherViewModel(
                     if (bypassChanged) catalog.applyIconSource(prefs.labsBypassIconTheme)
                     val themedEvicted = themedChanged && run {
                         val (bg, fg) = themedIconColors(prefs)
-                        catalog.applyThemedIcons(prefs.themedIcons, bg, fg, prefs.themedIconsAutogen)
+                        catalog.applyThemedIcons(
+                            prefs.themedIcons, bg, fg, prefs.themedIconsAutogen, prefs.themedIconsNormalize
+                        )
                     }
                     themedEvicted || nightEvicted || packChanged || shapeChanged || normalizeChanged || shadowChanged ||
                         glassChanged || resolutionChanged || largeResolutionChanged || bypassChanged
@@ -616,8 +618,8 @@ class LauncherViewModel(
     // theme change re-tints monochrome icons even though no icon-shape pref moved.
     private fun themedIconSignature(prefs: com.supernova.launcher.data.LauncherPrefs): String {
         val night = isNightMode(prefs)
-        return "${prefs.themedIcons}|${prefs.themedIconsAutogen}|${prefs.paletteSource}|${prefs.paletteSeed}|" +
-            "${prefs.accentColor}|${prefs.themeMode}|$night"
+        return "${prefs.themedIcons}|${prefs.themedIconsAutogen}|${prefs.themedIconsNormalize}|" +
+            "${prefs.paletteSource}|${prefs.paletteSeed}|${prefs.accentColor}|${prefs.themeMode}|$night"
     }
 
     // The launcher's own dark or light, Schedule's and Auto's windows
@@ -642,7 +644,9 @@ class LauncherViewModel(
             val evicted = withContext(Dispatchers.Default) {
                 val packEvicted = nightChanged && catalog.applyNight(night)
                 val (bg, fg) = themedIconColors(prefs)
-                catalog.applyThemedIcons(prefs.themedIcons, bg, fg, prefs.themedIconsAutogen) || packEvicted
+                catalog.applyThemedIcons(
+                    prefs.themedIcons, bg, fg, prefs.themedIconsAutogen, prefs.themedIconsNormalize
+                ) || packEvicted
             }
             if (evicted) iconGeneration.value += 1
         }

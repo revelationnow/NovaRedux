@@ -560,6 +560,7 @@
     <string name="theme_schedule_from">Oscuro desde</string>
     <string name="theme_schedule_until">Oscuro hasta</string>
     <string name="themed_icons_autogen">Generar los iconos temáticos que faltan</string>
+    <string name="themed_icons_normalize">Igualar el tamaño de los iconos temáticos</string>
     <string name="search_window_mode">Estilo de la ventana de búsqueda</string>
     <string name="search_window_immersive">Inmersiva</string>
     <string name="search_window_window">Ventana</string>

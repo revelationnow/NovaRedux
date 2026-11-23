@@ -1697,6 +1697,12 @@ object SettingsCatalogue {
                     set = { viewModel.set(Pref.themedIconsAutogen, it) },
                     visibleIf = { android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU }
                 ).hiddenWhen { needsOn(R.string.themed_icons, !it.themedIcons) }.nested(),
+                SettingItem.Toggle(
+                    R.string.themed_icons_normalize,
+                    get = { it.themedIconsNormalize },
+                    set = { viewModel.set(Pref.themedIconsNormalize, it) },
+                    visibleIf = { android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU }
+                ).hiddenWhen { needsOn(R.string.themed_icons, !it.themedIcons) }.nested(),
                 SettingItem.Row(
                     R.string.icon_pack,
                     // The pack's own label, not the package name the pref

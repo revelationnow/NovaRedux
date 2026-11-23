@@ -546,6 +546,7 @@
     <string name="theme_schedule_from">गहरी थीम कब से</string>
     <string name="theme_schedule_until">गहरी थीम कब तक</string>
     <string name="themed_icons_autogen">जो थीम वाले आइकॉन नहीं हैं, उन्हें बनाएं</string>
+    <string name="themed_icons_normalize">थीम वाले आइकॉन का साइज़ एक जैसा करें</string>
     <string name="search_window_mode">खोज विंडो की स्टाइल</string>
     <string name="search_window_immersive">इमर्सिव</string>
     <string name="search_window_window">विंडो</string>

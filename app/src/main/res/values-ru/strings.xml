@@ -574,6 +574,7 @@
     <string name="theme_schedule_from">Тёмная тема с</string>
     <string name="theme_schedule_until">Тёмная тема до</string>
     <string name="themed_icons_autogen">Создавать недостающие тематические иконки</string>
+    <string name="themed_icons_normalize">Выравнивать размер тематических иконок</string>
     <string name="search_window_mode">Стиль окна поиска</string>
     <string name="search_window_immersive">Полноэкранный</string>
     <string name="search_window_window">Окно</string>
