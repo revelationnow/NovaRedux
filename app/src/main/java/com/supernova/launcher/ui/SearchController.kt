@@ -425,6 +425,7 @@ class SearchController(
                 matchedApps = { query ->
                     appProvider.search(query).mapNotNull { (it as? SearchResult.App)?.app }
                 },
+                searchableApps = { viewModel.searchableApps() },
                 userForSerial = { viewModel.appCatalog().userForSerial(it) }
             ),
             ContactSearchProvider(context.applicationContext) {
@@ -674,8 +675,11 @@ class SearchController(
     // of apps (the tab's: recent, frequent or new), then - under a hairline -
     // the drawer's folders and every app that isn't in one.
     private fun showZeroState(tab: AppsRowTab = viewModel.state.value.prefs.searchAppsRow) {
-        val frequent = viewModel.appsRow(tab, gridColumns())
-        val shortcuts = SuggestedShortcuts.pills(viewModel)
+        val prefs = viewModel.state.value.prefs
+        // The apps row with its tabs, and the shortcuts the most used apps
+        // offer (a messaging app's contacts, say), each can be off (#324).
+        val frequent = if (prefs.searchShowAppsRow) viewModel.appsRow(tab, gridColumns()) else emptyList()
+        val shortcuts = if (prefs.searchSuggestedShortcuts) SuggestedShortcuts.pills(viewModel) else emptyList()
         // Folder members live inside their folder, as in the drawer.
         // A folder inside another (#229) lives inside it too.
         val groups = viewModel.drawerFolderGroups().filter { viewModel.drawerFolderHasContent(it) }
@@ -692,7 +696,7 @@ class SearchController(
         ) { it.label }
         val surface = overlaySurface ?: return
         styleSurface(surface)
-        surface.adapter.appsTab = tab
+        surface.adapter.appsTab = tab.takeIf { prefs.searchShowAppsRow }
         surface.adapter.submitZeroState(shortcuts, frequent, allApps, folders, recentQueries)
     }
 
@@ -715,7 +719,7 @@ class SearchController(
         val key = listOf(
             prefs.searchBarConfig,
             prefs.styleConfig, prefs.paletteSource, prefs.paletteSeed, prefs.accentColor,
-            prefs.labelSize, prefs.labelColor, prefs.labelFont, prefs.searchWindowMode
+            prefs.labelSize, prefs.labelColor, prefs.labelFont, prefs.searchWindowMode, prefs.searchWindowHint
         )
         if (key == appliedStyle) return
         appliedStyle = key
@@ -748,6 +752,8 @@ class SearchController(
             ui.root.clipToOutline = false
         }
         ui.searchPill.background = windowBarBackground(prefs, bar)
+        // "Search", as the other bars say it, or nothing (#324).
+        ui.searchInput.hint = if (prefs.searchWindowHint) binding.root.context.getString(R.string.search_hint) else null
         ui.searchInput.setTextColor(bar.text)
         ui.searchInput.setHintTextColor((0x99 shl 24) or (bar.text and 0xFFFFFF))
         ui.searchGhost.setTextColor((0x80 shl 24) or (bar.text and 0xFFFFFF))
@@ -760,13 +766,13 @@ class SearchController(
         }
     }
 
-    // The window's bar is the home bar opened up: the same glass or fill,
-    // radius, opacity and outline.
+    // The window's bar: its glass or fill, radius, opacity and outline,
+    // the home bar's until the Search page sets its own (#324).
     private fun windowBarBackground(
         prefs: com.supernova.launcher.data.LauncherPrefs,
         bar: com.supernova.launcher.ui.theme.ResolvedSurface
     ): android.graphics.drawable.Drawable {
-        val config = SearchBarConfig.decode(prefs.searchBarConfig).desktop
+        val config = SearchBarConfig.decode(prefs.searchBarConfig).windowBar()
         val radius = binding.root.dp(config.radius.coerceIn(0, DesktopSearchBarConfig.MAX_RADIUS).toFloat())
         val alpha = (config.alpha.coerceIn(0f, 1f) * OPAQUE).toInt()
         val glass = com.supernova.launcher.data.IconGlass.fromName(config.glass)

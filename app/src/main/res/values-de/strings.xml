@@ -551,6 +551,10 @@
     <string name="search_window_window">Fenster</string>
     <string name="search_apps_one_row">Apps auf eine Zeile beschränken</string>
     <string name="search_apps_one_row_summary">App-Ergebnisse in einer Zeile, die seitlich scrollt</string>
+    <string name="search_show_apps_row">Apps-Zeile</string>
+    <string name="search_show_apps_row_summary">Zuletzt verwendete, häufige oder neue Apps, solange nichts eingegeben ist</string>
+    <string name="search_suggested_shortcuts">Vorgeschlagene Verknüpfungen</string>
+    <string name="search_suggested_shortcuts_summary">Verknüpfungen deiner meistgenutzten Apps, etwa Kontakte</string>
     <string name="contact_call">Anrufen</string>
     <string name="contact_message">Nachricht</string>
     <string name="search_contact_cards">Kontaktkarten-Ansicht</string>
@@ -610,6 +614,7 @@
     <string name="group_popup">Pop-up-Menü</string>
     <string name="group_editing">Bearbeiten</string>
     <string name="group_search_window">Suchfenster</string>
+    <string name="group_search_window_bar">Suchleiste im Suchfenster</string>
     <string name="group_folder_window">Fenster</string>
     <string name="group_one_finger">Ein Finger</string>
     <string name="group_two_fingers">Zwei Finger</string>

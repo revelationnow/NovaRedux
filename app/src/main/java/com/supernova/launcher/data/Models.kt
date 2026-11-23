@@ -477,6 +477,13 @@ data class LauncherPrefs(
     // App results as one horizontal strip instead of vertical rows. On by
     // default.
     val searchAppsOneRow: Boolean = true,
+    // The empty search window's row of apps, with its Recent, Frequent and
+    // New tabs (searchAppsRow), and the shortcuts the most used apps offer
+    // above it. Both on by default.
+    val searchShowAppsRow: Boolean = true,
+    val searchSuggestedShortcuts: Boolean = true,
+    // "Search" in the window's empty field.
+    val searchWindowHint: Boolean = true,
     // Contacts as cards with call/message actions instead of plain rows. On
     // by default; it only matters once contact search is on.
     val searchContactCards: Boolean = true,

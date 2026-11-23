@@ -127,4 +127,22 @@ class SearchBarConfigTest {
         val off = SearchBarConfig(drawer = DrawerSearchBarConfig(hint = false))
         assertEquals(false, SearchBarConfig.decode(off.encode()).drawer.hint)
     }
+
+    // The search window's bar wore the home bar's look; a config with no
+    // look of its own for it still gives it that (#324).
+    @Test
+    fun theWindowBarWearsTheHomeBarsLookUntilItHasItsOwn() {
+        val home = DesktopSearchBarConfig(radius = 8, alpha = 0.5f, wireframe = true, glass = "SMOKED")
+        val old = SearchBarConfig.decode(SearchBarConfig(desktop = home).encode())
+        assertEquals(null, old.window)
+        assertEquals(WindowSearchBarConfig(8, 0.5f, true, "SMOKED"), old.windowBar())
+
+        val own = old.copy(window = old.windowBar().copy(radius = 0))
+        val decoded = SearchBarConfig.decode(own.encode())
+        assertEquals(own, decoded)
+        assertEquals(0, decoded.windowBar().radius)
+        assertEquals(8, decoded.desktop.radius)
+        // Its own look stays its own when the home bar's changes.
+        assertEquals(0, decoded.copy(desktop = home.copy(radius = 20)).windowBar().radius)
+    }
 }

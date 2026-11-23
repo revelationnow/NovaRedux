@@ -579,6 +579,10 @@
     <string name="search_window_window">Окно</string>
     <string name="search_apps_one_row">Приложения в одну строку</string>
     <string name="search_apps_one_row_summary">Найденные приложения в одной строке с прокруткой в сторону</string>
+    <string name="search_show_apps_row">Ряд приложений</string>
+    <string name="search_show_apps_row_summary">Недавние, частые или новые приложения, пока ничего не введено</string>
+    <string name="search_suggested_shortcuts">Предлагаемые ярлыки</string>
+    <string name="search_suggested_shortcuts_summary">Ярлыки ваших самых используемых приложений, например контакты</string>
     <string name="contact_call">Позвонить</string>
     <string name="contact_message">Написать</string>
     <string name="search_contact_cards">Карточки контактов</string>
@@ -642,6 +646,7 @@
     <string name="group_popup">Всплывающее меню</string>
     <string name="group_editing">Редактирование</string>
     <string name="group_search_window">Окно поиска</string>
+    <string name="group_search_window_bar">Строка в окне поиска</string>
     <string name="group_folder_window">Окно</string>
     <string name="group_one_finger">Один палец</string>
     <string name="group_two_fingers">Два пальца</string>

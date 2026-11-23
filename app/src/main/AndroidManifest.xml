@@ -231,6 +231,8 @@
             android:theme="@style/Theme.Supernova.Transparent">
             <intent-filter>
                 <action android:name="com.supernova.launcher.APPLY_ICON_THEME" />
+                <!-- Nova's own, for a pack that offers it to any launcher. -->
+                <action android:name="com.teslacoilsw.launcher.APPLY_ICON_THEME" />
                 <action android:name="com.anddoes.launcher.SET_THEME" />
                 <action android:name="org.adw.launcher.SET_THEME" />
                 <category android:name="android.intent.category.DEFAULT" />

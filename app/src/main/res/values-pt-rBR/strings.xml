@@ -565,6 +565,10 @@
     <string name="search_window_window">Janela</string>
     <string name="search_apps_one_row">Limitar os apps a uma linha</string>
     <string name="search_apps_one_row_summary">Os resultados de apps em uma linha que rola para os lados</string>
+    <string name="search_show_apps_row">Linha de apps</string>
+    <string name="search_show_apps_row_summary">Apps recentes, frequentes ou novos enquanto nada é digitado</string>
+    <string name="search_suggested_shortcuts">Atalhos sugeridos</string>
+    <string name="search_suggested_shortcuts_summary">Atalhos que seus apps mais usados oferecem, como contatos</string>
     <string name="contact_call">Ligar</string>
     <string name="contact_message">Mensagem</string>
     <string name="search_contact_cards">Visualização em cards de contato</string>
@@ -626,6 +630,7 @@
     <string name="group_popup">Menu pop-up</string>
     <string name="group_editing">Edição</string>
     <string name="group_search_window">Janela de pesquisa</string>
+    <string name="group_search_window_bar">Barra da janela de pesquisa</string>
     <string name="group_folder_window">Janela</string>
     <string name="group_one_finger">Um dedo</string>
     <string name="group_two_fingers">Dois dedos</string>

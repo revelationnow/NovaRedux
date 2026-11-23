@@ -2,68 +2,110 @@ package com.supernova.launcher.search
 
 import android.content.Context
 import android.content.pm.LauncherApps
+import android.content.pm.ShortcutInfo
+import android.os.SystemClock
 import android.os.UserHandle
 import com.supernova.launcher.data.LaunchableApp
 
-// App-shortcut results for the async tier. For each of the top matched apps,
-// queries LauncherApps for dynamic + manifest + pinned shortcuts and keeps
-// the ones whose label contains the query. Shortcut queries are only allowed
-// for the default home app; the SecurityException thrown otherwise degrades
-// silently to no shortcut results.
+// App-shortcut results for the async tier: the shortcuts apps offer
+// (dynamic, manifest and pinned) whose own name holds the query. It looked
+// only at the shortcuts of the apps whose names matched, so a contact a
+// messaging app offers, shown in the empty window, wasn't found by the
+// contact's name (#324). Now any app's is; those of the apps the query
+// names still come first. Shortcut queries are only allowed for the default
+// home app; the SecurityException thrown otherwise degrades silently to no
+// shortcut results.
 class ShortcutSearchProvider(
     context: Context,
     private val matchedApps: (String) -> List<LaunchableApp>,
+    // The apps a search may show: the shortcuts of any other (an app hidden
+    // from search, say) stay out.
+    private val searchableApps: () -> List<LaunchableApp>,
     private val userForSerial: (Long) -> UserHandle?
 ) : SearchProvider {
 
     private val launcherApps = context.getSystemService(LauncherApps::class.java)
     private val densityDpi = context.resources.displayMetrics.densityDpi
 
+    // Every app's shortcuts, asked for once in a while rather than at every
+    // key typed: one call for each profile.
+    private class Offered(val shortcut: ShortcutInfo, val label: String, val userSerial: Long) {
+        val owner: Pair<String, Long> get() = shortcut.`package` to userSerial
+    }
+    private var offered: List<Offered> = emptyList()
+    private var offeredAt = 0L
+    private var offeredFor: Set<Long> = emptySet()
+
     override val id: String = ID
 
     override fun search(query: String): List<SearchResult> {
         val trimmed = query.trim()
-        if (trimmed.isEmpty() || launcherApps == null) return emptyList()
+        val apps = launcherApps
+        if (trimmed.isEmpty() || apps == null) return emptyList()
+        val named = matchedApps(trimmed).take(MAX_APPS).map { it.packageName to it.userSerial }
+        val allowed = searchableApps().mapTo(HashSet()) { it.packageName to it.userSerial }
+        val hits = offered(apps, allowed.mapTo(HashSet()) { it.second }).filter {
+            it.owner in allowed && it.label.contains(trimmed, ignoreCase = true)
+        }
+        return ranked(hits, trimmed, named, Offered::owner, Offered::label).take(MAX_RESULTS).map { hit ->
+            // Icon load happens here, off the main thread in the async
+            // tier, so binds only ever draw an already-resolved drawable.
+            SearchResult.Shortcut(
+                packageName = hit.shortcut.`package`,
+                shortcutId = hit.shortcut.id,
+                label = hit.label,
+                userSerial = hit.userSerial,
+                icon = runCatching { apps.getShortcutBadgedIconDrawable(hit.shortcut, densityDpi) }.getOrNull()
+            )
+        }
+    }
 
-        val results = mutableListOf<SearchResult>()
-        for (app in matchedApps(trimmed).take(MAX_APPS)) {
-            if (results.size >= MAX_RESULTS) break
-            val user = userForSerial(app.userSerial) ?: continue
-            val shortcutQuery = LauncherApps.ShortcutQuery()
-                .setPackage(app.packageName)
-                .setQueryFlags(
-                    LauncherApps.ShortcutQuery.FLAG_MATCH_DYNAMIC or
-                        LauncherApps.ShortcutQuery.FLAG_MATCH_MANIFEST or
-                        LauncherApps.ShortcutQuery.FLAG_MATCH_PINNED
-                )
-            val shortcuts = runCatching { launcherApps.getShortcuts(shortcutQuery, user) }
-                .getOrNull().orEmpty()
-            for (shortcut in shortcuts) {
-                if (results.size >= MAX_RESULTS) break
-                val label = (shortcut.shortLabel ?: shortcut.longLabel)?.toString().orEmpty()
-                if (label.isEmpty() || !label.contains(trimmed, ignoreCase = true)) continue
-                // Icon load happens here, off the main thread in the async
-                // tier, so binds only ever draw an already-resolved drawable.
-                val icon = runCatching {
-                    launcherApps.getShortcutBadgedIconDrawable(shortcut, densityDpi)
-                }.getOrNull()
-                results.add(
-                    SearchResult.Shortcut(
-                        packageName = app.packageName,
-                        shortcutId = shortcut.id,
-                        label = label,
-                        userSerial = app.userSerial,
-                        icon = icon
-                    )
-                )
+    @Synchronized
+    private fun offered(apps: LauncherApps, serials: Set<Long>): List<Offered> {
+        val now = SystemClock.elapsedRealtime()
+        if (offeredAt != 0L && serials == offeredFor && now - offeredAt < FRESH_MS) return offered
+        val query = LauncherApps.ShortcutQuery().setQueryFlags(
+            LauncherApps.ShortcutQuery.FLAG_MATCH_DYNAMIC or
+                LauncherApps.ShortcutQuery.FLAG_MATCH_MANIFEST or
+                LauncherApps.ShortcutQuery.FLAG_MATCH_PINNED
+        )
+        offered = serials.flatMap { serial ->
+            val shortcuts = userForSerial(serial)?.let { user ->
+                runCatching { apps.getShortcuts(query, user) }.getOrNull()
+            }
+            shortcuts.orEmpty().mapNotNull { shortcut ->
+                (shortcut.shortLabel ?: shortcut.longLabel)?.toString()?.takeIf { it.isNotEmpty() }
+                    ?.let { label -> Offered(shortcut, label, serial) }
             }
         }
-        return results
+        offeredAt = now
+        offeredFor = serials
+        return offered
     }
 
     companion object {
         const val ID = "shortcuts"
         private const val MAX_APPS = 3
         private const val MAX_RESULTS = 6
+
+        // How long the shortcuts asked for are the ones searched: a window
+        // open, and some typing in it.
+        private const val FRESH_MS = 30_000L
+
+        // `hits` best first: the shortcuts of the `named` apps, in the order
+        // the apps were found, then any other app's, those whose name starts
+        // with the query ahead of those that hold it further in.
+        internal fun <T> ranked(
+            hits: List<T>,
+            query: String,
+            named: List<Pair<String, Long>>,
+            owner: (T) -> Pair<String, Long>,
+            label: (T) -> String
+        ): List<T> = hits.sortedWith(
+            compareBy<T>(
+                { hit -> named.indexOf(owner(hit)).takeIf { it >= 0 } ?: named.size },
+                { hit -> if (label(hit).startsWith(query, ignoreCase = true)) 0 else 1 }
+            )
+        )
     }
 }

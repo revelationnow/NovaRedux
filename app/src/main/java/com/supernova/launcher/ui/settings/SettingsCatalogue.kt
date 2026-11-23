@@ -42,6 +42,7 @@ import com.supernova.launcher.ui.SearchBarChip
 import com.supernova.launcher.ui.SearchBarConfig
 import com.supernova.launcher.ui.SearchBarLogo
 import com.supernova.launcher.ui.SearchBarPlacement
+import com.supernova.launcher.ui.WindowSearchBarConfig
 import com.supernova.launcher.ui.DrawerStyle
 import com.supernova.launcher.ui.IndicatorStyle
 import com.supernova.launcher.ui.LabelFont
@@ -320,6 +321,18 @@ object SettingsCatalogue {
     private val desktopGlassHidden: (LauncherPrefs) -> SettingItem.HiddenBy? = {
         dependsOn(R.string.icon_glass, IconGlass.fromName(SearchBarPrefs.desktopBar(it).glass) != IconGlass.OFF)
     }
+    // No home bar (placement Hidden): its buttons go, and its look too while
+    // the feed's bar, which borrows that look, isn't showing either.
+    private val desktopButtonsHidden: (LauncherPrefs) -> SettingItem.HiddenBy? = {
+        dependsOn(R.string.search_bar_placement, !SearchBarPrefs.desktopBarShown(it))
+    }
+    private val desktopBarHidden: (LauncherPrefs) -> SettingItem.HiddenBy? = { prefs ->
+        val feedBar = prefs.feedEnabled && prefs.feedShowSearch
+        desktopButtonsHidden(prefs)?.takeUnless { feedBar }
+    }
+    private val desktopLookHidden: (LauncherPrefs) -> SettingItem.HiddenBy? = {
+        desktopBarHidden(it) ?: desktopGlassHidden(it)
+    }
     private val drawerGlassHidden: (LauncherPrefs) -> SettingItem.HiddenBy? = {
         dependsOn(R.string.icon_glass, IconGlass.fromName(SearchBarPrefs.drawerBar(it).glass) != IconGlass.OFF)
     }
@@ -387,6 +400,12 @@ object SettingsCatalogue {
                     it.copy(placement = placement.name, enabled = placement != DrawerBarPlacement.HIDDEN)
                 }
             }
+        }
+        // The search window's bar, from the Search page: what it wore until
+        // now (the home bar's look) with the change made.
+        val editWindowBar = { change: (WindowSearchBarConfig) -> WindowSearchBarConfig ->
+            val full = SearchBarConfig.decode(viewModel.state.value.prefs.searchBarConfig)
+            viewModel.set(Pref.searchBarConfig, full.copy(window = change(full.windowBar())).encode())
         }
         // The desktop bar's placement, on its own page and on Home screen.
         val desktopBarPlacement = { title: Int ->
@@ -1227,6 +1246,20 @@ object SettingsCatalogue {
                     set = { viewModel.set(Pref.searchAppsOneRow, it) },
                     subtitle = R.string.search_apps_one_row_summary
                 ),
+                // What the empty window shows above its apps, each of which
+                // can go (#324).
+                SettingItem.Toggle(
+                    R.string.search_show_apps_row,
+                    get = { it.searchShowAppsRow },
+                    set = { viewModel.set(Pref.searchShowAppsRow, it) },
+                    subtitle = R.string.search_show_apps_row_summary
+                ),
+                SettingItem.Toggle(
+                    R.string.search_suggested_shortcuts,
+                    get = { it.searchSuggestedShortcuts },
+                    set = { viewModel.set(Pref.searchSuggestedShortcuts, it) },
+                    subtitle = R.string.search_suggested_shortcuts_summary
+                ),
                 SettingItem.Toggle(
                     R.string.search_contact_cards,
                     get = { it.searchContactCards },
@@ -1237,6 +1270,40 @@ object SettingsCatalogue {
                     get = { it.searchPrivateKeyboard },
                     set = { viewModel.set(Pref.searchPrivateKeyboard, it) },
                     subtitle = R.string.search_private_keyboard_summary
+                ),
+                // The bar the query is typed in has its own look (#324); it
+                // wears the home bar's until one of these is set.
+                SettingItem.Header(R.string.group_search_window_bar),
+                SettingItem.Slider(
+                    R.string.style_corner_radius, min = 0, max = DesktopSearchBarConfig.MAX_RADIUS, step = 2,
+                    get = { SearchBarPrefs.windowBar(it).radius.coerceIn(0, DesktopSearchBarConfig.MAX_RADIUS) },
+                    set = { v -> editWindowBar { it.copy(radius = v) } },
+                    display = { context.getString(R.string.padding_dp_value, it) }
+                ),
+                SettingItem.Slider(
+                    R.string.style_opacity, min = 0, max = 100, step = 5,
+                    get = { (SearchBarPrefs.windowBar(it).alpha.coerceIn(0f, 1f) * 100f).roundToInt() },
+                    set = { v -> editWindowBar { it.copy(alpha = v / 100f) } },
+                    display = { context.getString(R.string.opacity_percent, it) }
+                ),
+                rows.choice(
+                    R.string.icon_glass, IconGlass.entries,
+                    { IconGlass.fromName(SearchBarPrefs.windowBar(it).glass) },
+                    { EnumLabels.of(it) }
+                ) { glass -> editWindowBar { it.copy(glass = glass.name) } },
+                SettingItem.Toggle(
+                    R.string.search_bar_wireframe,
+                    get = { SearchBarPrefs.windowBar(it).wireframe },
+                    set = { on -> editWindowBar { it.copy(wireframe = on) } },
+                    subtitle = R.string.search_bar_wireframe_summary
+                ).hiddenWhen { prefs ->
+                    val glass = IconGlass.fromName(SearchBarPrefs.windowBar(prefs).glass)
+                    dependsOn(R.string.icon_glass, glass != IconGlass.OFF)
+                },
+                SettingItem.Toggle(
+                    R.string.search_bar_hint_text,
+                    get = { it.searchWindowHint },
+                    set = { viewModel.set(Pref.searchWindowHint, it) }
                 )
             )
         ),
@@ -1251,26 +1318,28 @@ object SettingsCatalogue {
             listOf(
                 SettingItem.Preview(PreviewKind.SEARCH_BAR),
                 desktopBarPlacement(R.string.search_bar_placement),
-                SettingItem.Header(R.string.group_appearance),
+                // The bar's look goes with the bar (#323), unless the feed's
+                // bar, which wears it too, is showing.
+                SettingItem.Header(R.string.group_appearance).hiddenWhen(desktopBarHidden),
                 SettingItem.Slider(
                     R.string.style_corner_radius, min = 0, max = DesktopSearchBarConfig.MAX_RADIUS, step = 2,
                     get = { SearchBarPrefs.desktopBar(it).radius.coerceIn(0, DesktopSearchBarConfig.MAX_RADIUS) },
                     set = { v -> rows.editDesktopBar { it.copy(radius = v) } },
                     display = { context.getString(R.string.padding_dp_value, it) },
                     preview = { p, v -> SearchBarPrefs.withDesktopBar(p) { it.copy(radius = v) } }
-                ),
+                ).hiddenWhen(desktopBarHidden),
                 SettingItem.Slider(
                     R.string.style_opacity, min = 0, max = 100, step = 5,
                     get = { (SearchBarPrefs.desktopBar(it).alpha.coerceIn(0f, 1f) * 100f).roundToInt() },
                     set = { v -> rows.editDesktopBar { it.copy(alpha = v / 100f) } },
                     display = { context.getString(R.string.opacity_percent, it) },
                     preview = { p, v -> SearchBarPrefs.withDesktopBar(p) { it.copy(alpha = v / 100f) } }
-                ),
+                ).hiddenWhen(desktopBarHidden),
                 rows.choice(
                     R.string.icon_glass, IconGlass.entries,
                     { IconGlass.fromName(SearchBarPrefs.desktopBar(it).glass) },
                     { EnumLabels.of(it) }
-                ) { glass -> rows.editDesktopBar { it.copy(glass = glass.name) } },
+                ) { glass -> rows.editDesktopBar { it.copy(glass = glass.name) } }.hiddenWhen(desktopBarHidden),
                 // Glass takes the place of wireframe and shadow; they keep
                 // their settings, out of sight, while it is on.
                 SettingItem.Toggle(
@@ -1278,17 +1347,17 @@ object SettingsCatalogue {
                     get = { SearchBarPrefs.desktopBar(it).wireframe },
                     set = { on -> rows.editDesktopBar { it.copy(wireframe = on) } },
                     subtitle = R.string.search_bar_wireframe_summary
-                ).hiddenWhen(desktopGlassHidden),
+                ).hiddenWhen(desktopLookHidden),
                 SettingItem.Toggle(
                     R.string.search_bar_shadow,
                     get = { SearchBarPrefs.desktopBar(it).shadow },
                     set = { on -> rows.editDesktopBar { it.copy(shadow = on) } }
-                ).hiddenWhen(desktopGlassHidden),
+                ).hiddenWhen(desktopLookHidden),
                 SettingItem.Toggle(
                     R.string.search_bar_hint_text,
                     get = { SearchBarPrefs.desktopBar(it).hint },
                     set = { on -> rows.editDesktopBar { it.copy(hint = on) } }
-                ),
+                ).hiddenWhen(desktopBarHidden),
                 rows.choice(
                     R.string.search_bar_logo, SearchBarLogo.entries,
                     { SearchBarLogo.fromName(SearchBarPrefs.desktopBar(it).logo) },
@@ -1299,10 +1368,12 @@ object SettingsCatalogue {
                             SearchBarLogo.BROWSER -> R.string.search_bar_logo_browser
                         }
                     }
-                ) { logo -> rows.editDesktopBar { it.copy(logo = logo.name) } },
-                SettingItem.Header(R.string.search_bar_chips)
+                ) { logo -> rows.editDesktopBar { it.copy(logo = logo.name) } }.hiddenWhen(desktopBarHidden),
+                // The buttons are the home bar's alone (the feed's bar has
+                // its own), so they go with it.
+                SettingItem.Header(R.string.search_bar_chips).hiddenWhen(desktopButtonsHidden)
                 // The same buttons as the drawer field's, in the same order.
-            ) + SearchBarButtons.HOME_ROWS.map(rows::barChip)
+            ) + SearchBarButtons.HOME_ROWS.map { rows.barChip(it).hiddenWhen(desktopButtonsHidden) }
         ),
         // The drawer field's own page, opened from the App drawer page.
         SettingsSection(
@@ -2336,6 +2407,14 @@ internal object SearchBarPrefs {
 
     fun drawerBar(prefs: LauncherPrefs): DrawerSearchBarConfig =
         SearchBarConfig.decode(prefs.searchBarConfig).drawer
+
+    // Whether the home screen has a bar at all (its placement isn't Hidden).
+    fun desktopBarShown(prefs: LauncherPrefs): Boolean =
+        SearchBarPlacement.fromName(desktopBar(prefs).placement) != SearchBarPlacement.NONE
+
+    // The search window's bar's look: its own, or the home bar's.
+    fun windowBar(prefs: LauncherPrefs): WindowSearchBarConfig =
+        SearchBarConfig.decode(prefs.searchBarConfig).windowBar()
 
     // Whether the drawer has a field at all (its placement isn't Hidden).
     fun drawerFieldShown(prefs: LauncherPrefs): Boolean =

@@ -573,6 +573,10 @@
     <string name="search_window_window">Window</string>
     <string name="search_apps_one_row">Limit apps to one row</string>
     <string name="search_apps_one_row_summary">App results in one row that scrolls sideways</string>
+    <string name="search_show_apps_row">Apps row</string>
+    <string name="search_show_apps_row_summary">Recent, frequent or new apps while nothing is typed</string>
+    <string name="search_suggested_shortcuts">Suggested shortcuts</string>
+    <string name="search_suggested_shortcuts_summary">Shortcuts your most used apps offer, such as contacts</string>
     <string name="contact_call">Call</string>
     <string name="contact_message">Message</string>
     <string name="search_contact_cards">Contact card view</string>
@@ -637,6 +641,7 @@
     <string name="group_popup">Popup menu</string>
     <string name="group_editing">Editing</string>
     <string name="group_search_window">Search window</string>
+    <string name="group_search_window_bar">Search window bar</string>
     <string name="group_folder_window">Window</string>
     <string name="group_one_finger">One finger</string>
     <string name="group_two_fingers">Two fingers</string>

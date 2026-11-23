@@ -565,6 +565,10 @@
     <string name="search_window_window">Ventana</string>
     <string name="search_apps_one_row">Limitar las aplicaciones a una fila</string>
     <string name="search_apps_one_row_summary">Los resultados de aplicaciones en una fila que se desplaza de lado</string>
+    <string name="search_show_apps_row">Fila de aplicaciones</string>
+    <string name="search_show_apps_row_summary">Aplicaciones recientes, frecuentes o nuevas mientras no hay nada escrito</string>
+    <string name="search_suggested_shortcuts">Accesos directos sugeridos</string>
+    <string name="search_suggested_shortcuts_summary">Accesos directos que ofrecen tus aplicaciones más usadas, como contactos</string>
     <string name="contact_call">Llamar</string>
     <string name="contact_message">Mensaje</string>
     <string name="search_contact_cards">Vista de tarjetas de contacto</string>
@@ -626,6 +630,7 @@
     <string name="group_popup">Menú emergente</string>
     <string name="group_editing">Edición</string>
     <string name="group_search_window">Ventana de búsqueda</string>
+    <string name="group_search_window_bar">Barra de la ventana de búsqueda</string>
     <string name="group_folder_window">Ventana</string>
     <string name="group_one_finger">Un dedo</string>
     <string name="group_two_fingers">Dos dedos</string>

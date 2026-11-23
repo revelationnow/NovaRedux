@@ -565,6 +565,10 @@
     <string name="search_window_window">Fenêtre</string>
     <string name="search_apps_one_row">Limiter les applis à une ligne</string>
     <string name="search_apps_one_row_summary">Les applis trouvées sur une ligne qui défile sur le côté</string>
+    <string name="search_show_apps_row">Rangée d\'applis</string>
+    <string name="search_show_apps_row_summary">Applis récentes, fréquentes ou nouvelles tant que rien n\'est saisi</string>
+    <string name="search_suggested_shortcuts">Raccourcis suggérés</string>
+    <string name="search_suggested_shortcuts_summary">Raccourcis proposés par vos applis les plus utilisées, comme des contacts</string>
     <string name="contact_call">Appeler</string>
     <string name="contact_message">Message</string>
     <string name="search_contact_cards">Vue en fiches de contact</string>
@@ -626,6 +630,7 @@
     <string name="group_popup">Menu contextuel</string>
     <string name="group_editing">Modification</string>
     <string name="group_search_window">Fenêtre de recherche</string>
+    <string name="group_search_window_bar">Barre de la fenêtre de recherche</string>
     <string name="group_folder_window">Fenêtre</string>
     <string name="group_one_finger">Un doigt</string>
     <string name="group_two_fingers">Deux doigts</string>

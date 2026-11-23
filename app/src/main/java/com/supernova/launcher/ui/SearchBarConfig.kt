@@ -136,14 +136,35 @@ enum class DrawerBarPlacement {
     }
 }
 
+// The search window's own bar (#324): the pill the query is typed in, its
+// corners, opacity, glass and outline. It wore the home bar's look, even
+// with no home bar, and does until one of these is set.
+@Serializable
+data class WindowSearchBarConfig(
+    val radius: Int = DesktopSearchBarConfig.MAX_RADIUS,
+    val alpha: Float = 1f,
+    val wireframe: Boolean = false,
+    val glass: String = "OFF"
+) {
+    companion object {
+        fun of(desktop: DesktopSearchBarConfig) =
+            WindowSearchBarConfig(desktop.radius, desktop.alpha, desktop.wireframe, desktop.glass)
+    }
+}
+
 // The whole search-bar document behind the searchBarConfig pref. "" decodes to
 // the defaults: no desktop bar, and a drawer field that is visible, locally
 // filtering, and drawn as a filled pill.
 @Serializable
 data class SearchBarConfig(
     val desktop: DesktopSearchBarConfig = DesktopSearchBarConfig(),
-    val drawer: DrawerSearchBarConfig = DrawerSearchBarConfig()
+    val drawer: DrawerSearchBarConfig = DrawerSearchBarConfig(),
+    // Null: the window's bar follows the home bar's look.
+    val window: WindowSearchBarConfig? = null
 ) {
+
+    // The look the search window's bar has now.
+    fun windowBar(): WindowSearchBarConfig = window ?: WindowSearchBarConfig.of(desktop)
 
     fun encode(): String = if (this == DEFAULT) "" else json.encodeToString(serializer(), this)
 

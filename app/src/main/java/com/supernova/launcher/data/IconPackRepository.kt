@@ -60,14 +60,11 @@ class IconPackRepository(private val context: Context) {
             .getOrDefault(packageName)
 
     fun availablePacks(): List<IconPack> {
-        // Icon packs advertise themselves through one of these theme actions.
-        val actions = listOf(
-            "org.adw.launcher.THEMES",
-            "com.gau.go.launcherex.theme"
-        )
-        return actions
-            .flatMap { action ->
-                runCatching { pm.queryIntentActivities(Intent(action), 0) }.getOrDefault(emptyList())
+        val intents = PACK_ACTIONS.map(::Intent) +
+            PACK_CATEGORIES.map { Intent(Intent.ACTION_MAIN).addCategory(it) }
+        return intents
+            .flatMap { intent ->
+                runCatching { pm.queryIntentActivities(intent, 0) }.getOrDefault(emptyList())
             }
             .map { it.activityInfo.packageName }
             .distinct()
@@ -429,6 +426,32 @@ class IconPackRepository(private val context: Context) {
     companion object {
         // The pack's own icon list, under the names packs ship it as.
         private val DRAWABLE_LISTS = listOf("drawable", "drawables")
+
+        // How icon packs make themselves known to launchers: most by an
+        // action of their own, a few by a category on MAIN (Apex,
+        // LauncherPro, Holo). A pack can carry only some of them, the ones
+        // of the launchers it was made for, and only the ADW and GO actions
+        // were asked for: a pack Nova lists could be missing here (#336).
+        // Names only: an Intent made here, as the class loads, would be made
+        // in the unit tests too, where Android's classes can't be.
+        private val PACK_ACTIONS = listOf(
+            "org.adw.launcher.THEMES",
+            "com.gau.go.launcherex.theme",
+            "com.novalauncher.THEME",
+            "com.teslacoilsw.launcher.THEME",
+            "com.dlto.atom.launcher.THEME",
+            "ginlemon.smartlauncher.THEMES",
+            "home.solo.launcher.free.THEMES",
+            "com.lge.launcher2.THEME",
+            "com.vivid.launcher.theme",
+            "com.tsf.shell.themes",
+            "ch.deletescape.lawnchair.ICONPACK"
+        )
+        private val PACK_CATEGORIES = listOf(
+            "com.anddoes.launcher.THEME",
+            "com.fede.launcher.THEME_ICONPACK",
+            "com.mobint.hololauncher.THEME"
+        )
 
         // Manifest meta-data a pack sets when its icons differ by night.
         const val NIGHT_FLAG = "org.icontheme.CHANGES_WITH_DARK_MODE"

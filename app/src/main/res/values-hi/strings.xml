@@ -551,6 +551,10 @@
     <string name="search_window_window">विंडो</string>
     <string name="search_apps_one_row">ऐप को एक पंक्ति तक सीमित रखें</string>
     <string name="search_apps_one_row_summary">ऐप के नतीजे एक पंक्ति में, जो बगल में स्क्रोल होती है</string>
+    <string name="search_show_apps_row">ऐप की पंक्ति</string>
+    <string name="search_show_apps_row_summary">कुछ न लिखा हो तब हाल के, अक्सर इस्तेमाल होने वाले या नए ऐप</string>
+    <string name="search_suggested_shortcuts">सुझाए गए शॉर्टकट</string>
+    <string name="search_suggested_shortcuts_summary">आपके सबसे ज़्यादा इस्तेमाल होने वाले ऐप के शॉर्टकट, जैसे संपर्क</string>
     <string name="contact_call">कॉल करें</string>
     <string name="contact_message">मैसेज</string>
     <string name="search_contact_cards">संपर्क कार्ड व्यू</string>
@@ -610,6 +614,7 @@
     <string name="group_popup">पॉप-अप मेन्यू</string>
     <string name="group_editing">बदलाव करना</string>
     <string name="group_search_window">खोज विंडो</string>
+    <string name="group_search_window_bar">खोज विंडो का सर्च बार</string>
     <string name="group_folder_window">विंडो</string>
     <string name="group_one_finger">एक उंगली</string>
     <string name="group_two_fingers">दो उंगलियां</string>

@@ -106,6 +106,7 @@ class ApplyIconPackActivity : AppCompatActivity() {
         // comes first; the rest are what the templates already send.
         private val PACK_EXTRAS = listOf(
             "com.supernova.launcher.extra.ICON_THEME_PACKAGE",
+            "com.teslacoilsw.launcher.extra.ICON_THEME_PACKAGE",
             "com.anddoes.launcher.THEME_PACKAGE_NAME",
             "org.adw.launcher.theme.NAME",
             "icon_pack_package",
