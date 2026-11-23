@@ -1,7 +1,8 @@
 # Checks every push to main or dev and every pull request: lint, detekt,
 # unit tests and debug APKs of NovaRedux and of NovaRedux Connect (its
 # companion app). Release signing and F-Droid's reproducible build are
-# untouched; this only builds the debug variants.
+# untouched; this only builds the debug variants. A push to main also leaves
+# its debug APKs on a draft release (the debug-release job).
 name: CI
 
 on:
@@ -51,6 +52,17 @@ jobs:
           echo "Using $sdkmanager"
           yes | "$sdkmanager" --licenses > /dev/null
 
+      # One debug signing key for main's builds, so a newer debug APK from
+      # the draft release installs over an older one. It lives in the
+      # Actions cache: the first build makes it, later ones restore it.
+      # GitHub drops a cache entry after a week without use.
+      - name: Debug signing key
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/cache@v6
+        with:
+          path: ~/.android/debug.keystore
+          key: debug-keystore-v1
+
       - name: Lint, detekt, unit tests and debug build
         run: >
           ./gradlew --stacktrace --continue
@@ -97,3 +109,33 @@ jobs:
           name: novaredux-connect-debug-apk
           path: connect/build/outputs/apk/debug/*.apk
           if-no-files-found: error
+
+  # A push to main puts its debug APKs on the draft release "Debug build
+  # (newest main)", replacing the last ones: plain APK links, the same every
+  # time, that install from a phone signed in to GitHub. A draft is seen only
+  # by people who can push here, and makes no tag (tools/ci/debug_release.sh).
+  debug-release:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: check
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/download-artifact@v7
+        with:
+          name: novaredux-debug-apk
+          path: apk/app
+
+      - uses: actions/download-artifact@v7
+        with:
+          name: novaredux-connect-debug-apk
+          path: apk/connect
+
+      - name: Put them on the draft release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: tools/ci/debug_release.sh apk/app/*.apk apk/connect/*.apk

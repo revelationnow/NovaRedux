@@ -77,6 +77,24 @@ The same, in `connect/build.gradle.kts` and
 tag of the form `connect-v0.1.0`. Its APK is `NovaRedux-Connect-v0.1.0.apk`.
 NovaRedux's prompt to install Connect opens the Releases page.
 
+## Debug builds for testing
+
+Not a release: every push to main puts its debug APKs on a draft release,
+"Debug build (newest main)", replacing the last ones (the `debug-release` job
+in `.github/workflows/ci.yml`, `tools/ci/debug_release.sh`). A draft is seen
+only by people who can push to the repository, and it is never published, so
+it makes no tag and nothing reaches the Releases page, F-Droid or anyone
+tracking releases. Its two links, `novaredux-debug.apk` and
+`novaredux-connect-debug.apk`, stay the same from build to build and install
+from a phone signed in to GitHub, beside a release install (the debug apps
+have their own IDs).
+
+Main's builds share one debug signing key, kept in the Actions cache, so a new
+debug APK installs over the last one. GitHub clears the cache after a week with
+no build of main; the next build then makes a new key, and the debug apps have
+to be uninstalled once before it installs. The release notes of the draft show
+the key's certificate digest.
+
 ## F-Droid
 
 `docs/fdroid/` holds the two apps' metadata, as fdroiddata expects it. For
