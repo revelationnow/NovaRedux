@@ -378,10 +378,10 @@ class LauncherActivity :
     // folder previews, shortcut pictures, and the badges on all of them.
     private val itemIcons by lazy { com.supernova.launcher.ui.ItemIcons(this, viewModel) }
     // The LauncherApps side of an app's shortcuts.
-    private val shortcuts by lazy { AppShortcuts(this, viewModel) }
+    private val shortcuts: AppShortcuts by lazy { AppShortcuts(this, viewModel) }
     // What the item menus, the edit sheets and the removals reach the screen
     // through.
-    private val surfaces = object : ItemSurfaces {
+    private val surfaces: ItemSurfaces = object : ItemSurfaces {
         override val activity: AppCompatActivity get() = this@LauncherActivity
         override val viewModel: LauncherViewModel get() = this@LauncherActivity.viewModel
         override val binding: ActivityLauncherBinding get() = this@LauncherActivity.binding
@@ -409,14 +409,14 @@ class LauncherActivity :
         }
     }
     // Made with the activity: each registers a picker of its own.
-    private val menuKit = ItemMenuKit(surfaces)
-    private val itemEdits = ItemEdits(surfaces)
-    private val appActions = AppActions(this) { launchApp(it) }
-    private val moveToDrawer by lazy { FolderToDrawerPrompt(surfaces) }
-    private val pickers by lazy { GroupPickers(surfaces) }
-    private val workspaceMenus by lazy { WorkspaceItemMenus(surfaces) }
-    private val drawerMenus by lazy { DrawerItemMenus(surfaces) }
-    private val removal by lazy {
+    private val menuKit: ItemMenuKit = ItemMenuKit(surfaces)
+    private val itemEdits: ItemEdits = ItemEdits(surfaces)
+    private val appActions: AppActions = AppActions(this) { launchApp(it) }
+    private val moveToDrawer: FolderToDrawerPrompt by lazy { FolderToDrawerPrompt(surfaces) }
+    private val pickers: GroupPickers by lazy { GroupPickers(surfaces) }
+    private val workspaceMenus: WorkspaceItemMenus by lazy { WorkspaceItemMenus(surfaces) }
+    private val drawerMenus: DrawerItemMenus by lazy { DrawerItemMenus(surfaces) }
+    private val removal: ItemRemoval by lazy {
         ItemRemoval(
             surfaces,
             object : ItemRemoval.Host {
@@ -522,7 +522,7 @@ class LauncherActivity :
 
     // Desktop previews overlay (DESKTOP_PREVIEWS action). Lazy: costs nothing
     // until the action first runs; views exist only while shown.
-    private val desktopPreviews by lazy {
+    private val desktopPreviews: DesktopPreviewsOverlay by lazy {
         DesktopPreviewsOverlay(this, binding.root, object : DesktopPreviewsOverlay.Host {
             override fun pageCount(): Int = workspaceAdapter.realPageCount
             override fun currentPage(): Int = viewModel.state.value.currentPage
