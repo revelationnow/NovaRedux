@@ -31,6 +31,7 @@ if [ -n "${SHOT_NAV:-}" ]; then
     # What the system says it now uses (0 three buttons, 1 two, 2 gestures).
     adb shell cmd overlay list | grep navbar || true
     echo "navigation_mode: $(adb shell settings get secure navigation_mode)"
+    adb shell dumpsys window windows | grep -i -A2 "Window{.*NavigationBar" | head -n 12 || true
 fi
 adb shell wm size
 adb shell wm density

@@ -383,10 +383,18 @@ class SettingsActivity : AppCompatActivity() {
     // keeps clear of it itself. The keyboard is left to cover the list: a
     // drag on the list takes it down.
     private fun applyListBottomPadding() {
-        val covered = if (binding.settingsTabs.isVisible) 0 else navBottom
+        val tabs = binding.settingsTabs.isVisible
+        val covered = if (tabs) 0 else navBottom
         val padding = listBottomPadding + covered
         if (binding.settingsRecycler.paddingBottom != padding) {
             binding.settingsRecycler.updatePadding(bottom = padding)
+        }
+        // With no tab bar under the navigation bar, the system's scrim goes
+        // back behind its buttons: the bar is transparent, and a section
+        // page's rows scrolled under the three buttons (#322), since the tab
+        // bar left section pages (#283). Gesture navigation gets no scrim.
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+            window.isNavigationBarContrastEnforced = !tabs
         }
     }
 
