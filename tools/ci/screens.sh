@@ -9,9 +9,7 @@
 # SHOT_WIDTH is the width the screenshots are printed at (540 unless set;
 # 1080 for store screenshots). SHOT_CUTOUT names a display cutout for the
 # emulator to emulate (corner, double, hole, tall, waterfall), to check what
-# the launcher keeps clear of it. SHOT_NAV names the navigation bar to use in
-# place of gestures (threebutton, twobutton), to check what keeps clear of
-# its buttons.
+# the launcher keeps clear of it.
 set -euo pipefail
 
 app=io.github.revelationnow.novaredux.debug
@@ -23,15 +21,6 @@ if [ -n "${SHOT_CUTOUT:-}" ]; then
     adb shell cmd overlay enable "com.android.internal.display.cutout.emulation.$SHOT_CUTOUT" \
         || echo "This emulator has no $SHOT_CUTOUT cutout"
     sleep 5
-fi
-if [ -n "${SHOT_NAV:-}" ]; then
-    adb shell cmd overlay enable-exclusive --category "com.android.internal.systemui.navbar.$SHOT_NAV" \
-        || echo "This emulator has no $SHOT_NAV navigation bar"
-    sleep 10
-    # What the system says it now uses (0 three buttons, 1 two, 2 gestures).
-    adb shell cmd overlay list | grep navbar || true
-    echo "navigation_mode: $(adb shell settings get secure navigation_mode)"
-    adb shell dumpsys window windows | grep -i -A2 "Window{.*NavigationBar" | head -n 12 || true
 fi
 adb shell wm size
 adb shell wm density
