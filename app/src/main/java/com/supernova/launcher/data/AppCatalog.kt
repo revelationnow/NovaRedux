@@ -533,9 +533,8 @@ class AppCatalog(
         autogen: Boolean = false,
         normalize: Boolean = false
     ): Boolean = synchronized(renderLock) {
-        if (enabled == themedIcons && background == themedIconBg && foreground == themedIconFg &&
-            autogen == themedIconsAutogen && normalize == themedIconsNormalize
-        ) return false
+        val now = listOf(themedIcons, themedIconBg, themedIconFg, themedIconsAutogen, themedIconsNormalize)
+        if (listOf(enabled, background, foreground, autogen, normalize) == now) return false
         val wasEnabled = themedIcons
         themedIcons = enabled
         themedIconBg = background

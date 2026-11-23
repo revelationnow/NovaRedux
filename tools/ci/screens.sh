@@ -27,7 +27,10 @@ fi
 if [ -n "${SHOT_NAV:-}" ]; then
     adb shell cmd overlay enable-exclusive --category "com.android.internal.systemui.navbar.$SHOT_NAV" \
         || echo "This emulator has no $SHOT_NAV navigation bar"
-    sleep 5
+    sleep 10
+    # What the system says it now uses (0 three buttons, 1 two, 2 gestures).
+    adb shell cmd overlay list | grep navbar || true
+    echo "navigation_mode: $(adb shell settings get secure navigation_mode)"
 fi
 adb shell wm size
 adb shell wm density

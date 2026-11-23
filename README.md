@@ -139,7 +139,7 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 | ✅ | Hide apps | 1.x | Prime | P0 | Hidden without uninstalling | hidden_apps |
 | ✅ | Hide from the long-press menu | 7.0.10 | Prime | P2 | One-tap hide | PopupExtraRow HIDE |
 | ✅ | Work-profile apps in their own tab | 7.0.39 |  | P1 | Separate work tab | drawer_work_tab |
-| ✅ | Recent and new or updated apps | 5.0 |  | P2 | Frequent, Recent and New/Updated tabs in the search view | Recent, Frequent and New tabs above the empty search window's row of apps; the last tab picked is kept |
+| ✅ | Recent and new or updated apps | 5.0 |  | P2 | Frequent, Recent and New/Updated tabs in the search view | Recent, Frequent and New tabs above the empty search window's row of apps; the last tab picked is kept. The row, and the suggested shortcuts above it, can each be turned off (search_show_apps_row, search_suggested_shortcuts) |
 | ✅ | Drawer greys out behind a windowed folder | 7.0.37 |  | P2 | Content fades to grayscale | The drawer fades to grey behind a windowed folder opened in it (Grey out the drawer behind, on by default) |
 | ✅ | Widget drawer |  |  | P1 | Browse and place widgets | WidgetPickerSheet |
 
@@ -157,11 +157,11 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 | ✅ | Calculator |  |  | P2 | Sums answered in the search box | search_calculator |
 | ✅ | Contacts in search | 5.4 |  | P2 | Arrived with the Sesame integration | search_contacts |
 | ✅ | App shortcuts in search | 5.4 |  | P2 | Shortcuts in the results | search_shortcuts |
-| ✅ | Search bar style: shape, colour, logo, content | 4.3 |  | P1 | Bar style, colour and logo style choices; pill (5.0) and round (5.21) bars | Radius, opacity, outline, shadow, glass, hint, logo (magnifier, none or the browser's icon) and buttons, colour from Styles |
+| ✅ | Search bar style: shape, colour, logo, content | 4.3 |  | P1 | Bar style, colour and logo style choices; pill (5.0) and round (5.21) bars | Radius, opacity, outline, shadow, glass, hint, logo (magnifier, none or the browser's icon) and buttons, colour from Styles. The search window's bar has its own corners, opacity, glass and outline, the home bar's until set |
 | ✅ | Voice and Assistant buttons in the bar | 6.0 |  | P2 | Assistant launch from the search widget | VOICE and ASSISTANT buttons, beside DATE, PLAY_STORE and SETTINGS |
 | ✅ | Weather in the search bar | 7.0.54 |  | P2 | Was a Labs option before 7.0.54 | A Weather button on the home bar, read from Breezy Weather's content provider with a permission the user grants; NovaRedux stays offline |
 | ✅ | Search apps from the desktop Google bar | 6.0 |  | P2 | The bar opens Nova search | Tapping the bar opens the drawer with its search ready |
-| ✅ | Search window: windowed or immersive | 7.0 beta |  | P2 | More search window options | SearchWindowMode |
+| ✅ | Search window: windowed or immersive | 7.0 beta |  | P2 | More search window options | SearchWindowMode; the window's bar has a look of its own, and its "Search" text can go (search_window_hint) |
 | ✅ | Search in Nova Settings | 6.0 |  | P1 | Find any setting by name | Settings search |
 | ⛔ | Sesame deep shortcuts | 5.4 |  | Skip | Proprietary; now owned by Branch | Out of scope |
 
@@ -191,14 +191,14 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 
 | Status | Feature | Since | Prime | Priority | What Nova did | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
-| ✅ | Icon packs | 1.x |  | P0 | Thousands of third-party icon themes | icon_pack |
+| ✅ | Icon packs | 1.x |  | P0 | Thousands of third-party icon themes | icon_pack; packs are found by the actions and categories Nova, ADW, Apex, GO, Lawnchair and others ask for, and Nova's Apply intent is taken |
 | ✅ | Edit an icon: pack icon or image, custom label |  |  | P0 | Per-icon edits | AppEditSheet |
 | ✅ | Adaptive icon shapes | 5.5 |  | P1 | System, round, squircle and more | IconShape |
 | ✅ | Custom icon shape | 6.0 |  | P2 | Draw your own shape | IconShape CUSTOM |
 | ✅ | Flower, pebble, vessel, pentagon, hexagon, heptagon, octagon shapes | 7.0.4 |  | P2 | Android 11 shapes plus polygons | All in IconShape |
 | ✅ | Reshape legacy icons | 5.5 |  | P1 | Only adaptive icons, or force all | ReshapeLegacy OFF, AUTO, ON |
 | ✅ | Normalize icon size | 4.1 |  | P2 | Even out icon sizes | icon_normalize |
-| ✅ | Reshape themed icons, toggle per icon | 7.0.39 |  | P2 | Per-icon reshape switch | themed_icons, reshape_legacy |
+| ✅ | Reshape themed icons, toggle per icon | 7.0.39 |  | P2 | Per-icon reshape switch | themed_icons, reshape_legacy; themed_icons_normalize draws every app's shipped glyph at one size |
 | ✅ | Adaptive icon animations |  |  | P2 | Animated adaptive icons | While dragged, an app's adaptive icon parts its layers under its shape on a spring, after Launcher3; an icon from a pack, themed, glass or picked is carried as its picture |
 | ✅ | Bypass system icon theme |  |  | P2 | Labs: skip OEM icon frames | Labs: Bypass system icon theme shows each app's own icon without the OEM frame |
 | ✅ | Night mode: off, always, auto by sunrise, set times | 4.3 |  | P1 | Schedules for the dark theme | ThemeMode, theme_schedule_* |
@@ -306,7 +306,7 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 
 | Status | Feature | Since | Prime | Priority | What Nova did | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
-| ✅ | Import a Nova backup |  |  | P0 | Bring a whole Nova setup across | favorites table, drawer groups |
+| ✅ | Import a Nova backup |  |  | P0 | Bring a whole Nova setup across | favorites table, drawer groups (from appgroups, or the layout rows Nova 8 keeps them in), and drawer folders put on the home screen |
 | ✅ | Import Nova's other settings |  |  | P1 | Look, gestures, badges and the rest | Grids, dock, drawer, folders, search bars, gestures, home button, scroll effects, night mode and more, from Nova's preferences file (NovaSettings) |
 | ✅ | At a Glance via Smartspacer |  |  | P1 | Common add-on for Nova users | Smartspacer's own At a Glance widget, hosted like any widget, as Nova hosted Google's; its client SDK isn't needed |
 | ✅ | Private space (Android 15+) |  |  | P1 | Private apps in their own container | ACCESS_HIDDEN_PROFILES |
