@@ -1410,6 +1410,7 @@ class LauncherActivity :
         // Build the neighbour page before the fling starts instead of during
         // it, and stop the default cross-fade on page rebinds.
         binding.workspacePager.offscreenPageLimit = 1
+        buildPagesAhead()
         (binding.workspacePager.getChildAt(0) as? androidx.recyclerview.widget.RecyclerView)?.apply {
             itemAnimator = null
             // The pager's list takes focus when the drawer's search field
@@ -3258,6 +3259,26 @@ class LauncherActivity :
 
     override val editModeOpen: Boolean
         get() = ::editMode.isInitialized && editMode.isOpen
+
+    // Every page built ahead of the swipe that reaches it (#340): a page was
+    // first built in the middle of the swipe to its neighbour, a hitch each
+    // time until every page had been seen. One more page to each side at
+    // each idle moment, until every page is held; the page count can grow
+    // later, so the check stays, at the cost of a comparison. Looping, the
+    // pages to either side are copies: as many as hold no page twice, as a
+    // page's widgets can be in one copy only.
+    private fun buildPagesAhead() {
+        android.os.Looper.myQueue().addIdleHandler {
+            // An activity made again (a rotation) has its own.
+            if (isDestroyed) return@addIdleHandler false
+            val pages = workspaceAdapter.realPageCount
+            val loops = viewModel.state.value.prefs.infiniteScroll
+            val wanted = (if (loops) (pages - 1) / 2 else pages - 1).coerceIn(1, LauncherRepository.MAX_PAGES)
+            val pager = binding.workspacePager
+            if (pager.offscreenPageLimit < wanted) pager.offscreenPageLimit += 1
+            true
+        }
+    }
 
     // A long-press on a page in edit mode: the rest of the stream moves the
     // page, so the pager and the canvas let it go.

@@ -574,6 +574,10 @@ class DrawerController(
             if (right - left == oldRight - oldLeft) return@addOnLayoutChangeListener
             sheet.post { updateFrequentRow() }
         }
+        // The page a swipe brings in is built before the swipe, as the home
+        // pager's is: built during it, its first frames went, and a first
+        // swipe to a page showed no movement at all (#340).
+        binding.drawerPager.offscreenPageLimit = 1
         // Paging is the paged style's scrolling, so it does the same.
         binding.drawerPager.registerOnPageChangeCallback(
             object : androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback() {

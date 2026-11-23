@@ -154,6 +154,39 @@ class LayoutConverterTest {
         assertEquals(2, result.skipped)
     }
 
+    // A home folder holding nothing of its own beside a drawer folder of the
+    // same name is that drawer folder put on the home screen (#338).
+    @Test
+    fun anEmptyHomeFolderHoldsTheDrawerFolderOfItsName() {
+        val folder = ForeignItem(5, ForeignKind.FOLDER, ForeignPlace.DESKTOP, x = 1f, y = 1f, title = " Social ")
+        val empty = ForeignItem(6, ForeignKind.FOLDER, ForeignPlace.DESKTOP, x = 2f, y = 1f, title = "Empty")
+        val groups = listOf(
+            ForeignGroup(
+                1, "social", true, 0,
+                apps = listOf(ForeignApp("com.chat", "com.chat.Main"), ForeignApp("com.mail", null))
+            ),
+            // A tab of that name is no folder.
+            ForeignGroup(2, "Empty", false, 1, apps = listOf(ForeignApp("com.tab", "com.tab.Main")))
+        )
+        val labelled = LayoutConverter.Phone(
+            // An app named by its package alone opens its own first activity.
+            activityFor = { pkg, cls, _ -> cls ?: "$pkg.Launcher" },
+            newId = { "id${nextId++}" },
+            appLabel = { pkg, _, _ -> "Label of $pkg" }
+        )
+        val result = LayoutConverter.convert(
+            ForeignLayout(listOf(folder, empty), ForeignGrid(), groups = groups), LauncherPrefs(), labelled
+        )
+        val placed = result.items.filter { it.itemType == ItemType.FOLDER }
+        assertEquals(listOf(" Social ", "Empty"), placed.map { it.label })
+        val members = result.items.filter { it.container == ContainerType.FOLDER }
+        assertEquals(listOf("com.chat", "com.mail"), members.map { it.packageName })
+        assertEquals(listOf("com.chat.Main", "com.mail.Launcher"), members.map { it.className })
+        assertEquals(listOf("Label of com.chat", "Label of com.mail"), members.map { it.label })
+        assertTrue(members.all { it.folderId == placed[0].id })
+        assertEquals(listOf(0, 1), members.map { it.rank })
+    }
+
     @Test
     fun dockItemsTakeTheirSlotsAndPages() {
         val result = convert(

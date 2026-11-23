@@ -66,6 +66,39 @@ class DrawerGroupsImportTest {
         assertEquals(listOf(2L), tab.folders)
     }
 
+    // Nova 8 keeps a group's apps as layout rows, in the container -200 less
+    // the group's id, and may have no apps' table at all (#338).
+    @Test
+    fun aGroupsAppsComeFromTheLayoutRowsWhereItsTableHasNone() {
+        val read = groups(
+            mapOf(
+                "drawer_groups" to listOf(
+                    row("_id" to 2L, "title" to "Social", "groupType" to "FOLDER_APP_GROUP", "tabOrder" to 0L),
+                    row("_id" to 3L, "title" to "Work", "groupType" to "TAB_APP_GROUP", "tabOrder" to 1L)
+                ),
+                "favorites" to listOf(
+                    row("_id" to 10L, "itemType" to 0L, "container" to -202L, "rank" to 1L,
+                        "intent" to "#Intent;action=android.intent.action.MAIN;component=com.mail/.Inbox;end"),
+                    row("_id" to 11L, "itemType" to 0L, "container" to -202L, "rank" to 0L, "profileId" to 10L,
+                        "intent" to "#Intent;action=android.intent.action.MAIN;component=com.chat/com.chat.Main;end"),
+                    // A home screen icon and a shortcut are no group's apps.
+                    row("_id" to 12L, "itemType" to 0L, "container" to -100L,
+                        "intent" to "#Intent;component=com.home/.Main;end"),
+                    row("_id" to 13L, "itemType" to 6L, "container" to -203L,
+                        "intent" to "#Intent;component=com.work/.Main;end"),
+                    row("_id" to 14L, "itemType" to 0L, "container" to -203L,
+                        "intent" to "#Intent;component=com.work/.Main;end")
+                )
+            )
+        )
+        assertEquals(listOf(2L, 3L), read.map { it.id })
+        assertEquals(
+            listOf(ForeignApp("com.chat", "com.chat.Main", 10), ForeignApp("com.mail", "com.mail.Inbox", 0)),
+            read[0].apps
+        )
+        assertEquals(listOf(ForeignApp("com.work", "com.work.Main", 0)), read[1].apps)
+    }
+
     @Test
     fun groupsSwitchedOffAreLeftOut() {
         val read = groups(

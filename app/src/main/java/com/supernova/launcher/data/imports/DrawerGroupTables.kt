@@ -12,7 +12,9 @@ internal object DrawerGroupTables {
     fun read(contents: BackupContents): List<ForeignGroup>? {
         val tables = contents.tables
         return when {
-            GroupsAndApps.TABLES.all { it in tables } -> GroupsAndApps.read(tables)
+            // The apps' table may be missing where the layout's rows hold
+            // them (GroupsAndApps).
+            GroupsAndApps.GROUPS in tables -> GroupsAndApps.read(tables)
             DrawerFolders.TABLES.all { it in tables } -> DrawerFolders.read(tables)
             Categories.TABLES.all { it in tables } -> Categories.read(tables)
             else -> null
@@ -36,6 +38,11 @@ private object GroupsAndApps {
     const val MEMBERS = "appgroups"
     val TABLES = listOf(GROUPS, MEMBERS)
 
+    // Nova 8 keeps a group's apps as rows of the layout table instead, each
+    // in the group's own container: -200 less the group's id.
+    private const val LAYOUT = "favorites"
+    private const val GROUP_CONTAINERS = -200L
+
     private const val TAB = "TAB_APP_GROUP"
     private const val FOLDER = "FOLDER_APP_GROUP"
     private const val HELD_FOLDER = "FOLDER:"
@@ -43,6 +50,9 @@ private object GroupsAndApps {
 
     fun read(tables: Map<String, List<Row>>): List<ForeignGroup> {
         val members = tables[MEMBERS].orEmpty().groupBy { it.long("groupId") }
+        val laidOut = tables[LAYOUT].orEmpty().groupBy { row ->
+            row.long("container")?.takeIf { it <= GROUP_CONTAINERS }?.let { GROUP_CONTAINERS - it }
+        }
         return tables[GROUPS].orEmpty().filterNot(::switchedOff).mapNotNull { row ->
             val id = row.long("_id")
             val type = row.text("groupType")
@@ -55,7 +65,8 @@ private object GroupsAndApps {
                 order = row.int("tabOrder") ?: 0,
                 // Its apps leave the main list, or stay there too.
                 keepInMain = row.long("hideApps")?.let { it == 0L },
-                apps = keys.filterNot(::isFolder).mapNotNull(DrawerGroupTables::app),
+                apps = keys.filterNot(::isFolder).mapNotNull(DrawerGroupTables::app)
+                    .ifEmpty { laidOutApps(laidOut[id]) },
                 folders = keys.mapNotNull(::heldFolder),
                 icon = row.blob("icon")
             )
@@ -63,6 +74,14 @@ private object GroupsAndApps {
     }
 
     private fun switchedOff(row: Row): Boolean = ((row.long("flags") ?: 0L) and SWITCHED_OFF) != 0L
+
+    // A group's apps as layout rows, in their order (#338).
+    private fun laidOutApps(rows: List<Row>?): List<ForeignApp> =
+        rows.orEmpty().filter { (it.int("itemType") ?: 0) == 0 }.sortedBy { it.int("rank") ?: 0 }.mapNotNull { row ->
+            IntentText.parse(row.text("intent"))?.component?.let { (pkg, cls) ->
+                ForeignApp(pkg, cls, BackupLayouts.userSerial(row.long("profileId")))
+            }
+        }
 
     private fun isFolder(key: String): Boolean = heldFolder(key) != null
 

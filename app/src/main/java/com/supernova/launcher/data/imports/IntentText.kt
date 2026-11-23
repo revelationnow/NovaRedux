@@ -40,6 +40,13 @@ internal class IntentText(
         private const val HEX = 16
         private val EXTRA = Regex("^[SBbcdfilsZ]\\.(.+)$")
 
+        // An app's own entry, for an app known only by its package and
+        // activity.
+        fun launching(packageName: String, className: String?): IntentText = IntentText(
+            raw = "", action = null, categories = emptyList(), packageName = packageName,
+            component = className?.let { packageName to it }, extras = emptyMap()
+        )
+
         fun parse(raw: String?): IntentText? {
             val text = raw?.trim().orEmpty()
             val start = text.indexOf(MARKER)

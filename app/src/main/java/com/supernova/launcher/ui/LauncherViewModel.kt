@@ -1715,7 +1715,8 @@ class LauncherViewModel(
                             ?.let(com.supernova.launcher.data.GalleryIconCodec::encode)
                     },
                     widgetName = ::widgetName,
-                    installed = ::isInstalled
+                    installed = ::isInstalled,
+                    appLabel = ::installedLabel
                 ),
                 ::isInstalled,
                 widgetBoundCheck()
@@ -1724,6 +1725,13 @@ class LauncherViewModel(
 
     private fun isInstalled(packageName: String, userSerial: Long): Boolean =
         catalog.actions.isInstalled(packageName, userSerial)
+
+    // An installed app's own name, for an app a backup names only by its
+    // activity: its activity's, or the package's first one's.
+    private fun installedLabel(packageName: String, className: String?, userSerial: Long): String? {
+        val apps = state.value.apps.filter { it.packageName == packageName && it.userSerial == userSerial }
+        return (apps.firstOrNull { it.className == className } ?: apps.firstOrNull())?.label
+    }
 
     // The name of an installed widget, by its provider's "package/class".
     private fun widgetName(provider: String, userSerial: Long): String? {

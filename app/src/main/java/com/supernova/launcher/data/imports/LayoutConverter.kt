@@ -44,6 +44,9 @@ internal object LayoutConverter {
         val widgetName: (provider: String, userSerial: Long) -> String? = { provider, _ -> provider },
         // Whether the app is on this phone, for the drawer's tabs and folders.
         val installed: (packageName: String, userSerial: Long) -> Boolean = { _, _ -> true },
+        // An app's name on this phone, for an app the backup names only by
+        // its activity (PlacedDrawerFolders).
+        val appLabel: (packageName: String, className: String?, userSerial: Long) -> String? = { _, _, _ -> null },
         val newId: () -> String = { UUID.randomUUID().toString() }
     )
 
@@ -147,6 +150,7 @@ internal object LayoutConverter {
         // no copy, and it and they are left out.
         private fun place(source: ForeignItem, placed: LauncherItem?) {
             val inside = members[source.id].orEmpty().takeIf { source.kind == ForeignKind.FOLDER }.orEmpty()
+                .ifEmpty { PlacedDrawerFolders.members(source, layout.groups, maker.phone.appLabel) }
             if (placed == null) {
                 skipped += 1 + inside.size
             } else {
