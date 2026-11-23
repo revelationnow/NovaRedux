@@ -54,17 +54,38 @@ jobs:
 
       # One debug signing key for main's builds, so a newer debug APK from
       # the draft release installs over an older one. It lives in the
-      # Actions cache: the first build makes it, later ones restore it.
-      # GitHub drops a cache entry after a week without use.
+      # Actions cache (GitHub drops an entry after a week without use) and
+      # is made here on a miss, with the standard debug credentials, in the
+      # folder the build step names as ANDROID_USER_HOME: where AGP looks
+      # for it. (Left to itself, AGP kept it somewhere other than
+      # ~/.android on this runner image.)
       - name: Debug signing key
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        id: debug-key
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         uses: actions/cache@v6
         with:
-          path: ~/.android/debug.keystore
+          path: ${{ runner.temp }}/android-user/debug.keystore
           key: debug-keystore-v1
 
+      - name: Make the debug signing key
+        if: steps.debug-key.outcome == 'success' && steps.debug-key.outputs.cache-hit != 'true'
+        run: |
+          mkdir -p "$RUNNER_TEMP/android-user"
+          keytool -genkeypair -keystore "$RUNNER_TEMP/android-user/debug.keystore" \
+            -storepass android -keypass android -alias androiddebugkey \
+            -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
+
+      # Its certificate, to match against the one the draft release shows.
+      - name: Debug signing key's certificate
+        if: steps.debug-key.outcome == 'success'
+        run: keytool -list -v -keystore "$RUNNER_TEMP/android-user/debug.keystore" -storepass android | grep SHA256
+
       - name: Lint, detekt, unit tests and debug build
+        env:
+          # Where AGP finds the debug signing key, or makes one.
+          ANDROID_USER_HOME: ${{ runner.temp }}/android-user
         run: >
+          mkdir -p "$ANDROID_USER_HOME" &&
           ./gradlew --stacktrace --continue
           :app:lintDebug
           :app:detekt
@@ -110,12 +131,13 @@ jobs:
           path: connect/build/outputs/apk/debug/*.apk
           if-no-files-found: error
 
-  # A push to main puts its debug APKs on the draft release "Debug build
-  # (newest main)", replacing the last ones: plain APK links, the same every
-  # time, that install from a phone signed in to GitHub. A draft is seen only
-  # by people who can push here, and makes no tag (tools/ci/debug_release.sh).
+  # A build of main (a push, or a run started by hand) puts its debug APKs
+  # on the draft release "Debug build (newest main)", replacing the last
+  # ones: plain APK links, the same every time, that install from a phone
+  # signed in to GitHub. A draft is seen only by people who can push here,
+  # and makes no tag (tools/ci/debug_release.sh).
   debug-release:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
     needs: check
     runs-on: ubuntu-latest
     timeout-minutes: 10
