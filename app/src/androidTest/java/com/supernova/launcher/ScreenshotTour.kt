@@ -42,8 +42,9 @@ import org.junit.runner.RunWith
 //   pref.b.<key> true · pref.i.<key> 5 · pref.f.<key> 1.5 · pref.s.<key> TEXT
 //   pref.s64.<key> <base64 of the text>, for values with spaces or quotes.
 // `shots` lists the screens, comma-separated: home, drawer, search, settings,
-// settings.searchbar (the search bar's settings page) and feed (the page to
-// the left of home). The default is the first four. `query` is typed into search before its shot, with time for web
+// settings.searchbar (the search bar's settings page), feed (the page to the
+// left of home), menu.home (the first home icon's menu) and menu.drawer (the
+// first drawer app's). The default is the first four. `query` is typed into search before its shot, with time for web
 // suggestions to come back (through NovaRedux Connect, when installed).
 // `hide_own true`, for store screenshots: this debug build's own entries
 // (NovaRedux Debug, Debug Settings) are off the home screen and the drawer.
@@ -152,9 +153,19 @@ class ScreenshotTour {
             (bar != null && shows("drawerSheet")).also { opened -> if (opened) typeQuery() }
         }
         "feed" -> openFeed()
+        "menu.home" -> holdFirst("icon")
+        "menu.drawer" -> openDrawer() && holdFirst("appLabel")
         "settings" -> startSettings(Intent())
         "settings.searchbar" -> startSettings(Intent().putExtra(SettingsActivity.EXTRA_OPEN_SEARCH_BAR, true))
         else -> false
+    }
+
+    // The first view of this id held as a finger holds it, and let go: its
+    // menu stays up.
+    private fun holdFirst(viewId: String): Boolean {
+        val view = device.wait(Until.findObject(By.res(appId, viewId)), WAIT_MS) ?: return false
+        view.longClick()
+        return true
     }
 
     // Into whichever search field has the focus.
