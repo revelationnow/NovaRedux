@@ -41,8 +41,16 @@ Every push to main replaces both, under the same links. This draft is seen only 
 Debug signing certificate (SHA-256): ${cert:-not read}. CI keeps the debug key in its cache, which GitHub clears after a week with no build of main; when that happens Android refuses the update, and the debug apps have to be uninstalled before the new ones install.
 EOF
 
-id=$(gh api "repos/$GH_REPO/releases?per_page=100" \
-    --jq "[.[] | select(.draft and .tag_name == \"$tag\")][0].id // empty")
+# Found by its title: GitHub gives an edited draft an untagged-... tag name
+# of its own, so the tag it was made with can't find it again. A second
+# draft of the same title, from a run that missed the first, goes; the
+# oldest keeps its links.
+ids=$(gh api "repos/$GH_REPO/releases?per_page=100" \
+    --jq "[.[] | select(.draft and .name == \"$title\") | .id] | sort | .[]")
+id=$(echo "$ids" | head -n 1)
+for extra in $(echo "$ids" | tail -n +2); do
+    gh api -X DELETE "repos/$GH_REPO/releases/$extra"
+done
 if [ -z "$id" ]; then
     id=$(gh api -X POST "repos/$GH_REPO/releases" \
         -f tag_name="$tag" -f target_commitish="$GITHUB_SHA" -f name="$title" \
