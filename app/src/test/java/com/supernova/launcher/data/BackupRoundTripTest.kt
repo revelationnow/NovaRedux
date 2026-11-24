@@ -195,6 +195,29 @@ class BackupRoundTripTest {
         )
     )
 
+    // A widget stack (#10) and an app pair (#12).
+    private val stackedAndPaired = listOf(
+        LauncherItem(
+            id = "widget",
+            itemType = ItemType.WIDGET,
+            spanX = 2,
+            spanY = 2,
+            appWidgetId = 42,
+            widgetProvider = "com.w/com.w.Provider",
+            widgetPadding = 12,
+            stack = listOf(StackedWidget(43, "com.x/com.x.Provider", 10L, "Clock")),
+            stackShown = 1
+        ),
+        LauncherItem(
+            id = "pair",
+            itemType = ItemType.APP,
+            packageName = "com.maps",
+            className = "com.maps.Main",
+            label = "Maps + Music",
+            pairWith = "com.music/com.music.Player@0"
+        )
+    )
+
     private fun sampleModel() = LauncherModel(
         version = CURRENT_MODEL_VERSION,
         items = listOf(
@@ -222,25 +245,6 @@ class BackupRoundTripTest {
                 label = "Games",
                 swipeToOpen = true
             ),
-            LauncherItem(
-                id = "widget",
-                itemType = ItemType.WIDGET,
-                spanX = 2,
-                spanY = 2,
-                appWidgetId = 42,
-                widgetProvider = "com.w/com.w.Provider",
-                widgetPadding = 12,
-                stack = listOf(StackedWidget(43, "com.x/com.x.Provider", 10L, "Clock")),
-                stackShown = 1
-            ),
-            LauncherItem(
-                id = "pair",
-                itemType = ItemType.APP,
-                packageName = "com.maps",
-                className = "com.maps.Main",
-                label = "Maps + Music",
-                pairWith = "com.music/com.music.Player@0"
-            ),
             // A launcher-action item and an activity item exercise the new
             // intentUri/iconBase64 fields through the backup round-trip.
             LauncherItem(
@@ -262,7 +266,7 @@ class BackupRoundTripTest {
                 intentUri = "intent:#Intent;component=com.x/.Act;end",
                 iconBase64 = "AAAA"
             )
-        ) + editedShortcut,
+        ) + stackedAndPaired + editedShortcut,
         pageCount = 3,
         defaultPage = 1
     )
