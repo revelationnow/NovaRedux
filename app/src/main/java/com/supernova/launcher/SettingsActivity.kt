@@ -547,6 +547,7 @@ class SettingsActivity : AppCompatActivity() {
             pickDockImage = ::chooseDockImage,
             editFolderIcon = ::showFolderIconEditor,
             editBadgedApps = ::showBadgedAppsPicker,
+            editNotificationTextApps = ::showNotificationTextAppsPicker,
             postTestBadge = ::postTestBadge,
             editThemeSchedule = ::showThemeScheduleEditor,
             showLicense = {
@@ -2165,6 +2166,32 @@ class SettingsActivity : AppCompatActivity() {
                     if (isChecked) selected.add(key) else selected.remove(key)
                 }
                 viewModel.set(Pref.badgeApps, if (selected.containsAll(keys)) emptySet() else selected.toSet())
+            }
+        )
+    }
+
+    // The apps whose home screen label shows their newest notification (#15):
+    // none until some are ticked. A tick asks for the notification access
+    // the line comes from, when it's missing.
+    private fun showNotificationTextAppsPicker() {
+        val apps = viewModel.state.value.apps
+        if (apps.isEmpty()) return
+        fun key(app: LaunchableApp) =
+            com.supernova.launcher.ui.NotificationLabels.key(app.userSerial, app.packageName, app.className)
+        val selected = viewModel.state.value.prefs.notificationTextApps.toMutableSet()
+        showAppChecklist(
+            title = getString(R.string.notification_text_apps),
+            apps = apps,
+            checked = { key(it) in selected },
+            onSave = { changes ->
+                changes.forEach { (app, isChecked) ->
+                    if (isChecked) selected.add(key(app)) else selected.remove(key(app))
+                }
+                viewModel.set(Pref.notificationTextApps, selected.toSet())
+                if (selected.isNotEmpty()) {
+                    com.supernova.launcher.ui.PermissionPrompts
+                        .explainNotificationAccess(this, R.string.notification_access_text)
+                }
             }
         )
     }

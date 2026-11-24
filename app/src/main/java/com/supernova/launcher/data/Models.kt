@@ -203,6 +203,9 @@ data class LauncherPrefs(
     val badgeStyle: String = "",
     // Empty = badges on every app; else only these "userSerial/pkg/cls" keys.
     val badgeApps: Set<String> = emptySet(),
+    // Apps whose home screen label shows their newest notification instead
+    // (#15), as "userSerial/pkg/cls" keys; none by default.
+    val notificationTextApps: Set<String> = emptySet(),
     val hiddenApps: Set<String> = emptySet(),
     // Hidden apps show only after the phone's own lock (#4): HiddenAppsLock.
     val hiddenAppsLock: Boolean = false,

@@ -98,6 +98,7 @@
     <string name="notification_access_title">Zugriff auf Benachrichtigungen erlauben</string>
     <string name="notification_access_badges">Badges werden aus deinen Benachrichtigungen gezählt, daher braucht NovaRedux Zugriff auf Benachrichtigungen. Sie werden nur auf diesem Telefon gelesen.</string>
     <string name="notification_access_popup">Das Menü beim langen Drücken listet die Benachrichtigungen einer App auf, daher braucht NovaRedux Zugriff auf Benachrichtigungen. Sie werden nur auf diesem Telefon gelesen.</string>
+    <string name="notification_access_text">Die Namen dieser Apps zeigen ihre neueste Benachrichtigung, daher braucht NovaRedux Zugriff auf Benachrichtigungen. Sie werden nur auf diesem Telefon gelesen.</string>
     <string name="notification_access_media">Die Medienkarte zeigt anhand deiner Benachrichtigungen, was gerade läuft, daher braucht NovaRedux Zugriff auf Benachrichtigungen. Sie werden nur auf diesem Telefon gelesen.</string>
     <string name="permission_in_app_info">Android fragt nicht noch einmal. Erlaube es hier unter Berechtigungen</string>
     <string name="notification_access_restricted">Wenn der Schalter für den Benachrichtigungszugriff ausgegraut ist, blockiert Android ihn, weil NovaRedux nicht aus dem Play Store installiert wurde. Öffne App-Info, tippe oben rechts auf das Menü ⋮, wähle „Eingeschränkte Einstellungen zulassen“ und öffne dann den Bildschirm für den Benachrichtigungszugriff erneut.</string>
@@ -298,6 +299,9 @@
     <string name="badge_style_dynamic">Dynamische Badges</string>
     <string name="badged_apps">Apps mit Badges</string>
     <string name="badged_apps_all">Alle Apps</string>
+    <string name="notification_text_apps">Benachrichtigungstext auf Symbolen</string>
+    <string name="notification_text_apps_summary">Ausgewählte Apps zeigen auf dem Startbildschirm ihre neueste Benachrichtigung statt ihres Namens</string>
+    <string name="notification_text_needs_access">Tippe, um ihn zu gewähren, damit Benachrichtigungstext angezeigt wird</string>
     <string name="badge_color">Badge-Farbe</string>
     <string name="badge_color_icon">Passend zum App-Symbol</string>
     <string name="badge_text_color">Zahlenfarbe</string>

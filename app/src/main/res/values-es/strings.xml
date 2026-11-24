@@ -103,6 +103,7 @@
     <string name="notification_access_title">Permitir el acceso a las notificaciones</string>
     <string name="notification_access_badges">Las insignias se cuentan a partir de tus notificaciones, así que NovaRedux necesita acceso a ellas. Solo se leen en este teléfono.</string>
     <string name="notification_access_popup">El menú de pulsación larga muestra las notificaciones de una aplicación, así que NovaRedux necesita acceso a ellas. Solo se leen en este teléfono.</string>
+    <string name="notification_access_text">Los nombres de estas aplicaciones muestran su notificación más reciente, así que NovaRedux necesita acceso a las notificaciones. Solo se leen en este teléfono.</string>
     <string name="notification_access_media">La tarjeta multimedia muestra lo que suena a partir de tus notificaciones, así que NovaRedux necesita acceso a ellas. Solo se leen en este teléfono.</string>
     <string name="permission_in_app_info">Android no volverá a preguntar. Permítelo aquí, en Permisos</string>
     <string name="notification_access_restricted">Si el interruptor de acceso a las notificaciones aparece en gris, Android lo bloquea porque NovaRedux no se instaló desde Play Store. Abre Información de la aplicación, toca el menú ⋮ arriba a la derecha, elige Permitir ajustes restringidos y vuelve a abrir la pantalla de acceso a las notificaciones.</string>
@@ -309,6 +310,9 @@
     <string name="badge_style_dynamic">Insignias dinámicas</string>
     <string name="badged_apps">Aplicaciones con insignia</string>
     <string name="badged_apps_all">Todas las aplicaciones</string>
+    <string name="notification_text_apps">Texto de notificaciones en los iconos</string>
+    <string name="notification_text_apps_summary">Las aplicaciones que elijas muestran su notificación más reciente en lugar de su nombre en la pantalla de inicio</string>
+    <string name="notification_text_needs_access">Toca para concederlo y que se vea el texto de las notificaciones</string>
     <string name="badge_color">Color de la insignia</string>
     <string name="badge_color_icon">Igual que el icono de la aplicación</string>
     <string name="badge_text_color">Color del número</string>

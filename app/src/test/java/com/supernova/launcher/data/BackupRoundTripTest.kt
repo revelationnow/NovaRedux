@@ -48,6 +48,7 @@ class BackupRoundTripTest {
         badgeCounts = true,
         badgeStyle = "DYNAMIC",
         badgeApps = setOf("0/com.a/com.a.Main"),
+        notificationTextApps = setOf("0/com.chat/com.chat.Main"),
         iconShadow = true,
         iconGlass = IconGlass.SMOKED,
         iconSwipeIndicator = false,

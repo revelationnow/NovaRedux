@@ -44,11 +44,13 @@ data class BadgeFace(
     override fun hashCode(): Int = id.hashCode() * 31 + postTime.hashCode()
 }
 
-// Every app's badge count, and what its Dynamic badge shows, keyed
+// Every app's badge count, what its Dynamic badge shows, and the line its
+// home screen label can show in place of its name (#15), keyed
 // "$userHash/$packageName".
 data class BadgeState(
     val counts: Map<String, Int> = emptyMap(),
-    val faces: Map<String, BadgeFace> = emptyMap()
+    val faces: Map<String, BadgeFace> = emptyMap(),
+    val texts: Map<String, String> = emptyMap()
 )
 
 // Notification dots are entirely the launcher's job on Android: the platform
@@ -100,19 +102,20 @@ class SupernovaNotificationListener : NotificationListenerService() {
         val candidates = active.map { candidateOf(it, ranking, scratch) }
         val counted = BadgeCounting.badged(candidates).toHashSet()
         val badged = active.filterIndexed { index, _ -> candidates[index] in counted }
-        // Counts and faces land together, so one redraw sees both.
+        val byApp = badged.groupBy(::appKey)
+        // Counts, faces and texts land together, so one redraw sees them all.
         state.value = BadgeState(
             counts = BadgeCounting.counts(candidates),
-            faces = badged
-                .groupBy(::appKey)
-                .mapValues { (_, group) -> faceOf(group.maxBy { it.postTime }) }
+            faces = byApp.mapValues { (_, group) -> faceOf(group.maxBy { it.postTime }) },
+            texts = byApp.mapNotNull { (key, group) ->
+                group.sortedByDescending { it.postTime }.firstNotNullOfOrNull(::lineOf)?.let { key to it }
+            }.toMap()
         )
         // Latest title/text per app for the popup menu's preview lines; kept
         // small (2 per app) and rebuilt wholesale so removals never leak.
         // The same notifications as the badge: the preview shows the content
         // of an app "with a badge".
-        previews = badged
-            .groupBy(::appKey)
+        previews = byApp
             .mapValues { (_, group) ->
                 group.sortedByDescending { it.postTime }
                     .mapNotNull(::previewOf)
@@ -164,6 +167,14 @@ class SupernovaNotificationListener : NotificationListenerService() {
         )
     }
 
+    private fun lineOf(sbn: StatusBarNotification): String? {
+        val extras = sbn.notification.extras
+        return NotificationText.line(
+            extras.getCharSequence(Notification.EXTRA_TITLE),
+            extras.getCharSequence(Notification.EXTRA_TEXT)
+        )
+    }
+
     private fun previewOf(sbn: StatusBarNotification): NotificationPreview? {
         val extras = sbn.notification.extras
         val title = extras.getCharSequence(Notification.EXTRA_TITLE)?.toString().orEmpty()
@@ -211,6 +222,10 @@ class SupernovaNotificationListener : NotificationListenerService() {
 
         fun faceFor(packageName: String, userHash: Int): BadgeFace? =
             state.value.faces["$userHash/$packageName"]
+
+        // The newest notification's line, for a label that shows it (#15).
+        fun textFor(packageName: String, userHash: Int): String? =
+            state.value.texts["$userHash/$packageName"]
 
         fun previewsFor(packageName: String, userHash: Int): List<NotificationPreview> =
             previews["$userHash/$packageName"].orEmpty()

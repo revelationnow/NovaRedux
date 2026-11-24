@@ -174,6 +174,7 @@ object Pref {
     val badgeCounts = bool("badge_counts")
     val badgeStyle = text("badge_style")
     val badgeApps = textSet("badge_apps")
+    val notificationTextApps = textSet("notification_text_apps")
     val hiddenApps = textSet("hidden_apps")
     val hiddenAppsLock = bool("hidden_apps_lock")
     val gestureBindings = textSet("gesture_bindings")

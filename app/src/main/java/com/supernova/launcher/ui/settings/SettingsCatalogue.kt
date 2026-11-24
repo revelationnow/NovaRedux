@@ -100,6 +100,8 @@ object SettingsCatalogue {
         val pickDockImage: () -> Unit = {},
         val editFolderIcon: () -> Unit = {},
         val editBadgedApps: () -> Unit = {},
+        // The apps whose label shows their newest notification (#15).
+        val editNotificationTextApps: () -> Unit = {},
         val postTestBadge: () -> Unit = {},
         val openPaletteDialog: () -> Unit = {},
         // The Custom engine's URL; select: Custom becomes the engine on Save.
@@ -1843,6 +1845,22 @@ object SettingsCatalogue {
                     },
                     onClick = actions.editBadgedApps
                 ).hiddenWhen(badgesHidden),
+                // With badges on or off: it needs only the notification access.
+                SettingItem.Row(
+                    R.string.notification_text_apps,
+                    subtitle = { prefs ->
+                        val count = prefs.notificationTextApps.size
+                        if (count == 0) {
+                            context.getString(R.string.notification_text_apps_summary)
+                        } else {
+                            context.resources.getQuantityString(R.plurals.custom_icon_apps, count, count)
+                        }
+                    },
+                    onClick = actions.editNotificationTextApps
+                ).describedBy(R.string.notification_text_apps_summary),
+                rows.needsNotificationAccess(R.string.notification_text_needs_access) {
+                    !it.badges && it.notificationTextApps.isNotEmpty()
+                },
                 rows.color(
                     R.string.badge_color, { it.badgeColor },
                     // Unset, Dots take the app icon's color.

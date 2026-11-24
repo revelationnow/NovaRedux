@@ -46,6 +46,7 @@ import com.supernova.launcher.ui.DeviceAuth
 import com.supernova.launcher.ui.FolderCards
 import com.supernova.launcher.ui.HiddenAppsLock
 import com.supernova.launcher.ui.IconSwipes
+import com.supernova.launcher.ui.NotificationLabels
 import com.supernova.launcher.ui.DrawerItemMenus
 import com.supernova.launcher.ui.FolderToDrawerPrompt
 import com.supernova.launcher.ui.GroupPickers
@@ -785,6 +786,9 @@ class LauncherActivity :
                     // return-home animation.
                     if (previous == badges) return@collect
                     val prefs = viewModel.state.value.prefs
+                    // Labels showing a notification (#15), with badges on or off.
+                    val relabel = NotificationLabels.changedKeys(prefs, previous?.texts.orEmpty(), badges.texts)
+                    if (relabel.isNotEmpty()) applyLabelChanges(relabel)
                     if (!prefs.badges) return@collect
                     val changed = BadgeDiff.changedKeys(previous?.counts.orEmpty(), badges.counts).toMutableSet()
                     // A new notification can change a Dynamic badge's
@@ -814,8 +818,7 @@ class LauncherActivity :
             ) {
                 return false
             }
-            val user = viewModel.appCatalog().userForSerial(item.userSerial) ?: Process.myUserHandle()
-            return "${user.hashCode()}/$pkg" in changed
+            return "${userHashOf(item)}/$pkg" in changed
         }
 
         // A folder sums its members' counts, so a member changing is the
@@ -840,6 +843,36 @@ class LauncherActivity :
         }
         drawer.onBadgeChanged()
         folderCards.openMembers?.refreshIcons()
+    }
+
+    // Icons whose label shows their app's newest notification (#15), given
+    // their new line where they are.
+    private fun applyLabelChanges(changed: Set<String>) {
+        val prefs = viewModel.state.value.prefs
+        fun shows(item: LauncherItem): Boolean =
+            NotificationLabels.chosen(item, prefs) && "${userHashOf(item)}/${item.packageName}" in changed
+        val pages = binding.workspacePager.getChildAt(0) as? androidx.recyclerview.widget.RecyclerView
+        if (pages != null) {
+            workspaceAdapter.redrawItemsWith(pages, ::shows, ::relabelItemView)
+        } else {
+            workspaceAdapter.invalidatePagesWith(::shows)
+        }
+        val dockHits = viewModel.dockItems().filter(::shows)
+        if (dockHits.isNotEmpty() && !redrawDockItems(dockHits, ::relabelItemView)) {
+            renderDock(viewModel.state.value, force = true)
+        }
+    }
+
+    // The listener's key half for an item's profile.
+    private fun userHashOf(item: LauncherItem): Int =
+        (viewModel.appCatalog().userForSerial(item.userSerial) ?: Process.myUserHandle()).hashCode()
+
+    // What an icon's label says: its name, or for a chosen app its newest
+    // notification while it has one (#15).
+    private fun itemLabel(item: LauncherItem, name: String): String {
+        val pkg = item.packageName
+        if (pkg == null || !NotificationLabels.chosen(item, viewModel.state.value.prefs)) return name
+        return SupernovaNotificationListener.textFor(pkg, userHashOf(item)) ?: name
     }
 
     // Phase 8 first-run gate. GRANDFATHERING: existing users must never see
@@ -3108,14 +3141,24 @@ class LauncherActivity :
         runCatching { ItemIconBinding.bind(view) }.getOrNull()?.let { redrawItemIcon(it, item) }
     }
 
+    // An icon's label set again where it is (its notification changed, #15).
+    private fun relabelItemView(view: View, item: LauncherItem) {
+        if (item.itemType != ItemType.APP || view.getTag(R.id.tag_item_id) != item.id) return
+        val name = viewModel.overrideFor(item)?.customLabel ?: item.label
+        runCatching { ItemIconBinding.bind(view) }.getOrNull()?.label?.text = itemLabel(item, name)
+    }
+
     // The dock's views for these items redrawn in place; false when one of
     // them isn't found, for the caller to build the dock again.
-    private fun redrawDockItems(items: List<LauncherItem>): Boolean {
+    private fun redrawDockItems(
+        items: List<LauncherItem>,
+        redraw: (View, LauncherItem) -> Unit = ::redrawItemView
+    ): Boolean {
         val wanted = items.associateBy { it.id }
         val found = HashSet<String>()
         fun walk(view: View) {
             wanted[view.getTag(R.id.tag_item_id)]?.let {
-                redrawItemView(view, it)
+                redraw(view, it)
                 found += it.id
                 return
             }
@@ -3189,7 +3232,7 @@ class LauncherActivity :
             iconBinding.icon.updateLayoutParams { width = box; height = box }
         }
         val displayLabel = override?.customLabel ?: item.label
-        iconBinding.label.text = displayLabel
+        iconBinding.label.text = itemLabel(item, displayLabel)
         LabelStyler.apply(
             iconBinding.label, prefs, onWallpaper = true,
             context = if (inDock) com.supernova.launcher.ui.LabelContext.DOCK

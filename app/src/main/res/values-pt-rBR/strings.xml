@@ -103,6 +103,7 @@
     <string name="notification_access_title">Permitir acesso às notificações</string>
     <string name="notification_access_badges">Os selos são contados a partir das suas notificações, por isso o NovaRedux precisa de acesso a elas. Elas são lidas somente neste telefone.</string>
     <string name="notification_access_popup">O menu de toque longo lista as notificações de um app, por isso o NovaRedux precisa de acesso a elas. Elas são lidas somente neste telefone.</string>
+    <string name="notification_access_text">Os nomes desses apps mostram a notificação mais recente, por isso o NovaRedux precisa de acesso às notificações. Elas são lidas somente neste telefone.</string>
     <string name="notification_access_media">O card de mídia mostra o que está tocando a partir das suas notificações, por isso o NovaRedux precisa de acesso a elas. Elas são lidas somente neste telefone.</string>
     <string name="permission_in_app_info">O Android não vai perguntar de novo. Permita aqui, em Permissões</string>
     <string name="notification_access_restricted">Se a chave de acesso às notificações estiver cinza, o Android a bloqueia porque o NovaRedux não foi instalado pela Play Store. Abra Informações do app, toque no menu ⋮ no canto superior direito, escolha Permitir configurações restritas e abra de novo a tela de acesso às notificações.</string>
@@ -309,6 +310,9 @@
     <string name="badge_style_dynamic">Selos dinâmicos</string>
     <string name="badged_apps">Apps com selo</string>
     <string name="badged_apps_all">Todos os apps</string>
+    <string name="notification_text_apps">Texto das notificações nos ícones</string>
+    <string name="notification_text_apps_summary">Os apps escolhidos mostram a notificação mais recente no lugar do nome na tela inicial</string>
+    <string name="notification_text_needs_access">Toque para permitir e mostrar o texto das notificações</string>
     <string name="badge_color">Cor do selo</string>
     <string name="badge_color_icon">Igual ao ícone do app</string>
     <string name="badge_text_color">Cor do número</string>

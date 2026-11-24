@@ -108,6 +108,7 @@
     <string name="notification_access_title">Разрешить доступ к уведомлениям</string>
     <string name="notification_access_badges">Значки считаются по вашим уведомлениям, поэтому NovaRedux нужен доступ к уведомлениям. Они читаются только на этом телефоне.</string>
     <string name="notification_access_popup">Меню по долгому нажатию показывает уведомления приложения, поэтому NovaRedux нужен доступ к уведомлениям. Они читаются только на этом телефоне.</string>
+    <string name="notification_access_text">Вместо названий этих приложений показывается их последнее уведомление, поэтому NovaRedux нужен доступ к уведомлениям. Они читаются только на этом телефоне.</string>
     <string name="notification_access_media">Карточка медиа показывает, что играет, по вашим уведомлениям, поэтому NovaRedux нужен доступ к уведомлениям. Они читаются только на этом телефоне.</string>
     <string name="permission_in_app_info">Android больше не спросит. Разрешите это здесь, в разделе «Разрешения»</string>
     <string name="notification_access_restricted">Если переключатель доступа к уведомлениям неактивен, Android блокирует его, потому что NovaRedux установлен не из Play Маркета. Откройте «О приложении», нажмите меню ⋮ в правом верхнем углу, выберите «Разрешить доступ к ограниченным настройкам» и снова откройте экран доступа к уведомлениям.</string>
@@ -320,6 +321,9 @@
     <string name="badge_style_dynamic">Динамические значки</string>
     <string name="badged_apps">Приложения со значками</string>
     <string name="badged_apps_all">Все приложения</string>
+    <string name="notification_text_apps">Текст уведомлений на значках</string>
+    <string name="notification_text_apps_summary">Выбранные приложения показывают на главном экране последнее уведомление вместо своего названия</string>
+    <string name="notification_text_needs_access">Нажмите, чтобы предоставить доступ и показывать текст уведомлений</string>
     <string name="badge_color">Цвет значка</string>
     <string name="badge_color_icon">Как у иконки приложения</string>
     <string name="badge_text_color">Цвет числа</string>

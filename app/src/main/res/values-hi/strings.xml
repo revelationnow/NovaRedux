@@ -98,6 +98,7 @@
     <string name="notification_access_title">सूचनाओं का ऐक्सेस दें</string>
     <string name="notification_access_badges">बैज आपकी सूचनाओं से गिने जाते हैं, इसलिए NovaRedux को सूचनाओं का ऐक्सेस चाहिए. इन्हें सिर्फ़ इसी फ़ोन पर पढ़ा जाता है.</string>
     <string name="notification_access_popup">देर तक दबाने पर खुलने वाला मेन्यू किसी ऐप की सूचनाएं दिखाता है, इसलिए NovaRedux को सूचनाओं का ऐक्सेस चाहिए. इन्हें सिर्फ़ इसी फ़ोन पर पढ़ा जाता है.</string>
+    <string name="notification_access_text">इन ऐप के नाम की जगह उनकी सबसे नई सूचना दिखती है, इसलिए NovaRedux को सूचनाओं का ऐक्सेस चाहिए. इन्हें सिर्फ़ इसी फ़ोन पर पढ़ा जाता है.</string>
     <string name="notification_access_media">मीडिया कार्ड आपकी सूचनाओं से दिखाता है कि क्या चल रहा है, इसलिए NovaRedux को सूचनाओं का ऐक्सेस चाहिए. इन्हें सिर्फ़ इसी फ़ोन पर पढ़ा जाता है.</string>
     <string name="permission_in_app_info">Android फिर से नहीं पूछेगा. यहां अनुमतियां में जाकर इसकी अनुमति दें</string>
     <string name="notification_access_restricted">अगर सूचनाओं के ऐक्सेस का स्विच धूसर है, तो Android उसे रोक रहा है, क्योंकि NovaRedux को Play Store से इंस्टॉल नहीं किया गया था. ऐप की जानकारी खोलें, सबसे ऊपर दाईं ओर ⋮ मेन्यू पर टैप करें, ‘पाबंदी वाली सेटिंग की अनुमति दें’ चुनें, फिर सूचनाओं के ऐक्सेस वाली स्क्रीन दोबारा खोलें.</string>
@@ -298,6 +299,9 @@
     <string name="badge_style_dynamic">डाइनैमिक बैज</string>
     <string name="badged_apps">बैज वाले ऐप</string>
     <string name="badged_apps_all">सभी ऐप</string>
+    <string name="notification_text_apps">आइकॉन पर सूचना का टेक्स्ट</string>
+    <string name="notification_text_apps_summary">चुने गए ऐप होम स्क्रीन पर अपने नाम की जगह अपनी सबसे नई सूचना दिखाते हैं</string>
+    <string name="notification_text_needs_access">अनुमति देने के लिए टैप करें, ताकि सूचना का टेक्स्ट दिख सके</string>
     <string name="badge_color">बैज का रंग</string>
     <string name="badge_color_icon">ऐप के आइकॉन जैसा</string>
     <string name="badge_text_color">संख्या का रंग</string>

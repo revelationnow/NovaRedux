@@ -105,6 +105,7 @@
     <string name="notification_access_title">Allow notification access</string>
     <string name="notification_access_badges">Badges are counted from your notifications, so NovaRedux needs notification access. They are read on this phone only.</string>
     <string name="notification_access_popup">The long-press menu lists an app\'s notifications, so NovaRedux needs notification access. They are read on this phone only.</string>
+    <string name="notification_access_text">These apps\' labels show their newest notification, so NovaRedux needs notification access. They are read on this phone only.</string>
     <string name="notification_access_media">The media card shows what is playing from your notifications, so NovaRedux needs notification access. They are read on this phone only.</string>
     <string name="permission_in_app_info">Android won\'t ask again. Allow it here, under Permissions</string>
     <string name="notification_access_restricted">If the notification access switch is greyed out, Android is blocking it because NovaRedux was not installed from the Play Store. Open App info, tap the \u22ee menu at the top right, choose Allow restricted settings, then open the notification access screen again.</string>
@@ -312,6 +313,9 @@
     <string name="badge_style_dynamic">Dynamic badges</string>
     <string name="badged_apps">Badged apps</string>
     <string name="badged_apps_all">All apps</string>
+    <string name="notification_text_apps">Notification text on icons</string>
+    <string name="notification_text_apps_summary">Chosen apps show their newest notification in place of their name on the home screen</string>
+    <string name="notification_text_needs_access">Tap to grant it, so notification text can show</string>
     <string name="badge_color">Badge color</string>
     <string name="badge_color_icon">Matches the app icon</string>
     <string name="badge_text_color">Number color</string>

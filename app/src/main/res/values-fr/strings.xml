@@ -103,6 +103,7 @@
     <string name="notification_access_title">Autoriser l\'accès aux notifications</string>
     <string name="notification_access_badges">Les pastilles sont comptées à partir de vos notifications, NovaRedux a donc besoin d\'y accéder. Elles ne sont lues que sur ce téléphone.</string>
     <string name="notification_access_popup">Le menu d\'appui prolongé liste les notifications d\'une appli, NovaRedux a donc besoin d\'y accéder. Elles ne sont lues que sur ce téléphone.</string>
+    <string name="notification_access_text">Les noms de ces applis affichent leur dernière notification, NovaRedux a donc besoin d\'accéder aux notifications. Elles ne sont lues que sur ce téléphone.</string>
     <string name="notification_access_media">La carte multimédia montre ce qui est en lecture à partir de vos notifications, NovaRedux a donc besoin d\'y accéder. Elles ne sont lues que sur ce téléphone.</string>
     <string name="permission_in_app_info">Android ne le redemandera pas. Autorisez-le ici, sous Autorisations</string>
     <string name="notification_access_restricted">Si le bouton d\'accès aux notifications est grisé, Android le bloque parce que NovaRedux n\'a pas été installé depuis le Play Store. Ouvrez Infos sur l\'appli, appuyez sur le menu ⋮ en haut à droite, choisissez Autoriser les paramètres restreints, puis rouvrez l\'écran d\'accès aux notifications.</string>
@@ -309,6 +310,9 @@
     <string name="badge_style_dynamic">Pastilles dynamiques</string>
     <string name="badged_apps">Applis avec pastilles</string>
     <string name="badged_apps_all">Toutes les applis</string>
+    <string name="notification_text_apps">Texte des notifications sur les icônes</string>
+    <string name="notification_text_apps_summary">Les applis choisies affichent leur dernière notification à la place de leur nom sur l\'écran d\'accueil</string>
+    <string name="notification_text_needs_access">Appuyez pour l\'accorder, afin que le texte des notifications s\'affiche</string>
     <string name="badge_color">Couleur de la pastille</string>
     <string name="badge_color_icon">Assortie à l\'icône de l\'appli</string>
     <string name="badge_text_color">Couleur du nombre</string>

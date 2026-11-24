@@ -401,6 +401,8 @@ class WorkspacePagerAdapter(private val host: Host) : RecyclerView.Adapter<Recyc
             // Settings stopped showing up at all.
             "${prefs.badges},${BadgeStyle.effective(prefs)},${prefs.folderBadges}|" +
             "${prefs.badgeApps.sorted().joinToString(",")}|" +
+            // Labels that show a notification (#15).
+            "${prefs.notificationTextApps.sorted().joinToString(",")}|" +
             "${state.iconGeneration}"
     }
 
