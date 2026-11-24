@@ -871,6 +871,9 @@
     <string name="search_calendar">Искать события календаря</string>
     <string name="search_calendar_summary">События из календаря телефона, от месяца назад до года вперёд</string>
     <string name="event_untitled">(Без названия)</string>
+    <string name="glance_widget_label">Коротко</string>
+    <string name="glance_widget_description">Дата, ближайшее событие и будильник, а также погода из Breezy Weather</string>
+    <string name="glance_alarm">Будильник %1$s</string>
     <string name="search_shortcuts">Искать ярлыки приложений</string>
     <string name="search_calculator">Калькулятор</string>
     <string name="search_typed_actions">Действия с введённым текстом</string>

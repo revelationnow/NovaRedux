@@ -837,6 +837,9 @@
     <string name="search_calendar">कैलेंडर इवेंट खोजें</string>
     <string name="search_calendar_summary">आपके फ़ोन के कैलेंडर के इवेंट, एक महीने पहले से एक साल आगे तक</string>
     <string name="event_untitled">(कोई शीर्षक नहीं)</string>
+    <string name="glance_widget_label">एक नज़र में</string>
+    <string name="glance_widget_description">तारीख, आपका अगला इवेंट और अलार्म, और Breezy Weather से मौसम</string>
+    <string name="glance_alarm">अलार्म %1$s</string>
     <string name="search_shortcuts">ऐप शॉर्टकट खोजें</string>
     <string name="search_calculator">कैलकुलेटर</string>
     <string name="search_typed_actions">टाइप की गई चीज़ों पर कार्रवाई</string>

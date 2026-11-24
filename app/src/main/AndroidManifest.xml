@@ -219,6 +219,21 @@
             </intent-filter>
         </receiver>
 
+        <!-- At a glance (#13): NovaRedux's own widget, the date, next event,
+             next alarm and weather. -->
+        <receiver
+            android:name=".widget.GlanceWidget"
+            android:exported="false"
+            android:label="@string/glance_widget_label">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="android.app.action.NEXT_ALARM_CLOCK_CHANGED" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/glance_widget_info" />
+        </receiver>
+
         <!-- The "Apply" button inside an icon pack's own app. Pack dashboards
              fire a per-launcher action carrying the pack's package; the
              activity accepts the conventions the common templates already

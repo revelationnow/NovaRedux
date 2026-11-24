@@ -854,6 +854,9 @@
     <string name="search_calendar">Buscar eventos del calendario</string>
     <string name="search_calendar_summary">Eventos del calendario de tu teléfono, desde un mes atrás hasta un año adelante</string>
     <string name="event_untitled">(Sin título)</string>
+    <string name="glance_widget_label">De un vistazo</string>
+    <string name="glance_widget_description">La fecha, tu próximo evento y alarma, y el tiempo de Breezy Weather</string>
+    <string name="glance_alarm">Alarma %1$s</string>
     <string name="search_shortcuts">Buscar accesos directos de aplicaciones</string>
     <string name="search_calculator">Calculadora</string>
     <string name="search_typed_actions">Acciones con lo que escribes</string>

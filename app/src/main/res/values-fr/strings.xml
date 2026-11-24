@@ -854,6 +854,9 @@
     <string name="search_calendar">Rechercher dans l\'agenda</string>
     <string name="search_calendar_summary">Les événements de l\'agenda du téléphone, d\'un mois en arrière à un an à venir</string>
     <string name="event_untitled">(Sans titre)</string>
+    <string name="glance_widget_label">En un coup d\'œil</string>
+    <string name="glance_widget_description">La date, votre prochain événement et réveil, et la météo de Breezy Weather</string>
+    <string name="glance_alarm">Réveil %1$s</string>
     <string name="search_shortcuts">Rechercher des raccourcis d\'applis</string>
     <string name="search_calculator">Calculatrice</string>
     <string name="search_typed_actions">Actions sur ce que vous tapez</string>

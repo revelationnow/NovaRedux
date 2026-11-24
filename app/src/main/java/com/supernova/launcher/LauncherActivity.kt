@@ -936,6 +936,7 @@ class LauncherActivity :
 
     private fun redrawForNewDay() {
         iconsDrawnFor = java.time.LocalDate.now()
+        refreshGlanceWidget()
         // Only date icons change with the day. Without any, there is
         // nothing to redraw: this rebound every page on the morning's first
         // return home.
@@ -975,7 +976,17 @@ class LauncherActivity :
         androidx.core.content.ContextCompat.registerReceiver(
             this, dateChangeReceiver, filter, androidx.core.content.ContextCompat.RECEIVER_NOT_EXPORTED
         )
-        if (java.time.LocalDate.now() != iconsDrawnFor) redrawForNewDay()
+        if (java.time.LocalDate.now() != iconsDrawnFor) redrawForNewDay() else refreshGlanceWidget()
+    }
+
+    // The glance widget (#13) catches up as home comes back and as the day
+    // turns; its weather read blocks, so off the main thread.
+    private fun refreshGlanceWidget() {
+        lifecycleScope.launch(kotlinx.coroutines.Dispatchers.IO) {
+            runLogged("refresh the glance widget") {
+                com.supernova.launcher.widget.GlanceWidget.updateAll(applicationContext)
+            }
+        }
     }
 
     override fun onStop() {

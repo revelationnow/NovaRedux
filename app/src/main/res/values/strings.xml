@@ -884,6 +884,9 @@
     <string name="search_calendar">Search calendar events</string>
     <string name="search_calendar_summary">Events in your phone\'s calendar, from a month back to a year ahead</string>
     <string name="event_untitled">(No title)</string>
+    <string name="glance_widget_label">At a glance</string>
+    <string name="glance_widget_description">The date, your next event and alarm, and the weather from Breezy Weather</string>
+    <string name="glance_alarm">Alarm %1$s</string>
     <string name="search_shortcuts">Search app shortcuts</string>
     <string name="search_calculator">Calculator</string>
     <string name="search_typed_actions">Actions on what you type</string>

@@ -837,6 +837,9 @@
     <string name="search_calendar">Kalendertermine durchsuchen</string>
     <string name="search_calendar_summary">Termine im Kalender deines Telefons, von einem Monat zurück bis ein Jahr voraus</string>
     <string name="event_untitled">(Ohne Titel)</string>
+    <string name="glance_widget_label">Auf einen Blick</string>
+    <string name="glance_widget_description">Das Datum, dein nächster Termin und Wecker und das Wetter aus Breezy Weather</string>
+    <string name="glance_alarm">Wecker %1$s</string>
     <string name="search_shortcuts">App-Verknüpfungen durchsuchen</string>
     <string name="search_calculator">Rechner</string>
     <string name="search_typed_actions">Aktionen für Eingaben</string>
