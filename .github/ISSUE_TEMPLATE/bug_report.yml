@@ -1,24 +1,70 @@
 name: Bug report
-description: We're only accepting bug reports right now.
+description: Something in NovaRedux doesn't work as it should.
 labels: ["bug"]
 body:
-  - type: checkboxes
-    id: checklist
+  - type: markdown
     attributes:
-      label: Before you post
-      options:
-        - label: This is a bug, not a feature request or enhancement (those go in [Discussions](https://github.com/revelationnow/NovaRedux/discussions)).
-          required: true
-        - label: I'm on the latest version and searched existing issues.
-          required: true
+      value: |
+        Thanks for reporting. One bug per issue, please; ideas and new features go in a feature request.
   - type: textarea
-    id: what
+    id: what-happened
     attributes:
-      label: What happened, and how do we reproduce it?
+      label: What happened?
+      description: What you saw. A screenshot or a screen recording helps a lot.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect to happen?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Long-press an app in the drawer
+        2. Tap Edit
+        3. ...
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: NovaRedux version
+      description: Settings > About shows it.
+      placeholder: 0.3.0 (29)
+    validations:
+      required: true
+  - type: dropdown
+    id: source
+    attributes:
+      label: Where did you get it?
+      options:
+        - GitHub release
+        - F-Droid
+        - Debug build of main
+        - Built it myself
     validations:
       required: true
   - type: input
     id: device
     attributes:
-      label: Device and Android version (optional)
-      placeholder: Samsung Galaxy S24, Android 17
+      label: Phone and Android version
+      placeholder: Pixel 8, Android 16
+    validations:
+      required: true
+  - type: textarea
+    id: crash-log
+    attributes:
+      label: Crash log
+      description: If NovaRedux crashed, share the log from Settings > About > Crash log and paste it here.
+      render: text
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before you post
+      options:
+        - label: I'm on the newest version and searched the open and closed issues.
+          required: true

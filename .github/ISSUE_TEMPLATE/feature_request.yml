@@ -1,0 +1,59 @@
+name: Feature request
+description: Suggest something NovaRedux should do.
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        NovaRedux aims to be Nova as it was before the Branch sale, plus offline features people choose in other launchers today. It has no internet permission, so anything that needs the internet goes through a separate app, as weather (Breezy Weather) and web suggestions (NovaRedux Connect) already do.
+  - type: textarea
+    id: feature
+    attributes:
+      label: What should NovaRedux do?
+      description: The feature in a sentence or two.
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why would it help?
+      description: What you'd use it for, or what's hard without it.
+    validations:
+      required: true
+  - type: textarea
+    id: seen-in
+    attributes:
+      label: Where have you seen it?
+      description: Nova (which version), another launcher, or nowhere yet. Links help.
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Home screen
+        - Dock
+        - App drawer
+        - Folders
+        - Search
+        - Widgets
+        - Gestures
+        - Look and feel
+        - Notifications
+        - Feed page
+        - Privacy
+        - Backup and import
+        - Something else
+    validations:
+      required: true
+  - type: textarea
+    id: how
+    attributes:
+      label: How could it work?
+      description: Where its setting would sit, what it would look like, anything to watch out for. Optional.
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before you post
+      options:
+        - label: I searched the open and closed issues.
+          required: true

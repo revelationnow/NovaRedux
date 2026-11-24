@@ -1,5 +1,5 @@
 blank_issues_enabled: false
 contact_links:
-  - name: Feature requests and enhancements
+  - name: Questions and ideas to talk over
     url: https://github.com/revelationnow/NovaRedux/discussions
-    about: Please post ideas and suggestions in Discussions, not as issues.
+    about: Not sure it's a bug, or want to talk an idea through first? Start a discussion.
