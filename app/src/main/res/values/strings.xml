@@ -29,6 +29,7 @@
     <string name="stack_remove_widget">Remove this widget from the stack</string>
     <string name="pair_with">Pair with another app</string>
     <string name="pair_part">Unpair</string>
+    <string name="pair_not_split">Couldn\'t open the pair side by side on this phone</string>
     <string name="pair_label">%1$s + %2$s</string>
     <!-- Long-press menu of a home screen icon or folder: makes it 2x2 cells, its icon twice the size, and back. -->
     <string name="large_icon">Large icon</string>

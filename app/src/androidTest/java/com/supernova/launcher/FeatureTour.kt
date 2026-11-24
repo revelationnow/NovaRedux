@@ -14,6 +14,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.content.pm.LauncherApps
+import android.graphics.Rect
 import android.hardware.camera2.CameraCharacteristics
 import android.hardware.camera2.CameraManager
 import android.net.Uri
@@ -339,6 +340,8 @@ class FeatureTour {
     private fun appPairs(): String {
         val needsService = Build.VERSION.SDK_INT < Build.VERSION_CODES.S_V2
         if (needsService) enableAccessibility() else disableAccessibility()
+        // The system's split screen notes, for a report if it doesn't split.
+        device.executeShellCommand("dumpsys activity service SystemUIService WMShell protolog enable-text $SPLIT_LOG")
         val first = app(*SETTINGS)
         val second = app(*CLOCKS, *CONTACTS)
         val label = "${first.label} + ${second.label}"
@@ -350,9 +353,13 @@ class FeatureTour {
         val both = waitFor(PAIR_WAIT_MS) { setOf(first.packageName, second.packageName).all { it in windowPackages() } }
         shot("pair-opened")
         val seen = windowPackages()
+        val tops = windowTops()
         device.pressHome()
-        check(both) { "after the tap the screen showed $seen. ${blockedLaunches()}" }
-        return "$label opened both apps side by side" + if (needsService) "" else ", with accessibility off"
+        check(both) { "after the tap the screen showed $seen. ${launchNotes()}" }
+        check(appId !in seen) { "the pair's own screen stayed up: $seen" }
+        val upper = if ((tops[first.packageName] ?: 0) <= (tops[second.packageName] ?: 0)) first else second
+        return "$label opened both apps side by side, ${upper.label} in the upper half" +
+            if (needsService) "" else ", with accessibility off"
     }
 
     // #15: a chosen app's label shows its newest notification.
@@ -704,13 +711,19 @@ class FeatureTour {
     private fun screenshotCount(): Int =
         device.executeShellCommand("ls /sdcard/Pictures/Screenshots").lines().count { it.endsWith(".png") }
 
-    // What the system log says of launches it stopped, for a step that failed.
-    private fun blockedLaunches(): String {
+    // What the system log says of launches it stopped or split, for a step
+    // that failed.
+    private fun launchNotes(): String {
         val lines = device.executeShellCommand("logcat -d -t $LOG_LINES").lines()
-            .filter { line -> BLOCKED_LAUNCH.any { it in line } }
+            .filter { line -> LAUNCH_NOTES.any { it in line } }
             .takeLast(LOG_LINES_KEPT)
-        return if (lines.isEmpty()) "The log names no blocked launch." else lines.joinToString(" | ")
+        return if (lines.isEmpty()) "The log says nothing of it." else lines.joinToString(" | ")
     }
+
+    // How far down the screen each app's window starts.
+    private fun windowTops(): Map<String, Int> = automation.windows.mapNotNull { window ->
+        window.root?.packageName?.toString()?.let { it to Rect().also(window::getBoundsInScreen).top }
+    }.toMap()
 
     // The packages of the windows on screen.
     private fun windowPackages(): Set<String> =
@@ -787,9 +800,13 @@ class FeatureTour {
         const val CONTROL_TAG = "feature_tour_control"
         const val CONTROL_TEXT = "Unheld"
         const val CHANNEL = "feature_tour"
-        const val LOG_LINES = 600
-        const val LOG_LINES_KEPT = 6
-        val BLOCKED_LAUNCH = listOf("Background activity launch blocked", "Abort background activity", "BAL_BLOCK")
+        const val LOG_LINES = 1500
+        const val LOG_LINES_KEPT = 10
+        const val SPLIT_LOG = "WM_SHELL_SPLIT_SCREEN"
+        val LAUNCH_NOTES = listOf(
+            "Background activity launch blocked", "Abort background activity", "BAL_BLOCK", "LAUNCH_ADJACENT",
+            "ShellSplitScreen", "AppPairActivity"
+        )
         const val PIN = "1234"
         const val CALENDAR_COLOR = 0xFF3F72AF.toInt()
         const val SYSTEM_FONTS = "/system/fonts"

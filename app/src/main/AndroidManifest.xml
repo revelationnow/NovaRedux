@@ -274,6 +274,19 @@
             android:exported="false"
             android:theme="@style/Theme.Supernova.WallpaperCrop" />
 
+        <!-- An app pair's screen of its own (#12), from Android 12L: full
+             screen for a moment, in a task of its own, it opens the pair's
+             first app beside itself, which splits the screen, then the
+             second in its own half, and goes. It takes the split's resize
+             as it comes rather than starting over. -->
+        <activity
+            android:name=".ui.AppPairActivity"
+            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboardHidden|density|uiMode"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:taskAffinity="${applicationId}.pair"
+            android:theme="@style/Theme.Supernova.Pair" />
+
         <!-- The Screen timeout lock method's black screen (TimeoutLock). -->
         <activity
             android:name=".ui.TimeoutLockActivity"

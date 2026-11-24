@@ -27,6 +27,7 @@
     <string name="stack_remove_widget">Remover este widget da pilha</string>
     <string name="pair_with">Parear com outro app</string>
     <string name="pair_part">Desfazer par</string>
+    <string name="pair_not_split">Não foi possível abrir o par lado a lado neste telefone</string>
     <string name="large_icon">Ícone grande</string>
     <string name="normal_icon">Ícone normal</string>
     <string name="padding">Margens</string>

@@ -27,6 +27,7 @@
     <string name="stack_remove_widget">Retirer ce widget de la pile</string>
     <string name="pair_with">Associer à une autre appli</string>
     <string name="pair_part">Dissocier</string>
+    <string name="pair_not_split">Impossible d\'ouvrir la paire côte à côte sur ce téléphone</string>
     <string name="large_icon">Grande icône</string>
     <string name="normal_icon">Icône normale</string>
     <string name="padding">Marges</string>

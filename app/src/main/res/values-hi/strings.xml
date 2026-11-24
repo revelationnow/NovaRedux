@@ -27,6 +27,7 @@
     <string name="stack_remove_widget">इस विजेट को स्टैक से हटाएं</string>
     <string name="pair_with">किसी दूसरे ऐप के साथ जोड़ें</string>
     <string name="pair_part">जोड़ी हटाएं</string>
+    <string name="pair_not_split">इस फ़ोन पर जोड़ी को साथ-साथ नहीं खोला जा सका</string>
     <string name="large_icon">बड़ा आइकॉन</string>
     <string name="normal_icon">सामान्य आइकॉन</string>
     <string name="padding">पैडिंग</string>

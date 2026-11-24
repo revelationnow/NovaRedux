@@ -2780,12 +2780,20 @@ class LauncherActivity :
             .makeCustomAnimation(this, R.anim.launch_slide_left_enter, R.anim.launch_slide_left_exit)
     }.toBundle()
 
-    // An app pair (#12) opens its first app and then the second beside it;
-    // with the accessibility service off, it says why instead.
+    // An app pair (#12) opens its two apps side by side: from Android 12L
+    // through a screen of its own that splits the screen; below, the first
+    // app opens and the accessibility service splits the screen for the
+    // second, and with the service off it says why instead.
     private fun launchAppItem(item: LauncherItem, app: LaunchableApp, anchor: View?) {
         val second = com.supernova.launcher.data.AppPairs.second(item)
         when {
             second == null -> launchApp(app, anchor)
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.S_V2 -> {
+                com.supernova.launcher.ui.AppPairActivity.open(this, app, second)
+                viewModel.noteLaunch(app)
+                maybeAutoCloseDock()
+                maybeAutoCloseDrawer()
+            }
             !com.supernova.launcher.ui.AppPairLauncher.launch(this, second) { launchApp(app, anchor) } ->
                 com.supernova.launcher.ui.PermissionPrompts.explainAccessibility(this)
         }

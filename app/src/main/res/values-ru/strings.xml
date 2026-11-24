@@ -27,6 +27,7 @@
     <string name="stack_remove_widget">Убрать этот виджет из стопки</string>
     <string name="pair_with">Объединить с другим приложением</string>
     <string name="pair_part">Разъединить</string>
+    <string name="pair_not_split">Не удалось открыть пару рядом на этом телефоне</string>
     <string name="large_icon">Большая иконка</string>
     <string name="normal_icon">Обычная иконка</string>
     <string name="padding">Отступы</string>

@@ -37,6 +37,13 @@
         <item name="android:windowAnimationStyle">@null</item>
     </style>
 
+    <!-- An app pair's moment on the full screen before the split (#12): the
+         plain background of an app's first frame, and no animation of its
+         own. -->
+    <style name="Theme.Supernova.Pair" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:windowAnimationStyle">@null</item>
+    </style>
+
     <style name="Theme.Supernova.WallpaperCrop">
         <item name="android:windowBackground">@android:color/black</item>
         <item name="android:windowShowWallpaper">false</item>

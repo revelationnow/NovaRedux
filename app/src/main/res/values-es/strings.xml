@@ -27,6 +27,7 @@
     <string name="stack_remove_widget">Quitar este widget de la pila</string>
     <string name="pair_with">Emparejar con otra aplicación</string>
     <string name="pair_part">Desemparejar</string>
+    <string name="pair_not_split">No se pudo abrir el par en pantalla dividida en este teléfono</string>
     <string name="large_icon">Icono grande</string>
     <string name="normal_icon">Icono normal</string>
     <string name="padding">Márgenes</string>
