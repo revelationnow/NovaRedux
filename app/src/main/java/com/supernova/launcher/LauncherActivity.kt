@@ -1730,6 +1730,7 @@ class LauncherActivity :
         // the drawer's keyboard setting. The bar's search chip and the
         // gestures still reach the global overlay.
         binding.desktopSearchBar.onTap = { openDrawer(forSearch = true) }
+        binding.desktopSearchBar.prefs = { viewModel.state.value.prefs }
         binding.desktopSearchBar.onLongPress = { anchor -> showSearchBarMenu(anchor) }
         // Nova's weather in the bar, read from Breezy Weather.
         binding.desktopSearchBar.onChip = weatherChip::onChip
