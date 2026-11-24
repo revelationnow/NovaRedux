@@ -1080,12 +1080,6 @@ object SettingsCatalogue {
                     },
                     onClick = actions.editHiddenApps
                 ),
-                SettingItem.Toggle(
-                    R.string.hidden_apps_lock,
-                    get = { it.hiddenAppsLock },
-                    set = { actions.setHiddenAppsLock(it) },
-                    subtitle = R.string.hidden_apps_lock_summary
-                ),
                 // A page of its own (ui/settings/groups); the row counts
                 // what it holds.
                 SettingItem.Row(
@@ -1142,7 +1136,7 @@ object SettingsCatalogue {
                     get = { it.drawerAutoClose },
                     set = { viewModel.set(Pref.drawerAutoClose, it) }
                 )
-            )
+            ).withHiddenAppsLock(actions)
         ),
         SettingsSection(
             R.string.settings_section_search,
