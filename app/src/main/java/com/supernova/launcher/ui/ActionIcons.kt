@@ -20,6 +20,7 @@ object ActionIcons {
         GestureAction.POWER_MENU -> R.drawable.ic_action_power
         GestureAction.SPLIT_SCREEN -> R.drawable.ic_action_split_screen
         GestureAction.TORCH -> R.drawable.ic_action_torch
+        GestureAction.SHOW_WIDGET -> R.drawable.ic_action_widget
         GestureAction.LOCK_SCREEN -> R.drawable.ic_action_lock
         GestureAction.OPEN_SETTINGS -> R.drawable.ic_action_settings
         GestureAction.DEFAULT_PAGE -> R.drawable.ic_action_home

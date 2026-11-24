@@ -435,6 +435,8 @@
     <string name="action_power_menu">Power menu</string>
     <string name="action_split_screen">Split screen</string>
     <string name="action_torch">Torch</string>
+    <string name="action_show_widget">Show a widget</string>
+    <string name="swipe_widget_label">Widget: %1$s</string>
     <string name="torch_unavailable">The torch isn\'t available right now</string>
     <string name="action_assistant">Assistant</string>
     <string name="action_launch_app">Launch app</string>

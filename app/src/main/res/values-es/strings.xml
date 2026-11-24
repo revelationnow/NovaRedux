@@ -430,6 +430,8 @@
     <string name="action_power_menu">Menú de apagado</string>
     <string name="action_split_screen">Pantalla dividida</string>
     <string name="action_torch">Linterna</string>
+    <string name="action_show_widget">Mostrar un widget</string>
+    <string name="swipe_widget_label">Widget: %1$s</string>
     <string name="torch_unavailable">La linterna no está disponible ahora</string>
     <string name="action_assistant">Asistente</string>
     <string name="action_launch_app">Abrir aplicación</string>

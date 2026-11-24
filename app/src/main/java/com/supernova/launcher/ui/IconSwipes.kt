@@ -8,6 +8,7 @@ import com.supernova.launcher.data.ItemType
 import com.supernova.launcher.data.LaunchTarget
 import com.supernova.launcher.data.LaunchableApp
 import com.supernova.launcher.data.LauncherItem
+import com.supernova.launcher.data.ShutterWidgets
 import com.supernova.launcher.gesture.ActionShortcut
 import com.supernova.launcher.gesture.GestureBinding
 import com.supernova.launcher.gesture.HomeGestureDetector
@@ -27,6 +28,9 @@ class IconSwipes(private val surfaces: ItemSurfaces, private val host: Host) {
 
         fun runAction(action: GestureBinding)
         fun launchIntentUri(uri: String)
+
+        // One of the app's widgets, in a panel by the icon (#14).
+        fun showShutter(item: LauncherItem, shutter: ShutterWidgets.Shutter, down: Boolean, anchor: View)
     }
 
     // `inFolder` is set for an app in an open folder (#224) and runs just
@@ -123,15 +127,19 @@ class IconSwipes(private val surfaces: ItemSurfaces, private val host: Host) {
         inFolder?.invoke()
         when {
             up && opensOnSwipe -> surfaces.folderCards.showFolder(v, item)
-            up -> launchAction(item, item.swipeAction, item.swipeLabel)
-            else -> launchAction(item, item.swipeActionDown, item.swipeLabelDown)
+            up -> launchAction(v, item, item.swipeAction, item.swipeLabel, down = false)
+            else -> launchAction(v, item, item.swipeActionDown, item.swipeLabelDown, down = true)
         }
     }
 
-    private fun launchAction(item: LauncherItem, action: String?, label: String?) {
+    private fun launchAction(v: View, item: LauncherItem, action: String?, label: String?, down: Boolean) {
         action ?: return
+        val shutter = ShutterWidgets.of(action)
         val bound = ActionShortcut.decode(action)
         when {
+            // A widget's panel opens from the icon, and a widget a restore
+            // left unbound is bound to the swipe it belongs to (#14).
+            shutter != null -> host.showShutter(item, shutter, down, v)
             // A launcher-action uri runs through the shared action dispatcher.
             bound != null -> host.runAction(bound)
             // An intent an app's shortcut screen made (a direct dial, a route).

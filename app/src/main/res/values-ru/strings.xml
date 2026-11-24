@@ -441,6 +441,8 @@
     <string name="action_power_menu">Меню питания</string>
     <string name="action_split_screen">Разделённый экран</string>
     <string name="action_torch">Фонарик</string>
+    <string name="action_show_widget">Показать виджет</string>
+    <string name="swipe_widget_label">Виджет: %1$s</string>
     <string name="torch_unavailable">Фонарик сейчас недоступен</string>
     <string name="action_assistant">Ассистент</string>
     <string name="action_launch_app">Запустить приложение</string>

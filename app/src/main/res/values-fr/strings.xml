@@ -430,6 +430,8 @@
     <string name="action_power_menu">Menu Marche/Arrêt</string>
     <string name="action_split_screen">Écran partagé</string>
     <string name="action_torch">Lampe de poche</string>
+    <string name="action_show_widget">Afficher un widget</string>
+    <string name="swipe_widget_label">Widget : %1$s</string>
     <string name="torch_unavailable">La lampe de poche n\'est pas disponible pour le moment</string>
     <string name="action_assistant">Assistant</string>
     <string name="action_launch_app">Ouvrir une appli</string>

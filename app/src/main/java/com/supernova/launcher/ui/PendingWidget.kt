@@ -38,6 +38,11 @@ internal data class PendingWidget(
                 putString(KIND, KIND_STACK)
                 putString(REF, target.itemId)
             }
+            is WidgetController.Target.Shutter -> {
+                putString(KIND, KIND_SHUTTER)
+                putString(REF, target.itemId)
+                putBoolean(DOWN, target.down)
+            }
         }
     }
 
@@ -56,6 +61,8 @@ internal data class PendingWidget(
         private const val KIND_RESTORED = "restored"
         private const val KIND_SEARCH_BAR = "search_bar"
         private const val KIND_STACK = "stack"
+        private const val KIND_SHUTTER = "shutter"
+        private const val DOWN = "down"
 
         // Null for an empty or unreadable bundle: nothing was pending.
         fun fromBundle(state: Bundle): PendingWidget? {
@@ -75,6 +82,7 @@ internal data class PendingWidget(
             KIND_RESTORED -> state.getString(REF)?.let(WidgetController.Target::Restored)
             KIND_SEARCH_BAR -> WidgetController.Target.SearchBar
             KIND_STACK -> state.getString(REF)?.let(WidgetController.Target::Stack)
+            KIND_SHUTTER -> state.getString(REF)?.let { WidgetController.Target.Shutter(it, state.getBoolean(DOWN)) }
             else -> null
         }
 

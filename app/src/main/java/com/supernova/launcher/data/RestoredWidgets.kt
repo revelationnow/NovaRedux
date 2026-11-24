@@ -10,6 +10,7 @@ internal object RestoredWidgets {
     fun needingRebind(model: LauncherModel): Int =
         model.items.count { it.itemType == ItemType.WIDGET && it.appWidgetId == null } +
             model.items.sumOf { item -> item.stack.count { it.appWidgetId == null } } +
+            model.items.sumOf { ShutterWidgets.needingRebind(it) } +
             model.feedCards.count { it.widgetProvider != null && it.appWidgetId == null }
 
     fun withStaleCleared(
@@ -23,9 +24,11 @@ internal object RestoredWidgets {
             } else {
                 item
             }
-            // A stack's other widgets (#10) the same way.
-            own.copy(
-                stack = own.stack.map { member ->
+            // A stack's other widgets (#10) the same way, and the widgets
+            // its swipes show (#14).
+            val shutters = ShutterWidgets.withStaleCleared(own, widgetBound)
+            shutters.copy(
+                stack = shutters.stack.map { member ->
                     val memberId = member.appWidgetId
                     if (memberId != null && !widgetBound(memberId, member.widgetProvider)) {
                         member.copy(appWidgetId = null)

@@ -75,6 +75,7 @@ object EnumLabels {
         GestureAction.POWER_MENU -> R.string.action_power_menu
         GestureAction.SPLIT_SCREEN -> R.string.action_split_screen
         GestureAction.TORCH -> R.string.action_torch
+        GestureAction.SHOW_WIDGET -> R.string.action_show_widget
         GestureAction.ASSISTANT -> R.string.action_assistant
         GestureAction.LAUNCH_APP -> R.string.action_launch_app
         GestureAction.LAUNCH_SHORTCUT -> R.string.action_launch_shortcut

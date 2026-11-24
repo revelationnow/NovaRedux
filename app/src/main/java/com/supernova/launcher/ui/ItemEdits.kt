@@ -127,7 +127,7 @@ class ItemEdits(private val surfaces: ItemSurfaces) {
     // the committed label (null = cleared) so the Edit sheet can refresh its
     // row without reading the async model write back.
     fun showSwipePicker(item: LauncherItem, down: Boolean, onPicked: (String?) -> Unit = {}) {
-        val actions = ActionShortcut.choices + GestureAction.JUMP_TO_PAGE
+        val actions = ActionShortcut.choices + GestureAction.JUMP_TO_PAGE + GestureAction.SHOW_WIDGET
         val title = activity.getString(if (down) R.string.set_swipe_down_action else R.string.set_swipe_up_action)
         ActionPickerSheet.show(activity, viewModel, title, actions) { pick ->
             swipePicked(item, down, pick, onPicked)
@@ -141,7 +141,13 @@ class ItemEdits(private val surfaces: ItemSurfaces) {
         }
         when (pick) {
             ActionPick.None -> save(null, null)
-            is ActionPick.Action -> save(ActionShortcut.encode(pick.action), pick.label)
+            // A widget is picked and set up first; the Edit sheet hears of it
+            // once it is saved (#14).
+            is ActionPick.Action -> if (pick.action == GestureAction.SHOW_WIDGET) {
+                surfaces.widgets.pickShutter(item, down) { _, label -> onPicked(label) }
+            } else {
+                save(ActionShortcut.encode(pick.action), pick.label)
+            }
             is ActionPick.Page ->
                 save(ActionShortcut.encode(GestureAction.JUMP_TO_PAGE, pick.index.toString()), pick.label)
             // With the app's profile: a swipe can open a work app from a

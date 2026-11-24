@@ -78,6 +78,7 @@ import com.supernova.launcher.data.LauncherPrefs
 import com.supernova.launcher.data.LaunchableApp
 import com.supernova.launcher.data.LARGE_ICON_SPAN
 import com.supernova.launcher.data.LauncherItem
+import com.supernova.launcher.data.ShutterWidgets
 import com.supernova.launcher.data.isLargeIcon
 import com.supernova.launcher.data.LauncherRepository
 import com.supernova.launcher.data.WorkspaceGeometry
@@ -453,8 +454,20 @@ class LauncherActivity :
                 }
 
                 override fun launchIntentUri(uri: String) = this@LauncherActivity.launchIntentUri(uri, null)
+
+                override fun showShutter(
+                    item: LauncherItem,
+                    shutter: ShutterWidgets.Shutter,
+                    down: Boolean,
+                    anchor: View
+                ) = widgetPanel.show(item, shutter, down, anchor)
             }
         )
+    }
+
+    // The panel an icon's swipe shows its widget in (#14).
+    private val widgetPanel by lazy {
+        com.supernova.launcher.ui.WidgetPanel(this, viewModel, { widgets }, ::currentCellSizePx)
     }
     private val removal: ItemRemoval by lazy {
         ItemRemoval(
@@ -999,6 +1012,7 @@ class LauncherActivity :
         runCatching { unregisterReceiver(dateChangeReceiver) }
         MainStallWatch.stop()
         discover.activityState(started = false, resumed = false)
+        widgetPanel.dismiss()
         // Off the screen, hidden apps lock again, the drawer's peek too (#4).
         HiddenAppsLock.relock()
         if (::drawer.isInitialized && viewModel.state.value.prefs.hiddenAppsLock) drawer.endHiddenAppsPeek()
@@ -2539,7 +2553,7 @@ class LauncherActivity :
             !movesPageUnseen(onHome, keepPage)
         // A folder card the same swipe closed on its first touch (#110), read
         // after the reset, whose own closes don't count twice.
-        val closed = com.supernova.launcher.ui.OpenDialogs.dismissAll(this) or
+        val closed = com.supernova.launcher.ui.OpenDialogs.dismissAll(this) or widgetPanel.dismiss() or
             resetToHome(animate = scroll, keepDrawer = keepDrawerOpen, keepPage = keepPage) or
             cardSwipeClose.takeFor(SystemClock.uptimeMillis()) or promptClosed
         // A press on the home screen itself also slides the dock back to its

@@ -430,6 +430,8 @@
     <string name="action_power_menu">Menu liga/desliga</string>
     <string name="action_split_screen">Tela dividida</string>
     <string name="action_torch">Lanterna</string>
+    <string name="action_show_widget">Mostrar um widget</string>
+    <string name="swipe_widget_label">Widget: %1$s</string>
     <string name="torch_unavailable">A lanterna não está disponível agora</string>
     <string name="action_assistant">Assistente</string>
     <string name="action_launch_app">Abrir app</string>

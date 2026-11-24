@@ -419,6 +419,8 @@
     <string name="action_power_menu">Ein/Aus-Menü</string>
     <string name="action_split_screen">Splitscreen</string>
     <string name="action_torch">Taschenlampe</string>
+    <string name="action_show_widget">Widget anzeigen</string>
+    <string name="swipe_widget_label">Widget: %1$s</string>
     <string name="torch_unavailable">Die Taschenlampe ist gerade nicht verfügbar</string>
     <string name="action_assistant">Assistant</string>
     <string name="action_launch_app">App öffnen</string>

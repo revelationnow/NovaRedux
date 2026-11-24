@@ -65,12 +65,17 @@ enum class GestureAction {
     // Re-runs a saved query in the search overlay. The payload is the query
     // itself, so this only ever comes from a pinned recent search - never from
     // the gesture pickers, which have no query to offer.
-    SEARCH_QUERY;
+    SEARCH_QUERY,
+
+    // One of an app's widgets in a panel by its icon, as Action Launcher's
+    // Shutters (#14). Only ever an icon swipe's, whose payload names the
+    // widget (ShutterWidgets).
+    SHOW_WIDGET;
 
     // Actions that mean nothing without a target.
     val needsPayload: Boolean
         get() = this == LAUNCH_APP || this == LAUNCH_SHORTCUT || this == JUMP_TO_PAGE ||
-            this == SEARCH_QUERY || this == LAUNCH_INTENT
+            this == SEARCH_QUERY || this == LAUNCH_INTENT || this == SHOW_WIDGET
 
     companion object {
         fun fromName(name: String): GestureAction =
@@ -150,10 +155,11 @@ object GestureDefaults {
     // The launcher actions a gesture's picker offers. Launching an app, a
     // shortcut or an intent come from the picker's other tabs, and a saved
     // search only ever from a pinned search - listed here, it showed up as
-    // a second "Open search" that saved as Nothing.
+    // a second "Open search" that saved as Nothing. A widget is an icon's
+    // own (#14).
     val pickerActions: List<GestureAction> = GestureAction.entries.filterNot {
         it == GestureAction.NONE || it == GestureAction.LAUNCH_APP || it == GestureAction.LAUNCH_SHORTCUT ||
-            it == GestureAction.LAUNCH_INTENT || it == GestureAction.SEARCH_QUERY
+            it == GestureAction.LAUNCH_INTENT || it == GestureAction.SEARCH_QUERY || it == GestureAction.SHOW_WIDGET
     }
 
     // Whether a swipe up on the home screen pulls the drawer in, the gesture

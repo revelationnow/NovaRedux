@@ -419,6 +419,8 @@
     <string name="action_power_menu">पावर मेन्यू</string>
     <string name="action_split_screen">स्प्लिट स्क्रीन</string>
     <string name="action_torch">टॉर्च</string>
+    <string name="action_show_widget">विजेट दिखाएं</string>
+    <string name="swipe_widget_label">विजेट: %1$s</string>
     <string name="torch_unavailable">टॉर्च अभी उपलब्ध नहीं है</string>
     <string name="action_assistant">Assistant</string>
     <string name="action_launch_app">ऐप खोलें</string>

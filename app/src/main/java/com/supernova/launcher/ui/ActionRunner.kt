@@ -164,6 +164,9 @@ class ActionRunner(
                 host.openPrivateSpace(anchor)
                 true
             }
+            // Only an icon's swipe shows a widget, and IconSwipes opens it
+            // with the icon and the swipe it belongs to (#14).
+            GestureAction.SHOW_WIDGET -> false
         }
     }
 

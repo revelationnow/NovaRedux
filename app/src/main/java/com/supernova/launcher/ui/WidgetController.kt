@@ -31,6 +31,7 @@ import com.supernova.launcher.data.LauncherModel
 import com.supernova.launcher.feed.FeaturedType
 import com.supernova.launcher.data.LauncherPrefs
 import com.supernova.launcher.data.LauncherRepository
+import com.supernova.launcher.data.ShutterWidgets
 import com.supernova.launcher.data.StackedWidget
 import com.supernova.launcher.data.WidgetStacks
 import com.supernova.launcher.data.WorkspaceGeometry
@@ -171,7 +172,14 @@ class WidgetController(
         data object SearchBar : Target
         // One more widget on a widget item's stack (#10).
         data class Stack(val itemId: String) : Target
+        // The widget an icon's swipe up or down shows (#14).
+        data class Shutter(val itemId: String, val down: Boolean) : Target
     }
+
+    // Who hears that a swipe's widget is bound and saved (#14): the Edit
+    // sheet's row, or the panel waiting to show it. Not kept over a
+    // recreate, which takes both with it; the save still happens.
+    private var shutterBound: ((appWidgetId: Int, label: String) -> Unit)? = null
 
     // Kept in the view model: a dark-mode, font-size or language change
     // recreates the activity while a widget's bind or setup screen is up,
@@ -754,6 +762,51 @@ class WidgetController(
         freed?.let(::freeWidgetId)
     }
 
+    // A swipe's widget (#14), for its panel: the kept view, off whichever
+    // panel showed it last.
+    fun panelWidgetView(widgetId: Int): View? =
+        hostView(widgetId)?.also { view -> (view.parent as? ViewGroup)?.removeView(view) }
+
+    // A swipe's widget picked (#14): one of the icon's app's widgets, or any
+    // for a folder or an action, bound and set up as any other.
+    fun pickShutter(item: LauncherItem, down: Boolean, onBound: (appWidgetId: Int, label: String) -> Unit) {
+        val prefs = viewModel.state.value.prefs
+        val (cellWidth, cellHeight) = host.currentCellSizePx()
+        WidgetPickerSheet.show(
+            activity, cellWidth, cellHeight, prefs.gridCols, prefs.gridRows,
+            filterPackage = item.packageName.takeIf { item.itemType == ItemType.APP }, prefs = prefs,
+            onPicked = { info ->
+                shutterBound = onBound
+                bind(info, Target.Shutter(item.id, down))
+            },
+            icons = WidgetPickerIcons.of(viewModel.appCatalog())
+        )
+    }
+
+    // A swipe's widget a restore left without a live id (#14), bound again
+    // through the add flow. False when its app has no such widget any more.
+    fun rebindShutter(
+        item: LauncherItem,
+        down: Boolean,
+        provider: String?,
+        onBound: (appWidgetId: Int, label: String) -> Unit
+    ): Boolean {
+        val info = installedProvider(provider, item.userSerial) ?: return false
+        shutterBound = onBound
+        bind(info, Target.Shutter(item.id, down))
+        return true
+    }
+
+    private fun finishShutter(target: Target.Shutter, widgetId: Int, info: AppWidgetProviderInfo) {
+        val name = info.loadLabel(activity.packageManager)?.toString().orEmpty()
+            .ifBlank { activity.getString(R.string.widget) }
+        val label = activity.getString(R.string.swipe_widget_label, name)
+        val swipe = ShutterWidgets.target(widgetId, info.provider?.flattenToString())
+        viewModel.setSwipeAction(target.itemId, swipe, label, target.down)
+        shutterBound?.invoke(widgetId, label)
+        shutterBound = null
+    }
+
     private fun fallbackWidgetView(item: LauncherItem): View {
         val info = installedProvider(item.widgetProvider, item.userSerial)
         return TextView(activity).apply {
@@ -809,12 +862,30 @@ class WidgetController(
                 }
             }
         }
+        rebindShutters(model)
         model.feedCards
             .filter { FeaturedType.fromName(it.featuredType) == FeaturedType.WIDGET && it.appWidgetId == null }
             .forEach { card ->
                 val provider = card.widgetProvider.orEmpty()
                 rebindSilently(card.id, provider) { viewModel.setCardWidget(card.id, it, provider) }
             }
+    }
+
+    // The widgets swipes show (#14), each by its item and swipe.
+    private fun rebindShutters(model: LauncherModel) {
+        val waiting = model.items.flatMap { item ->
+            listOf(false, true).mapNotNull { down ->
+                ShutterWidgets.of(if (down) item.swipeActionDown else item.swipeAction)
+                    ?.takeIf { it.appWidgetId == null }
+                    ?.let { Triple(item, down, it) }
+            }
+        }
+        waiting.forEach { (item, down, shutter) ->
+            rebindSilently("${item.id}^$down", shutter.provider, item.userSerial) { id ->
+                val label = if (down) item.swipeLabelDown else item.swipeLabel
+                viewModel.setSwipeAction(item.id, ShutterWidgets.target(id, shutter.provider), label, down)
+            }
+        }
     }
 
     private fun rebindSilently(key: String, provider: String?, userSerial: Long = 0L, onBound: (Int) -> Unit) {
@@ -1068,6 +1139,7 @@ class WidgetController(
                 )
                 viewModel.updateWidget(target.itemId) { WidgetStacks.added(it, widget) }
             }
+            is Target.Shutter -> finishShutter(target, pending.widgetId, info)
             is Target.Card -> {
                 viewModel.setCardWidget(
                     target.cardId, pending.widgetId, info.provider?.flattenToString().orEmpty()
@@ -1092,6 +1164,7 @@ class WidgetController(
     private fun abortPendingWidget() {
         pendingWidget?.widgetId?.let(appWidgetHost::deleteAppWidgetId)
         pendingWidget = null
+        shutterBound = null
     }
 
     private fun deleteWidgetIdFromResult(data: Intent?) {
