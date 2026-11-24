@@ -13,6 +13,11 @@ object TypedText {
     private const val MIN_DIGITS = 5
     private const val MAX_DIGITS = 15
 
+    // The web pattern's groups: https://, www. and the address's ending.
+    private const val SCHEME = 1
+    private const val WWW = 2
+    private const val ENDING = 4
+
     private val email = Regex("""[a-z0-9._%+-]+@[a-z0-9-]+(\.[a-z0-9-]+)*\.[a-z]{2,}""", RegexOption.IGNORE_CASE)
     private val web = Regex(
         """(https?://)?(www\.)?([a-z0-9-]+\.)+([a-z]{2,})(:\d+)?([/?#]\S*)?""", RegexOption.IGNORE_CASE
@@ -54,8 +59,8 @@ object TypedText {
 
     private fun isWeb(text: String): Boolean {
         val match = web.matchEntire(text) ?: return false
-        val prefixed = match.groupValues[1].isNotEmpty() || match.groupValues[2].isNotEmpty()
-        return prefixed || match.groupValues[4].lowercase() in endings
+        val prefixed = match.groupValues[SCHEME].isNotEmpty() || match.groupValues[WWW].isNotEmpty()
+        return prefixed || match.groupValues[ENDING].lowercase() in endings
     }
 
     private fun isPhone(text: String): Boolean =
