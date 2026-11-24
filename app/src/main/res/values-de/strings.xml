@@ -302,6 +302,11 @@
     <string name="notification_text_apps">Benachrichtigungstext auf Symbolen</string>
     <string name="notification_text_apps_summary">Ausgewählte Apps zeigen auf dem Startbildschirm ihre neueste Benachrichtigung statt ihres Namens</string>
     <string name="notification_text_needs_access">Tippe, um ihn zu gewähren, damit Benachrichtigungstext angezeigt wird</string>
+    <string name="notification_summary">Benachrichtigungsübersicht</string>
+    <string name="notification_summary_summary">Benachrichtigungen ausgewählter Apps zurückhalten und gesammelt zu festen Zeiten zustellen. Anrufe, Wecker, Medien und laufende Benachrichtigungen werden nie zurückgehalten.</string>
+    <string name="notification_summary_needs_access">Tippe, um ihn zu gewähren, damit Benachrichtigungen zurückgehalten werden können</string>
+    <string name="summary_apps">Zurückgehaltene Apps</string>
+    <string name="summary_hours">Zustellzeiten</string>
     <string name="badge_color">Badge-Farbe</string>
     <string name="badge_color_icon">Passend zum App-Symbol</string>
     <string name="badge_text_color">Zahlenfarbe</string>

@@ -302,6 +302,11 @@
     <string name="notification_text_apps">आइकॉन पर सूचना का टेक्स्ट</string>
     <string name="notification_text_apps_summary">चुने गए ऐप होम स्क्रीन पर अपने नाम की जगह अपनी सबसे नई सूचना दिखाते हैं</string>
     <string name="notification_text_needs_access">अनुमति देने के लिए टैप करें, ताकि सूचना का टेक्स्ट दिख सके</string>
+    <string name="notification_summary">सूचना सारांश</string>
+    <string name="notification_summary_summary">चुने गए ऐप की सूचनाएं रोककर तय समय पर एक साथ दिखाएं. कॉल, अलार्म, मीडिया और चालू सूचनाएं कभी नहीं रोकी जातीं.</string>
+    <string name="notification_summary_needs_access">अनुमति देने के लिए टैप करें, ताकि सूचनाएं रोकी जा सकें</string>
+    <string name="summary_apps">रोके गए ऐप</string>
+    <string name="summary_hours">दिखाने का समय</string>
     <string name="badge_color">बैज का रंग</string>
     <string name="badge_color_icon">ऐप के आइकॉन जैसा</string>
     <string name="badge_text_color">संख्या का रंग</string>

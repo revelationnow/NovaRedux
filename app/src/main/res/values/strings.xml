@@ -316,6 +316,11 @@
     <string name="notification_text_apps">Notification text on icons</string>
     <string name="notification_text_apps_summary">Chosen apps show their newest notification in place of their name on the home screen</string>
     <string name="notification_text_needs_access">Tap to grant it, so notification text can show</string>
+    <string name="notification_summary">Notification summary</string>
+    <string name="notification_summary_summary">Hold chosen apps\' notifications and deliver them together at set times. Calls, alarms, media and ongoing notifications are never held.</string>
+    <string name="notification_summary_needs_access">Tap to grant it, so notifications can be held</string>
+    <string name="summary_apps">Held apps</string>
+    <string name="summary_hours">Delivery times</string>
     <string name="badge_color">Badge color</string>
     <string name="badge_color_icon">Matches the app icon</string>
     <string name="badge_text_color">Number color</string>

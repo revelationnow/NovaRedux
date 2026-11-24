@@ -102,6 +102,9 @@ object SettingsCatalogue {
         val editBadgedApps: () -> Unit = {},
         // The apps whose label shows their newest notification (#15).
         val editNotificationTextApps: () -> Unit = {},
+        // Notification summary's apps and hours (#16).
+        val editSummaryApps: () -> Unit = {},
+        val editSummaryHours: () -> Unit = {},
         val postTestBadge: () -> Unit = {},
         val openPaletteDialog: () -> Unit = {},
         // The Custom engine's URL; select: Custom becomes the engine on Save.
@@ -1861,6 +1864,32 @@ object SettingsCatalogue {
                 rows.needsNotificationAccess(R.string.notification_text_needs_access) {
                     !it.badges && it.notificationTextApps.isNotEmpty()
                 },
+                // Notification summary (#16): chosen apps' notifications
+                // wait for a few set hours a day.
+                SettingItem.Toggle(
+                    R.string.notification_summary,
+                    get = { it.notificationSummary },
+                    set = { viewModel.set(Pref.notificationSummary, it) },
+                    subtitle = R.string.notification_summary_summary
+                ),
+                rows.needsNotificationAccess(R.string.notification_summary_needs_access) { it.notificationSummary },
+                SettingItem.Row(
+                    R.string.summary_apps,
+                    subtitle = { prefs ->
+                        val count = prefs.summaryApps.size
+                        if (count == 0) {
+                            context.getString(R.string.option_none)
+                        } else {
+                            context.resources.getQuantityString(R.plurals.custom_icon_apps, count, count)
+                        }
+                    },
+                    onClick = actions.editSummaryApps
+                ).hiddenWhen { needsOn(R.string.notification_summary, !it.notificationSummary) }.nested(),
+                SettingItem.Row(
+                    R.string.summary_hours,
+                    subtitle = { prefs -> SummaryHours.label(context, prefs.summaryHours) },
+                    onClick = actions.editSummaryHours
+                ).hiddenWhen { needsOn(R.string.notification_summary, !it.notificationSummary) }.nested(),
                 rows.color(
                     R.string.badge_color, { it.badgeColor },
                     // Unset, Dots take the app icon's color.

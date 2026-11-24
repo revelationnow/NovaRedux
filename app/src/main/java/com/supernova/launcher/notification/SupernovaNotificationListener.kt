@@ -10,6 +10,10 @@ import android.provider.Settings
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import androidx.core.app.NotificationCompat
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -57,22 +61,40 @@ data class BadgeState(
 // exposes nothing unless we host a listener ourselves.
 class SupernovaNotificationListener : NotificationListenerService() {
 
+    // Notification summary (#16): what it holds, from the settings.
+    private val summary by lazy { NotificationSummary(this) }
+    private var summaryScope: CoroutineScope? = null
+
     override fun onListenerConnected() {
         super.onListenerConnected()
         connected = true
+        summaryScope?.cancel()
+        summaryScope = CoroutineScope(SupervisorJob() + Dispatchers.Default).also(summary::watch)
         handler.removeCallbacks(refreshRunnable)
         handler.post(refreshRunnable)
     }
 
     override fun onListenerDisconnected() {
         connected = false
+        summaryScope?.cancel()
+        summaryScope = null
         handler.removeCallbacks(refreshRunnable)
         state.value = BadgeState()
         previews = emptyMap()
         super.onListenerDisconnected()
     }
 
-    override fun onNotificationPosted(sbn: StatusBarNotification?) = scheduleRefresh()
+    override fun onNotificationPosted(sbn: StatusBarNotification?) {
+        sbn?.let(::holdForSummary)
+        scheduleRefresh()
+    }
+
+    // A notification from an app the summary holds waits, snoozed, for the
+    // next delivery (#16).
+    private fun holdForSummary(sbn: StatusBarNotification) {
+        val millis = summary.holdFor(sbn) ?: return
+        runCatching { snoozeNotification(sbn.key, millis) }
+    }
 
     override fun onNotificationRemoved(sbn: StatusBarNotification?) = scheduleRefresh()
 

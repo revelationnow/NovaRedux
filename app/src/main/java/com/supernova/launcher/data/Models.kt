@@ -206,6 +206,11 @@ data class LauncherPrefs(
     // Apps whose home screen label shows their newest notification instead
     // (#15), as "userSerial/pkg/cls" keys; none by default.
     val notificationTextApps: Set<String> = emptySet(),
+    // Notification summary (#16): off, or the "userSerial/pkg" apps whose
+    // notifications wait for the delivery hours ("8,12,18").
+    val notificationSummary: Boolean = false,
+    val summaryApps: Set<String> = emptySet(),
+    val summaryHours: String = "8,12,18",
     val hiddenApps: Set<String> = emptySet(),
     // Hidden apps show only after the phone's own lock (#4): HiddenAppsLock.
     val hiddenAppsLock: Boolean = false,

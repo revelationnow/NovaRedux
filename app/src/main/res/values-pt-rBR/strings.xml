@@ -313,6 +313,11 @@
     <string name="notification_text_apps">Texto das notificações nos ícones</string>
     <string name="notification_text_apps_summary">Os apps escolhidos mostram a notificação mais recente no lugar do nome na tela inicial</string>
     <string name="notification_text_needs_access">Toque para permitir e mostrar o texto das notificações</string>
+    <string name="notification_summary">Resumo de notificações</string>
+    <string name="notification_summary_summary">Retenha as notificações dos apps escolhidos e receba todas juntas nos horários definidos. Chamadas, alarmes, mídia e notificações em andamento nunca são retidas.</string>
+    <string name="notification_summary_needs_access">Toque para permitir e reter as notificações</string>
+    <string name="summary_apps">Apps retidos</string>
+    <string name="summary_hours">Horários de entrega</string>
     <string name="badge_color">Cor do selo</string>
     <string name="badge_color_icon">Igual ao ícone do app</string>
     <string name="badge_text_color">Cor do número</string>

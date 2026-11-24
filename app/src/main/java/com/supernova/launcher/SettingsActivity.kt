@@ -548,6 +548,8 @@ class SettingsActivity : AppCompatActivity() {
             editFolderIcon = ::showFolderIconEditor,
             editBadgedApps = ::showBadgedAppsPicker,
             editNotificationTextApps = ::showNotificationTextAppsPicker,
+            editSummaryApps = ::showSummaryAppsPicker,
+            editSummaryHours = ::showSummaryHoursPicker,
             postTestBadge = ::postTestBadge,
             editThemeSchedule = ::showThemeScheduleEditor,
             showLicense = {
@@ -2194,6 +2196,43 @@ class SettingsActivity : AppCompatActivity() {
                 }
             }
         )
+    }
+
+    // The apps whose notifications wait for a delivery (#16).
+    private fun showSummaryAppsPicker() {
+        val apps = viewModel.state.value.apps
+        if (apps.isEmpty()) return
+        fun key(app: LaunchableApp) =
+            com.supernova.launcher.notification.SummaryRules.appKey(app.userSerial, app.packageName)
+        val selected = viewModel.state.value.prefs.summaryApps.toMutableSet()
+        showAppChecklist(
+            title = getString(R.string.summary_apps),
+            apps = apps,
+            checked = { key(it) in selected },
+            onSave = { changes ->
+                changes.forEach { (app, isChecked) ->
+                    if (isChecked) selected.add(key(app)) else selected.remove(key(app))
+                }
+                viewModel.set(Pref.summaryApps, selected.toSet())
+            }
+        )
+    }
+
+    // The hours held notifications are delivered at (#16), on the hour.
+    private fun showSummaryHoursPicker() {
+        val rules = com.supernova.launcher.notification.SummaryRules
+        val hours = (0 until rules.HOURS_PER_DAY).toList()
+        val chosen = rules.hours(viewModel.state.value.prefs.summaryHours).toMutableSet()
+        val labels = hours.map { com.supernova.launcher.ui.settings.SummaryHours.time(this, it) }
+            .toTypedArray<CharSequence>()
+        MaterialAlertDialogBuilder(this)
+            .setTitle(R.string.summary_hours)
+            .setMultiChoiceItems(labels, hours.map { it in chosen }.toBooleanArray()) { _, which, isChecked ->
+                if (isChecked) chosen += hours[which] else chosen -= hours[which]
+            }
+            .setPositiveButton(R.string.save) { _, _ -> viewModel.set(Pref.summaryHours, rules.encode(chosen)) }
+            .setNegativeButton(R.string.cancel, null)
+            .show()
     }
 
     // Multi-select over the whole chip set; the stored order follows the enum,

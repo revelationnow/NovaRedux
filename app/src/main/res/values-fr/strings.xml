@@ -313,6 +313,11 @@
     <string name="notification_text_apps">Texte des notifications sur les icônes</string>
     <string name="notification_text_apps_summary">Les applis choisies affichent leur dernière notification à la place de leur nom sur l\'écran d\'accueil</string>
     <string name="notification_text_needs_access">Appuyez pour l\'accorder, afin que le texte des notifications s\'affiche</string>
+    <string name="notification_summary">Résumé des notifications</string>
+    <string name="notification_summary_summary">Retenir les notifications des applis choisies et les remettre ensemble aux heures fixées. Les appels, alarmes, médias et notifications en cours ne sont jamais retenus.</string>
+    <string name="notification_summary_needs_access">Appuyez pour l\'accorder, afin que les notifications puissent être retenues</string>
+    <string name="summary_apps">Applis retenues</string>
+    <string name="summary_hours">Heures de remise</string>
     <string name="badge_color">Couleur de la pastille</string>
     <string name="badge_color_icon">Assortie à l\'icône de l\'appli</string>
     <string name="badge_text_color">Couleur du nombre</string>

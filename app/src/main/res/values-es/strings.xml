@@ -313,6 +313,11 @@
     <string name="notification_text_apps">Texto de notificaciones en los iconos</string>
     <string name="notification_text_apps_summary">Las aplicaciones que elijas muestran su notificación más reciente en lugar de su nombre en la pantalla de inicio</string>
     <string name="notification_text_needs_access">Toca para concederlo y que se vea el texto de las notificaciones</string>
+    <string name="notification_summary">Resumen de notificaciones</string>
+    <string name="notification_summary_summary">Retiene las notificaciones de las aplicaciones que elijas y las entrega juntas a las horas que fijes. Las llamadas, alarmas, contenido multimedia y notificaciones en curso nunca se retienen.</string>
+    <string name="notification_summary_needs_access">Toca para concederlo y que se puedan retener las notificaciones</string>
+    <string name="summary_apps">Aplicaciones retenidas</string>
+    <string name="summary_hours">Horas de entrega</string>
     <string name="badge_color">Color de la insignia</string>
     <string name="badge_color_icon">Igual que el icono de la aplicación</string>
     <string name="badge_text_color">Color del número</string>

@@ -324,6 +324,11 @@
     <string name="notification_text_apps">Текст уведомлений на значках</string>
     <string name="notification_text_apps_summary">Выбранные приложения показывают на главном экране последнее уведомление вместо своего названия</string>
     <string name="notification_text_needs_access">Нажмите, чтобы предоставить доступ и показывать текст уведомлений</string>
+    <string name="notification_summary">Сводка уведомлений</string>
+    <string name="notification_summary_summary">Задерживать уведомления выбранных приложений и доставлять их вместе в заданное время. Звонки, будильники, медиа и текущие уведомления никогда не задерживаются.</string>
+    <string name="notification_summary_needs_access">Нажмите, чтобы предоставить доступ и задерживать уведомления</string>
+    <string name="summary_apps">Задерживаемые приложения</string>
+    <string name="summary_hours">Время доставки</string>
     <string name="badge_color">Цвет значка</string>
     <string name="badge_color_icon">Как у иконки приложения</string>
     <string name="badge_text_color">Цвет числа</string>
