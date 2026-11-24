@@ -24,6 +24,7 @@ import com.supernova.launcher.search.ContactSearchProvider
 import com.supernova.launcher.search.MathSearchProvider
 import com.supernova.launcher.search.SearchOrchestrator
 import com.supernova.launcher.search.SearchResult
+import com.supernova.launcher.search.TypedText
 import com.supernova.launcher.search.ShortcutSearchProvider
 import com.supernova.launcher.search.WebProvider
 import com.supernova.launcher.search.SearchChip
@@ -598,6 +599,14 @@ class SearchController(
         }
     }
 
+    // A row's intent started for it: a contact's number, a calendar event (#7),
+    // a typed number or address (#9). Search closes once the app is up.
+    private fun handOn(surface: Surface, intent: Intent) {
+        if (runLogged("open a search result") { binding.root.context.startActivity(intent) }.isSuccess) {
+            surface.dismiss()
+        }
+    }
+
     private fun adapterCallbacks(surface: Surface) = SearchResultsAdapter.Callbacks(
         onApp = { view, app ->
             onLaunchApp(view, app)
@@ -611,48 +620,15 @@ class SearchController(
             openContact(contact)
             surface.dismiss()
         },
-        onContactCall = { number ->
-            runLogged("dial contact") {
-                binding.root.context.startActivity(
-                    Intent(Intent.ACTION_DIAL, android.net.Uri.parse("tel:$number"))
-                )
-            }
-            surface.dismiss()
-        },
-        onContactMessage = { number ->
-            runLogged("message contact") {
-                binding.root.context.startActivity(
-                    Intent(Intent.ACTION_SENDTO, android.net.Uri.parse("smsto:$number"))
-                )
-            }
-            surface.dismiss()
-        },
-        // What was typed, handed to the app that acts on it (#9).
+        onContactCall = { number -> handOn(surface, SearchIntents.typed(TypedText.Act.CALL, number)) },
+        onContactMessage = { number -> handOn(surface, SearchIntents.typed(TypedText.Act.MESSAGE, number)) },
+        onEvent = { event -> handOn(surface, SearchIntents.event(event)) },
         onTyped = { act, text ->
-            val opened = if (act == com.supernova.launcher.search.TypedText.Act.OPEN) {
-                onOpenUri(com.supernova.launcher.search.TypedText.webUrl(text), null)
+            if (act == TypedText.Act.OPEN) {
+                if (onOpenUri(TypedText.webUrl(text), null)) surface.dismiss()
             } else {
-                runLogged("act on typed text") {
-                    binding.root.context.startActivity(TypedIntents.of(act, text))
-                }.isSuccess
+                handOn(surface, SearchIntents.typed(act, text))
             }
-            if (opened) surface.dismiss()
-        },
-        // At the occurrence search found, in the calendar app (#7).
-        onEvent = { event ->
-            runLogged("open calendar event") {
-                binding.root.context.startActivity(
-                    Intent(
-                        Intent.ACTION_VIEW,
-                        android.content.ContentUris.withAppendedId(
-                            android.provider.CalendarContract.Events.CONTENT_URI, event.eventId
-                        )
-                    )
-                        .putExtra(android.provider.CalendarContract.EXTRA_EVENT_BEGIN_TIME, event.begin)
-                        .putExtra(android.provider.CalendarContract.EXTRA_EVENT_END_TIME, event.end)
-                )
-            }
-            surface.dismiss()
         },
         onChip = { chip, query ->
             if (onOpenUri(chip.url(query), chip.fallbackUrl(query))) surface.dismiss()
