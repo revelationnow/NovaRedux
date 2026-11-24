@@ -138,8 +138,9 @@ internal object OnboardingChoices {
         }
 
         companion object {
-            fun of(prefs: LauncherPrefs): Names =
-                if (!prefs.showLabels) HIDDEN else entries.first { it.font == prefs.labelFont }
+            // Null for a font file (#6), which no tile stands for.
+            fun of(prefs: LauncherPrefs): Names? =
+                if (!prefs.showLabels) HIDDEN else entries.firstOrNull { it.font == prefs.labelFont }
         }
     }
 

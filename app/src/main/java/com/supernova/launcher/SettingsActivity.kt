@@ -111,6 +111,15 @@ class SettingsActivity : AppCompatActivity() {
             photoPickCallback?.invoke(uri)
             photoPickCallback = null
         }
+    // Label font > Font file (#6): the picked file is checked and copied in
+    // off the main thread, then the choice that asked for it is made.
+    private var afterFontFile: (() -> Unit)? = null
+    private val pickFontFileLauncher =
+        registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
+            val then = afterFontFile
+            afterFontFile = null
+            if (uri != null) importFontFile(uri, then)
+        }
     private lateinit var adapter: SettingsAdapter
 
     // The settings row last tapped, and so what a choice menu opens under.
@@ -571,6 +580,12 @@ class SettingsActivity : AppCompatActivity() {
             pickLockMethod = ::showLockMethodPicker,
             editHiddenApps = ::showHiddenAppsPicker,
             setHiddenAppsLock = ::setHiddenAppsLock,
+            pickLabelFontFile = { then ->
+                afterFontFile = then
+                runLogged("pick a font file") {
+                    pickFontFileLauncher.launch(com.supernova.launcher.ui.FontFiles.pickerTypes)
+                }
+            },
             exportBackup = backup::pickExportFile,
             importBackup = backup::pickImportFile,
             shareBackup = ::shareBackup,
@@ -2205,6 +2220,21 @@ class SettingsActivity : AppCompatActivity() {
             checked = { viewModel.isAppHidden(it) },
             onSave = { changes -> changes.forEach { (app, hidden) -> viewModel.setAppHidden(app, hidden) } }
         )
+    }
+
+    private fun importFontFile(uri: android.net.Uri, then: (() -> Unit)?) {
+        lifecycleScope.launch {
+            val name = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
+                com.supernova.launcher.ui.FontFiles.importLabelFont(this@SettingsActivity, uri)
+            }
+            if (name == null) {
+                Toast.makeText(this@SettingsActivity, R.string.font_file_unusable, Toast.LENGTH_LONG).show()
+            } else {
+                val stamp = com.supernova.launcher.ui.FontFiles.stamp(name, System.currentTimeMillis())
+                viewModel.set(Pref.labelFontFile, stamp)
+                then?.invoke()
+            }
+        }
     }
 
     // Lock hidden apps (#4). On needs a screen lock to ask for; off asks for

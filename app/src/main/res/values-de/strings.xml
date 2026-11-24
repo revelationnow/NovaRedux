@@ -737,6 +737,8 @@
     <string name="font_condensed">Schmal</string>
     <string name="font_serif">Serif</string>
     <string name="font_monospace">Monospace</string>
+    <string name="font_file">Schriftdatei…</string>
+    <string name="font_file_unusable">Diese Datei ist keine Schrift, die NovaRedux verwenden kann.</string>
     <string name="dock_infinite_scroll">Endloses Scrollen</string>
     <string name="dock_match_desktop">Symbolgröße wie auf dem Desktop</string>
     <string name="dock_overlay">Als Overlay anzeigen</string>

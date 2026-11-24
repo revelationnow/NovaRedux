@@ -457,6 +457,9 @@ data class LauncherPrefs(
     // New installs go on the home screen. On by default.
     val autoAddApps: Boolean = true,
     val labelFont: LabelFont = LabelFont.DEFAULT,
+    // The picked font file's name and when it came in, for LabelFont.FILE
+    // (#6): FontFiles. Empty until one is picked.
+    val labelFontFile: String = "",
     // One line everywhere by default: a wrapped name reads as a
     // broken word ("OpenWeathe" over "r"). Per-surface overrides in
     // labelConfig can still allow two lines.

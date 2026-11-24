@@ -90,6 +90,8 @@ object SettingsCatalogue {
         val pickLockMethod: () -> Unit = {},
         val editHiddenApps: () -> Unit = {},
         val setHiddenAppsLock: (Boolean) -> Unit = {},
+        // Label font > Font file (#6): pick one, then make the choice.
+        val pickLabelFontFile: (then: () -> Unit) -> Unit = {},
         val editSearchChips: () -> Unit = {},
         val pickDrawerGrid: () -> Unit = {},
         // The drawer's landscape grid, in the same dialog.
@@ -264,10 +266,14 @@ object SettingsCatalogue {
             }
         )
 
+        // Font file (#6) opens the phone's file picker first: the choice is
+        // made only once the picked file proves to be a font.
         fun fontPick(current: LabelFont, onPick: (LabelFont) -> Unit) = pick(
             R.string.label_font, LabelFont.entries, LabelFont.entries.indexOf(current),
-            { context.getString(EnumLabels.of(it)) }, onPick
-        )
+            { context.getString(EnumLabels.of(it)) }
+        ) { font ->
+            if (font == LabelFont.FILE) actions.pickLabelFontFile { onPick(font) } else onPick(font)
+        }
     }
 
     // The accent: its dot on the row, and every option's dot in the menu.
@@ -457,7 +463,7 @@ object SettingsCatalogue {
                     size = { it.labelSize },
                     setSize = { viewModel.set(Pref.labelSize, it) },
                     sizeDisplay = { context.getString(R.string.label_size_value, it) },
-                    font = { context.getString(EnumLabels.of(it.labelFont)) },
+                    font = { fontLabel(context, it.labelFont, it) },
                     pickFont = {
                         rows.fontPick(viewModel.state.value.prefs.labelFont) {
                             viewModel.set(Pref.labelFont, it)
@@ -2305,7 +2311,7 @@ object SettingsCatalogue {
             SettingItem.Row(
                 R.string.label_font,
                 subtitle = {
-                    context.getString(EnumLabels.of(override(it).font?.let(LabelFont::fromName) ?: it.labelFont))
+                    fontLabel(context, override(it).font?.let(LabelFont::fromName) ?: it.labelFont, it)
                 },
                 onClick = {
                     val prefs = viewModel.state.value.prefs

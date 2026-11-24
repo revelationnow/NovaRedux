@@ -753,6 +753,8 @@
     <string name="font_condensed">Condensada</string>
     <string name="font_serif">Serifada</string>
     <string name="font_monospace">Monoespaçada</string>
+    <string name="font_file">Arquivo de fonte…</string>
+    <string name="font_file_unusable">Esse arquivo não é uma fonte que o NovaRedux possa usar.</string>
     <string name="dock_infinite_scroll">Rolagem infinita</string>
     <string name="dock_match_desktop">Mesmo tamanho de ícone da área de trabalho</string>
     <string name="dock_overlay">Exibir como sobreposição</string>

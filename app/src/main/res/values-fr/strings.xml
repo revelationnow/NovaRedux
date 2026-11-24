@@ -753,6 +753,8 @@
     <string name="font_condensed">Condensée</string>
     <string name="font_serif">Serif</string>
     <string name="font_monospace">Chasse fixe</string>
+    <string name="font_file">Fichier de police…</string>
+    <string name="font_file_unusable">Ce fichier n\'est pas une police utilisable par NovaRedux.</string>
     <string name="dock_infinite_scroll">Défilement infini</string>
     <string name="dock_match_desktop">Même taille d\'icône que le bureau</string>
     <string name="dock_overlay">Afficher en superposition</string>

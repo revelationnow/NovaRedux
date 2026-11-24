@@ -301,6 +301,7 @@ object Pref {
     val wallpaperZoom = bool("wallpaper_zoom")
     val autoAddApps = bool("auto_add_apps")
     val labelFont = choice("label_font", LabelFont.entries)
+    val labelFontFile = text("label_font_file")
     val labelSingleLine = bool("label_single_line")
     val dockInfiniteScroll = bool("dock_infinite_scroll")
     val dockMatchDesktop = bool("dock_match_desktop")

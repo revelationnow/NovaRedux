@@ -1,5 +1,6 @@
 package com.supernova.launcher.ui
 
+import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
 import android.util.TypedValue
@@ -16,7 +17,10 @@ enum class LabelFont {
     DEFAULT,
     CONDENSED,
     SERIF,
-    MONOSPACE;
+    MONOSPACE,
+
+    // A font file the user picked (#6): FontFiles.
+    FILE;
 
     // Its name in the store and in a backup, read back leniently.
     object Names : SettingEnumSerializer<LabelFont>("LabelFont", entries, DEFAULT)
@@ -33,14 +37,19 @@ object LabelStyler {
     // Typeface.create walks font families; resolve each font exactly once.
     private val typefaces = EnumMap<LabelFont, Typeface>(LabelFont::class.java)
 
-    private fun typefaceFor(font: LabelFont): Typeface = typefaces.getOrPut(font) {
-        when (font) {
-            LabelFont.DEFAULT -> Typeface.SANS_SERIF
-            LabelFont.CONDENSED -> Typeface.create("sans-serif-condensed", Typeface.NORMAL)
-            LabelFont.SERIF -> Typeface.SERIF
-            LabelFont.MONOSPACE -> Typeface.MONOSPACE
+    private fun typefaceFor(font: LabelFont, context: Context, fontFile: String): Typeface =
+        if (font == LabelFont.FILE) {
+            FontFiles.labelTypeface(context, fontFile) ?: Typeface.SANS_SERIF
+        } else {
+            typefaces.getOrPut(font) {
+                when (font) {
+                    LabelFont.DEFAULT, LabelFont.FILE -> Typeface.SANS_SERIF
+                    LabelFont.CONDENSED -> Typeface.create("sans-serif-condensed", Typeface.NORMAL)
+                    LabelFont.SERIF -> Typeface.SERIF
+                    LabelFont.MONOSPACE -> Typeface.MONOSPACE
+                }
+            }
         }
-    }
 
     // Labels drawn over the wallpaper stay light in both themes; labels on an
     // app surface read like the rest of that surface's text, its style's
@@ -72,7 +81,9 @@ object LabelStyler {
         val size = (override.size ?: prefs.labelSize).coerceIn(9, 18)
         view.setTextSize(TypedValue.COMPLEX_UNIT_SP, size.toFloat())
         view.setTextColor(parseColor(prefs.labelColor, fallback))
-        view.typeface = typefaceFor(override.font?.let(LabelFont::fromName) ?: prefs.labelFont)
+        view.typeface = typefaceFor(
+            override.font?.let(LabelFont::fromName) ?: prefs.labelFont, view.context, prefs.labelFontFile
+        )
         // Each surface declares its own maxLines in XML; remember that value
         // on the view so single-line can be undone on a recycled bind.
         val surfaceMax = view.getTag(R.id.tag_default_max_lines) as? Int

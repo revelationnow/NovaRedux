@@ -737,6 +737,8 @@
     <string name="font_condensed">सघन</string>
     <string name="font_serif">सेरिफ़</string>
     <string name="font_monospace">मोनोस्पेस</string>
+    <string name="font_file">फ़ॉन्ट फ़ाइल…</string>
+    <string name="font_file_unusable">यह फ़ाइल ऐसा फ़ॉन्ट नहीं है जिसे NovaRedux इस्तेमाल कर सके.</string>
     <string name="dock_infinite_scroll">अनंत स्क्रोल</string>
     <string name="dock_match_desktop">डेस्कटॉप जैसा आइकॉन साइज़</string>
     <string name="dock_overlay">ओवरले के तौर पर दिखाएं</string>

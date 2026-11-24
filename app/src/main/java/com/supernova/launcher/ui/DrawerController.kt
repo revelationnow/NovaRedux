@@ -1937,7 +1937,7 @@ class DrawerController(
     // decorateIcon reads, so a change to any of them rebinds the recents row.
     private fun styleKey(prefs: LauncherPrefs): String =
         listOf(
-            prefs.labelSize, prefs.labelColor, prefs.labelShadow, prefs.labelFont,
+            prefs.labelSize, prefs.labelColor, prefs.labelShadow, prefs.labelFont, prefs.labelFontFile,
             prefs.labelSingleLine, prefs.labelConfig, prefs.drawerLabels,
             prefs.badges, prefs.badgeStyle, prefs.badgeCounts, prefs.badgeApps,
             prefs.badgeColor, prefs.badgePosition, prefs.badgeScale, prefs.badgeTextColor,

@@ -769,6 +769,8 @@
     <string name="font_condensed">Узкий</string>
     <string name="font_serif">С засечками</string>
     <string name="font_monospace">Моноширинный</string>
+    <string name="font_file">Файл шрифта…</string>
+    <string name="font_file_unusable">Этот файл не является шрифтом, который может использовать NovaRedux.</string>
     <string name="dock_infinite_scroll">Бесконечная прокрутка</string>
     <string name="dock_match_desktop">Размер иконок как на рабочем столе</string>
     <string name="dock_overlay">Показывать поверх</string>

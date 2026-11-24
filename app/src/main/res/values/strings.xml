@@ -778,6 +778,8 @@
     <string name="font_condensed">Condensed</string>
     <string name="font_serif">Serif</string>
     <string name="font_monospace">Monospace</string>
+    <string name="font_file">Font file…</string>
+    <string name="font_file_unusable">That file isn\'t a font NovaRedux can use.</string>
     <string name="dock_infinite_scroll">Infinite scroll</string>
     <string name="dock_match_desktop">Match desktop icon size</string>
     <string name="dock_overlay">Display as overlay</string>

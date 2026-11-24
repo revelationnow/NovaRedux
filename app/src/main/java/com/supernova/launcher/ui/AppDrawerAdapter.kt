@@ -230,6 +230,7 @@ class AppDrawerAdapter(
                 labelPrefs?.labelColor != prefs.labelColor ||
                 labelPrefs?.labelShadow != prefs.labelShadow ||
                 labelPrefs?.labelFont != prefs.labelFont ||
+                labelPrefs?.labelFontFile != prefs.labelFontFile ||
                 labelPrefs?.labelSingleLine != prefs.labelSingleLine ||
                 labelPrefs?.labelConfig != prefs.labelConfig ||
                 // Unset, the label color is the drawer surface's text color.

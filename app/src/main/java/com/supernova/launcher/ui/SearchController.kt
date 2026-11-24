@@ -487,7 +487,7 @@ class SearchController(
         surface.adapter.tileLook = drawerTiles?.invoke()
         val key = listOf(
             prefs.styleConfig, prefs.paletteSource, prefs.paletteSeed, prefs.accentColor,
-            prefs.labelSize, prefs.labelColor, prefs.labelFont, prefs.labelConfig, columns
+            prefs.labelSize, prefs.labelColor, prefs.labelFont, prefs.labelFontFile, prefs.labelConfig, columns
         )
         if (key == surface.appliedStyle) return
         surface.appliedStyle = key
@@ -719,7 +719,8 @@ class SearchController(
         val key = listOf(
             prefs.searchBarConfig,
             prefs.styleConfig, prefs.paletteSource, prefs.paletteSeed, prefs.accentColor,
-            prefs.labelSize, prefs.labelColor, prefs.labelFont, prefs.searchWindowMode, prefs.searchWindowHint
+            prefs.labelSize, prefs.labelColor, prefs.labelFont, prefs.labelFontFile,
+            prefs.searchWindowMode, prefs.searchWindowHint
         )
         if (key == appliedStyle) return
         appliedStyle = key
