@@ -3094,11 +3094,7 @@ class LauncherActivity :
         val fresh = when (item.itemType) {
             ItemType.FOLDER -> itemIcons.folderPreviewDrawable(item, onLate, pendingAsNull = shown != null)
             ItemType.WIDGET -> getDrawable(R.drawable.ic_widget)
-            ItemType.APP -> when {
-                app == null -> getDrawable(R.drawable.ic_supernova)
-                item.pairWith != null -> pairIcon(item, app, onLate)
-                else -> appItemIcon(item, app, onLate)
-            }
+            ItemType.APP -> appIcon(item, app, onLate)
             ItemType.SHORTCUT -> when (val look = itemIcons.shortcutLook(item, onLate)) {
                 null -> null
                 else -> look.icon ?: app?.let { appItemIcon(item, it, onLate) } ?: getDrawable(R.drawable.ic_supernova)
@@ -3110,13 +3106,14 @@ class LauncherActivity :
         return badgedItemIcon(item, fresh?.also { lastItemIcons[item.id] = it } ?: shown)
     }
 
-    // An app pair's two icons as one (#12); the first alone until the
-    // second's is drawn.
-    private fun pairIcon(
+    // An app's icon. An app pair's is both apps' icons as one (#12), the
+    // first alone until the second's is drawn.
+    private fun appIcon(
         item: LauncherItem,
-        app: LaunchableApp,
+        app: LaunchableApp?,
         onLate: () -> Unit
     ): android.graphics.drawable.Drawable? {
+        if (app == null) return getDrawable(R.drawable.ic_supernova)
         val first = appItemIcon(item, app, onLate)
         val second = com.supernova.launcher.data.AppPairs.second(item)?.let { viewModel.appCatalog().iconFor(it) }
         return if (first != null && second != null) com.supernova.launcher.ui.AppPairIcon(first, second) else first

@@ -4,7 +4,6 @@ import android.appwidget.AppWidgetHostView
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProviderInfo
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +12,7 @@ import android.widget.PopupWindow
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.Insets
+import androidx.core.graphics.drawable.toDrawable
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.doOnLayout
@@ -83,7 +83,7 @@ class WidgetPanel(
             card.translationY = (y - at[1]).toFloat()
         }
         val popup = PopupWindow(scrim, MATCH, MATCH, true)
-        popup.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        popup.setBackgroundDrawable(Color.TRANSPARENT.toDrawable())
         popup.animationStyle = if (Animations.enabled(prefs)) R.style.FolderPopupAnimation else 0
         // The widget's view is kept for next time, off this panel.
         popup.setOnDismissListener { card.removeAllViews() }
