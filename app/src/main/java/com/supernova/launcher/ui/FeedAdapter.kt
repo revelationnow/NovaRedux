@@ -322,7 +322,7 @@ class FeedAdapter(
             val context = binding.root.context
             binding.screenTimeTotal.setTextColor(textColor)
             binding.screenTimeTotal.text =
-                context.getString(R.string.feed_screen_time_total, ScreenTimeText.duration(today.totalMs))
+                context.getString(R.string.feed_screen_time_total, ScreenTimeText.duration(context, today.totalMs))
             binding.screenTimeUnlocks.setTextColor(textColor)
             binding.screenTimeUnlocks.text =
                 context.resources.getQuantityString(R.plurals.feed_screen_time_unlocks, today.unlocks, today.unlocks)
@@ -350,7 +350,7 @@ class FeedAdapter(
                 )
                 addView(
                     TextView(context).apply {
-                        text = ScreenTimeText.duration(app.timeMs)
+                        text = ScreenTimeText.duration(context, app.timeMs)
                         setTextColor(textColor)
                     }
                 )

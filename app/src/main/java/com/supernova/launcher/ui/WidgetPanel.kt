@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.FrameLayout
 import android.widget.PopupWindow
 import android.widget.Toast
@@ -20,15 +21,14 @@ import com.supernova.launcher.R
 import com.supernova.launcher.data.LauncherItem
 import com.supernova.launcher.data.LauncherPrefs
 import com.supernova.launcher.data.ShutterWidgets
-import com.supernova.launcher.ui.theme.Styles
-import com.supernova.launcher.ui.theme.SurfaceId
-import com.supernova.launcher.ui.theme.SurfaceShapes
 import com.supernova.launcher.widget.WidgetSizing
 
 // A swipe's widget (#14) in a panel by its icon over the home screen, as
-// Action Launcher's Shutters: the widget at its default size, on the folder
-// window's colour and corners. A tap outside it, Back, Home or the launcher
-// going out of view closes it.
+// Action Launcher's Shutters: the widget at its default size over the home
+// screen dimmed behind it. The widget brings its own background, or none:
+// one drawn for the wallpaper, white text on nothing (the glance), is read
+// against the dimmed wallpaper, where a card behind it lost it. A tap
+// outside it, Back, Home or the launcher going out of view closes it.
 class WidgetPanel(
     private val activity: AppCompatActivity,
     private val viewModel: LauncherViewModel,
@@ -66,11 +66,14 @@ class WidgetPanel(
         val info = manager.getAppWidgetInfo(widgetId) ?: return
         val prefs = viewModel.state.value.prefs
         val (width, height) = panelSize(info, prefs)
-        val inner = 2 * activity.dp(PADDING_DP)
         (widget as? AppWidgetHostView)?.let { hostView ->
-            WidgetSizing.reportSize(hostView, width - inner, height - inner, activity.resources.displayMetrics.density)
+            WidgetSizing.reportSize(hostView, width, height, activity.resources.displayMetrics.density)
         }
-        val card = card(widget, prefs)
+        val card = FrameLayout(activity).apply {
+            // A tap on the widget that it doesn't take isn't one outside it.
+            isClickable = true
+            addView(widget, FrameLayout.LayoutParams(MATCH, MATCH))
+        }
         val scrim = FrameLayout(activity).apply {
             setOnClickListener { dismiss() }
             addView(card, FrameLayout.LayoutParams(width, height))
@@ -88,38 +91,28 @@ class WidgetPanel(
         // The widget's view is kept for next time, off this panel.
         popup.setOnDismissListener { card.removeAllViews() }
         popup.showAtLocation(activity.window.decorView, Gravity.NO_GRAVITY, 0, 0)
+        dimBehind(popup)
         window = popup
     }
 
-    // The widget's default cells, and the panel's padding around them, kept
-    // to the screen.
+    // The system's dim behind the panel's window, which takes in the bars
+    // too, where a dark background on the panel would stop at its frame.
+    private fun dimBehind(popup: PopupWindow) {
+        val root = popup.contentView?.rootView ?: return
+        val params = root.layoutParams as? WindowManager.LayoutParams ?: return
+        params.flags = params.flags or WindowManager.LayoutParams.FLAG_DIM_BEHIND
+        params.dimAmount = DIM_AMOUNT
+        activity.windowManager.updateViewLayout(root, params)
+    }
+
+    // The widget's default cells, kept to the screen.
     private fun panelSize(info: AppWidgetProviderInfo, prefs: LauncherPrefs): Pair<Int, Int> {
         val (cellWidth, cellHeight) = cellSize()
         val spans = WidgetSizing.defaultSpans(activity, info, cellWidth, cellHeight, prefs.gridCols, prefs.gridRows)
         val root = activity.window.decorView
-        val inner = 2 * activity.dp(PADDING_DP)
-        val width = (spans.first * cellWidth + inner).coerceAtMost(root.width - 2 * activity.dp(MARGIN_DP))
-        val height = (spans.second * cellHeight + inner).coerceAtMost((root.height * MAX_HEIGHT_SHARE).toInt())
+        val width = (spans.first * cellWidth).coerceAtMost(root.width - 2 * activity.dp(MARGIN_DP))
+        val height = (spans.second * cellHeight).coerceAtMost((root.height * MAX_HEIGHT_SHARE).toInt())
         return Pair(width, height)
-    }
-
-    private fun card(widget: View, prefs: LauncherPrefs): FrameLayout {
-        val surface = Styles.resolve(activity, prefs).of(SurfaceId.FOLDER)
-        val density = activity.resources.displayMetrics.density
-        val padding = activity.dp(PADDING_DP)
-        return FrameLayout(activity).apply {
-            background = SurfaceShapes.background(
-                surface.surface,
-                surface.cornerRadiiDp?.let { radii -> FloatArray(radii.size) { radii[it] * density } },
-                activity.dp(CORNER_DP).toFloat()
-            )
-            clipToOutline = true
-            elevation = if (prefs.folderShadow) activity.dp(ELEVATION_DP).toFloat() else 0f
-            setPadding(padding, padding, padding, padding)
-            // A tap on its edge isn't one outside it.
-            isClickable = true
-            addView(widget, FrameLayout.LayoutParams(MATCH, MATCH))
-        }
     }
 
     // The icon on the screen; none once it has gone (an open folder's icon,
@@ -144,11 +137,9 @@ class WidgetPanel(
     }
 
     private companion object {
-        const val PADDING_DP = 8
         const val GAP_DP = 8
         const val MARGIN_DP = 16
-        const val CORNER_DP = 24
-        const val ELEVATION_DP = 8
+        const val DIM_AMOUNT = 0.45f
         const val MAX_HEIGHT_SHARE = 0.6f
         const val MATCH = ViewGroup.LayoutParams.MATCH_PARENT
     }

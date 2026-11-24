@@ -45,11 +45,21 @@ class ActionShortcutTest {
 
     @Test
     fun privateSpaceIsOfferedOnlyWithAPrivateSpace() {
-        val withSpace = ActionShortcut.offered(ActionShortcut.choices, hasPrivateSpace = true)
-        val without = ActionShortcut.offered(ActionShortcut.choices, hasPrivateSpace = false)
+        val withSpace = ActionShortcut.offered(ActionShortcut.choices, hasPrivateSpace = true, splitScreen = true)
+        val without = ActionShortcut.offered(ActionShortcut.choices, hasPrivateSpace = false, splitScreen = true)
         assertEquals(ActionShortcut.choices, withSpace)
         assertEquals(ActionShortcut.choices - GestureAction.PRIVATE_SPACE, without)
         assert(GestureAction.PRIVATE_SPACE in GestureDefaults.pickerActions)
+    }
+
+    @Test
+    fun splitScreenIsLeftOutWhereTheSystemNoLongerDoesIt() {
+        val offered = ActionShortcut.offered(ActionShortcut.choices, hasPrivateSpace = true, splitScreen = false)
+        assertEquals(ActionShortcut.choices - GestureAction.SPLIT_SCREEN, offered)
+        assertEquals(
+            GestureDefaults.pickerActions - GestureAction.SPLIT_SCREEN,
+            ActionShortcut.offered(GestureDefaults.pickerActions, hasPrivateSpace = true, splitScreen = false)
+        )
     }
 
     @Test

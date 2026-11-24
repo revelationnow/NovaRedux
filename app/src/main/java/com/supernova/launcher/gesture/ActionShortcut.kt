@@ -1,5 +1,7 @@
 package com.supernova.launcher.gesture
 
+import android.os.Build
+
 // A launcher action placed on the home screen as a tappable icon (a
 // launcher-action shortcut). Encoded into LauncherItem.intentUri so launchItem can route
 // it back through runAction - which respects live state like the feed toggle
@@ -54,7 +56,13 @@ object ActionShortcut {
     )
 
     // What a picker lists on this phone: the private space action only
-    // where there is a private space to open.
-    fun offered(actions: List<GestureAction>, hasPrivateSpace: Boolean): List<GestureAction> =
-        if (hasPrivateSpace) actions else actions - GestureAction.PRIVATE_SPACE
+    // where there is a private space to open, and Split screen only below
+    // Android 12L, which stopped doing it for accessibility services (#5).
+    fun offered(
+        actions: List<GestureAction>,
+        hasPrivateSpace: Boolean,
+        splitScreen: Boolean = Build.VERSION.SDK_INT < Build.VERSION_CODES.S_V2
+    ): List<GestureAction> = actions.filter {
+        (hasPrivateSpace || it != GestureAction.PRIVATE_SPACE) && (splitScreen || it != GestureAction.SPLIT_SCREEN)
+    }
 }

@@ -1084,6 +1084,8 @@
     <string name="feed_screen_time_title">Screen time</string>
     <string name="feed_screen_time_access">Allow usage access to see today\'s screen time. It\'s read on this phone only.</string>
     <string name="feed_screen_time_total">%1$s today</string>
+    <!-- A time under a minute: "< 1 min". -->
+    <string name="feed_screen_time_under" translatable="false">&lt; %1$s</string>
     <plurals name="feed_screen_time_unlocks">
         <item quantity="one">Unlocked %d time</item>
         <item quantity="other">Unlocked %d times</item>

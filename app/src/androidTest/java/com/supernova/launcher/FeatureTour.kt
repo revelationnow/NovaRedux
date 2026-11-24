@@ -11,9 +11,13 @@ import android.appwidget.AppWidgetProviderInfo
 import android.content.ComponentName
 import android.content.ContentUris
 import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
 import android.content.pm.LauncherApps
+import android.hardware.camera2.CameraCharacteristics
+import android.hardware.camera2.CameraManager
 import android.net.Uri
+import android.os.Build
 import android.os.Process
 import android.os.SystemClock
 import android.os.UserManager
@@ -28,6 +32,7 @@ import androidx.datastore.preferences.core.MutablePreferences
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.floatPreferencesKey
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
@@ -58,6 +63,7 @@ import java.io.File
 import java.time.LocalTime
 import java.util.Locale
 import java.util.TimeZone
+import java.util.concurrent.ConcurrentHashMap
 import java.util.regex.Pattern
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -265,11 +271,13 @@ class FeatureTour {
         return "a swipe up on ${app.label} opened the glance widget by it, and Back closed it"
     }
 
-    // #11: the drawer over the blurred wallpaper.
+    // #11: the drawer over the blurred wallpaper. The drawer's background is
+    // let through a little, as the blur shows only through what isn't solid.
     private fun blur(): String {
         setPrefs {
             it[booleanPreferencesKey(Pref.blurWallpaper.key.name)] = true
             it[intPreferencesKey(Pref.blurStrength.key.name)] = FULL_BLUR
+            it[floatPreferencesKey(Pref.drawerBgOpacity.key.name)] = SEE_THROUGH
         }
         val blurs = context.getSystemService(WindowManager::class.java).isCrossWindowBlurEnabled
         showHome()
@@ -301,17 +309,36 @@ class FeatureTour {
         check(taken) { "a double tap took no screenshot" }
         bindDoubleTap("TORCH")
         showHome()
-        doubleTapMiddle()
-        val torchless = By.text(context.getString(R.string.torch_unavailable))
-        val noTorch = device.wait(Until.hasObject(torchless), SHORT_WAIT_MS)
-        shot("torch")
-        return "a double tap opened the power menu and took a screenshot; the torch " +
-            if (noTorch) "said this emulator has none" else "gave no error"
+        return "a double tap opened the power menu and took a screenshot; " + torch()
     }
 
-    // #12: an app pair's icon opens both apps side by side.
+    // The torch, as the camera service reports it: on with a double tap, off
+    // with the next.
+    private fun torch(): String {
+        val watch = TorchWatch(context)
+        try {
+            if (!watch.hasFlash) {
+                doubleTapMiddle()
+                shot("torch")
+                return "this emulator has no flash, so the torch couldn't be tried"
+            }
+            doubleTapMiddle()
+            check(waitFor { watch.lit }) { "a double tap didn't turn the torch on" }
+            shot("torch")
+            doubleTapMiddle()
+            check(waitFor { !watch.lit }) { "a second double tap didn't turn the torch off" }
+            return "the torch went on with a double tap and off with the next"
+        } finally {
+            watch.close()
+        }
+    }
+
+    // #12: an app pair's icon opens both apps side by side: from Android 12L
+    // with no accessibility service, which this checks by turning it off;
+    // below, with the launcher's.
     private fun appPairs(): String {
-        enableAccessibility()
+        val needsService = Build.VERSION.SDK_INT < Build.VERSION_CODES.S_V2
+        if (needsService) enableAccessibility() else disableAccessibility()
         val first = app(*SETTINGS)
         val second = app(*CLOCKS, *CONTACTS)
         val label = "${first.label} + ${second.label}"
@@ -324,8 +351,8 @@ class FeatureTour {
         shot("pair-opened")
         val seen = windowPackages()
         device.pressHome()
-        check(both) { "after the tap the screen showed $seen" }
-        return "$label opened both apps side by side"
+        check(both) { "after the tap the screen showed $seen. ${blockedLaunches()}" }
+        return "$label opened both apps side by side" + if (needsService) "" else ", with accessibility off"
     }
 
     // #15: a chosen app's label shows its newest notification.
@@ -361,20 +388,30 @@ class FeatureTour {
         // The listener reads its rules from the settings as they change.
         SystemClock.sleep(SETTLE_MS)
         showHome()
-        post(SUMMARY_ID, "Shop", "Your order shipped")
-        val held = waitFor { notifications.activeNotifications.none { it.id == SUMMARY_ID } }
-        device.openNotification()
+        // One from an app the summary doesn't hold, the shell, beside it: the
+        // shade shows that one and not the held one. (A snoozed notification
+        // still counts as active to the app that posted it, so the shade is
+        // where to look.)
+        device.executeShellCommand("cmd notification post -t $CONTROL_TITLE $CONTROL_TAG $CONTROL_TEXT")
+        post(SUMMARY_ID, HELD_TITLE, "Your order shipped")
         SystemClock.sleep(SETTLE_MS)
+        device.openNotification()
+        val shadeShows = device.wait(Until.hasObject(By.text(CONTROL_TITLE)), WAIT_MS)
+        val heldShows = device.hasObject(By.text(HELD_TITLE))
         shot("summary-shade")
         device.pressBack()
+        // Cancelled, a snoozed notification doesn't come back at the hour.
         notifications.cancel(SUMMARY_ID)
-        check(held) { "the notification still showed" }
-        return "a notification from ${own.label} was held for the $hour:00 delivery"
+        check(shadeShows) { "the shade didn't show the shell's notification" }
+        check(!heldShows) { "the shade showed ${own.label}'s notification" }
+        return "the shade showed the shell's notification but not ${own.label}'s, held for the $hour:00 delivery"
     }
 
     // #17: the screen time card asks for usage access, then shows the day.
     private fun screenTime(): String {
-        device.executeShellCommand("appops set $appId GET_USAGE_STATS default")
+        // As Settings leaves it with Usage access turned off. (By default it
+        // follows the permission, which the test's install grants.)
+        device.executeShellCommand("appops set $appId GET_USAGE_STATS ignore")
         setPrefs {
             it[booleanPreferencesKey(Pref.feedEnabled.key.name)] = true
             it[booleanPreferencesKey(Pref.feedShowScreenTime.key.name)] = true
@@ -491,6 +528,11 @@ class FeatureTour {
         val service = "$appId/${SupernovaAccessibilityService::class.java.name}"
         device.executeShellCommand("settings put secure enabled_accessibility_services $service")
         device.executeShellCommand("settings put secure accessibility_enabled 1")
+        SystemClock.sleep(SERVICE_WAIT_MS)
+    }
+
+    private fun disableAccessibility() {
+        device.executeShellCommand("settings delete secure enabled_accessibility_services")
         SystemClock.sleep(SERVICE_WAIT_MS)
     }
 
@@ -662,9 +704,37 @@ class FeatureTour {
     private fun screenshotCount(): Int =
         device.executeShellCommand("ls /sdcard/Pictures/Screenshots").lines().count { it.endsWith(".png") }
 
+    // What the system log says of launches it stopped, for a step that failed.
+    private fun blockedLaunches(): String {
+        val lines = device.executeShellCommand("logcat -d -t $LOG_LINES").lines()
+            .filter { line -> BLOCKED_LAUNCH.any { it in line } }
+            .takeLast(LOG_LINES_KEPT)
+        return if (lines.isEmpty()) "The log names no blocked launch." else lines.joinToString(" | ")
+    }
+
     // The packages of the windows on screen.
     private fun windowPackages(): Set<String> =
         automation.windows.mapNotNullTo(HashSet()) { it.root?.packageName?.toString() }
+
+    // Whether a flash is lit, as the camera service tells every app.
+    private class TorchWatch(context: Context) : CameraManager.TorchCallback() {
+        private val camera = context.getSystemService(CameraManager::class.java)
+        private val modes = ConcurrentHashMap<String, Boolean>()
+        val hasFlash = camera.cameraIdList.any {
+            camera.getCameraCharacteristics(it).get(CameraCharacteristics.FLASH_INFO_AVAILABLE) == true
+        }
+        val lit: Boolean get() = modes.values.any { it }
+
+        init {
+            camera.registerTorchCallback(context.mainExecutor, this)
+        }
+
+        override fun onTorchModeChanged(cameraId: String, enabled: Boolean) {
+            modes[cameraId] = enabled
+        }
+
+        fun close() = camera.unregisterTorchCallback(this)
+    }
 
     private fun waitFor(timeoutMs: Long = WAIT_MS, condition: () -> Boolean): Boolean {
         val end = SystemClock.uptimeMillis() + timeoutMs
@@ -689,7 +759,6 @@ class FeatureTour {
     private companion object {
         const val TAG = "FeatureTour"
         const val WAIT_MS = 8_000L
-        const val SHORT_WAIT_MS = 2_000L
         const val SETTLE_MS = 1_500L
         const val QUERY_MS = 2_000L
         const val FEED_WAIT_MS = 3_000L
@@ -708,10 +777,19 @@ class FeatureTour {
         const val EDGE_SHARE = 10
         const val ROW = 3
         const val FULL_BLUR = 100
+        const val SEE_THROUGH = 0.6f
         const val HOURS_AHEAD = 3
         const val TEXT_ID = 41
         const val SUMMARY_ID = 42
+        const val HELD_TITLE = "Shop"
+        // Single words: the shell command isn't parsed by a shell.
+        const val CONTROL_TITLE = "Elsewhere"
+        const val CONTROL_TAG = "feature_tour_control"
+        const val CONTROL_TEXT = "Unheld"
         const val CHANNEL = "feature_tour"
+        const val LOG_LINES = 600
+        const val LOG_LINES_KEPT = 6
+        val BLOCKED_LAUNCH = listOf("Background activity launch blocked", "Abort background activity", "BAL_BLOCK")
         const val PIN = "1234"
         const val CALENDAR_COLOR = 0xFF3F72AF.toInt()
         const val SYSTEM_FONTS = "/system/fonts"

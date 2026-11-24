@@ -106,7 +106,11 @@ class ActionRunner(
             GestureAction.QUICK_SETTINGS -> globalAction(SupernovaAccessibilityService.showQuickSettings())
             GestureAction.SCREENSHOT -> globalAction(SupernovaAccessibilityService.takeScreenshot())
             GestureAction.POWER_MENU -> globalAction(SupernovaAccessibilityService.showPowerMenu())
-            GestureAction.SPLIT_SCREEN -> globalAction(SupernovaAccessibilityService.toggleSplitScreen())
+            // From Android 12L the system no longer splits the screen for an
+            // accessibility service; split screen starts from Recents there.
+            GestureAction.SPLIT_SCREEN -> globalAction(
+                SupernovaAccessibilityService.toggleSplitScreen() || SupernovaAccessibilityService.showRecents()
+            )
             GestureAction.TORCH -> {
                 if (!Torch.toggle(activity)) {
                     Toast.makeText(activity, R.string.torch_unavailable, Toast.LENGTH_SHORT).show()
