@@ -23,6 +23,10 @@ on:
         description: 'A display cutout to emulate: "", corner, double, hole, tall or waterfall'
         required: false
         default: ""
+      tour:
+        description: "ScreenshotTour, or FeatureTour to use the offline features (#4 to #17) and report on each"
+        required: false
+        default: "ScreenshotTour"
 
 permissions:
   contents: read
@@ -73,6 +77,7 @@ jobs:
         uses: reactivecircus/android-emulator-runner@v2
         env:
           TOUR_ARGS: ${{ inputs.args }}
+          TOUR_CLASS: ${{ inputs.tour }}
           SHOT_WIDTH: ${{ inputs.width }}
           SHOT_CUTOUT: ${{ inputs.cutout }}
         with:

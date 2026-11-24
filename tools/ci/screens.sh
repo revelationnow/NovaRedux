@@ -6,6 +6,9 @@
 #
 # TOUR_ARGS holds extra instrumentation arguments, e.g.
 #   -e pref.b.dock_enabled false -e shots home,drawer
+# TOUR_CLASS picks the instrumentation class: ScreenshotTour (the default) or
+# FeatureTour, which uses the offline features on the emulator and writes what
+# it saw per feature to results.txt, printed below.
 # SHOT_WIDTH is the width the screenshots are printed at (540 unless set;
 # 1080 for store screenshots). SHOT_CUTOUT names a display cutout for the
 # emulator to emulate (corner, double, hole, tall, waterfall), to check what
@@ -41,12 +44,24 @@ adb logcat -c
 # TouchTrace: where the home screen's touches go (printed after the tour).
 adb shell setprop log.tag.NovaTouch DEBUG || true
 
+tour="${TOUR_CLASS:-ScreenshotTour}"
+case "$tour" in
+    *[!A-Za-z]*|"") echo "::error::No such tour: $tour"; exit 1 ;;
+esac
 read -r -a extra <<< "${TOUR_ARGS:-}"
-adb shell am instrument -w -r "${extra[@]}" -e class com.supernova.launcher.ScreenshotTour \
+adb shell am instrument -w -r "${extra[@]}" -e class "com.supernova.launcher.$tour" \
     "$app.test/androidx.test.runner.AndroidJUnitRunner" | tee tour.txt
 
 mkdir -p "$out"
 adb pull "/sdcard/Android/data/$app/files/screens/." "$out/" || echo "No screenshots to pull"
+
+# What the feature tour saw, step by step.
+for txt in "$out"/*.txt; do
+    [ -e "$txt" ] || continue
+    echo "TOUR-RESULTS $(basename "$txt")"
+    cat "$txt"
+done
+adb logcat -d -s FeatureTour:I | tail -n 40 || true
 
 # A swipe up that didn't open the drawer: the drawer's views as they stood.
 for dump in "$out"/*.dump; do
