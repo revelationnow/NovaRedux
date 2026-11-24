@@ -32,7 +32,8 @@ internal object DrawerGroupTables {
 // Groups that are each a tab or a drawer folder, and a row per app a group
 // holds. A tab can hold a drawer folder: its row names the folder by id in
 // place of an activity. A group switched off keeps its row, flagged, and
-// shows nowhere.
+// shows nowhere. A drawer folder's apps are kept in order as placed items too,
+// in a place of the folder's own (-200 less its id): the order they show in.
 private object GroupsAndApps {
     const val GROUPS = "drawer_groups"
     const val MEMBERS = "appgroups"
@@ -65,7 +66,7 @@ private object GroupsAndApps {
                 order = row.int("tabOrder") ?: 0,
                 // Its apps leave the main list, or stay there too.
                 keepInMain = row.long("hideApps")?.let { it == 0L },
-                apps = keys.filterNot(::isFolder).mapNotNull(DrawerGroupTables::app)
+                apps = ordered(keys.filterNot(::isFolder).mapNotNull(DrawerGroupTables::app), laidOut[id])
                     .ifEmpty { laidOutApps(laidOut[id]) },
                 folders = keys.mapNotNull(::heldFolder),
                 icon = row.blob("icon")
@@ -77,11 +78,25 @@ private object GroupsAndApps {
 
     // A group's apps as layout rows, in their order (#338).
     private fun laidOutApps(rows: List<Row>?): List<ForeignApp> =
-        rows.orEmpty().filter { (it.int("itemType") ?: 0) == 0 }.sortedBy { it.int("rank") ?: 0 }.mapNotNull { row ->
+        placed(rows).filter { (it.int("itemType") ?: 0) == 0 }.mapNotNull { row ->
             IntentText.parse(row.text("intent"))?.component?.let { (pkg, cls) ->
                 ForeignApp(pkg, cls, BackupLayouts.userSerial(row.long("profileId")))
             }
         }
+
+    // The apps as the folder shows them, row by row; any it doesn't place
+    // come last, as listed (Supernova v0.2.9).
+    private fun ordered(apps: List<ForeignApp>, rows: List<Row>?): List<ForeignApp> {
+        val shown = placed(rows).mapNotNull { IntentText.parse(it.text("intent"))?.component }
+        return apps.sortedBy { app ->
+            shown.indexOf(app.packageName to app.className).takeIf { it >= 0 } ?: Int.MAX_VALUE
+        }
+    }
+
+    // Layout rows in the order they show: row by row, then by rank.
+    private fun placed(rows: List<Row>?): List<Row> = rows.orEmpty().sortedWith(
+        compareBy({ it.float("cellY") ?: 0f }, { it.float("cellX") ?: 0f }, { it.int("rank") ?: 0 })
+    )
 
     private fun isFolder(key: String): Boolean = heldFolder(key) != null
 

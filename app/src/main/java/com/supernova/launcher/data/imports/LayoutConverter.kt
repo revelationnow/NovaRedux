@@ -51,7 +51,7 @@ internal object LayoutConverter {
     )
 
     fun convert(layout: ForeignLayout, base: LauncherPrefs, phone: Phone = Phone()): Result =
-        Placement(layout, base, ItemMaker(phone)).result()
+        Placement(DrawerFolderItems.expanded(layout, phone.appLabel), base, ItemMaker(phone)).result()
 
     // Where everything goes.
     private class Placement(val layout: ForeignLayout, val base: LauncherPrefs, val maker: ItemMaker) {
