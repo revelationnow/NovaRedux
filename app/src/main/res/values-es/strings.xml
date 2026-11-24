@@ -25,6 +25,8 @@
     <string name="widget_resize">Cambiar tamaño</string>
     <string name="stack_add_widget">Añadir un widget a esta pila</string>
     <string name="stack_remove_widget">Quitar este widget de la pila</string>
+    <string name="pair_with">Emparejar con otra aplicación</string>
+    <string name="pair_part">Desemparejar</string>
     <string name="large_icon">Icono grande</string>
     <string name="normal_icon">Icono normal</string>
     <string name="padding">Márgenes</string>

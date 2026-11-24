@@ -908,7 +908,11 @@ class LauncherViewModel(
 
     // A widget stack's change (#10): WidgetStacks makes it.
     fun updateWidget(itemId: String, change: (LauncherItem) -> LauncherItem) =
-        persist { repository.updateWidget(itemId, change) }
+        persist { repository.updateItem(itemId, ItemType.WIDGET, change) }
+
+    // An app item paired or parted (#12): AppPairs makes it.
+    fun updateApp(itemId: String, change: (LauncherItem) -> LauncherItem) =
+        persist { repository.updateItem(itemId, ItemType.APP, change) }
 
     fun resizeWidget(
         itemId: String,

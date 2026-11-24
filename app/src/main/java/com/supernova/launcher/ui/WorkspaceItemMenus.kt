@@ -135,6 +135,7 @@ class WorkspaceItemMenus(private val surfaces: ItemSurfaces) {
             }
         }
         if (item.itemType == ItemType.APP && !locked) addWidgetsRow(menu, item.packageName) {}
+        if (!locked) AppPairRows.add(menu, surfaces, item)
         if (!locked) kit.addIconSizeRow(menu, item)
         // A launcher action or a picked activity has no package, and the row
         // did nothing for it.

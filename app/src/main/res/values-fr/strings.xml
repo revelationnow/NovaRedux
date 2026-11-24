@@ -25,6 +25,8 @@
     <string name="widget_resize">Redimensionner</string>
     <string name="stack_add_widget">Ajouter un widget à cette pile</string>
     <string name="stack_remove_widget">Retirer ce widget de la pile</string>
+    <string name="pair_with">Associer à une autre appli</string>
+    <string name="pair_part">Dissocier</string>
     <string name="large_icon">Grande icône</string>
     <string name="normal_icon">Icône normale</string>
     <string name="padding">Marges</string>

@@ -116,7 +116,10 @@ data class LauncherItem(
     // (#10). The item's own widget comes first; WidgetStacks.
     val stack: List<StackedWidget> = emptyList(),
     // Which of the stack's widgets shows: 0 is the item's own.
-    val stackShown: Int = 0
+    val stackShown: Int = 0,
+    // APP items only: the app that opens beside this one in split screen, as
+    // "pkg/cls@userSerial" (#12); AppPairs.
+    val pairWith: String? = null
 )
 
 // A widget in a stack after the item's own (#10): what a widget item keeps

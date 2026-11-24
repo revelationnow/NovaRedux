@@ -233,6 +233,14 @@ class BackupRoundTripTest {
                 stack = listOf(StackedWidget(43, "com.x/com.x.Provider", 10L, "Clock")),
                 stackShown = 1
             ),
+            LauncherItem(
+                id = "pair",
+                itemType = ItemType.APP,
+                packageName = "com.maps",
+                className = "com.maps.Main",
+                label = "Maps + Music",
+                pairWith = "com.music/com.music.Player@0"
+            ),
             // A launcher-action item and an activity item exercise the new
             // intentUri/iconBase64 fields through the backup round-trip.
             LauncherItem(

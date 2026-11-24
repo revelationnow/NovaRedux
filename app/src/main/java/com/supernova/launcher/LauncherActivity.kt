@@ -2722,11 +2722,22 @@ class LauncherActivity :
             .makeCustomAnimation(this, R.anim.launch_slide_left_enter, R.anim.launch_slide_left_exit)
     }.toBundle()
 
+    // An app pair (#12) opens its first app and then the second beside it;
+    // with the accessibility service off, it says why instead.
+    private fun launchAppItem(item: LauncherItem, app: LaunchableApp, anchor: View?) {
+        val second = com.supernova.launcher.data.AppPairs.second(item)
+        when {
+            second == null -> launchApp(app, anchor)
+            !com.supernova.launcher.ui.AppPairLauncher.launch(this, second) { launchApp(app, anchor) } ->
+                com.supernova.launcher.ui.PermissionPrompts.explainAccessibility(this)
+        }
+    }
+
     private fun launchItem(item: LauncherItem, anchor: View? = null) {
         when (item.itemType) {
             ItemType.FOLDER -> folderCards.showFolder(anchor ?: binding.root, item)
             ItemType.WIDGET -> Unit
-            ItemType.APP -> item.toLaunchableApp()?.let { launchApp(it, anchor) }
+            ItemType.APP -> item.toLaunchableApp()?.let { launchAppItem(item, it, anchor) }
             ItemType.SHORTCUT -> {
                 val uri = item.intentUri
                 when {
@@ -3025,7 +3036,11 @@ class LauncherActivity :
         val fresh = when (item.itemType) {
             ItemType.FOLDER -> itemIcons.folderPreviewDrawable(item, onLate, pendingAsNull = shown != null)
             ItemType.WIDGET -> getDrawable(R.drawable.ic_widget)
-            ItemType.APP -> if (app == null) getDrawable(R.drawable.ic_supernova) else appItemIcon(item, app, onLate)
+            ItemType.APP -> when {
+                app == null -> getDrawable(R.drawable.ic_supernova)
+                item.pairWith != null -> pairIcon(item, app, onLate)
+                else -> appItemIcon(item, app, onLate)
+            }
             ItemType.SHORTCUT -> when (val look = itemIcons.shortcutLook(item, onLate)) {
                 null -> null
                 else -> look.icon ?: app?.let { appItemIcon(item, it, onLate) } ?: getDrawable(R.drawable.ic_supernova)
@@ -3035,6 +3050,18 @@ class LauncherActivity :
         // showed: a page built again blanked its icons until they came
         // back, which read as the home screen reloading (#292).
         return badgedItemIcon(item, fresh?.also { lastItemIcons[item.id] = it } ?: shown)
+    }
+
+    // An app pair's two icons as one (#12); the first alone until the
+    // second's is drawn.
+    private fun pairIcon(
+        item: LauncherItem,
+        app: LaunchableApp,
+        onLate: () -> Unit
+    ): android.graphics.drawable.Drawable? {
+        val first = appItemIcon(item, app, onLate)
+        val second = com.supernova.launcher.data.AppPairs.second(item)?.let { viewModel.appCatalog().iconFor(it) }
+        return if (first != null && second != null) com.supernova.launcher.ui.AppPairIcon(first, second) else first
     }
 
     private fun badgedItemIcon(
