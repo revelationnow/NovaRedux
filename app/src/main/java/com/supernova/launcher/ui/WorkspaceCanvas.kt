@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.core.view.doOnNextLayout
+import androidx.core.view.isVisible
 import com.supernova.launcher.R
 import com.supernova.launcher.widget.WidgetResizeFrame
 import kotlin.math.max
@@ -27,7 +28,7 @@ internal fun iconOrigin(center: Float, extent: Int, size: Int, anchor: Int = siz
 // line lower than a two-line neighbour's, so icons in a row didn't share a
 // top.
 internal fun iconAnchorHeight(item: View, height: Int = item.measuredHeight): Int {
-    val label = item.findViewById<TextView>(R.id.label)?.takeIf { it.visibility == View.VISIBLE }
+    val label = item.findViewById<TextView>(R.id.label)?.takeIf { it.isVisible }
     val layout = label?.layout ?: return height
     val lines = if (label.maxLines > 0) minOf(layout.lineCount, label.maxLines) else layout.lineCount
     return if (lines <= 1) height else height - (layout.getLineTop(lines) - layout.getLineTop(1))
