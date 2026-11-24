@@ -20,17 +20,17 @@ import com.supernova.launcher.runLogged
 // screen splits. Asked from the launcher in the background, as the pair
 // first did it, the flag no longer splits the screen: on an Android 15
 // emulator the second app took the whole screen. So this screen comes up
-// full screen for a moment, in a task of its own, opens the first app beside
-// itself, then the second app in its own half, and goes. Where the screen
-// doesn't split after all, the first app is left open on its own and a
-// toast says so.
+// full screen for a moment, in a task of its own, opens the second app
+// beside itself (the lower or right half), then the first app in its own
+// half (the upper or left), and goes. Where the screen doesn't split after
+// all, the first app opens over the second and a toast says so.
 class AppPairActivity : Activity() {
 
     private val main = Handler(Looper.getMainLooper())
     private var started = false
 
-    // The app still to open, until it has been (or the split never came).
-    private var second: ComponentName? = null
+    // The app for this screen's half, until it has opened.
+    private var first: ComponentName? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,37 +43,40 @@ class AppPairActivity : Activity() {
         super.onResume()
         if (started || isFinishing) return
         started = true
-        val first = component(EXTRA_FIRST)
-        second = component(EXTRA_SECOND)
+        first = component(EXTRA_FIRST)
+        val second = component(EXTRA_SECOND)
         if (first == null || second == null) {
             finish()
         } else {
             // Once this screen is up, so it is the app on the full screen.
-            window.decorView.post { openFirst(first) }
+            window.decorView.post { openBeside(second) }
         }
     }
 
-    private fun openFirst(first: ComponentName) {
-        val opened = runLogged("open the first app of a pair") {
-            startActivity(AppPairLauncher.launchIntent(first).addFlags(Intent.FLAG_ACTIVITY_LAUNCH_ADJACENT))
+    private fun openBeside(second: ComponentName) {
+        val opened = runLogged("open the second app of a pair") {
+            startActivity(AppPairLauncher.launchIntent(second).addFlags(Intent.FLAG_ACTIVITY_LAUNCH_ADJACENT))
         }.isSuccess
-        if (opened) main.postDelayed(::notSplit, SPLIT_WAIT_MS) else finish()
+        if (opened) main.postDelayed(::notSplit, SPLIT_WAIT_MS) else openFirst()
     }
 
-    // Moved into one half of the split screen: the second app takes it.
+    // Moved into one half of the split screen: the first app takes it.
     override fun onMultiWindowModeChanged(isInMultiWindowMode: Boolean, newConfig: Configuration) {
         super.onMultiWindowModeChanged(isInMultiWindowMode, newConfig)
-        val app = second?.takeIf { isInMultiWindowMode } ?: return
-        second = null
-        main.removeCallbacksAndMessages(null)
-        runLogged("open the second app of a pair") { startActivity(AppPairLauncher.launchIntent(app)) }
-        finish()
+        if (isInMultiWindowMode) openFirst()
     }
 
     private fun notSplit() {
-        if (second == null) return
-        second = null
+        if (first == null) return
         Toast.makeText(applicationContext, R.string.pair_not_split, Toast.LENGTH_SHORT).show()
+        openFirst()
+    }
+
+    private fun openFirst() {
+        val app = first ?: return
+        first = null
+        main.removeCallbacksAndMessages(null)
+        runLogged("open the first app of a pair") { startActivity(AppPairLauncher.launchIntent(app)) }
         finish()
     }
 
@@ -89,7 +92,7 @@ class AppPairActivity : Activity() {
         private const val EXTRA_FIRST = "first"
         private const val EXTRA_SECOND = "second"
 
-        // How long the screen gets to split once the first app is opening.
+        // How long the screen gets to split once the second app is opening.
         private const val SPLIT_WAIT_MS = 2_000L
 
         fun open(activity: Activity, first: LaunchableApp, second: LaunchableApp) {

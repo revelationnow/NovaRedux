@@ -357,8 +357,10 @@ class FeatureTour {
         device.pressHome()
         check(both) { "after the tap the screen showed $seen. ${launchNotes()}" }
         check(appId !in seen) { "the pair's own screen stayed up: $seen" }
-        val upper = if ((tops[first.packageName] ?: 0) <= (tops[second.packageName] ?: 0)) first else second
-        return "$label opened both apps side by side, ${upper.label} in the upper half" +
+        check((tops[first.packageName] ?: 0) < (tops[second.packageName] ?: 0)) {
+            "${first.label} wasn't in the upper half: $tops"
+        }
+        return "$label opened both apps side by side, ${first.label} in the upper half" +
             if (needsService) "" else ", with accessibility off"
     }
 
