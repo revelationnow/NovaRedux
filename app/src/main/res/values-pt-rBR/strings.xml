@@ -727,6 +727,8 @@
     <string name="reshape_legacy">Remodelar ícones antigos</string>
     <string name="reshape_legacy_auto">Só redimensionar</string>
     <string name="reshape_legacy_on">Redimensionar e adicionar fundo</string>
+    <string name="normalize_icon_size">Normalizar tamanho dos ícones</string>
+    <string name="normalize_icon_size_summary">Reduz os ícones grandes às diretrizes do Material</string>
     <string name="drawer_pull_to_search">Puxar para pesquisar</string>
     <string name="folder_prioritize_first">Destacar o primeiro ícone</string>
     <string name="folder_prioritize_first_summary">O primeiro app grande no ícone da pasta e o resto pequeno</string>
@@ -762,6 +764,8 @@
     <string name="auto_add_apps">Adicionar novos apps à tela inicial</string>
     <string name="label_font">Fonte dos nomes</string>
     <string name="label_single_line">Nomes em uma linha</string>
+    <string name="label_even_rows">Espaçamento uniforme das linhas</string>
+    <string name="label_even_rows_summary">As linhas da gaveta de apps e das pastas deixam espaço para nomes em duas linhas</string>
     <string name="icon_size">Tamanho dos ícones</string>
     <string name="icon_size_fitted">Os ícones estão no maior tamanho que esta grade comporta. Use menos linhas ou colunas, ou desative os nomes, para ícones maiores.</string>
     <string name="label_group">Nomes dos ícones</string>

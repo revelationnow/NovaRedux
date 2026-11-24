@@ -727,6 +727,8 @@
     <string name="reshape_legacy">Remodeler les anciennes icônes</string>
     <string name="reshape_legacy_auto">Redimensionner seulement</string>
     <string name="reshape_legacy_on">Redimensionner et ajouter un arrière-plan</string>
+    <string name="normalize_icon_size">Normaliser la taille des icônes</string>
+    <string name="normalize_icon_size_summary">Réduit les grandes icônes selon les règles Material</string>
     <string name="drawer_pull_to_search">Tirer pour rechercher</string>
     <string name="folder_prioritize_first">Mettre en avant la première icône</string>
     <string name="folder_prioritize_first_summary">La première appli en grand dans l\'icône du dossier, les autres en petit</string>
@@ -762,6 +764,8 @@
     <string name="auto_add_apps">Ajouter les nouvelles applis à l\'écran d\'accueil</string>
     <string name="label_font">Police des libellés</string>
     <string name="label_single_line">Libellés sur une ligne</string>
+    <string name="label_even_rows">Espacement régulier des rangées</string>
+    <string name="label_even_rows_summary">Les rangées du tiroir et des dossiers gardent la place d\'un libellé sur deux lignes</string>
     <string name="icon_size">Taille des icônes</string>
     <string name="icon_size_fitted">Les icônes sont à la taille maximale que permet cette grille. Utilisez moins de lignes ou de colonnes, ou désactivez les libellés, pour des icônes plus grandes.</string>
     <string name="label_group">Libellés des icônes</string>

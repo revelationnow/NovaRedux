@@ -727,6 +727,8 @@
     <string name="reshape_legacy">Remodelar los iconos antiguos</string>
     <string name="reshape_legacy_auto">Solo reescalar</string>
     <string name="reshape_legacy_on">Reescalar y añadir fondo</string>
+    <string name="normalize_icon_size">Normalizar tamaño de iconos</string>
+    <string name="normalize_icon_size_summary">Reduce los iconos grandes según las pautas de Material</string>
     <string name="drawer_pull_to_search">Tirar para buscar</string>
     <string name="folder_prioritize_first">Destacar el primer icono</string>
     <string name="folder_prioritize_first_summary">La primera aplicación en grande en el icono de la carpeta y el resto en pequeño</string>
@@ -762,6 +764,8 @@
     <string name="auto_add_apps">Añadir las aplicaciones nuevas a la pantalla de inicio</string>
     <string name="label_font">Fuente de los nombres</string>
     <string name="label_single_line">Nombres en una línea</string>
+    <string name="label_even_rows">Espaciado uniforme de filas</string>
+    <string name="label_even_rows_summary">Las filas del cajón de apps y las carpetas dejan sitio para nombres de dos líneas</string>
     <string name="icon_size">Tamaño de los iconos</string>
     <string name="icon_size_fitted">Los iconos están al máximo que admite esta cuadrícula. Usa menos filas o columnas, o quita los nombres, para tener iconos más grandes.</string>
     <string name="label_group">Nombres de los iconos</string>

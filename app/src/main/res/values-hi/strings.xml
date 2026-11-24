@@ -711,6 +711,8 @@
     <string name="reshape_legacy">पुराने आइकॉन का आकार बदलें</string>
     <string name="reshape_legacy_auto">सिर्फ़ साइज़ बदलें</string>
     <string name="reshape_legacy_on">साइज़ बदलें और बैकग्राउंड जोड़ें</string>
+    <string name="normalize_icon_size">आइकन का साइज़ एक जैसा करें</string>
+    <string name="normalize_icon_size_summary">बड़े आइकन को Material के दिशानिर्देशों तक छोटा करें</string>
     <string name="drawer_pull_to_search">खोजने के लिए खींचें</string>
     <string name="folder_prioritize_first">पहले आइकॉन को प्राथमिकता दें</string>
     <string name="folder_prioritize_first_summary">फ़ोल्डर आइकॉन में पहला ऐप बड़ा, बाकी छोटे</string>
@@ -746,6 +748,8 @@
     <string name="auto_add_apps">नए ऐप होम स्क्रीन पर जोड़ें</string>
     <string name="label_font">लेबल का फ़ॉन्ट</string>
     <string name="label_single_line">एक लाइन वाले लेबल</string>
+    <string name="label_even_rows">पंक्तियों में बराबर दूरी</string>
+    <string name="label_even_rows_summary">ऐप ड्रॉअर और फ़ोल्डर की पंक्तियाँ दो लाइन वाले लेबल की जगह रखती हैं</string>
     <string name="icon_size">आइकॉन का साइज़</string>
     <string name="icon_size_fitted">आइकॉन उतने बड़े हैं जितने इस ग्रिड में आ सकते हैं. बड़े आइकॉन के लिए कम पंक्तियां या कॉलम इस्तेमाल करें, या लेबल बंद करें.</string>
     <string name="label_group">आइकॉन के लेबल</string>

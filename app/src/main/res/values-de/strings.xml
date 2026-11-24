@@ -711,6 +711,8 @@
     <string name="reshape_legacy">Alte Symbole umformen</string>
     <string name="reshape_legacy_auto">Nur skalieren</string>
     <string name="reshape_legacy_on">Skalieren und Hintergrund hinzufügen</string>
+    <string name="normalize_icon_size">Symbolgröße normalisieren</string>
+    <string name="normalize_icon_size_summary">Große Symbole auf die Material-Richtlinien verkleinern</string>
     <string name="drawer_pull_to_search">Zum Suchen ziehen</string>
     <string name="folder_prioritize_first">Erstes Symbol hervorheben</string>
     <string name="folder_prioritize_first_summary">Die erste App groß im Ordnersymbol, die übrigen klein</string>
@@ -746,6 +748,8 @@
     <string name="auto_add_apps">Neue Apps zum Startbildschirm hinzufügen</string>
     <string name="label_font">Schriftart der Beschriftungen</string>
     <string name="label_single_line">Einzeilige Beschriftungen</string>
+    <string name="label_even_rows">Gleichmäßige Zeilenabstände</string>
+    <string name="label_even_rows_summary">App-Drawer- und Ordnerzeilen lassen Platz für zweizeilige Beschriftungen</string>
     <string name="icon_size">Symbolgröße</string>
     <string name="icon_size_fitted">Die Symbole sind so groß, wie dieses Raster es zulässt. Für größere Symbole verwende weniger Zeilen oder Spalten oder schalte die Beschriftungen aus.</string>
     <string name="label_group">Symbolbeschriftungen</string>

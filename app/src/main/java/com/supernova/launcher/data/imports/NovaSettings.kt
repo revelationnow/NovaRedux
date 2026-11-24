@@ -65,6 +65,9 @@ internal object NovaSettings {
         hideStatusBar = nova.bool("show_notification_bar")?.not() ?: prefs.hideStatusBar,
         iconShape = nova.choice("adaptive_icon_shape", ICON_SHAPES) ?: prefs.iconShape,
         iconNormalize = nova.bool("sanify_icon_size") ?: prefs.iconNormalize,
+        // Nova's Normalize icon size, as the switch of that name shrinks
+        // icons (IconNormalizer) where legacy icons aren't reshaped.
+        iconNormalization = nova.bool("sanify_icon_size") ?: prefs.iconNormalization,
         iconPack = nova.text("theme_icon_pack") ?: prefs.iconPack,
         // Nova's Discover theme. Its page itself comes from another app here,
         // which the backup can't name: Feed > Page picks it.
