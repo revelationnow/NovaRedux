@@ -147,6 +147,11 @@
     <string name="gestures">Gestos</string>
     <string name="accessibility_description">Permite que o NovaRedux bloqueie a tela, abra Apps recentes e abra as Configurações rápidas pelos seus gestos. Não lê a tela nem coleta dados. Opcional.</string>
     <string name="hidden_apps">Apps ocultos</string>
+    <string name="hidden_apps_lock">Bloquear apps ocultos</string>
+    <string name="hidden_apps_lock_summary">Pedir sua digital ou o bloqueio de tela antes de mostrar os apps ocultos. Eles ficam apenas ocultos: para manter apps separados, use o espaço privado.</string>
+    <string name="hidden_apps_unlock">Desbloquear apps ocultos</string>
+    <string name="hidden_apps_lock_turn_off">Desativar o bloqueio dos apps ocultos</string>
+    <string name="hidden_apps_lock_needs_screen_lock">Primeiro, configure um bloqueio de tela nas configurações do telefone.</string>
     <string name="drawer_groups">Grupos da gaveta</string>
     <string name="drawer_style">Estilo da gaveta</string>
     <string name="style_vertical_grid">Grade vertical</string>

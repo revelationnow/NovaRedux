@@ -42,7 +42,9 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.supernova.launcher.ui.AppActions
 import com.supernova.launcher.ui.AppShortcuts
 import com.supernova.launcher.ui.CardSwipeClose
+import com.supernova.launcher.ui.DeviceAuth
 import com.supernova.launcher.ui.FolderCards
+import com.supernova.launcher.ui.HiddenAppsLock
 import com.supernova.launcher.ui.IconSwipes
 import com.supernova.launcher.ui.DrawerItemMenus
 import com.supernova.launcher.ui.FolderToDrawerPrompt
@@ -397,6 +399,7 @@ class LauncherActivity :
         override val drawerMenus: DrawerItemMenus get() = this@LauncherActivity.drawerMenus
         override val folderCards: FolderCards get() = this@LauncherActivity.folderCards
         override val iconSwipes: IconSwipes get() = this@LauncherActivity.iconSwipes
+        override val deviceAuth: DeviceAuth get() = this@LauncherActivity.deviceAuth
         override val menuTouchX: Float get() = this@LauncherActivity.menuTouchX
 
         override fun launchApp(app: LaunchableApp, anchor: View?) = this@LauncherActivity.launchApp(app, anchor)
@@ -416,6 +419,8 @@ class LauncherActivity :
     private val menuKit: ItemMenuKit = ItemMenuKit(surfaces)
     private val itemEdits: ItemEdits = ItemEdits(surfaces)
     private val appActions: AppActions = AppActions(this) { launchApp(it) }
+    // The phone's lock in front of hidden apps (#4); registers its result now.
+    private val deviceAuth: DeviceAuth = DeviceAuth(this)
     private val moveToDrawer: FolderToDrawerPrompt by lazy { FolderToDrawerPrompt(surfaces) }
     private val pickers: GroupPickers by lazy { GroupPickers(surfaces) }
     private val workspaceMenus: WorkspaceItemMenus by lazy { WorkspaceItemMenus(surfaces) }
@@ -982,6 +987,9 @@ class LauncherActivity :
         runCatching { unregisterReceiver(dateChangeReceiver) }
         MainStallWatch.stop()
         discover.activityState(started = false, resumed = false)
+        // Off the screen, hidden apps lock again, the drawer's peek too (#4).
+        HiddenAppsLock.relock()
+        if (::drawer.isInitialized && viewModel.state.value.prefs.hiddenAppsLock) drawer.endHiddenAppsPeek()
         super.onStop()
     }
 

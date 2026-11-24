@@ -147,6 +147,11 @@
     <string name="gestures">Gestes</string>
     <string name="accessibility_description">Permet à NovaRedux de verrouiller l\'écran, d\'ouvrir les applis récentes et d\'ouvrir les réglages rapides depuis vos gestes. Il ne lit pas l\'écran et ne collecte aucune donnée. Facultatif.</string>
     <string name="hidden_apps">Applis masquées</string>
+    <string name="hidden_apps_lock">Verrouiller les applis masquées</string>
+    <string name="hidden_apps_lock_summary">Demander votre empreinte ou le verrouillage de l\'écran avant d\'afficher les applis masquées. Elles sont seulement masquées : pour garder des applis à part, utilisez l\'espace privé.</string>
+    <string name="hidden_apps_unlock">Déverrouiller les applis masquées</string>
+    <string name="hidden_apps_lock_turn_off">Désactiver le verrouillage des applis masquées</string>
+    <string name="hidden_apps_lock_needs_screen_lock">Configurez d\'abord un verrouillage de l\'écran dans les paramètres du téléphone.</string>
     <string name="drawer_groups">Groupes du tiroir</string>
     <string name="drawer_style">Style du tiroir</string>
     <string name="style_vertical_grid">Grille verticale</string>

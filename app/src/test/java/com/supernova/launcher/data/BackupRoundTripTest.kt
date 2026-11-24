@@ -56,6 +56,7 @@ class BackupRoundTripTest {
         themedIconsNormalize = true,
         lockMethod = LockMethod.DEVICE_ADMIN,
         hiddenApps = setOf("0/com.a/com.a.Main"),
+        hiddenAppsLock = true,
         gestureBindings = setOf("SWIPE_UP:OPEN_SETTINGS", "DOUBLE_TAP:LOCK_SCREEN"),
         drawerGroups = setOf("Games|0/com.a/com.a.Main"),
         drawerRows = 4,

@@ -175,6 +175,7 @@ object Pref {
     val badgeStyle = text("badge_style")
     val badgeApps = textSet("badge_apps")
     val hiddenApps = textSet("hidden_apps")
+    val hiddenAppsLock = bool("hidden_apps_lock")
     val gestureBindings = textSet("gesture_bindings")
     val drawerGroups = textSet("drawer_groups")
     val pageIndicatorStyle = choice("page_indicator_style", IndicatorStyle.entries)

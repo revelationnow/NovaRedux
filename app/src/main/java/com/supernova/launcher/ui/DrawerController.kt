@@ -2005,6 +2005,9 @@ class DrawerController(
 
     fun toggleHiddenApps() = showHiddenApps(!hiddenAppsShown)
 
+    // NovaRedux left the screen with Lock hidden apps on (#4).
+    fun endHiddenAppsPeek() = showHiddenApps(false)
+
     // While shown, a hidden app stays on the All list even when a folder or
     // an isolated tab holds it: those list visible apps only, so it would
     // show nowhere and could never be unhidden from the drawer (#137).

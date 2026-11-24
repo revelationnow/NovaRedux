@@ -139,6 +139,11 @@
     <string name="gestures">जेस्चर</string>
     <string name="accessibility_description">इससे NovaRedux आपके जेस्चर से स्क्रीन लॉक कर पाता है, हाल ही के ऐप और फटाफट सेटिंग खोल पाता है. यह स्क्रीन नहीं पढ़ता और कोई डेटा इकट्ठा नहीं करता. ज़रूरी नहीं.</string>
     <string name="hidden_apps">छिपे हुए ऐप</string>
+    <string name="hidden_apps_lock">छिपे हुए ऐप लॉक करें</string>
+    <string name="hidden_apps_lock_summary">छिपे हुए ऐप दिखाने से पहले आपका फ़िंगरप्रिंट या स्क्रीन लॉक माँगें। ये सिर्फ़ छिपे रहते हैं: ऐप को अलग रखने के लिए प्राइवेट स्पेस का इस्तेमाल करें।</string>
+    <string name="hidden_apps_unlock">छिपे हुए ऐप अनलॉक करें</string>
+    <string name="hidden_apps_lock_turn_off">छिपे हुए ऐप का लॉक बंद करें</string>
+    <string name="hidden_apps_lock_needs_screen_lock">पहले अपने फ़ोन की सेटिंग में स्क्रीन लॉक सेट करें।</string>
     <string name="drawer_groups">ड्रॉअर के ग्रुप</string>
     <string name="drawer_style">ड्रॉअर की स्टाइल</string>
     <string name="style_vertical_grid">वर्टिकल ग्रिड</string>

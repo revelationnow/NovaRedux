@@ -63,6 +63,11 @@ class GroupPickers(private val surfaces: ItemSurfaces) {
         GroupChecklist(activity, viewModel, surfaces.itemIcons).show(group, apps, name)
     }
 
+    // Hidden apps behind the phone's lock while Lock hidden apps is on (#4).
+    private fun unlockHidden(then: () -> Unit) = HiddenAppsLock.whenOpen(
+        viewModel.state.value.prefs, surfaces.deviceAuth, activity.getString(R.string.hidden_apps_unlock), then
+    )
+
     // Settings' Hidden apps picker, from the All tab's menu.
     fun hiddenApps() {
         val apps = viewModel.state.value.apps
@@ -100,10 +105,12 @@ class GroupPickers(private val surfaces: ItemSurfaces) {
                 }
             } else {
                 menu.addRow(activity.getString(R.string.show_hidden_apps), R.drawable.ic_menu_show) {
-                    drawer.toggleHiddenApps()
+                    unlockHidden { drawer.toggleHiddenApps() }
                 }
             }
-            menu.addRow(activity.getString(R.string.hide_apps), R.drawable.ic_menu_hide) { hiddenApps() }
+            menu.addRow(activity.getString(R.string.hide_apps), R.drawable.ic_menu_hide) {
+                unlockHidden { hiddenApps() }
+            }
         } else {
             // Same rows, same order as a drawer folder's menu (#241).
             menu.addRow(activity.getString(R.string.select_apps), R.drawable.ic_menu_select_apps) { groupApps(group) }

@@ -186,6 +186,8 @@ data class LauncherPrefs(
     // Empty = badges on every app; else only these "userSerial/pkg/cls" keys.
     val badgeApps: Set<String> = emptySet(),
     val hiddenApps: Set<String> = emptySet(),
+    // Hidden apps show only after the phone's own lock (#4): HiddenAppsLock.
+    val hiddenAppsLock: Boolean = false,
     val gestureBindings: Set<String> = emptySet(),
     // Drawer tabs as "Name|key1,key2,..." entries; the All tab is implicit.
     val drawerGroups: Set<String> = emptySet(),

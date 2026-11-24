@@ -145,6 +145,11 @@
     <string name="gestures">Gestures</string>
     <string name="accessibility_description">Lets NovaRedux lock the screen, open Recent apps and open Quick settings from your gestures. It does not read the screen or collect any data. Optional.</string>
     <string name="hidden_apps">Hidden apps</string>
+    <string name="hidden_apps_lock">Lock hidden apps</string>
+    <string name="hidden_apps_lock_summary">Ask for your fingerprint or screen lock before hidden apps show. They are only hidden: to keep apps apart, use private space.</string>
+    <string name="hidden_apps_unlock">Unlock hidden apps</string>
+    <string name="hidden_apps_lock_turn_off">Turn off the lock on hidden apps</string>
+    <string name="hidden_apps_lock_needs_screen_lock">Set a screen lock in your phone\'s settings first.</string>
     <string name="drawer_groups">Drawer groups</string>
     <string name="drawer_style">Drawer style</string>
     <string name="style_vertical_grid">Vertical grid</string>

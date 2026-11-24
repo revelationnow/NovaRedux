@@ -30,6 +30,7 @@ interface ItemSurfaces {
     val drawerMenus: DrawerItemMenus
     val folderCards: FolderCards
     val iconSwipes: IconSwipes
+    val deviceAuth: DeviceAuth
 
     // X of the last touch-down, in window coordinates: an item's menu opens
     // there.

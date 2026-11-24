@@ -155,6 +155,11 @@
     <string name="gestures">Жесты</string>
     <string name="accessibility_description">Позволяет NovaRedux блокировать экран, открывать недавние приложения и быстрые настройки по вашим жестам. Не читает экран и не собирает данные. Необязательно.</string>
     <string name="hidden_apps">Скрытые приложения</string>
+    <string name="hidden_apps_lock">Блокировать скрытые приложения</string>
+    <string name="hidden_apps_lock_summary">Запрашивать отпечаток пальца или блокировку экрана перед показом скрытых приложений. Они только скрыты: чтобы держать приложения отдельно, используйте личное пространство.</string>
+    <string name="hidden_apps_unlock">Разблокировать скрытые приложения</string>
+    <string name="hidden_apps_lock_turn_off">Отключить блокировку скрытых приложений</string>
+    <string name="hidden_apps_lock_needs_screen_lock">Сначала настройте блокировку экрана в настройках телефона.</string>
     <string name="drawer_groups">Группы меню приложений</string>
     <string name="drawer_style">Стиль меню</string>
     <string name="style_vertical_grid">Вертикальная сетка</string>

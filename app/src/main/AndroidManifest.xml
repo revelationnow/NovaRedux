@@ -47,6 +47,9 @@
          settings rows, in-card grant buttons) - never at startup.
          READ_CALENDAR backs the upcoming-events card. -->
     <uses-permission android:name="android.permission.READ_CALENDAR" />
+    <!-- Lock hidden apps asks for the phone's own fingerprint, face or
+         screen lock through the system's prompt (install-time). -->
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
 
     <queries>
         <intent>

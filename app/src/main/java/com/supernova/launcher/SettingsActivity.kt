@@ -55,7 +55,9 @@ import com.supernova.launcher.gesture.GestureDefaults
 import com.supernova.launcher.notification.SupernovaNotificationListener
 import com.supernova.launcher.ui.Animations
 import com.supernova.launcher.ui.ChoiceMenu
+import com.supernova.launcher.ui.DeviceAuth
 import com.supernova.launcher.ui.FolderPreviewStyle
+import com.supernova.launcher.ui.HiddenAppsLock
 import com.supernova.launcher.ui.LabelStyler
 import com.supernova.launcher.ui.LauncherViewModel
 import com.supernova.launcher.ui.dp
@@ -154,6 +156,9 @@ class SettingsActivity : AppCompatActivity() {
     // returns there rather than closing Settings.
     private var styleFromList = false
     private val searchIndex by lazy { SettingsSearchIndex.build(this, viewModel) }
+
+    // The phone's lock in front of hidden apps (#4); registers its result now.
+    private val deviceAuth = DeviceAuth(this)
 
     private val requestHomeRoleLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         render()
@@ -565,6 +570,7 @@ class SettingsActivity : AppCompatActivity() {
             editGesture = ::showActionPicker,
             pickLockMethod = ::showLockMethodPicker,
             editHiddenApps = ::showHiddenAppsPicker,
+            setHiddenAppsLock = ::setHiddenAppsLock,
             exportBackup = backup::pickExportFile,
             importBackup = backup::pickImportFile,
             shareBackup = ::shareBackup,
@@ -805,6 +811,8 @@ class SettingsActivity : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
         saveOpenAccordions()
+        // Off the screen, hidden apps lock again (#4).
+        HiddenAppsLock.relock()
     }
 
     // The open Advanced sections and nested switches, kept across launches.
@@ -2188,13 +2196,30 @@ class SettingsActivity : AppCompatActivity() {
         }
     }
 
-    private fun showHiddenAppsPicker() {
+    private fun showHiddenAppsPicker() = HiddenAppsLock.whenOpen(
+        viewModel.state.value.prefs, deviceAuth, getString(R.string.hidden_apps_unlock)
+    ) {
         showAppChecklist(
             title = getString(R.string.hidden_apps),
             apps = viewModel.state.value.apps,
             checked = { viewModel.isAppHidden(it) },
             onSave = { changes -> changes.forEach { (app, hidden) -> viewModel.setAppHidden(app, hidden) } }
         )
+    }
+
+    // Lock hidden apps (#4). On needs a screen lock to ask for; off asks for
+    // it, so the switch is no way around the lock. Until then the switch
+    // shows what is stored.
+    private fun setHiddenAppsLock(on: Boolean) {
+        adapter.updatePrefs(viewModel.state.value.prefs)
+        when {
+            on && !deviceAuth.available ->
+                Toast.makeText(this, R.string.hidden_apps_lock_needs_screen_lock, Toast.LENGTH_LONG).show()
+            on -> viewModel.set(Pref.hiddenAppsLock, true)
+            else -> deviceAuth.confirm(getString(R.string.hidden_apps_lock_turn_off)) {
+                viewModel.set(Pref.hiddenAppsLock, false)
+            }
+        }
     }
 
     // The picker shows what a pack looks like rather than only naming

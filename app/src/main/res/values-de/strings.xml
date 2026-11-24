@@ -139,6 +139,11 @@
     <string name="gestures">Gesten</string>
     <string name="accessibility_description">Erlaubt NovaRedux, mit deinen Gesten den Bildschirm zu sperren, die zuletzt verwendeten Apps und die Schnelleinstellungen zu öffnen. Es liest den Bildschirm nicht und sammelt keine Daten. Optional.</string>
     <string name="hidden_apps">Ausgeblendete Apps</string>
+    <string name="hidden_apps_lock">Ausgeblendete Apps sperren</string>
+    <string name="hidden_apps_lock_summary">Vor dem Anzeigen ausgeblendeter Apps nach deinem Fingerabdruck oder deiner Displaysperre fragen. Sie sind nur ausgeblendet: Um Apps getrennt zu halten, nutze den vertraulichen Bereich.</string>
+    <string name="hidden_apps_unlock">Ausgeblendete Apps entsperren</string>
+    <string name="hidden_apps_lock_turn_off">Sperre für ausgeblendete Apps ausschalten</string>
+    <string name="hidden_apps_lock_needs_screen_lock">Richte zuerst in den Einstellungen deines Telefons eine Displaysperre ein.</string>
     <string name="drawer_groups">Drawer-Gruppen</string>
     <string name="drawer_style">Drawer-Stil</string>
     <string name="style_vertical_grid">Vertikales Raster</string>

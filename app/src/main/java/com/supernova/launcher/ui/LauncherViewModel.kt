@@ -1106,9 +1106,13 @@ class LauncherViewModel(
     }
 
     // The apps search matches: the drawer's and the unlocked private
-    // space's, plus the hidden ones when the user wants them found.
-    fun searchableApps(): List<LaunchableApp> =
-        (if (state.value.prefs.searchHiddenApps) appsForPicking() else visibleApps()) + privateApps()
+    // space's, plus the hidden ones when the user wants them found and
+    // Lock hidden apps, if on, has been opened (#4).
+    fun searchableApps(): List<LaunchableApp> {
+        val prefs = state.value.prefs
+        val withHidden = prefs.searchHiddenApps && HiddenAppsLock.isOpen(prefs)
+        return (if (withHidden) appsForPicking() else visibleApps()) + privateApps()
+    }
 
     // Every app, hidden ones too, under the names the user gave them: what a
     // gesture or icon swipe can open.

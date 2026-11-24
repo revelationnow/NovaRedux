@@ -89,6 +89,7 @@ object SettingsCatalogue {
         val editGesture: (Gesture) -> Unit = {},
         val pickLockMethod: () -> Unit = {},
         val editHiddenApps: () -> Unit = {},
+        val setHiddenAppsLock: (Boolean) -> Unit = {},
         val editSearchChips: () -> Unit = {},
         val pickDrawerGrid: () -> Unit = {},
         // The drawer's landscape grid, in the same dialog.
@@ -1078,6 +1079,12 @@ object SettingsCatalogue {
                         }
                     },
                     onClick = actions.editHiddenApps
+                ),
+                SettingItem.Toggle(
+                    R.string.hidden_apps_lock,
+                    get = { it.hiddenAppsLock },
+                    set = { actions.setHiddenAppsLock(it) },
+                    subtitle = R.string.hidden_apps_lock_summary
                 ),
                 // A page of its own (ui/settings/groups); the row counts
                 // what it holds.
