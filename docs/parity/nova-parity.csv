@@ -167,3 +167,17 @@ Project,TalkBack support,,No,Done,P1,Accessible custom views,"No accessibility l
 Project,Split LauncherActivity,,No,Partial,P1,Move UI state into controllers,"About 3,480 lines (from 5,470). Their own classes now: the dock's chrome, margins and geometry (DockChrome, ChromeMargins, DockGeometry); the item menus (WorkspaceItemMenus, DrawerItemMenus, built from ItemMenuKit), Edit sheets and the swipe picker (ItemEdits), removals and their Undo bars (ItemRemoval), folder cards (FolderCards) and icon swipes (IconSwipes), reached through ItemSurfaces. Still in it: touch routing (about 400 lines), launching (200), and the search and feed setup (260)"
 Project,Give the layout its own store,,No,Done,P2,Layout saves stop rewriting settings,"The layout has its own store (supernova_layout), moved over from the settings store on the first read; layout edits and setting changes no longer rewrite each other"
 Beyond Nova,Fine widget placement,,No,Done,P2,Nova's subgrid stopped at half cells,"Widgets move and resize in sixteenths of a cell, pulled onto whole and half cells nearby (FinePlacement); off by default, under Home screen > Editing. Another launcher's widgets placed between half cells come in that way"
+Beyond Nova,Lock on hidden apps,,No,Missing,P1,Smart Launcher locks its hidden apps with a PIN or fingerprint,Planned in #4
+Beyond Nova,"Gesture actions: screenshot, power menu, split screen, torch",,No,Missing,P2,Kvaesitso and phone makers' own gestures have them,Planned in #5
+Beyond Nova,A font file for icon labels,,No,Missing,P2,Lawnchair takes OTF and TTF files; Nova kept to the system font,Planned in #6
+Beyond Nova,Calendar events in search,,No,Missing,P2,Kvaesitso searches the phone's calendar events,Planned in #7
+Beyond Nova,Unit conversion in search,,No,Missing,P2,Kvaesitso's unit converter,Planned in #8
+Beyond Nova,Actions on typed numbers and addresses in search,,No,Missing,P2,Smart Launcher's quick actions in search,Planned in #9
+Beyond Nova,Widget stacks,,No,Missing,P1,"One UI, Niagara, Action Launcher and Smart Launcher",Planned in #10
+Beyond Nova,Blur behind the drawer and folders,,No,Missing,P2,Smart Launcher's blurred surfaces,Planned in #11
+Beyond Nova,App pairs,,No,Missing,P2,Android 15's app pairs; the Splitz app,Planned in #12
+Beyond Nova,A built-in glance widget,,No,Missing,P2,Lawnchair's At a Glance,Planned in #13
+Beyond Nova,A widget behind an icon swipe,,No,Missing,P2,Action Launcher's Shutters,Planned in #14
+Beyond Nova,Notification text on home screen icons,,No,Missing,P2,Niagara shows messages on its home screen,Planned in #15
+Beyond Nova,Notification summary,,No,Missing,P2,Niagara's notification summary,Planned in #16
+Beyond Nova,Screen time card on the feed,,No,Missing,P2,Microsoft Launcher's screen time,Planned in #17
