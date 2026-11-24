@@ -1034,6 +1034,14 @@ class LauncherActivity :
             this, dateChangeReceiver, filter, androidx.core.content.ContextCompat.RECEIVER_NOT_EXPORTED
         )
         if (java.time.LocalDate.now() != iconsDrawnFor) redrawForNewDay() else refreshGlanceWidget()
+        // A listener with access but no connection a while after start is
+        // one the system dropped: no badge would ever come (Supernova issue
+        // 344).
+        if (viewModel.state.value.prefs.badges) {
+            binding.root.postDelayed({
+                SupernovaNotificationListener.rebindIfDropped(applicationContext)
+            }, LISTENER_REBIND_CHECK_MS)
+        }
     }
 
     // The glance widget (#13) catches up as home comes back and as the day
@@ -3604,6 +3612,8 @@ class LauncherActivity :
     }
 
     companion object {
+        private const val LISTENER_REBIND_CHECK_MS = 5000L
+
         // Every live launcher activity, for closeOtherLaunchers. Main thread
         // only.
         private val liveLaunchers = mutableListOf<java.lang.ref.WeakReference<LauncherActivity>>()

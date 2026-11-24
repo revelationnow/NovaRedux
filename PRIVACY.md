@@ -60,7 +60,9 @@ Only when you do it yourself:
   suggestions back. See below.
 - **Sharing.** Export backup and Share crash log hand a file to the app you
   choose. The crash log holds the error, the app version and the device
-  model, and is sent only if you share it.
+  model, and is sent only if you share it. After the "Test notification
+  badge" row, it also notes which apps' notifications NovaRedux saw and why
+  each did or didn't badge: package names and counts, never what they say.
 - **Report an issue** opens a new GitHub issue in your browser with the app
   version, Android version and device model filled in. You can edit or
   remove these before posting.
