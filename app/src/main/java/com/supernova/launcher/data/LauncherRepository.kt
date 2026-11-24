@@ -807,6 +807,15 @@ class LauncherRepository(private val context: Context) {
 
     // Sets a bound widget as a card's featured content. The old host id (if
     // any) is freed by the caller before this runs.
+    // A widget item changed in place: its stack (#10) grown, shrunk or turned.
+    suspend fun updateWidget(itemId: String, change: (LauncherItem) -> LauncherItem) {
+        mutate { current ->
+            current.copy(
+                items = current.items.map { if (it.id == itemId && it.itemType == ItemType.WIDGET) change(it) else it }
+            )
+        }
+    }
+
     // A widget restored without a live id has one again.
     suspend fun setWidgetId(itemId: String, appWidgetId: Int) {
         mutate { current ->

@@ -25,6 +25,8 @@
     <string name="remove_from_folder">Move to Home</string>
     <string name="widget">Widget</string>
     <string name="widget_resize">Resize</string>
+    <string name="stack_add_widget">Add a widget to this stack</string>
+    <string name="stack_remove_widget">Remove this widget from the stack</string>
     <!-- Long-press menu of a home screen icon or folder: makes it 2x2 cells, its icon twice the size, and back. -->
     <string name="large_icon">Large icon</string>
     <string name="normal_icon">Normal icon</string>

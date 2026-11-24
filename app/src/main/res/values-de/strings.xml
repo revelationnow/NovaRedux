@@ -23,6 +23,8 @@
     <string name="remove_from_folder">Auf den Startbildschirm verschieben</string>
     <string name="widget">Widget</string>
     <string name="widget_resize">Größe ändern</string>
+    <string name="stack_add_widget">Widget zu diesem Stapel hinzufügen</string>
+    <string name="stack_remove_widget">Dieses Widget aus dem Stapel entfernen</string>
     <string name="large_icon">Großes Symbol</string>
     <string name="normal_icon">Normales Symbol</string>
     <string name="padding">Abstand</string>

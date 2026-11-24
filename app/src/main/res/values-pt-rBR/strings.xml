@@ -23,6 +23,8 @@
     <string name="remove_from_folder">Mover para a tela inicial</string>
     <string name="widget">Widget</string>
     <string name="widget_resize">Redimensionar</string>
+    <string name="stack_add_widget">Adicionar um widget a esta pilha</string>
+    <string name="stack_remove_widget">Remover este widget da pilha</string>
     <string name="large_icon">Ícone grande</string>
     <string name="normal_icon">Ícone normal</string>
     <string name="padding">Margens</string>

@@ -227,7 +227,9 @@ class BackupRoundTripTest {
                 spanY = 2,
                 appWidgetId = 42,
                 widgetProvider = "com.w/com.w.Provider",
-                widgetPadding = 12
+                widgetPadding = 12,
+                stack = listOf(StackedWidget(43, "com.x/com.x.Provider", 10L, "Clock")),
+                stackShown = 1
             ),
             // A launcher-action item and an activity item exercise the new
             // intentUri/iconBase64 fields through the backup round-trip.

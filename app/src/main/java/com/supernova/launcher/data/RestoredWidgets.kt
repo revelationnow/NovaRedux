@@ -9,6 +9,7 @@ internal object RestoredWidgets {
     // What the import's message counts: widgets and widget cards with no id.
     fun needingRebind(model: LauncherModel): Int =
         model.items.count { it.itemType == ItemType.WIDGET && it.appWidgetId == null } +
+            model.items.sumOf { item -> item.stack.count { it.appWidgetId == null } } +
             model.feedCards.count { it.widgetProvider != null && it.appWidgetId == null }
 
     fun withStaleCleared(
@@ -17,11 +18,22 @@ internal object RestoredWidgets {
     ): LauncherModel = model.copy(
         items = model.items.map { item ->
             val id = item.appWidgetId
-            if (item.itemType == ItemType.WIDGET && id != null && !widgetBound(id, item.widgetProvider)) {
+            val own = if (item.itemType == ItemType.WIDGET && id != null && !widgetBound(id, item.widgetProvider)) {
                 item.copy(appWidgetId = null)
             } else {
                 item
             }
+            // A stack's other widgets (#10) the same way.
+            own.copy(
+                stack = own.stack.map { member ->
+                    val memberId = member.appWidgetId
+                    if (memberId != null && !widgetBound(memberId, member.widgetProvider)) {
+                        member.copy(appWidgetId = null)
+                    } else {
+                        member
+                    }
+                }
+            )
         },
         feedCards = model.feedCards.map { card ->
             val id = card.appWidgetId

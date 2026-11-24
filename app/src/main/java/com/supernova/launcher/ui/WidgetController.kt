@@ -31,6 +31,8 @@ import com.supernova.launcher.data.LauncherModel
 import com.supernova.launcher.feed.FeaturedType
 import com.supernova.launcher.data.LauncherPrefs
 import com.supernova.launcher.data.LauncherRepository
+import com.supernova.launcher.data.StackedWidget
+import com.supernova.launcher.data.WidgetStacks
 import com.supernova.launcher.data.WorkspaceGeometry
 import com.supernova.launcher.databinding.ActivityLauncherBinding
 import com.supernova.launcher.runLogged
@@ -110,7 +112,11 @@ class WidgetController(
     // and so do its cached view and size. One left behind by a recreate or a
     // process death in between is reclaimed by sweepOrphanIds.
     fun releaseWidget(item: LauncherItem) {
-        val id = item.appWidgetId ?: return
+        // A stack's widgets all go with it (#10).
+        WidgetStacks.ids(item).forEach(::freeWidgetId)
+    }
+
+    private fun freeWidgetId(id: Int) {
         appWidgetHost.deleteAppWidgetId(id)
         lastReportedSizes.remove(id)
         widgetHostViews.remove(id)
@@ -163,6 +169,8 @@ class WidgetController(
         data class Restored(val itemId: String) : Target
         // Replace: the widget stands in for the desktop search bar.
         data object SearchBar : Target
+        // One more widget on a widget item's stack (#10).
+        data class Stack(val itemId: String) : Target
     }
 
     // Kept in the view model: a dark-mode, font-size or language change
@@ -621,6 +629,13 @@ class WidgetController(
     }
 
     fun reportWidgetSize(item: LauncherItem, view: View) {
+        // Each of a stack's widgets is told the stack's size (#10).
+        if (view is WidgetStackView) {
+            view.widgetViews().forEachIndexed { index, member ->
+                reportWidgetSize(WidgetStacks.asShown(item, index).copy(stack = emptyList()), member)
+            }
+            return
+        }
         val widgetId = item.appWidgetId ?: return
         val hostView = view as? AppWidgetHostView ?: return
         if (view.width <= 0 || view.height <= 0) return
@@ -652,6 +667,7 @@ class WidgetController(
     }
 
     fun buildWidgetView(item: LauncherItem): View {
+        if (item.stack.isNotEmpty()) return stackView(item)
         val widgetId = item.appWidgetId ?: return fallbackWidgetView(item)
         val hostView = widgetHostViews[widgetId]?.also(::applyWidgetCornerRadius)
             ?: run {
@@ -697,6 +713,47 @@ class WidgetController(
     // A widget with no live id: its name, and if its provider is installed, a
     // tap to bind it again through the normal add flow, which asks for the
     // bind permission and runs the widget's own setup where it needs them.
+    // A widget stack (#10): each widget's view in one frame, the one last
+    // shown up. A long press on any of them is the stack's, as one item.
+    private fun stackView(item: LauncherItem): View {
+        val stack = WidgetStackView(activity)
+        val views = (0 until WidgetStacks.size(item)).map { index ->
+            val member = WidgetStacks.asShown(item, index)
+            (member.appWidgetId?.let(::hostView) ?: fallbackWidgetView(member.copy(widgetProvider = null)))
+                .apply { setOnLongClickListener { host.onWidgetLongPress(stack, item); true } }
+        }
+        stack.setWidgets(views, WidgetStacks.shown(item))
+        // Kept, so a rebind shows the same one; the page doesn't redraw for it.
+        stack.onShownChanged = { shown -> viewModel.updateWidget(item.id) { it.copy(stackShown = shown) } }
+        return stack
+    }
+
+    // A bound id's view, made once and kept.
+    private fun hostView(widgetId: Int): View? = widgetHostViews[widgetId]?.also(::applyWidgetCornerRadius)
+        ?: appWidgetManager.getAppWidgetInfo(widgetId)?.let { info ->
+            createWidgetHostView(widgetId, info)?.also { widgetHostViews[widgetId] = it }
+        }
+
+    // A widget picked for an item's stack (#10) goes into its cells, bound
+    // and set up as any other.
+    fun addToStack(item: LauncherItem) {
+        val prefs = viewModel.state.value.prefs
+        val (cellWidth, cellHeight) = host.currentCellSizePx()
+        WidgetPickerSheet.show(
+            activity, cellWidth, cellHeight, prefs.gridCols, prefs.gridRows, prefs = prefs,
+            onPicked = { info -> bind(info, Target.Stack(item.id)) },
+            icons = WidgetPickerIcons.of(viewModel.appCatalog())
+        )
+    }
+
+    // The showing widget out of its stack (#10); its host id is freed.
+    fun removeShownFromStack(item: LauncherItem, anchor: View) {
+        val index = (anchor as? WidgetStackView)?.shown ?: WidgetStacks.shown(item)
+        val freed = WidgetStacks.removed(item, index).second
+        viewModel.updateWidget(item.id) { WidgetStacks.removed(it, index).first }
+        freed?.let(::freeWidgetId)
+    }
+
     private fun fallbackWidgetView(item: LauncherItem): View {
         val info = installedProvider(item.widgetProvider, item.userSerial)
         return TextView(activity).apply {
@@ -742,6 +799,16 @@ class WidgetController(
             .forEach { item ->
                 rebindSilently(item.id, item.widgetProvider, item.userSerial) { viewModel.setWidgetId(item.id, it) }
             }
+        // A stack's other widgets (#10), each by its place in the stack.
+        model.items.filter { it.itemType == ItemType.WIDGET }.forEach { item ->
+            item.stack.forEachIndexed { at, member ->
+                if (member.appWidgetId == null) {
+                    rebindSilently("${item.id}#${at + 1}", member.widgetProvider, member.userSerial) { id ->
+                        viewModel.updateWidget(item.id) { WidgetStacks.withMemberId(it, at + 1, id) }
+                    }
+                }
+            }
+        }
         model.feedCards
             .filter { FeaturedType.fromName(it.featuredType) == FeaturedType.WIDGET && it.appWidgetId == null }
             .forEach { card ->
@@ -992,6 +1059,15 @@ class WidgetController(
                 )
             }
             is Target.Restored -> viewModel.setWidgetId(target.itemId, pending.widgetId)
+            is Target.Stack -> {
+                val widget = StackedWidget(
+                    pending.widgetId,
+                    info.provider?.flattenToString(),
+                    serialOf(info.profile),
+                    info.loadLabel(activity.packageManager)?.toString().orEmpty()
+                )
+                viewModel.updateWidget(target.itemId) { WidgetStacks.added(it, widget) }
+            }
             is Target.Card -> {
                 viewModel.setCardWidget(
                     target.cardId, pending.widgetId, info.provider?.flattenToString().orEmpty()

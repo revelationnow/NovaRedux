@@ -898,12 +898,17 @@ class LauncherViewModel(
         if (!repository.modelReadable()) return null
         val model = repository.modelFlow.first()
         val searchBarWidget = preferences.snapshot().searchBarWidgetId
-        return (model.items.mapNotNull { it.appWidgetId } +
+        // A stack's other widgets are the item's too (#10).
+        return (model.items.flatMap(com.supernova.launcher.data.WidgetStacks::ids) +
             model.feedCards.mapNotNull { it.appWidgetId } +
             listOfNotNull(searchBarWidget.takeIf { it != 0 })).toSet()
     }
 
     fun setWidgetId(itemId: String, appWidgetId: Int) = persist { repository.setWidgetId(itemId, appWidgetId) }
+
+    // A widget stack's change (#10): WidgetStacks makes it.
+    fun updateWidget(itemId: String, change: (LauncherItem) -> LauncherItem) =
+        persist { repository.updateWidget(itemId, change) }
 
     fun resizeWidget(
         itemId: String,

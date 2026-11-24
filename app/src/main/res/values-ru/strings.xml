@@ -23,6 +23,8 @@
     <string name="remove_from_folder">Переместить на главный экран</string>
     <string name="widget">Виджет</string>
     <string name="widget_resize">Изменить размер</string>
+    <string name="stack_add_widget">Добавить виджет в эту стопку</string>
+    <string name="stack_remove_widget">Убрать этот виджет из стопки</string>
     <string name="large_icon">Большая иконка</string>
     <string name="normal_icon">Обычная иконка</string>
     <string name="padding">Отступы</string>

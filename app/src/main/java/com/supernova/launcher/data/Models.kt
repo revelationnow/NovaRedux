@@ -111,7 +111,22 @@ data class LauncherItem(
     // the dock or a folder. Its name and hidden label are the copy's own; an
     // icon, shape or style set here is too, and with none set the copy draws
     // the drawer's (appOverrides) - see AppItemEdits.
-    val appEdit: AppOverride? = null
+    val appEdit: AppOverride? = null,
+    // WIDGET items only: more widgets in the same cells, swiped between
+    // (#10). The item's own widget comes first; WidgetStacks.
+    val stack: List<StackedWidget> = emptyList(),
+    // Which of the stack's widgets shows: 0 is the item's own.
+    val stackShown: Int = 0
+)
+
+// A widget in a stack after the item's own (#10): what a widget item keeps
+// of its widget, kept for each.
+@Serializable
+data class StackedWidget(
+    val appWidgetId: Int? = null,
+    val widgetProvider: String? = null,
+    val userSerial: Long = 0L,
+    val label: String = ""
 )
 
 // Per-app customization, keyed "userSerial/pkg/cls" in LauncherModel: the

@@ -8,6 +8,7 @@ import com.supernova.launcher.data.ContainerType
 import com.supernova.launcher.data.ItemType
 import com.supernova.launcher.data.LauncherItem
 import com.supernova.launcher.data.LauncherModel
+import com.supernova.launcher.data.WidgetStacks
 
 // The menus of what is on the home screen: an icon's, a folder's and a
 // widget's, on the desktop or in the dock, and an app's in an open home
@@ -62,6 +63,9 @@ class WorkspaceItemMenus(private val surfaces: ItemSurfaces) {
 
     private fun addWidgetRows(menu: SupernovaPopupMenu, anchor: View, item: LauncherItem, locked: Boolean) {
         val widgets = surfaces.widgets
+        // In a stack (#10), App info, the widget's settings and the picture
+        // are the showing widget's.
+        val shown = WidgetStacks.asShown(item, (anchor as? WidgetStackView)?.shown ?: WidgetStacks.shown(item))
         if (!locked) {
             menu.addRow(activity.getString(R.string.widget_resize), R.drawable.ic_menu_resize) {
                 widgets.showResizeFrame(item, anchor)
@@ -83,6 +87,7 @@ class WorkspaceItemMenus(private val surfaces: ItemSurfaces) {
                     viewModel.restackItem(item.id, toFront = false)
                 }
             }
+            addStackRows(menu, anchor, item)
             menu.addRow(activity.getString(R.string.remove), R.drawable.ic_menu_remove_item) {
                 surfaces.removal.remove(item)
             }
@@ -90,19 +95,33 @@ class WorkspaceItemMenus(private val surfaces: ItemSurfaces) {
         // The widget menu has the provider's App info, locked or not, as an
         // app's menu does. The provider names the package and, through the
         // user, the profile its details open in.
-        item.widgetProvider?.let(ComponentName::unflattenFromString)?.let { provider ->
+        shown.widgetProvider?.let(ComponentName::unflattenFromString)?.let { provider ->
             menu.addRow(activity.getString(R.string.app_info), R.drawable.ic_menu_info) {
-                viewModel.appCatalog().actions.openAppInfo(provider.packageName, provider.className, item.userSerial)
+                viewModel.appCatalog().actions.openAppInfo(provider.packageName, provider.className, shown.userSerial)
             }
         }
         // The widget's own settings screen, for widgets that offer it after
         // they are placed.
-        if (widgets.isReconfigurable(item)) {
+        if (widgets.isReconfigurable(shown)) {
             menu.addRow(activity.getString(R.string.widget_settings), R.drawable.ic_menu_edit) {
-                widgets.openWidgetSettings(item)
+                widgets.openWidgetSettings(shown)
             }
         }
-        kit.addExportPngRow(menu, anchor, item.appWidgetId?.let(widgets::label) ?: item.label)
+        kit.addExportPngRow(menu, anchor, shown.appWidgetId?.let(widgets::label) ?: shown.label)
+    }
+
+    // Widget stacks (#10): another widget into these cells, and, in a
+    // stack, the showing one out of it.
+    private fun addStackRows(menu: SupernovaPopupMenu, anchor: View, item: LauncherItem) {
+        if (item.container != ContainerType.WORKSPACE) return
+        menu.addRow(activity.getString(R.string.stack_add_widget), R.drawable.ic_menu_stack) {
+            surfaces.widgets.addToStack(item)
+        }
+        if (item.stack.isNotEmpty()) {
+            menu.addRow(activity.getString(R.string.stack_remove_widget), R.drawable.ic_menu_unstack) {
+                surfaces.widgets.removeShownFromStack(item, anchor)
+            }
+        }
     }
 
     // Remove, Widgets, App info, Edit. Everything configurable (swipe

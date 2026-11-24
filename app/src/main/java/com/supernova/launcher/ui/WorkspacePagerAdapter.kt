@@ -357,6 +357,9 @@ class WorkspacePagerAdapter(private val host: Host) : RecyclerView.Adapter<Recyc
                     "${it.swipeAction},${it.swipeActionDown},${it.swipeToOpen},${it.widgetPadding}," +
                     // A restored widget's new id swaps its placeholder for the real view.
                     "${it.appWidgetId}" +
+                    // A stack's widgets (#10), but not which one shows: a swipe
+                    // between them changes only that, and redraws nothing.
+                    it.stack.joinToString("/", "[", "]") { member -> "${member.appWidgetId}" } +
                     // Pausing work apps greys their icons.
                     PausedIcon.mark(state, it.userSerial) +
                     FolderIconDrawable.customIconKey(it) +
