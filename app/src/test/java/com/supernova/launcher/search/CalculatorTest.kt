@@ -92,8 +92,28 @@ class CalculatorTest {
     }
 
     @Test
+    fun volumeSpeedAreaEnergyAndPressure() {
+        assertEquals("1 gal = 3.785412 l", display("1 gal in l"))
+        assertEquals("2 fl oz = 4 tbsp", display("2 fl oz in tbsp"))
+        assertEquals("100 km/h = 62.137119 mph", display("100 km/h in mph"))
+        assertEquals("30 kn = 55.56 km/h", display("30 knots to km/h"))
+        assertEquals("1 ac = 4046.856422 m²", display("1 acre in m2"))
+        assertEquals("1 kWh = 3600 kJ", display("1 kwh in kj"))
+        assertEquals("1 atm = 14.695949 psi", display("1 atm to psi"))
+    }
+
+    @Test
+    fun spacedUnitNamesAreFoldedTogether() {
+        assertEquals("1 mi² = 2.589988 km²", display("1 square mile in sq km"))
+        assertEquals("60 mph = 96.56064 km/h", display("60 miles per hour in km/h"))
+        assertEquals("10 nmi = 18.52 km", display("10 nautical miles into km"))
+        assertEquals("5 km = 3.106856 mi", display("5 kilometres in mi"))
+    }
+
+    @Test
     fun crossCategoryConversionIsRejected() {
         assertNull(display("5 kg to km"))
+        assertNull(display("1 l to km"))
         assertNull(display("5 xyz to m"))
     }
 }

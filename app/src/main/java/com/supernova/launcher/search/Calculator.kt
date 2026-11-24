@@ -61,7 +61,8 @@ object Calculator {
 
     // ---------------------------------------------------------------- units
 
-    private class Unit(val symbol: String, val toBase: Double, val category: Int)
+    // internal: UnitTable adds volume, speed, area, energy and pressure (#8).
+    internal class Unit(val symbol: String, val toBase: Double, val category: Int)
 
     private const val LENGTH = 0
     private const val MASS = 1
@@ -99,14 +100,15 @@ object Calculator {
         put(Unit("°C", 1.0, TEMP), "c", "celsius", "°c")
         put(Unit("°F", 1.0, TEMP), "f", "fahrenheit", "°f")
         put(Unit("K", 1.0, TEMP), "k", "kelvin")
-    }
+    } + UnitTable.units
 
-    // "<number?> <unit> to|in|as <unit>"
+    // "<number?> <unit> to|in|as|into <unit>"; a unit may hold digits and a
+    // slash ("m2", "km/h") once UnitTable has folded spaced names together.
     private val conversionPattern =
-        Regex("""^(-?\d+(?:\.\d+)?)?\s*([a-z°]+)\s+(?:to|in|as)\s+([a-z°]+)$""")
+        Regex("""^(-?\d+(?:\.\d+)?)?\s*([a-z°][a-z°0-9/]*)\s+(?:to|in|as|into)\s+([a-z°][a-z°0-9/]*)$""")
 
     private fun convertUnits(text: String): Result? {
-        val match = conversionPattern.matchEntire(text) ?: return null
+        val match = conversionPattern.matchEntire(UnitTable.foldPhrases(text)) ?: return null
         val amount = match.groupValues[1].toDoubleOrNull() ?: 1.0
         val from = units[match.groupValues[2]] ?: return null
         val to = units[match.groupValues[3]] ?: return null
