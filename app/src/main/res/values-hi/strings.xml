@@ -832,6 +832,12 @@
     <string name="event_untitled">(कोई शीर्षक नहीं)</string>
     <string name="search_shortcuts">ऐप शॉर्टकट खोजें</string>
     <string name="search_calculator">कैलकुलेटर</string>
+    <string name="search_typed_actions">टाइप की गई चीज़ों पर कार्रवाई</string>
+    <string name="search_typed_actions_summary">खोज में टाइप किए गए नंबर पर कॉल या मैसेज करें, वेब पता खोलें या ईमेल पते पर ईमेल भेजें</string>
+    <string name="typed_call">%1$s पर कॉल करें</string>
+    <string name="typed_open">%1$s खोलें</string>
+    <string name="typed_email">%1$s को ईमेल करें</string>
+    <string name="typed_add_contact">संपर्कों में जोड़ें</string>
     <string name="search_hidden_apps">छिपे हुए ऐप खोजें</string>
     <string name="search_hidden_apps_summary">छिपे हुए ऐप खोज के नतीजों में दिखेंगे</string>
     <string name="search_suggestions">वेब सुझाव</string>

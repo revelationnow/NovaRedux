@@ -849,6 +849,12 @@
     <string name="event_untitled">(Sin título)</string>
     <string name="search_shortcuts">Buscar accesos directos de aplicaciones</string>
     <string name="search_calculator">Calculadora</string>
+    <string name="search_typed_actions">Acciones con lo que escribes</string>
+    <string name="search_typed_actions_summary">Llama o escribe a un número, abre una dirección web o envía un correo a una dirección que escribas en la búsqueda</string>
+    <string name="typed_call">Llamar a %1$s</string>
+    <string name="typed_open">Abrir %1$s</string>
+    <string name="typed_email">Enviar correo a %1$s</string>
+    <string name="typed_add_contact">Añadir a contactos</string>
     <string name="search_hidden_apps">Buscar aplicaciones ocultas</string>
     <string name="search_hidden_apps_summary">Las aplicaciones ocultas aparecerán en los resultados</string>
     <string name="search_suggestions">Sugerencias web</string>

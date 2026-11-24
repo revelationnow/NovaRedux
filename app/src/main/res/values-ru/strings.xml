@@ -866,6 +866,12 @@
     <string name="event_untitled">(Без названия)</string>
     <string name="search_shortcuts">Искать ярлыки приложений</string>
     <string name="search_calculator">Калькулятор</string>
+    <string name="search_typed_actions">Действия с введённым текстом</string>
+    <string name="search_typed_actions_summary">Позвонить или написать на номер, открыть веб-адрес или написать на адрес эл. почты, введённые в поиск</string>
+    <string name="typed_call">Позвонить: %1$s</string>
+    <string name="typed_open">Открыть %1$s</string>
+    <string name="typed_email">Написать на %1$s</string>
+    <string name="typed_add_contact">Добавить в контакты</string>
     <string name="search_hidden_apps">Искать скрытые приложения</string>
     <string name="search_hidden_apps_summary">Скрытые приложения будут появляться в результатах</string>
     <string name="search_suggestions">Веб-подсказки</string>

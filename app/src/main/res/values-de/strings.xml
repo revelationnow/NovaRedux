@@ -832,6 +832,12 @@
     <string name="event_untitled">(Ohne Titel)</string>
     <string name="search_shortcuts">App-Verknüpfungen durchsuchen</string>
     <string name="search_calculator">Rechner</string>
+    <string name="search_typed_actions">Aktionen für Eingaben</string>
+    <string name="search_typed_actions_summary">Eine in die Suche eingegebene Nummer anrufen oder ihr schreiben, eine Webadresse öffnen oder an eine E-Mail-Adresse schreiben</string>
+    <string name="typed_call">%1$s anrufen</string>
+    <string name="typed_open">%1$s öffnen</string>
+    <string name="typed_email">E-Mail an %1$s</string>
+    <string name="typed_add_contact">Zu Kontakten hinzufügen</string>
     <string name="search_hidden_apps">Ausgeblendete Apps durchsuchen</string>
     <string name="search_hidden_apps_summary">Ausgeblendete Apps erscheinen in den Suchergebnissen</string>
     <string name="search_suggestions">Websuchvorschläge</string>

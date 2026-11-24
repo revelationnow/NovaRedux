@@ -1227,6 +1227,12 @@ object SettingsCatalogue {
                     set = { viewModel.set(Pref.searchCalculator, it) }
                 ),
                 SettingItem.Toggle(
+                    R.string.search_typed_actions,
+                    get = { it.searchTypedActions },
+                    set = { viewModel.set(Pref.searchTypedActions, it) },
+                    subtitle = R.string.search_typed_actions_summary
+                ),
+                SettingItem.Toggle(
                     R.string.search_hidden_apps,
                     get = { it.searchHiddenApps },
                     set = { viewModel.set(Pref.searchHiddenApps, it) },

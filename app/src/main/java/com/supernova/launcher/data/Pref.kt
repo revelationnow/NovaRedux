@@ -314,6 +314,7 @@ object Pref {
     val searchWebCustomUrl = text("search_web_custom_url")
     val searchContacts = bool("search_contacts")
     val searchCalendar = bool("search_calendar")
+    val searchTypedActions = bool("search_typed_actions")
     val searchShortcuts = bool("search_shortcuts")
     val searchFolders = bool("search_folders")
     val searchWindowMode = choice("search_window_mode", SearchWindowMode.entries)

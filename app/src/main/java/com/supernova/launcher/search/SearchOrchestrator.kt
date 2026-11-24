@@ -90,6 +90,7 @@ class SearchOrchestrator(
 
     private fun sectionRank(result: SearchResult): Int = when (result) {
         is SearchResult.Calculation -> Section.CALCULATION
+        is SearchResult.Action -> Section.ACTIONS
         is SearchResult.App -> Section.APPS
         is SearchResult.Card -> Section.CARDS
         is SearchResult.Folder -> Section.FOLDERS
@@ -103,6 +104,6 @@ class SearchOrchestrator(
 
     // The display sections, top to bottom.
     private enum class Section {
-        CALCULATION, APPS, CARDS, FOLDERS, SHORTCUTS, CONTACTS, EVENTS, WEB, SUGGESTIONS, PROVIDERS
+        CALCULATION, ACTIONS, APPS, CARDS, FOLDERS, SHORTCUTS, CONTACTS, EVENTS, WEB, SUGGESTIONS, PROVIDERS
     }
 }

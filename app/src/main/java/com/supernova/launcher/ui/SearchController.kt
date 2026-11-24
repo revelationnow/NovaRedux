@@ -410,6 +410,7 @@ class SearchController(
         val context = binding.root.context
         val immediate = listOf(
             MathSearchProvider(),
+            com.supernova.launcher.search.TypedActionSearchProvider(),
             appProvider,
             com.supernova.launcher.search.FolderSearchProvider(folderHits, folderIcon),
             com.supernova.launcher.search.PrivateSpaceSearchProvider(privateSpaceLabel, privateSpaceIcon),
@@ -450,6 +451,7 @@ class SearchController(
         val prefs = viewModel.state.value.prefs
         return when (id) {
             MathSearchProvider.ID -> prefs.searchCalculator
+            com.supernova.launcher.search.TypedActionSearchProvider.ID -> prefs.searchTypedActions
             ShortcutSearchProvider.ID -> prefs.searchShortcuts
             com.supernova.launcher.search.FolderSearchProvider.ID -> prefs.searchFolders
             com.supernova.launcher.search.CardSearchProvider.ID -> prefs.searchCards && hasCards
@@ -624,6 +626,17 @@ class SearchController(
                 )
             }
             surface.dismiss()
+        },
+        // What was typed, handed to the app that acts on it (#9).
+        onTyped = { act, text ->
+            val opened = if (act == com.supernova.launcher.search.TypedText.Act.OPEN) {
+                onOpenUri(com.supernova.launcher.search.TypedText.webUrl(text), null)
+            } else {
+                runLogged("act on typed text") {
+                    binding.root.context.startActivity(TypedIntents.of(act, text))
+                }.isSuccess
+            }
+            if (opened) surface.dismiss()
         },
         // At the occurrence search found, in the calendar app (#7).
         onEvent = { event ->

@@ -878,6 +878,12 @@
     <string name="event_untitled">(No title)</string>
     <string name="search_shortcuts">Search app shortcuts</string>
     <string name="search_calculator">Calculator</string>
+    <string name="search_typed_actions">Actions on what you type</string>
+    <string name="search_typed_actions_summary">Call or text a number, open a web address or email an address typed into search</string>
+    <string name="typed_call">Call %1$s</string>
+    <string name="typed_open">Open %1$s</string>
+    <string name="typed_email">Email %1$s</string>
+    <string name="typed_add_contact">Add to contacts</string>
     <string name="search_hidden_apps">Search hidden apps</string>
     <string name="search_hidden_apps_summary">Hidden apps will appear in search results</string>
     <string name="search_suggestions">Web suggestions</string>

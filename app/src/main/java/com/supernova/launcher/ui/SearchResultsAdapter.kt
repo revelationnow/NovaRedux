@@ -23,6 +23,7 @@ import com.supernova.launcher.databinding.ItemSearchRowBinding
 import com.supernova.launcher.databinding.ItemSearchTopHitBinding
 import com.supernova.launcher.search.SearchChip
 import com.supernova.launcher.search.SearchResult
+import com.supernova.launcher.search.TypedText
 import kotlin.math.roundToInt
 
 // The search window's list. Empty query: suggested-shortcut
@@ -50,6 +51,8 @@ class SearchResultsAdapter(
         val onContactMessage: (String) -> Unit,
         // A calendar event's row (#7).
         val onEvent: (SearchResult.Event) -> Unit = {},
+        // A typed number's, web address's or email address's row and buttons (#9).
+        val onTyped: (TypedText.Act, String) -> Unit = { _, _ -> },
         val onChip: (SearchChip, String) -> Unit,
         val onWeb: (SearchResult.Web) -> Unit,
         val onCopyCalculation: (String) -> Unit,
@@ -171,6 +174,7 @@ class SearchResultsAdapter(
             is SearchResult.Shortcut -> "shortcut/${result.userSerial}/${result.packageName}/${result.shortcutId}"
             is SearchResult.Contact -> "contact/${result.contactId}"
             is SearchResult.Event -> "event/${result.eventId}"
+            is SearchResult.Action -> "typed/${result.kind}"
             is SearchResult.App -> "app/${result.app.userSerial}/${result.app.packageName}/${result.app.className}"
             is SearchResult.Web -> "web"
             is SearchResult.Suggestion -> "suggestion/${result.text}"
@@ -201,6 +205,7 @@ class SearchResultsAdapter(
     ) {
         rows.clear()
         results.filterIsInstance<SearchResult.Calculation>().mapTo(rows) { Row.Result(it) }
+        results.filterIsInstance<SearchResult.Action>().mapTo(rows) { Row.Result(it) }
         if (topHit != null) rows.add(Row.Top(topHit))
         val apps = results.filterIsInstance<SearchResult.App>()
             .filter { it.app != topHit?.app }
@@ -337,7 +342,7 @@ class SearchResultsAdapter(
                 is SearchResult.Calculation -> (holder as CalcHolder).bind(result)
                 is SearchResult.Shortcut -> (holder as RowHolder).bindShortcut(result)
                 is SearchResult.Contact -> (holder as RowHolder).bindContact(result)
-                is SearchResult.Event -> (holder as RowHolder).bindExtra(result)
+                is SearchResult.Event, is SearchResult.Action -> (holder as RowHolder).bindExtra(result)
                 is SearchResult.Folder -> (holder as RowHolder).bindFolder(result)
                 is SearchResult.Card -> (holder as CardHolder).bind(result)
                 is SearchResult.Web -> (holder as RowHolder).bindWeb(result)
@@ -611,7 +616,8 @@ class SearchResultsAdapter(
             }
         }
 
-        // Rows drawn by SearchExtraRows: a calendar event (#7).
+        // Rows Nova never had: a calendar event (#7), and what can be done
+        // with a typed number or address (#9).
         fun bindExtra(result: SearchResult) {
             reset()
             val context = binding.root.context
@@ -624,6 +630,30 @@ class SearchResultsAdapter(
                     binding.resultLabel.maxLines = 2
                     binding.resultLabel.text = SearchExtraRows.eventText(context, result)
                     binding.root.setOnClickListener { callbacks.onEvent(result) }
+                }
+                is SearchResult.Action -> {
+                    val (icon, label, act) = when (result.kind) {
+                        TypedText.Kind.PHONE ->
+                            Triple(R.drawable.ic_action_phone, R.string.typed_call, TypedText.Act.CALL)
+                        TypedText.Kind.WEB ->
+                            Triple(R.drawable.ic_open_in_new, R.string.typed_open, TypedText.Act.OPEN)
+                        TypedText.Kind.EMAIL ->
+                            Triple(R.drawable.ic_email, R.string.typed_email, TypedText.Act.EMAIL)
+                    }
+                    binding.resultIcon.setImageResource(icon)
+                    ImageViewCompat.setImageTintList(binding.resultIcon, ColorStateList.valueOf(accentColor))
+                    binding.resultLabel.text = context.getString(label, result.text)
+                    binding.root.setOnClickListener { callbacks.onTyped(act, result.text) }
+                    if (result.kind == TypedText.Kind.PHONE) {
+                        addActionButton(R.drawable.ic_action_message, R.string.contact_message) {
+                            callbacks.onTyped(TypedText.Act.MESSAGE, result.text)
+                        }
+                    }
+                    if (result.kind != TypedText.Kind.WEB) {
+                        addActionButton(R.drawable.ic_person_add, R.string.typed_add_contact) {
+                            callbacks.onTyped(TypedText.Act.ADD_CONTACT, result.text)
+                        }
+                    }
                 }
                 else -> Unit
             }

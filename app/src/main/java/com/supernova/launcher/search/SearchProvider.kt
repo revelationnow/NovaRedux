@@ -64,6 +64,10 @@ sealed class SearchResult {
         val color: Int?
     ) : SearchResult()
 
+    // A phone number, web address or email address typed into search (#9),
+    // with what can be done with it.
+    data class Action(val kind: TypedText.Kind, val text: String) : SearchResult()
+
     // A custom card matched by name; rendered as the full card.
     data class Card(val card: com.supernova.launcher.feed.FeedCard) : SearchResult()
 

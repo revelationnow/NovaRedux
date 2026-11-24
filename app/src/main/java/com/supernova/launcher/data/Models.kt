@@ -482,6 +482,8 @@ data class LauncherPrefs(
     val searchContacts: Boolean = false,
     // Calendar events in search (#7), behind the calendar permission. Off by default.
     val searchCalendar: Boolean = false,
+    // Call, open or email what was typed (#9). Off by default.
+    val searchTypedActions: Boolean = false,
     val searchShortcuts: Boolean = true,
     // Folder names (workspace and drawer groups) as search results. Off by
     // default.
