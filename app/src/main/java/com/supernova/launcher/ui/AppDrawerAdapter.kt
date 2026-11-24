@@ -164,7 +164,7 @@ class AppDrawerAdapter(
             return root.measuredHeight
         }
         val content = measured()
-        binding.appLabel.maxLines = 1
+        LabelStyler.capLines(binding.appLabel, 1)
         return intArrayOf(content, measured())
     }
 
@@ -245,6 +245,7 @@ class AppDrawerAdapter(
                 labelPrefs?.labelFont != prefs.labelFont ||
                 labelPrefs?.labelFontFile != prefs.labelFontFile ||
                 labelPrefs?.labelSingleLine != prefs.labelSingleLine ||
+                labelPrefs?.labelEvenRows != prefs.labelEvenRows ||
                 labelPrefs?.labelConfig != prefs.labelConfig ||
                 // Unset, the label color is the drawer surface's text color.
                 labelPrefs?.styleConfig != prefs.styleConfig ||
@@ -630,7 +631,11 @@ class AppDrawerAdapter(
 
         fun bind(app: LaunchableApp) {
             binding.appLabel.text = app.label
-            labelPrefs?.let { LabelStyler.apply(binding.appLabel, it, onWallpaper = false, context = LabelContext.DRAWER) }
+            labelPrefs?.let {
+                LabelStyler.apply(
+                    binding.appLabel, it, onWallpaper = false, context = LabelContext.DRAWER, inGrid = false
+                )
+            }
             binding.appIcon.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
             sizeIcon(binding.root, binding.appIcon, baseIconPx, keepInsideTile = false)
             bindIcon(binding.appIcon, app)
@@ -673,7 +678,11 @@ class AppDrawerAdapter(
 
         fun bind(folder: FolderEntry) {
             binding.appLabel.text = folder.group.name
-            labelPrefs?.let { LabelStyler.apply(binding.appLabel, it, onWallpaper = false, context = LabelContext.DRAWER) }
+            labelPrefs?.let {
+                LabelStyler.apply(
+                    binding.appLabel, it, onWallpaper = false, context = LabelContext.DRAWER, inGrid = false
+                )
+            }
             binding.appIcon.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
             sizeIcon(binding.root, binding.appIcon, baseIconPx, keepInsideTile = false)
             binding.appIcon.setImageDrawable(decorateFolderIcon(folder.icon, folder))

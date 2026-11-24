@@ -104,6 +104,7 @@ class BackupRoundTripTest {
         labelFont = LabelFont.SERIF,
         labelConfig = """{"dock":{"size":10},"folder":{"shadow":true}}""",
         labelSingleLine = false,
+        labelEvenRows = true,
         dockInfiniteScroll = true,
         dockMatchDesktop = true,
         dockOverlay = true,
