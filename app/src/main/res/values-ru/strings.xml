@@ -111,7 +111,7 @@
     <string name="not_now">Не сейчас</string>
     <string name="continue_label">Продолжить</string>
     <string name="accessibility_needed_title">Использовать API специальных возможностей?</string>
-    <string name="accessibility_needed_message">NovaRedux использует API специальных возможностей Android только для того, чтобы заблокировать экран, открыть недавние приложения и быстрые настройки, когда вы выполняете жест, назначенный на одно из этих действий.\n\nОн не читает содержимое экрана и то, что вы вводите, и не собирает данные. У NovaRedux нет доступа к интернету, поэтому ничего не покидает этот телефон.\n\nЕсли вы согласны, включите NovaRedux на следующем экране. Отключить его там можно в любой момент.</string>
+    <string name="accessibility_needed_message">NovaRedux использует API специальных возможностей Android только для того, чтобы заблокировать экран, открыть недавние приложения, быстрые настройки или меню питания, сделать скриншот или включить разделённый экран, когда вы выполняете жест, назначенный на одно из этих действий.\n\nОн не читает содержимое экрана и то, что вы вводите, и не собирает данные. У NovaRedux нет доступа к интернету, поэтому ничего не покидает этот телефон.\n\nЕсли вы согласны, включите NovaRedux на следующем экране. Отключить его там можно в любой момент.</string>
     <string name="accessibility_agree">Согласен</string>
     <string name="accessibility_decline">Отказаться</string>
     <string name="gestures_need_accessibility">Нужна служба специальных возможностей</string>
@@ -153,7 +153,7 @@
         <item quantity="other">%d ярлыка</item>
     </plurals>
     <string name="gestures">Жесты</string>
-    <string name="accessibility_description">Позволяет NovaRedux блокировать экран, открывать недавние приложения и быстрые настройки по вашим жестам. Не читает экран и не собирает данные. Необязательно.</string>
+    <string name="accessibility_description">Позволяет NovaRedux блокировать экран, открывать недавние приложения, быстрые настройки или меню питания, делать скриншот или включать разделённый экран по вашим жестам. Не читает экран и не собирает данные. Необязательно.</string>
     <string name="hidden_apps">Скрытые приложения</string>
     <string name="hidden_apps_lock">Блокировать скрытые приложения</string>
     <string name="hidden_apps_lock_summary">Запрашивать отпечаток пальца или блокировку экрана перед показом скрытых приложений. Они только скрыты: чтобы держать приложения отдельно, используйте личное пространство.</string>
@@ -433,6 +433,11 @@
     <string name="action_open_search">Открыть поиск</string>
     <string name="action_recents">Недавние приложения</string>
     <string name="action_quick_settings">Быстрые настройки</string>
+    <string name="action_screenshot">Сделать скриншот</string>
+    <string name="action_power_menu">Меню питания</string>
+    <string name="action_split_screen">Разделённый экран</string>
+    <string name="action_torch">Фонарик</string>
+    <string name="torch_unavailable">Фонарик сейчас недоступен</string>
     <string name="action_assistant">Ассистент</string>
     <string name="action_launch_app">Запустить приложение</string>
     <string name="action_launch_shortcut">Открыть ярлык</string>

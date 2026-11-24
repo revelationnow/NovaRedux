@@ -16,6 +16,10 @@ object ActionIcons {
         GestureAction.EXPAND_NOTIFICATIONS -> R.drawable.ic_action_notifications
         GestureAction.QUICK_SETTINGS -> R.drawable.ic_action_quick_settings
         GestureAction.RECENTS -> R.drawable.ic_action_recents
+        GestureAction.SCREENSHOT -> R.drawable.ic_action_screenshot
+        GestureAction.POWER_MENU -> R.drawable.ic_action_power
+        GestureAction.SPLIT_SCREEN -> R.drawable.ic_action_split_screen
+        GestureAction.TORCH -> R.drawable.ic_action_torch
         GestureAction.LOCK_SCREEN -> R.drawable.ic_action_lock
         GestureAction.OPEN_SETTINGS -> R.drawable.ic_action_settings
         GestureAction.DEFAULT_PAGE -> R.drawable.ic_action_home

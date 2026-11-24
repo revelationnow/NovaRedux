@@ -4,8 +4,10 @@ import android.accessibilityservice.AccessibilityService
 import android.view.accessibility.AccessibilityEvent
 
 // Optional service: the only way for a third-party launcher to lock the
-// screen on API 28+ without Device Admin. Nothing else depends on it, and
-// gestures bound to lock fall back to prompting the user to enable it.
+// screen on API 28+ without Device Admin, and to open Recents, Quick
+// settings or the power menu, take a screenshot or toggle split screen.
+// Nothing else depends on it, and gestures bound to these fall back to
+// prompting the user to enable it.
 class SupernovaAccessibilityService : AccessibilityService() {
 
     override fun onServiceConnected() {
@@ -43,6 +45,12 @@ class SupernovaAccessibilityService : AccessibilityService() {
         fun showRecents(): Boolean = perform(GLOBAL_ACTION_RECENTS)
 
         fun showQuickSettings(): Boolean = perform(GLOBAL_ACTION_QUICK_SETTINGS)
+
+        fun takeScreenshot(): Boolean = perform(GLOBAL_ACTION_TAKE_SCREENSHOT)
+
+        fun showPowerMenu(): Boolean = perform(GLOBAL_ACTION_POWER_DIALOG)
+
+        fun toggleSplitScreen(): Boolean = perform(GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN)
 
         private fun perform(action: Int): Boolean {
             val service = instance ?: return false

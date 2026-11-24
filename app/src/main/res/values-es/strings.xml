@@ -106,7 +106,7 @@
     <string name="not_now">Ahora no</string>
     <string name="continue_label">Continuar</string>
     <string name="accessibility_needed_title">¿Usar la API de accesibilidad?</string>
-    <string name="accessibility_needed_message">NovaRedux usa la API de accesibilidad de Android solo para bloquear la pantalla, abrir Aplicaciones recientes y abrir Ajustes rápidos cuando usas un gesto asignado a una de esas acciones.\n\nNo lee lo que hay en la pantalla ni lo que escribes, y no recopila datos. NovaRedux no tiene acceso a internet, así que nada sale de este teléfono.\n\nSi estás de acuerdo, activa NovaRedux en la siguiente pantalla. Puedes desactivarlo allí cuando quieras.</string>
+    <string name="accessibility_needed_message">NovaRedux usa la API de accesibilidad de Android solo para bloquear la pantalla, abrir Aplicaciones recientes, Ajustes rápidos o el menú de apagado, hacer una captura de pantalla o activar la pantalla dividida cuando usas un gesto asignado a una de esas acciones.\n\nNo lee lo que hay en la pantalla ni lo que escribes, y no recopila datos. NovaRedux no tiene acceso a internet, así que nada sale de este teléfono.\n\nSi estás de acuerdo, activa NovaRedux en la siguiente pantalla. Puedes desactivarlo allí cuando quieras.</string>
     <string name="accessibility_agree">Aceptar</string>
     <string name="accessibility_decline">Rechazar</string>
     <string name="gestures_need_accessibility">Necesita el servicio de accesibilidad</string>
@@ -145,7 +145,7 @@
         <item quantity="other">%d accesos directos</item>
     </plurals>
     <string name="gestures">Gestos</string>
-    <string name="accessibility_description">Permite a NovaRedux bloquear la pantalla, abrir Aplicaciones recientes y abrir Ajustes rápidos desde tus gestos. No lee la pantalla ni recopila datos. Opcional.</string>
+    <string name="accessibility_description">Permite a NovaRedux bloquear la pantalla, abrir Aplicaciones recientes, Ajustes rápidos o el menú de apagado, hacer una captura de pantalla o activar la pantalla dividida desde tus gestos. No lee la pantalla ni recopila datos. Opcional.</string>
     <string name="hidden_apps">Aplicaciones ocultas</string>
     <string name="hidden_apps_lock">Bloquear aplicaciones ocultas</string>
     <string name="hidden_apps_lock_summary">Pide tu huella o el bloqueo de pantalla antes de mostrar las aplicaciones ocultas. Solo quedan ocultas: para mantener aplicaciones aparte, usa el espacio privado.</string>
@@ -422,6 +422,11 @@
     <string name="action_open_search">Abrir búsqueda</string>
     <string name="action_recents">Aplicaciones recientes</string>
     <string name="action_quick_settings">Ajustes rápidos</string>
+    <string name="action_screenshot">Hacer captura de pantalla</string>
+    <string name="action_power_menu">Menú de apagado</string>
+    <string name="action_split_screen">Pantalla dividida</string>
+    <string name="action_torch">Linterna</string>
+    <string name="torch_unavailable">La linterna no está disponible ahora</string>
     <string name="action_assistant">Asistente</string>
     <string name="action_launch_app">Abrir aplicación</string>
     <string name="action_launch_shortcut">Abrir acceso directo</string>

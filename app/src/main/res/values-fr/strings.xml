@@ -106,7 +106,7 @@
     <string name="not_now">Pas maintenant</string>
     <string name="continue_label">Continuer</string>
     <string name="accessibility_needed_title">Utiliser l\'API d\'accessibilité ?</string>
-    <string name="accessibility_needed_message">NovaRedux utilise l\'API d\'accessibilité d\'Android uniquement pour verrouiller l\'écran, ouvrir les applis récentes et ouvrir les réglages rapides quand vous utilisez un geste associé à l\'une de ces actions.\n\nIl ne lit pas ce qui est à l\'écran ni ce que vous tapez, et ne collecte aucune donnée. NovaRedux n\'a pas accès à Internet : rien ne quitte ce téléphone.\n\nSi vous êtes d\'accord, activez NovaRedux sur l\'écran suivant. Vous pourrez le désactiver à tout moment au même endroit.</string>
+    <string name="accessibility_needed_message">NovaRedux utilise l\'API d\'accessibilité d\'Android uniquement pour verrouiller l\'écran, ouvrir les applis récentes, les réglages rapides ou le menu Marche/Arrêt, faire une capture d\'écran ou activer l\'écran partagé quand vous utilisez un geste associé à l\'une de ces actions.\n\nIl ne lit pas ce qui est à l\'écran ni ce que vous tapez, et ne collecte aucune donnée. NovaRedux n\'a pas accès à Internet : rien ne quitte ce téléphone.\n\nSi vous êtes d\'accord, activez NovaRedux sur l\'écran suivant. Vous pourrez le désactiver à tout moment au même endroit.</string>
     <string name="accessibility_agree">Accepter</string>
     <string name="accessibility_decline">Refuser</string>
     <string name="gestures_need_accessibility">Nécessite le service d\'accessibilité</string>
@@ -145,7 +145,7 @@
         <item quantity="other">%d raccourcis</item>
     </plurals>
     <string name="gestures">Gestes</string>
-    <string name="accessibility_description">Permet à NovaRedux de verrouiller l\'écran, d\'ouvrir les applis récentes et d\'ouvrir les réglages rapides depuis vos gestes. Il ne lit pas l\'écran et ne collecte aucune donnée. Facultatif.</string>
+    <string name="accessibility_description">Permet à NovaRedux de verrouiller l\'écran, d\'ouvrir les applis récentes, les réglages rapides ou le menu Marche/Arrêt, de faire une capture d\'écran ou d\'activer l\'écran partagé depuis vos gestes. Il ne lit pas l\'écran et ne collecte aucune donnée. Facultatif.</string>
     <string name="hidden_apps">Applis masquées</string>
     <string name="hidden_apps_lock">Verrouiller les applis masquées</string>
     <string name="hidden_apps_lock_summary">Demander votre empreinte ou le verrouillage de l\'écran avant d\'afficher les applis masquées. Elles sont seulement masquées : pour garder des applis à part, utilisez l\'espace privé.</string>
@@ -422,6 +422,11 @@
     <string name="action_open_search">Ouvrir la recherche</string>
     <string name="action_recents">Applis récentes</string>
     <string name="action_quick_settings">Réglages rapides</string>
+    <string name="action_screenshot">Faire une capture d\'écran</string>
+    <string name="action_power_menu">Menu Marche/Arrêt</string>
+    <string name="action_split_screen">Écran partagé</string>
+    <string name="action_torch">Lampe de poche</string>
+    <string name="torch_unavailable">La lampe de poche n\'est pas disponible pour le moment</string>
     <string name="action_assistant">Assistant</string>
     <string name="action_launch_app">Ouvrir une appli</string>
     <string name="action_launch_shortcut">Ouvrir un raccourci</string>

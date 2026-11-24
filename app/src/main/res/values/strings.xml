@@ -107,7 +107,7 @@
     <string name="not_now">Not now</string>
     <string name="continue_label">Continue</string>
     <string name="accessibility_needed_title">Use the Accessibility API?</string>
-    <string name="accessibility_needed_message">NovaRedux uses Android\'s Accessibility API only to lock the screen, open Recent apps and open Quick settings when you use a gesture set to one of them.\n\nIt does not read what is on the screen or what you type, and it collects no data. NovaRedux has no internet access, so nothing leaves this phone.\n\nIf you agree, turn on NovaRedux on the next screen. You can turn it off there at any time.</string>
+    <string name="accessibility_needed_message">NovaRedux uses Android\'s Accessibility API only to lock the screen, open Recent apps, Quick settings or the power menu, take a screenshot or toggle split screen when you use a gesture set to one of them.\n\nIt does not read what is on the screen or what you type, and it collects no data. NovaRedux has no internet access, so nothing leaves this phone.\n\nIf you agree, turn on NovaRedux on the next screen. You can turn it off there at any time.</string>
     <string name="accessibility_agree">Agree</string>
     <string name="accessibility_decline">Decline</string>
     <string name="gestures_need_accessibility">Needs the accessibility service</string>
@@ -143,7 +143,7 @@
         <item quantity="other">%d shortcuts</item>
     </plurals>
     <string name="gestures">Gestures</string>
-    <string name="accessibility_description">Lets NovaRedux lock the screen, open Recent apps and open Quick settings from your gestures. It does not read the screen or collect any data. Optional.</string>
+    <string name="accessibility_description">Lets NovaRedux lock the screen, open Recent apps, Quick settings or the power menu, take a screenshot or toggle split screen from your gestures. It does not read the screen or collect any data. Optional.</string>
     <string name="hidden_apps">Hidden apps</string>
     <string name="hidden_apps_lock">Lock hidden apps</string>
     <string name="hidden_apps_lock_summary">Ask for your fingerprint or screen lock before hidden apps show. They are only hidden: to keep apps apart, use private space.</string>
@@ -426,6 +426,11 @@
     <string name="action_open_search">Open search</string>
     <string name="action_recents">Recent apps</string>
     <string name="action_quick_settings">Quick settings</string>
+    <string name="action_screenshot">Take screenshot</string>
+    <string name="action_power_menu">Power menu</string>
+    <string name="action_split_screen">Split screen</string>
+    <string name="action_torch">Torch</string>
+    <string name="torch_unavailable">The torch isn\'t available right now</string>
     <string name="action_assistant">Assistant</string>
     <string name="action_launch_app">Launch app</string>
     <string name="action_launch_shortcut">Launch shortcut</string>

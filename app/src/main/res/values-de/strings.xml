@@ -101,7 +101,7 @@
     <string name="not_now">Nicht jetzt</string>
     <string name="continue_label">Weiter</string>
     <string name="accessibility_needed_title">Bedienungshilfen-API verwenden?</string>
-    <string name="accessibility_needed_message">NovaRedux verwendet die Bedienungshilfen-API von Android nur, um den Bildschirm zu sperren, die zuletzt verwendeten Apps zu öffnen und die Schnelleinstellungen zu öffnen, wenn du eine Geste verwendest, die auf eine dieser Aktionen eingestellt ist.\n\nEs liest weder den Bildschirminhalt noch deine Eingaben und sammelt keine Daten. NovaRedux hat keinen Internetzugang, daher verlässt nichts dieses Telefon.\n\nWenn du einverstanden bist, aktiviere NovaRedux auf dem nächsten Bildschirm. Du kannst es dort jederzeit wieder deaktivieren.</string>
+    <string name="accessibility_needed_message">NovaRedux verwendet die Bedienungshilfen-API von Android nur, um den Bildschirm zu sperren, die zuletzt verwendeten Apps, die Schnelleinstellungen oder das Ein/Aus-Menü zu öffnen, einen Screenshot aufzunehmen oder den Splitscreen umzuschalten, wenn du eine Geste verwendest, die auf eine dieser Aktionen eingestellt ist.\n\nEs liest weder den Bildschirminhalt noch deine Eingaben und sammelt keine Daten. NovaRedux hat keinen Internetzugang, daher verlässt nichts dieses Telefon.\n\nWenn du einverstanden bist, aktiviere NovaRedux auf dem nächsten Bildschirm. Du kannst es dort jederzeit wieder deaktivieren.</string>
     <string name="accessibility_agree">Zustimmen</string>
     <string name="accessibility_decline">Ablehnen</string>
     <string name="gestures_need_accessibility">Braucht den Bedienungshilfendienst</string>
@@ -137,7 +137,7 @@
         <item quantity="other">%d Verknüpfungen</item>
     </plurals>
     <string name="gestures">Gesten</string>
-    <string name="accessibility_description">Erlaubt NovaRedux, mit deinen Gesten den Bildschirm zu sperren, die zuletzt verwendeten Apps und die Schnelleinstellungen zu öffnen. Es liest den Bildschirm nicht und sammelt keine Daten. Optional.</string>
+    <string name="accessibility_description">Erlaubt NovaRedux, mit deinen Gesten den Bildschirm zu sperren, die zuletzt verwendeten Apps, die Schnelleinstellungen oder das Ein/Aus-Menü zu öffnen, einen Screenshot aufzunehmen oder den Splitscreen umzuschalten. Es liest den Bildschirm nicht und sammelt keine Daten. Optional.</string>
     <string name="hidden_apps">Ausgeblendete Apps</string>
     <string name="hidden_apps_lock">Ausgeblendete Apps sperren</string>
     <string name="hidden_apps_lock_summary">Vor dem Anzeigen ausgeblendeter Apps nach deinem Fingerabdruck oder deiner Displaysperre fragen. Sie sind nur ausgeblendet: Um Apps getrennt zu halten, nutze den vertraulichen Bereich.</string>
@@ -411,6 +411,11 @@
     <string name="action_open_search">Suche öffnen</string>
     <string name="action_recents">Zuletzt verwendete Apps</string>
     <string name="action_quick_settings">Schnelleinstellungen</string>
+    <string name="action_screenshot">Screenshot aufnehmen</string>
+    <string name="action_power_menu">Ein/Aus-Menü</string>
+    <string name="action_split_screen">Splitscreen</string>
+    <string name="action_torch">Taschenlampe</string>
+    <string name="torch_unavailable">Die Taschenlampe ist gerade nicht verfügbar</string>
     <string name="action_assistant">Assistant</string>
     <string name="action_launch_app">App öffnen</string>
     <string name="action_launch_shortcut">Verknüpfung öffnen</string>

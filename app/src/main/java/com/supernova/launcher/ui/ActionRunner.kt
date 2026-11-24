@@ -104,6 +104,15 @@ class ActionRunner(
             }
             GestureAction.RECENTS -> globalAction(SupernovaAccessibilityService.showRecents())
             GestureAction.QUICK_SETTINGS -> globalAction(SupernovaAccessibilityService.showQuickSettings())
+            GestureAction.SCREENSHOT -> globalAction(SupernovaAccessibilityService.takeScreenshot())
+            GestureAction.POWER_MENU -> globalAction(SupernovaAccessibilityService.showPowerMenu())
+            GestureAction.SPLIT_SCREEN -> globalAction(SupernovaAccessibilityService.toggleSplitScreen())
+            GestureAction.TORCH -> {
+                if (!Torch.toggle(activity)) {
+                    Toast.makeText(activity, R.string.torch_unavailable, Toast.LENGTH_SHORT).show()
+                }
+                true
+            }
             GestureAction.ASSISTANT -> {
                 runLogged("open assistant") { activity.startActivity(Intent(Intent.ACTION_ASSIST)) }
                     .onFailure { Toast.makeText(activity, R.string.assistant_unavailable, Toast.LENGTH_SHORT).show() }
@@ -193,9 +202,9 @@ class ActionRunner(
         Toast.makeText(activity, R.string.voice_search_unavailable, Toast.LENGTH_SHORT).show()
     }
 
-    // Recents and quick settings both need the accessibility service, same as
-    // lock; say why and offer the way there, rather than fail silently or
-    // throw the user out of the home screen.
+    // Recents, quick settings, the power menu, screenshots and split screen
+    // need the accessibility service, same as lock; say why and offer the way
+    // there, rather than fail silently or throw the user out of the home screen.
     private fun globalAction(performed: Boolean): Boolean {
         if (!performed) PermissionPrompts.explainAccessibility(activity)
         return true

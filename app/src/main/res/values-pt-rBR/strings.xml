@@ -106,7 +106,7 @@
     <string name="not_now">Agora não</string>
     <string name="continue_label">Continuar</string>
     <string name="accessibility_needed_title">Usar a API de acessibilidade?</string>
-    <string name="accessibility_needed_message">O NovaRedux usa a API de acessibilidade do Android apenas para bloquear a tela, abrir Apps recentes e abrir as Configurações rápidas quando você usa um gesto definido para uma dessas ações.\n\nEle não lê o que está na tela nem o que você digita e não coleta dados. O NovaRedux não tem acesso à internet, então nada sai deste telefone.\n\nSe você concordar, ative o NovaRedux na próxima tela. Você pode desativá-lo lá quando quiser.</string>
+    <string name="accessibility_needed_message">O NovaRedux usa a API de acessibilidade do Android apenas para bloquear a tela, abrir Apps recentes, as Configurações rápidas ou o menu liga/desliga, fazer uma captura de tela ou ativar a tela dividida quando você usa um gesto definido para uma dessas ações.\n\nEle não lê o que está na tela nem o que você digita e não coleta dados. O NovaRedux não tem acesso à internet, então nada sai deste telefone.\n\nSe você concordar, ative o NovaRedux na próxima tela. Você pode desativá-lo lá quando quiser.</string>
     <string name="accessibility_agree">Concordo</string>
     <string name="accessibility_decline">Recusar</string>
     <string name="gestures_need_accessibility">Precisa do serviço de acessibilidade</string>
@@ -145,7 +145,7 @@
         <item quantity="other">%d atalhos</item>
     </plurals>
     <string name="gestures">Gestos</string>
-    <string name="accessibility_description">Permite que o NovaRedux bloqueie a tela, abra Apps recentes e abra as Configurações rápidas pelos seus gestos. Não lê a tela nem coleta dados. Opcional.</string>
+    <string name="accessibility_description">Permite que o NovaRedux bloqueie a tela, abra Apps recentes, as Configurações rápidas ou o menu liga/desliga, faça uma captura de tela ou ative a tela dividida pelos seus gestos. Não lê a tela nem coleta dados. Opcional.</string>
     <string name="hidden_apps">Apps ocultos</string>
     <string name="hidden_apps_lock">Bloquear apps ocultos</string>
     <string name="hidden_apps_lock_summary">Pedir sua digital ou o bloqueio de tela antes de mostrar os apps ocultos. Eles ficam apenas ocultos: para manter apps separados, use o espaço privado.</string>
@@ -422,6 +422,11 @@
     <string name="action_open_search">Abrir pesquisa</string>
     <string name="action_recents">Apps recentes</string>
     <string name="action_quick_settings">Configurações rápidas</string>
+    <string name="action_screenshot">Fazer captura de tela</string>
+    <string name="action_power_menu">Menu liga/desliga</string>
+    <string name="action_split_screen">Tela dividida</string>
+    <string name="action_torch">Lanterna</string>
+    <string name="torch_unavailable">A lanterna não está disponível agora</string>
     <string name="action_assistant">Assistente</string>
     <string name="action_launch_app">Abrir app</string>
     <string name="action_launch_shortcut">Abrir atalho</string>

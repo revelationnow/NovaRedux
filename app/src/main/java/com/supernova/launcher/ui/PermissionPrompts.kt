@@ -129,7 +129,8 @@ object PermissionPrompts {
     fun gesturesNeedAccessibility(prefs: LauncherPrefs): Boolean =
         GestureDefaults.decode(prefs.gestureBindings).values.any { binding ->
             when (binding.action) {
-                GestureAction.RECENTS, GestureAction.QUICK_SETTINGS -> true
+                GestureAction.RECENTS, GestureAction.QUICK_SETTINGS, GestureAction.SCREENSHOT,
+                GestureAction.POWER_MENU, GestureAction.SPLIT_SCREEN -> true
                 GestureAction.LOCK_SCREEN -> prefs.lockMethod == LockMethod.ACCESSIBILITY
                 else -> false
             }

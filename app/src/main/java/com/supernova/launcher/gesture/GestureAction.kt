@@ -34,6 +34,12 @@ enum class GestureAction {
     OPEN_SEARCH,
     RECENTS,
     QUICK_SETTINGS,
+    // Through the accessibility service, as RECENTS and QUICK_SETTINGS (#5).
+    SCREENSHOT,
+    POWER_MENU,
+    SPLIT_SCREEN,
+    // The camera's torch, on or off; no permission needed (#5).
+    TORCH,
     ASSISTANT,
     LAUNCH_APP,
     LAUNCH_SHORTCUT,
