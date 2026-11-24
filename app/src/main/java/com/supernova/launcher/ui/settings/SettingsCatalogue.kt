@@ -1366,6 +1366,16 @@ object SettingsCatalogue {
                     val glass = IconGlass.fromName(SearchBarPrefs.windowBar(prefs).glass)
                     dependsOn(R.string.icon_glass, glass != IconGlass.OFF)
                 },
+                // The window took the bar's shape but not its shadow
+                // (Supernova issue 324).
+                SettingItem.Toggle(
+                    R.string.search_bar_shadow,
+                    get = { SearchBarPrefs.windowBar(it).shadow },
+                    set = { on -> editWindowBar { it.copy(shadow = on) } }
+                ).hiddenWhen { prefs ->
+                    val glass = IconGlass.fromName(SearchBarPrefs.windowBar(prefs).glass)
+                    dependsOn(R.string.icon_glass, glass != IconGlass.OFF)
+                },
                 SettingItem.Toggle(
                     R.string.search_bar_hint_text,
                     get = { it.searchWindowHint },

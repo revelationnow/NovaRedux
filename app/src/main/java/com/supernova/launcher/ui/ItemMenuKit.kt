@@ -87,7 +87,7 @@ class ItemMenuKit(private val surfaces: ItemSurfaces) {
         draggable: Boolean,
         onTap: (ShortcutInfo) -> Unit
     ) {
-        surfaces.shortcuts.forApp(packageName, userSerial).take(MENU_SHORTCUTS).forEach { shortcut ->
+        surfaces.shortcuts.published(packageName, userSerial).take(MENU_SHORTCUTS).forEach { shortcut ->
             menu.addShortcut(
                 label(shortcut),
                 surfaces.shortcuts.badgedIcon(shortcut),

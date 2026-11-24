@@ -19,9 +19,17 @@ class AppShortcuts(private val context: Context, private val viewModel: Launcher
         viewModel.appCatalog().userForSerial(userSerial) ?: Process.myUserHandle()
 
     // Every shortcut the app offers: dynamic, manifest and pinned.
-    fun forApp(packageName: String, userSerial: Long): List<ShortcutInfo> {
+    fun forApp(packageName: String, userSerial: Long): List<ShortcutInfo> = query(packageName, userSerial, ANY)
+
+    // The ones the app itself offers (dynamic and manifest), as an item's
+    // menu lists them: a pin outlives the app's own entry, so a removed
+    // contact's shortcut no longer comes back (Supernova issue 324).
+    fun published(packageName: String, userSerial: Long): List<ShortcutInfo> =
+        query(packageName, userSerial, PUBLISHED)
+
+    private fun query(packageName: String, userSerial: Long, flags: Int): List<ShortcutInfo> {
         val apps = launcherApps ?: return emptyList()
-        val query = LauncherApps.ShortcutQuery().setPackage(packageName).setQueryFlags(ANY)
+        val query = LauncherApps.ShortcutQuery().setPackage(packageName).setQueryFlags(flags)
         return runCatching { apps.getShortcuts(query, userFor(userSerial)) ?: emptyList() }.getOrElse { emptyList() }
     }
 
@@ -83,8 +91,8 @@ class AppShortcuts(private val context: Context, private val viewModel: Launcher
         viewModel.state.value.apps.firstOrNull { it.packageName == packageName && it.userSerial == userSerial }
 
     private companion object {
-        const val ANY = LauncherApps.ShortcutQuery.FLAG_MATCH_DYNAMIC or
-            LauncherApps.ShortcutQuery.FLAG_MATCH_MANIFEST or
-            LauncherApps.ShortcutQuery.FLAG_MATCH_PINNED
+        const val PUBLISHED = LauncherApps.ShortcutQuery.FLAG_MATCH_DYNAMIC or
+            LauncherApps.ShortcutQuery.FLAG_MATCH_MANIFEST
+        const val ANY = PUBLISHED or LauncherApps.ShortcutQuery.FLAG_MATCH_PINNED
     }
 }

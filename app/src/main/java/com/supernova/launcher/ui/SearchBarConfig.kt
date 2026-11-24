@@ -1,5 +1,6 @@
 package com.supernova.launcher.ui
 
+import com.supernova.launcher.data.IconGlass
 import com.supernova.launcher.runLogged
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
@@ -137,18 +138,22 @@ enum class DrawerBarPlacement {
 }
 
 // The search window's own bar (#324): the pill the query is typed in, its
-// corners, opacity, glass and outline. It wore the home bar's look, even
-// with no home bar, and does until one of these is set.
+// corners, opacity, glass, outline and shadow. It wore the home bar's look,
+// even with no home bar, and does until one of these is set.
 @Serializable
 data class WindowSearchBarConfig(
     val radius: Int = DesktopSearchBarConfig.MAX_RADIUS,
     val alpha: Float = 1f,
     val wireframe: Boolean = false,
-    val glass: String = "OFF"
+    val glass: String = "OFF",
+    // Under a filled or outlined bar; glass would show it through.
+    val shadow: Boolean = false
 ) {
+    fun drawsShadow(): Boolean = shadow && IconGlass.fromName(glass) == IconGlass.OFF
+
     companion object {
         fun of(desktop: DesktopSearchBarConfig) =
-            WindowSearchBarConfig(desktop.radius, desktop.alpha, desktop.wireframe, desktop.glass)
+            WindowSearchBarConfig(desktop.radius, desktop.alpha, desktop.wireframe, desktop.glass, desktop.shadow)
     }
 }
 
