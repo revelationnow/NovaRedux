@@ -873,6 +873,9 @@
     <string name="search_web_custom_message" formatted="false">The address of a search, with %s where your search goes. For example: https://example.org/search?q=%s</string>
     <string name="search_web_custom_invalid">Enter an address starting with https://</string>
     <string name="search_contacts">Search contacts</string>
+    <string name="search_calendar">Search calendar events</string>
+    <string name="search_calendar_summary">Events in your phone\'s calendar, from a month back to a year ahead</string>
+    <string name="event_untitled">(No title)</string>
     <string name="search_shortcuts">Search app shortcuts</string>
     <string name="search_calculator">Calculator</string>
     <string name="search_hidden_apps">Search hidden apps</string>

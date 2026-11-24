@@ -48,6 +48,8 @@ class SearchResultsAdapter(
         val onContact: (SearchResult.Contact) -> Unit,
         val onContactCall: (String) -> Unit,
         val onContactMessage: (String) -> Unit,
+        // A calendar event's row (#7).
+        val onEvent: (SearchResult.Event) -> Unit = {},
         val onChip: (SearchChip, String) -> Unit,
         val onWeb: (SearchResult.Web) -> Unit,
         val onCopyCalculation: (String) -> Unit,
@@ -168,6 +170,7 @@ class SearchResultsAdapter(
             is SearchResult.Folder -> "folder/${result.itemId}/${result.groupId}"
             is SearchResult.Shortcut -> "shortcut/${result.userSerial}/${result.packageName}/${result.shortcutId}"
             is SearchResult.Contact -> "contact/${result.contactId}"
+            is SearchResult.Event -> "event/${result.eventId}"
             is SearchResult.App -> "app/${result.app.userSerial}/${result.app.packageName}/${result.app.className}"
             is SearchResult.Web -> "web"
             is SearchResult.Suggestion -> "suggestion/${result.text}"
@@ -210,6 +213,7 @@ class SearchResultsAdapter(
             .filter { topHit == null || it.packageName != topHit.app.packageName }
             .mapTo(rows) { Row.Result(it) }
         results.filterIsInstance<SearchResult.Contact>().mapTo(rows) { Row.Result(it) }
+        results.filterIsInstance<SearchResult.Event>().mapTo(rows) { Row.Result(it) }
         // Nothing on the phone matched: said, above the ways to search on.
         if (rows.isEmpty() && showNoMatches) rows.add(Row.Header(R.string.search_no_matches))
         // Every query ends with the providers; the web engine leads them.
@@ -333,6 +337,7 @@ class SearchResultsAdapter(
                 is SearchResult.Calculation -> (holder as CalcHolder).bind(result)
                 is SearchResult.Shortcut -> (holder as RowHolder).bindShortcut(result)
                 is SearchResult.Contact -> (holder as RowHolder).bindContact(result)
+                is SearchResult.Event -> (holder as RowHolder).bindExtra(result)
                 is SearchResult.Folder -> (holder as RowHolder).bindFolder(result)
                 is SearchResult.Card -> (holder as CardHolder).bind(result)
                 is SearchResult.Web -> (holder as RowHolder).bindWeb(result)
@@ -566,6 +571,8 @@ class SearchResultsAdapter(
             binding.resultLabel.setTextColor(textColor)
             binding.root.setOnLongClickListener(null)
             binding.root.isLongClickable = false
+            // An event's second line (#7).
+            binding.resultLabel.maxLines = 1
             // Contact-card action buttons from a previous bind (D4).
             val root = binding.root as ViewGroup
             (root.childCount - 1 downTo 0).forEach { index ->
@@ -602,6 +609,25 @@ class SearchResultsAdapter(
                     callbacks.onContactMessage(number)
                 }
             }
+        }
+
+        // Rows drawn by SearchExtraRows: a calendar event (#7).
+        fun bindExtra(result: SearchResult) {
+            reset()
+            val context = binding.root.context
+            when (result) {
+                is SearchResult.Event -> {
+                    binding.resultIcon.setImageResource(R.drawable.ic_event)
+                    ImageViewCompat.setImageTintList(
+                        binding.resultIcon, ColorStateList.valueOf(result.color ?: accentColor)
+                    )
+                    binding.resultLabel.maxLines = 2
+                    binding.resultLabel.text = SearchExtraRows.eventText(context, result)
+                    binding.root.setOnClickListener { callbacks.onEvent(result) }
+                }
+                else -> Unit
+            }
+            binding.root.contentDescription = binding.resultLabel.text
         }
 
         // Appends a tinted, borderless action to the row's end; reset() must

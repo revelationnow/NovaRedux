@@ -52,6 +52,18 @@ sealed class SearchResult {
         val privateSpace: Boolean = false
     ) : SearchResult()
 
+    // A calendar event matched by its title or place (#7), at its nearest
+    // occurrence; it opens in the calendar app. color: its calendar's.
+    data class Event(
+        val eventId: Long,
+        val title: String,
+        val begin: Long,
+        val end: Long,
+        val allDay: Boolean,
+        val location: String?,
+        val color: Int?
+    ) : SearchResult()
+
     // A custom card matched by name; rendered as the full card.
     data class Card(val card: com.supernova.launcher.feed.FeedCard) : SearchResult()
 

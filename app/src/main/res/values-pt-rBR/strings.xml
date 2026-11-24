@@ -844,6 +844,9 @@
     <string name="search_web_custom_message" formatted="false">O endereço de uma pesquisa, com %s onde entra o que você pesquisa. Por exemplo: https://example.org/search?q=%s</string>
     <string name="search_web_custom_invalid">Digite um endereço que comece com https://</string>
     <string name="search_contacts">Pesquisar contatos</string>
+    <string name="search_calendar">Pesquisar eventos da agenda</string>
+    <string name="search_calendar_summary">Eventos da agenda do seu telefone, de um mês atrás até um ano à frente</string>
+    <string name="event_untitled">(Sem título)</string>
     <string name="search_shortcuts">Pesquisar atalhos de apps</string>
     <string name="search_calculator">Calculadora</string>
     <string name="search_hidden_apps">Pesquisar apps ocultos</string>

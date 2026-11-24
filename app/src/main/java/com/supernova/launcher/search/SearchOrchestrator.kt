@@ -95,11 +95,14 @@ class SearchOrchestrator(
         is SearchResult.Folder -> Section.FOLDERS
         is SearchResult.Shortcut -> Section.SHORTCUTS
         is SearchResult.Contact -> Section.CONTACTS
+        is SearchResult.Event -> Section.EVENTS
         is SearchResult.Web -> Section.WEB
         is SearchResult.Suggestion -> Section.SUGGESTIONS
         is SearchResult.ProviderChips -> Section.PROVIDERS
     }.ordinal
 
     // The display sections, top to bottom.
-    private enum class Section { CALCULATION, APPS, CARDS, FOLDERS, SHORTCUTS, CONTACTS, WEB, SUGGESTIONS, PROVIDERS }
+    private enum class Section {
+        CALCULATION, APPS, CARDS, FOLDERS, SHORTCUTS, CONTACTS, EVENTS, WEB, SUGGESTIONS, PROVIDERS
+    }
 }

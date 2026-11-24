@@ -431,6 +431,7 @@ class SearchController(
             ContactSearchProvider(context.applicationContext) {
                 viewModel.state.value.prefs.searchContactCards
             },
+            com.supernova.launcher.search.CalendarSearchProvider(context.applicationContext),
             com.supernova.launcher.search.SuggestionSearchProvider(
                 engine = { com.supernova.launcher.search.WebEngine.of(viewModel.state.value.prefs) }
             ) { query, engine ->
@@ -453,6 +454,7 @@ class SearchController(
             com.supernova.launcher.search.FolderSearchProvider.ID -> prefs.searchFolders
             com.supernova.launcher.search.CardSearchProvider.ID -> prefs.searchCards && hasCards
             ContactSearchProvider.ID -> prefs.searchContacts
+            com.supernova.launcher.search.CalendarSearchProvider.ID -> prefs.searchCalendar
             com.supernova.launcher.search.SuggestionSearchProvider.ID -> prefs.searchSuggestions
             else -> true
         }
@@ -619,6 +621,22 @@ class SearchController(
             runLogged("message contact") {
                 binding.root.context.startActivity(
                     Intent(Intent.ACTION_SENDTO, android.net.Uri.parse("smsto:$number"))
+                )
+            }
+            surface.dismiss()
+        },
+        // At the occurrence search found, in the calendar app (#7).
+        onEvent = { event ->
+            runLogged("open calendar event") {
+                binding.root.context.startActivity(
+                    Intent(
+                        Intent.ACTION_VIEW,
+                        android.content.ContentUris.withAppendedId(
+                            android.provider.CalendarContract.Events.CONTENT_URI, event.eventId
+                        )
+                    )
+                        .putExtra(android.provider.CalendarContract.EXTRA_EVENT_BEGIN_TIME, event.begin)
+                        .putExtra(android.provider.CalendarContract.EXTRA_EVENT_END_TIME, event.end)
                 )
             }
             surface.dismiss()

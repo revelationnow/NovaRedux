@@ -480,6 +480,8 @@ data class LauncherPrefs(
     // The search URL for the Custom engine, %s where the query goes.
     val searchWebCustomUrl: String = "",
     val searchContacts: Boolean = false,
+    // Calendar events in search (#7), behind the calendar permission. Off by default.
+    val searchCalendar: Boolean = false,
     val searchShortcuts: Boolean = true,
     // Folder names (workspace and drawer groups) as search results. Off by
     // default.

@@ -827,6 +827,9 @@
     <string name="search_web_custom_message" formatted="false">किसी खोज का पता, जिसमें आपकी खोज की जगह %s हो. उदाहरण के लिए: https://example.org/search?q=%s</string>
     <string name="search_web_custom_invalid">https:// से शुरू होने वाला पता डालें</string>
     <string name="search_contacts">संपर्क खोजें</string>
+    <string name="search_calendar">कैलेंडर इवेंट खोजें</string>
+    <string name="search_calendar_summary">आपके फ़ोन के कैलेंडर के इवेंट, एक महीने पहले से एक साल आगे तक</string>
+    <string name="event_untitled">(कोई शीर्षक नहीं)</string>
     <string name="search_shortcuts">ऐप शॉर्टकट खोजें</string>
     <string name="search_calculator">कैलकुलेटर</string>
     <string name="search_hidden_apps">छिपे हुए ऐप खोजें</string>

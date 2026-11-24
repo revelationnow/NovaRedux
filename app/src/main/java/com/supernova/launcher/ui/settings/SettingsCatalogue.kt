@@ -1196,6 +1196,16 @@ object SettingsCatalogue {
                         if (enabled) actions.onSearchContactsEnabled()
                     }
                 ),
+                // The feed's calendar card asks for the same permission (#7).
+                SettingItem.Toggle(
+                    R.string.search_calendar,
+                    get = { it.searchCalendar },
+                    set = { enabled ->
+                        viewModel.set(Pref.searchCalendar, enabled)
+                        if (enabled) actions.onFeedCalendarEnabled()
+                    },
+                    subtitle = R.string.search_calendar_summary
+                ),
                 SettingItem.Toggle(
                     R.string.search_shortcuts,
                     get = { it.searchShortcuts },

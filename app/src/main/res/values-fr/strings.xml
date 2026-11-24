@@ -844,6 +844,9 @@
     <string name="search_web_custom_message" formatted="false">L\'adresse d\'une recherche, avec %s à la place de ce que vous cherchez. Par exemple : https://example.org/search?q=%s</string>
     <string name="search_web_custom_invalid">Saisissez une adresse commençant par https://</string>
     <string name="search_contacts">Rechercher des contacts</string>
+    <string name="search_calendar">Rechercher dans l\'agenda</string>
+    <string name="search_calendar_summary">Les événements de l\'agenda du téléphone, d\'un mois en arrière à un an à venir</string>
+    <string name="event_untitled">(Sans titre)</string>
     <string name="search_shortcuts">Rechercher des raccourcis d\'applis</string>
     <string name="search_calculator">Calculatrice</string>
     <string name="search_hidden_apps">Rechercher les applis masquées</string>

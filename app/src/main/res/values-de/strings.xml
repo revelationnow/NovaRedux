@@ -827,6 +827,9 @@
     <string name="search_web_custom_message" formatted="false">Die Adresse einer Suche, mit %s an der Stelle deines Suchbegriffs. Zum Beispiel: https://example.org/search?q=%s</string>
     <string name="search_web_custom_invalid">Gib eine Adresse ein, die mit https:// beginnt</string>
     <string name="search_contacts">Kontakte durchsuchen</string>
+    <string name="search_calendar">Kalendertermine durchsuchen</string>
+    <string name="search_calendar_summary">Termine im Kalender deines Telefons, von einem Monat zurück bis ein Jahr voraus</string>
+    <string name="event_untitled">(Ohne Titel)</string>
     <string name="search_shortcuts">App-Verknüpfungen durchsuchen</string>
     <string name="search_calculator">Rechner</string>
     <string name="search_hidden_apps">Ausgeblendete Apps durchsuchen</string>

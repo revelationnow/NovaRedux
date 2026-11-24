@@ -861,6 +861,9 @@
     <string name="search_web_custom_message" formatted="false">Адрес поиска, где %s стоит на месте вашего запроса. Например: https://example.org/search?q=%s</string>
     <string name="search_web_custom_invalid">Введите адрес, начинающийся с https://</string>
     <string name="search_contacts">Искать контакты</string>
+    <string name="search_calendar">Искать события календаря</string>
+    <string name="search_calendar_summary">События из календаря телефона, от месяца назад до года вперёд</string>
+    <string name="event_untitled">(Без названия)</string>
     <string name="search_shortcuts">Искать ярлыки приложений</string>
     <string name="search_calculator">Калькулятор</string>
     <string name="search_hidden_apps">Искать скрытые приложения</string>
