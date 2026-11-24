@@ -16,7 +16,8 @@ val Context.supernovaStore by preferencesDataStore(
     corruptionHandler = ReplaceFileCorruptionHandler { failure ->
         StoreRecovery.onCorrupt(failure, "supernova_store")
         emptyPreferences()
-    }
+    },
+    produceMigrations = { listOf(SmartFoldersKept) }
 )
 
 object StoreKeys {

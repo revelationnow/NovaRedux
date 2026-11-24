@@ -281,8 +281,12 @@ data class LauncherPrefs(
     // FOLDER-type groups render before apps in the drawer grid; false merges
     // them into the list alphabetically.
     val drawerFoldersFirst: Boolean = true,
-    // Auto-generate FOLDER groups from on-device app categories.
-    val smartFolders: Boolean = true,
+    // Auto-generate FOLDER groups from on-device app categories. Off to
+    // start with, as Nova had none: their folders took apps out of the
+    // main list, and people took them for missing (Supernova issue 327).
+    // An install that already has its smart folders keeps them
+    // (SmartFoldersKept).
+    val smartFolders: Boolean = false,
     // Smart folders the user deleted, or a fresh install left out as too big,
     // by name: regenerating on an install leaves them out. Turning Smart
     // Folders on again clears it.

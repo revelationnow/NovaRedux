@@ -354,7 +354,7 @@ class DrawerGroupsImportTest {
             DrawerGroup("Photos", setOf("0/p/p.Main"), type = DrawerGroupType.FOLDER, smart = true).encode()
         )
         val prefs = LayoutConverter.convert(
-            ForeignLayout(emptyList(), ForeignGrid()), LauncherPrefs(drawerGroups = stored), phone
+            ForeignLayout(emptyList(), ForeignGrid()), LauncherPrefs(drawerGroups = stored, smartFolders = true), phone
         ).prefs
         assertEquals(stored, prefs.drawerGroups)
         assertTrue(prefs.smartFolders)
