@@ -37,9 +37,9 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 
 | Status | Features |
 | --- | --- |
-| ✅ Done | 163 |
+| ✅ Done | 177 |
 | 🟡 Partial | 3 |
-| ❌ Missing | 14 |
+| ❌ Missing | 0 |
 | ❔ Needs a check on a device | 0 |
 | ⛔ Won't do | 2 |
 | **Total** | **182** |
@@ -302,7 +302,7 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 </details>
 
 <details>
-<summary><b>Beyond Nova</b> · 22 features · ✅ 8 · ❌ 14</summary>
+<summary><b>Beyond Nova</b> · 22 features · ✅ 22</summary>
 
 | Status | Feature | Since | Prime | Priority | What Nova did | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -314,20 +314,20 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 | ✅ | Automatic backups and recovery |  |  | P2 | Restored if the store breaks | writeAutoBackup, StoreRecovery |
 | ✅ | Bring to front, send to back |  |  | P2 | Stacking order for overlaps | restackItem |
 | ✅ | Fine widget placement |  |  | P2 | Nova's subgrid stopped at half cells | Widgets move and resize in sixteenths of a cell, pulled onto whole and half cells nearby (FinePlacement); off by default, under Home screen > Editing. Another launcher's widgets placed between half cells come in that way |
-| ❌ | Lock on hidden apps |  |  | P1 | Smart Launcher locks its hidden apps with a PIN or fingerprint | Planned in #4 |
-| ❌ | Gesture actions: screenshot, power menu, split screen, torch |  |  | P2 | Kvaesitso and phone makers' own gestures have them | Planned in #5 |
-| ❌ | A font file for icon labels |  |  | P2 | Lawnchair takes OTF and TTF files; Nova kept to the system font | Planned in #6 |
-| ❌ | Calendar events in search |  |  | P2 | Kvaesitso searches the phone's calendar events | Planned in #7 |
-| ❌ | Unit conversion in search |  |  | P2 | Kvaesitso's unit converter | Planned in #8 |
-| ❌ | Actions on typed numbers and addresses in search |  |  | P2 | Smart Launcher's quick actions in search | Planned in #9 |
-| ❌ | Widget stacks |  |  | P1 | One UI, Niagara, Action Launcher and Smart Launcher | Planned in #10 |
-| ❌ | Blur behind the drawer and folders |  |  | P2 | Smart Launcher's blurred surfaces | Planned in #11 |
-| ❌ | App pairs |  |  | P2 | Android 15's app pairs; the Splitz app | Planned in #12 |
-| ❌ | A built-in glance widget |  |  | P2 | Lawnchair's At a Glance | Planned in #13 |
-| ❌ | A widget behind an icon swipe |  |  | P2 | Action Launcher's Shutters | Planned in #14 |
-| ❌ | Notification text on home screen icons |  |  | P2 | Niagara shows messages on its home screen | Planned in #15 |
-| ❌ | Notification summary |  |  | P2 | Niagara's notification summary | Planned in #16 |
-| ❌ | Screen time card on the feed |  |  | P2 | Microsoft Launcher's screen time | Planned in #17 |
+| ✅ | Lock on hidden apps |  |  | P1 | Smart Launcher locks its hidden apps with a PIN or fingerprint | #4. Hidden apps can ask for the phone's fingerprint, face or screen lock before they show (HiddenAppsLock, DeviceAuth); off by default, under App drawer > Hidden apps. Not yet tried on a phone |
+| ✅ | Gesture actions: screenshot, power menu, split screen, torch |  |  | P2 | Kvaesitso and phone makers' own gestures have them | #5. Four more actions for gestures, icon swipes and action icons; the first three go through the accessibility service, the torch through the camera (Torch). Not yet tried on a phone |
+| ✅ | A font file for icon labels |  |  | P2 | Lawnchair takes OTF and TTF files; Nova kept to the system font | #6. Label font > Font file… copies an OTF or TTF file in and checks it loads (FontFiles) |
+| ✅ | Calendar events in search |  |  | P2 | Kvaesitso searches the phone's calendar events | #7. Search finds events by title or place, 30 days back to a year ahead, with calendar access (CalendarSearchProvider); off by default |
+| ✅ | Unit conversion in search |  |  | P2 | Kvaesitso's unit converter | #8. Volume, speed, area, energy and pressure joined the calculator's length, weight and temperature (UnitTable) |
+| ✅ | Actions on typed numbers and addresses in search |  |  | P2 | Smart Launcher's quick actions in search | #9. A typed phone number, web address or email gets Call, Message, Open, Email and Add contact rows (TypedText); off by default |
+| ✅ | Widget stacks |  |  | P1 | One UI, Niagara, Action Launcher and Smart Launcher | #10. A widget's menu adds another widget to its stack; a sideways swipe turns it (WidgetStacks, WidgetStackView). Not yet tried on a phone |
+| ✅ | Blur behind the drawer and folders |  |  | P2 | Smart Launcher's blurred surfaces | #11. Android 12 and up: the wallpaper blurs as the drawer or a folder opens, with a strength slider (WallpaperBlur); off by default. Not yet tried on a phone |
+| ✅ | App pairs |  |  | P2 | Android 15's app pairs; the Splitz app | #12. An app's menu pairs it with another; the icon opens both in split screen through the accessibility service (AppPairs, AppPairLauncher). Not yet tried on a phone |
+| ✅ | A built-in glance widget |  |  | P2 | Lawnchair's At a Glance | #13. NovaRedux's own widget: the date, the next event and alarm, and Breezy Weather's weather (GlanceWidget). Not yet tried on a phone |
+| ✅ | A widget behind an icon swipe |  |  | P2 | Action Launcher's Shutters | #14. Show a widget, among an icon's swipe actions: one of the app's widgets in a panel by the icon (ShutterWidgets, WidgetPanel). Not yet tried on a phone |
+| ✅ | Notification text on home screen icons |  |  | P2 | Niagara shows messages on its home screen | #15. Picked apps show their newest notification in place of their name, under Notification badges (NotificationLabels). Not yet tried on a phone |
+| ✅ | Notification summary |  |  | P2 | Niagara's notification summary | #16. Picked apps' notifications wait for set hours through Android's own snooze, under Notification badges (SummaryRules, NotificationSummary); off by default. Not yet tried on a phone |
+| ✅ | Screen time card on the feed |  |  | P2 | Microsoft Launcher's screen time | #17. A ready-made feed card: today's screen time, the top three apps and the unlocks, with usage access (ScreenTime, ScreenTimeCardSource). Not yet tried on a phone |
 
 </details>
 
