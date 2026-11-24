@@ -523,6 +523,7 @@ class LauncherActivity :
 
     // Wallpaper zoom-out while the drawer or a folder is open (API 30+).
     private var wallpaperZoomAnimator: android.animation.ValueAnimator? = null
+    private val wallpaperBlur by lazy { com.supernova.launcher.ui.WallpaperBlur(this) }
     private var wallpaperZoomTarget = 0f
     private var wallpaperZoomValue = 0f
     // Some OEM wallpaper services throw; stop calling after the first failure.
@@ -2346,6 +2347,8 @@ class LauncherActivity :
     // Zooming in requires the pref; restoring to 0 is always allowed so a
     // mid-open pref flip can't strand a zoomed wallpaper.
     override fun animateWallpaperZoom(target: Float) {
+        // The blur (#11) follows the same opening and closing, zoom or not.
+        wallpaperBlur.to(target, viewModel.state.value.prefs)
         if (wallpaperZoomBroken) return
         val method = com.supernova.launcher.ui.WallpaperZoom.method ?: return
         val prefs = viewModel.state.value.prefs

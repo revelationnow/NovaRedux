@@ -756,6 +756,9 @@
     <string name="show_scrims">Показывать тень</string>
     <string name="show_scrims_summary">Мягкое затемнение за строкой состояния и доком</string>
     <string name="wallpaper_zoom">Эффект масштабирования обоев</string>
+    <string name="blur_wallpaper">Размытие за панелью приложений и папками</string>
+    <string name="blur_wallpaper_summary">Размывает обои, пока открыта панель приложений или папка. Чтобы видеть его в панели, уменьшите непрозрачность её фона.</string>
+    <string name="blur_strength">Сила размытия</string>
     <string name="auto_add_apps">Добавлять новые приложения на главный экран</string>
     <string name="label_font">Шрифт подписей</string>
     <string name="label_single_line">Подписи в одну строку</string>

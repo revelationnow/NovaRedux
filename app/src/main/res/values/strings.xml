@@ -760,6 +760,9 @@
     <string name="show_scrims">Show shadow</string>
     <string name="show_scrims_summary">A soft shade behind the status bar and the dock</string>
     <string name="wallpaper_zoom">Wallpaper zoom effect</string>
+    <string name="blur_wallpaper">Blur behind the drawer and folders</string>
+    <string name="blur_wallpaper_summary">Blurs the wallpaper while the app drawer or a folder is open. Lower the drawer\'s background opacity to see it there.</string>
+    <string name="blur_strength">Blur strength</string>
     <string name="auto_add_apps">Add new apps to Home screen</string>
     <string name="label_font">Label font</string>
     <string name="label_single_line">Single-line labels</string>

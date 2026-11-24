@@ -498,6 +498,23 @@ object SettingsCatalogue {
                     get = { it.wallpaperZoom },
                     set = { viewModel.set(Pref.wallpaperZoom, it) }
                 ).takeIf { com.supernova.launcher.ui.WallpaperZoom.supported },
+                // Android 12's window blur (#11): left out before it.
+                SettingItem.Toggle(
+                    R.string.blur_wallpaper,
+                    get = { it.blurWallpaper },
+                    set = { viewModel.set(Pref.blurWallpaper, it) },
+                    subtitle = R.string.blur_wallpaper_summary
+                ).takeIf { com.supernova.launcher.ui.WallpaperBlur.supported },
+                SettingItem.Slider(
+                    R.string.blur_strength,
+                    min = com.supernova.launcher.ui.WallpaperBlur.MIN_STRENGTH,
+                    max = com.supernova.launcher.ui.WallpaperBlur.MAX_STRENGTH,
+                    step = com.supernova.launcher.ui.WallpaperBlur.MIN_STRENGTH,
+                    get = { it.blurStrength },
+                    set = { viewModel.set(Pref.blurStrength, it) },
+                    display = { context.getString(R.string.opacity_percent, it) }
+                ).hiddenWhen { needsOn(R.string.blur_wallpaper, !it.blurWallpaper) }.nested()
+                    .takeIf { com.supernova.launcher.ui.WallpaperBlur.supported },
                 SettingItem.Toggle(
                     R.string.show_scrims,
                     get = { it.showScrims },

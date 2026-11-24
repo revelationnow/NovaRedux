@@ -740,6 +740,9 @@
     <string name="show_scrims">Mostrar sombra</string>
     <string name="show_scrims_summary">Un sombreado suave detrás de la barra de estado y del dock</string>
     <string name="wallpaper_zoom">Efecto de zoom del fondo</string>
+    <string name="blur_wallpaper">Difuminar detrás del cajón y las carpetas</string>
+    <string name="blur_wallpaper_summary">Difumina el fondo de pantalla mientras el cajón de aplicaciones o una carpeta están abiertos. Baja la opacidad del fondo del cajón para verlo ahí.</string>
+    <string name="blur_strength">Intensidad del difuminado</string>
     <string name="auto_add_apps">Añadir las aplicaciones nuevas a la pantalla de inicio</string>
     <string name="label_font">Fuente de los nombres</string>
     <string name="label_single_line">Nombres en una línea</string>

@@ -724,6 +724,9 @@
     <string name="show_scrims">Schatten anzeigen</string>
     <string name="show_scrims_summary">Ein sanfter Schatten hinter der Statusleiste und dem Dock</string>
     <string name="wallpaper_zoom">Zoomeffekt für den Hintergrund</string>
+    <string name="blur_wallpaper">Hinter App-Drawer und Ordnern weichzeichnen</string>
+    <string name="blur_wallpaper_summary">Zeichnet das Hintergrundbild weich, solange der App-Drawer oder ein Ordner offen ist. Senke die Deckkraft des Drawer-Hintergrunds, um es dort zu sehen.</string>
+    <string name="blur_strength">Stärke der Weichzeichnung</string>
     <string name="auto_add_apps">Neue Apps zum Startbildschirm hinzufügen</string>
     <string name="label_font">Schriftart der Beschriftungen</string>
     <string name="label_single_line">Einzeilige Beschriftungen</string>

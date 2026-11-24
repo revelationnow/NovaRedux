@@ -469,6 +469,10 @@ data class LauncherPrefs(
     val widgetCornerRadius: Int = 16,
     val showScrims: Boolean = false,
     val wallpaperZoom: Boolean = true,
+    // The wallpaper blurred behind the drawer and open folders (#11), and how
+    // much, in percent of WallpaperBlur's strongest. Android 12 and up.
+    val blurWallpaper: Boolean = false,
+    val blurStrength: Int = com.supernova.launcher.ui.WallpaperBlur.DEFAULT_STRENGTH,
     // New installs go on the home screen. On by default.
     val autoAddApps: Boolean = true,
     val labelFont: LabelFont = LabelFont.DEFAULT,

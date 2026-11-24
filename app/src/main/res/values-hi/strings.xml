@@ -724,6 +724,9 @@
     <string name="show_scrims">परछाई दिखाएं</string>
     <string name="show_scrims_summary">स्टेटस बार और डॉक के पीछे हल्की परछाई</string>
     <string name="wallpaper_zoom">वॉलपेपर ज़ूम इफ़ेक्ट</string>
+    <string name="blur_wallpaper">ड्रॉअर और फ़ोल्डर के पीछे धुंधला करें</string>
+    <string name="blur_wallpaper_summary">ऐप ड्रॉअर या कोई फ़ोल्डर खुला होने पर वॉलपेपर धुंधला करता है. ड्रॉअर में इसे देखने के लिए ड्रॉअर के बैकग्राउंड की ओपैसिटी कम करें.</string>
+    <string name="blur_strength">धुंधलेपन की तीव्रता</string>
     <string name="auto_add_apps">नए ऐप होम स्क्रीन पर जोड़ें</string>
     <string name="label_font">लेबल का फ़ॉन्ट</string>
     <string name="label_single_line">एक लाइन वाले लेबल</string>

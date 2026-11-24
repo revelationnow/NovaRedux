@@ -299,6 +299,11 @@ object Pref {
     val widgetCornerRadius = int("widget_corner_radius", 0..WIDGET_RADIUS_MAX)
     val showScrims = bool("show_scrims")
     val wallpaperZoom = bool("wallpaper_zoom")
+    val blurWallpaper = bool("blur_wallpaper")
+    val blurStrength = int(
+        "blur_strength",
+        com.supernova.launcher.ui.WallpaperBlur.MIN_STRENGTH..com.supernova.launcher.ui.WallpaperBlur.MAX_STRENGTH
+    )
     val autoAddApps = bool("auto_add_apps")
     val labelFont = choice("label_font", LabelFont.entries)
     val labelFontFile = text("label_font_file")

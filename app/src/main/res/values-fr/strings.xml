@@ -740,6 +740,9 @@
     <string name="show_scrims">Afficher l\'ombre</string>
     <string name="show_scrims_summary">Une ombre douce derrière la barre d\'état et le dock</string>
     <string name="wallpaper_zoom">Effet de zoom du fond d\'écran</string>
+    <string name="blur_wallpaper">Flouter derrière le tiroir et les dossiers</string>
+    <string name="blur_wallpaper_summary">Floute le fond d\'écran quand le tiroir d\'applis ou un dossier est ouvert. Baissez l\'opacité du fond du tiroir pour le voir à cet endroit.</string>
+    <string name="blur_strength">Intensité du flou</string>
     <string name="auto_add_apps">Ajouter les nouvelles applis à l\'écran d\'accueil</string>
     <string name="label_font">Police des libellés</string>
     <string name="label_single_line">Libellés sur une ligne</string>

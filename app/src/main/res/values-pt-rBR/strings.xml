@@ -740,6 +740,9 @@
     <string name="show_scrims">Mostrar sombra</string>
     <string name="show_scrims_summary">Um sombreado suave atrás da barra de status e do dock</string>
     <string name="wallpaper_zoom">Efeito de zoom do plano de fundo</string>
+    <string name="blur_wallpaper">Desfocar atrás da gaveta e das pastas</string>
+    <string name="blur_wallpaper_summary">Desfoca o plano de fundo enquanto a gaveta de apps ou uma pasta estão abertas. Diminua a opacidade do fundo da gaveta para ver o efeito nela.</string>
+    <string name="blur_strength">Intensidade do desfoque</string>
     <string name="auto_add_apps">Adicionar novos apps à tela inicial</string>
     <string name="label_font">Fonte dos nomes</string>
     <string name="label_single_line">Nomes em uma linha</string>
