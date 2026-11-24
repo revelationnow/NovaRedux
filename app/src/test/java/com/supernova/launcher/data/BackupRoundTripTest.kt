@@ -174,6 +174,7 @@ class BackupRoundTripTest {
         feedShowMedia = false,
         feedShowCalendar = true,
         feedShowContacts = true,
+        feedShowScreenTime = true,
         feedShortcutRows = 3,
         labsEnabled = true,
         labsShowComponent = true,

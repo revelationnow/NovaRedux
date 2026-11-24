@@ -132,4 +132,28 @@
             android:layout_height="wrap_content"
             android:contentDescription="@string/feed_contacts_title" />
     </LinearLayout>
+
+    <!-- Today's screen time (#17); the card asks for usage access. -->
+    <LinearLayout
+        android:id="@+id/readyScreenTime"
+        style="@style/SheetRow">
+
+        <LinearLayout style="@style/SheetRowText">
+
+            <TextView
+                style="@style/SheetRowTitle"
+                android:layout_width="match_parent"
+                android:text="@string/feed_screen_time_title" />
+
+            <TextView
+                style="@style/SheetRowSubtitle"
+                android:text="@string/feed_show_screen_time" />
+        </LinearLayout>
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/readyScreenTimeSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/feed_screen_time_title" />
+    </LinearLayout>
 </LinearLayout>

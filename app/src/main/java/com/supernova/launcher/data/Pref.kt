@@ -378,6 +378,7 @@ object Pref {
     val feedShowMedia = bool("feed_show_media")
     val feedShowCalendar = bool("feed_show_calendar")
     val feedShowContacts = bool("feed_show_contacts")
+    val feedShowScreenTime = bool("feed_show_screen_time")
     val feedShortcutRows = int("feed_shortcut_rows", 1..FEED_SHORTCUT_ROWS_MAX)
     val labsEnabled = bool("labs_enabled")
     val labsShowComponent = bool("labs_show_component")

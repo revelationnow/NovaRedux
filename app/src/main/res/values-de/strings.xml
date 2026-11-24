@@ -1000,6 +1000,7 @@
     <string name="cards_media_title">Mediensteuerung</string>
     <string name="feed_show_calendar">Anstehende Termine anzeigen</string>
     <string name="feed_show_contacts">Markierte Kontakte anzeigen</string>
+    <string name="feed_show_screen_time">Heutige Bildschirmzeit, die meistgenutzten Apps und die Entsperrungen zeigen</string>
     <string name="feed_media_needs_access">Braucht Benachrichtigungszugriff</string>
     <string name="feed_media_needs_access_summary">Tippe, um ihn zu gewähren, damit die Karte zeigen kann, was läuft</string>
     <string name="feed_disabled_hint">Aktiviere zuerst die Feed-Seite in den Einstellungen</string>
@@ -1008,6 +1009,13 @@
     <string name="feed_calendar_permission">Erlaube den Kalenderzugriff, um anstehende Termine zu sehen</string>
     <string name="feed_contacts_title">Markierte Kontakte</string>
     <string name="feed_contacts_permission">Erlaube den Zugriff auf Kontakte, um markierte Kontakte zu sehen</string>
+    <string name="feed_screen_time_title">Bildschirmzeit</string>
+    <string name="feed_screen_time_access">Erlaube den Zugriff auf Nutzungsdaten, um die heutige Bildschirmzeit zu sehen. Sie wird nur auf diesem Telefon gelesen.</string>
+    <string name="feed_screen_time_total">%1$s heute</string>
+    <plurals name="feed_screen_time_unlocks">
+        <item quantity="one">%d-mal entsperrt</item>
+        <item quantity="other">%d-mal entsperrt</item>
+    </plurals>
     <string name="feed_grant_access">Zugriff erlauben</string>
     <string name="calendar_permission_needed">Die Kalenderkarte braucht die Kalenderberechtigung</string>
     <string name="contacts_permission_feed_needed">Die Kontaktkarte braucht die Kontaktberechtigung</string>

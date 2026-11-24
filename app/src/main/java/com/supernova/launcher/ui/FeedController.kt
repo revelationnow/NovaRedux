@@ -1,10 +1,13 @@
 package com.supernova.launcher.ui
 
+import android.content.Intent
+import android.provider.Settings
 import android.view.MotionEvent
 import android.view.VelocityTracker
 import android.view.View
 import android.view.ViewConfiguration
 import android.view.animation.DecelerateInterpolator
+import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.doOnLayout
@@ -15,6 +18,8 @@ import com.supernova.launcher.feed.CalendarCardSource
 import com.supernova.launcher.feed.ContactsCardSource
 import com.supernova.launcher.feed.FeedOrder
 import com.supernova.launcher.feed.MediaCardSource
+import com.supernova.launcher.feed.ScreenTimeCardSource
+import com.supernova.launcher.runLogged
 import com.supernova.launcher.ui.theme.Styles
 import com.supernova.launcher.ui.theme.SurfaceId
 import kotlinx.coroutines.CoroutineScope
@@ -111,7 +116,8 @@ class FeedController(
             onFeedSettings = { host.openFeedSettings() },
             onAddWidget = { host.addWidgetCard() },
             onAddShortcuts = { host.addShortcutsCard() },
-            onShowBuiltIn = { key -> showBuiltIn(key) }
+            onShowBuiltIn = { key -> showBuiltIn(key) },
+            onGrantUsageAccess = { openUsageAccess() }
         ),
         cardBinder
     )
@@ -121,6 +127,7 @@ class FeedController(
     private val mediaSource = MediaCardSource(context.applicationContext)
     private val calendarSource = CalendarCardSource(context.applicationContext, scope)
     private val contactsSource = ContactsCardSource(context.applicationContext, scope)
+    private val screenTimeSource = ScreenTimeCardSource(context.applicationContext, scope)
     private var collectJob: Job? = null
 
     // Swipe state. The drag path mutates translationX only - no allocations
@@ -466,11 +473,12 @@ class FeedController(
         mediaSource.onShown()
         calendarSource.onShown()
         contactsSource.onShown()
+        screenTimeSource.onShown()
         collectJob = scope.launch {
             launch {
                 combine(
-                    mediaSource.state, calendarSource.state, contactsSource.state
-                ) { _, _, _ -> Unit }.collect { rebuild() }
+                    mediaSource.state, calendarSource.state, contactsSource.state, screenTimeSource.state
+                ) { _, _, _, _ -> Unit }.collect { rebuild() }
             }
             launch {
                 // Card edits made while the pane is open (editor sheet on top),
@@ -495,6 +503,7 @@ class FeedController(
         mediaSource.onHidden()
         calendarSource.onHidden()
         contactsSource.onHidden()
+        screenTimeSource.onHidden()
     }
 
     // In-card permission grants land while the pane is open; re-pull both
@@ -508,6 +517,7 @@ class FeedController(
         if (!shown) return
         calendarSource.refresh()
         contactsSource.refresh()
+        screenTimeSource.refresh()
     }
 
     private fun rebuild() {
@@ -544,6 +554,9 @@ class FeedController(
                 null -> Unit
             }
         }
+        if (prefs.feedShowScreenTime) {
+            screenTimeSource.state.value?.let { builtIns[FeedOrder.SCREEN_TIME] = screenTimeRow(it) }
+        }
         val rows = ArrayList<FeedAdapter.Row>()
         FeedOrder.layout(viewModel.feedOrder(), viewModel.feedCards(), builtIns.keys).forEach { entry ->
             val card = entry.card
@@ -559,8 +572,31 @@ class FeedController(
     private fun readyMadeOff(prefs: LauncherPrefs): List<String> = listOfNotNull(
         FeedOrder.MEDIA.takeUnless { prefs.feedShowMedia },
         FeedOrder.CALENDAR.takeUnless { prefs.feedShowCalendar },
-        FeedOrder.CONTACTS.takeUnless { prefs.feedShowContacts }
+        FeedOrder.CONTACTS.takeUnless { prefs.feedShowContacts },
+        FeedOrder.SCREEN_TIME.takeUnless { prefs.feedShowScreenTime }
     )
+
+    // The screen time card (#17), naming the apps used most that the
+    // launcher can show: each with its name and icon, as in the drawer.
+    private fun screenTimeRow(state: ScreenTimeCardSource.ScreenTimeState): FeedAdapter.Row.ScreenTime {
+        val today = state as? ScreenTimeCardSource.ScreenTimeState.Today
+        val installed = viewModel.state.value.apps
+        val shown = today?.apps.orEmpty().mapNotNull { (packageName, timeMs) ->
+            installed.filter { it.packageName == packageName }.minByOrNull { it.userSerial }?.let { app ->
+                FeedAdapter.ShownApp(app.label, viewModel.appCatalog().iconFor(app), timeMs)
+            }
+        }
+        return FeedAdapter.Row.ScreenTime(state, shown.take(SCREEN_TIME_APPS))
+    }
+
+    // Settings' usage access page, at NovaRedux's own switch where the phone
+    // opens it so; the card turns into the day's numbers once it is on.
+    private fun openUsageAccess() {
+        val own = Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS).setData("package:${context.packageName}".toUri())
+        runLogged("open usage access") { context.startActivity(own) }.onFailure {
+            runLogged("open usage access list") { context.startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)) }
+        }
+    }
 
     // A ready-made card turned on from the empty page; calendar and contacts
     // ask for their access as they would from settings.
@@ -578,6 +614,8 @@ class FeedController(
                 viewModel.set(com.supernova.launcher.data.Pref.feedShowContacts, true)
                 host.requestContactsPermission()
             }
+            // The card asks for usage access itself.
+            FeedOrder.SCREEN_TIME -> viewModel.set(com.supernova.launcher.data.Pref.feedShowScreenTime, true)
         }
     }
 
@@ -725,5 +763,7 @@ class FeedController(
         const val FEED_DIM = 0x80000000.toInt()
         // Pane text darker than this can't be read on FEED_DIM.
         const val DARK_TEXT_LUMINANCE = 0.5
+        // The apps the screen time card names (#17).
+        const val SCREEN_TIME_APPS = 3
     }
 }

@@ -1560,6 +1560,15 @@ object SettingsCatalogue {
                         }
                     ).hiddenWhen(feedHidden)
                 )
+                // Today's screen time (#17); the card asks for usage access.
+                add(
+                    SettingItem.Toggle(
+                        R.string.feed_screen_time_title,
+                        subtitle = R.string.feed_show_screen_time,
+                        get = { it.feedShowScreenTime },
+                        set = { viewModel.set(Pref.feedShowScreenTime, it) }
+                    ).hiddenWhen(feedHidden)
+                )
                 add(SettingItem.Row(R.string.cards_add, onClick = actions.addCard, visibleIf = { it.feedEnabled }))
                 // The cards' color and opacity: the Style tab's Cards row.
                 add(

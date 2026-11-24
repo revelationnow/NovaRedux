@@ -1000,6 +1000,7 @@
     <string name="cards_media_title">मीडिया कंट्रोल</string>
     <string name="feed_show_calendar">आने वाले इवेंट दिखाएं</string>
     <string name="feed_show_contacts">स्टार वाले संपर्क दिखाएं</string>
+    <string name="feed_show_screen_time">आज का स्क्रीन टाइम, सबसे ज़्यादा इस्तेमाल किए गए ऐप और अनलॉक दिखाएं</string>
     <string name="feed_media_needs_access">सूचनाओं का ऐक्सेस चाहिए</string>
     <string name="feed_media_needs_access_summary">अनुमति देने के लिए टैप करें, ताकि कार्ड दिखा सके कि क्या चल रहा है</string>
     <string name="feed_disabled_hint">पहले सेटिंग में फ़ीड पेज चालू करें</string>
@@ -1008,6 +1009,13 @@
     <string name="feed_calendar_permission">आने वाले इवेंट देखने के लिए कैलेंडर का ऐक्सेस दें</string>
     <string name="feed_contacts_title">स्टार वाले संपर्क</string>
     <string name="feed_contacts_permission">स्टार वाले संपर्क देखने के लिए संपर्कों का ऐक्सेस दें</string>
+    <string name="feed_screen_time_title">स्क्रीन टाइम</string>
+    <string name="feed_screen_time_access">आज का स्क्रीन टाइम देखने के लिए इस्तेमाल के डेटा का ऐक्सेस दें. इसे सिर्फ़ इसी फ़ोन पर पढ़ा जाता है.</string>
+    <string name="feed_screen_time_total">आज %1$s</string>
+    <plurals name="feed_screen_time_unlocks">
+        <item quantity="one">%d बार अनलॉक किया</item>
+        <item quantity="other">%d बार अनलॉक किया</item>
+    </plurals>
     <string name="feed_grant_access">ऐक्सेस दें</string>
     <string name="calendar_permission_needed">कैलेंडर कार्ड के लिए कैलेंडर की अनुमति ज़रूरी है</string>
     <string name="contacts_permission_feed_needed">संपर्क कार्ड के लिए संपर्कों की अनुमति ज़रूरी है</string>

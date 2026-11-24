@@ -641,6 +641,8 @@ data class LauncherPrefs(
     val feedShowMedia: Boolean = true,
     val feedShowCalendar: Boolean = false,
     val feedShowContacts: Boolean = false,
+    // Today's screen time on the feed (#17).
+    val feedShowScreenTime: Boolean = false,
     // How many rows of suggested-shortcut pills the feed shows
     // ("Suggested shortcuts rows"), 1..3.
     val feedShortcutRows: Int = 1,

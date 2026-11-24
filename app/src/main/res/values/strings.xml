@@ -1072,6 +1072,7 @@
     <string name="cards_media_title">Media controls</string>
     <string name="feed_show_calendar">Show upcoming events</string>
     <string name="feed_show_contacts">Show starred contacts</string>
+    <string name="feed_show_screen_time">Show today\'s screen time, the apps used most and the unlocks</string>
     <string name="feed_media_needs_access">Needs notification access</string>
     <string name="feed_media_needs_access_summary">Tap to grant it, so the card can show what’s playing</string>
     <string name="feed_disabled_hint">Enable the feed page in Settings first</string>
@@ -1080,6 +1081,13 @@
     <string name="feed_calendar_permission">Allow calendar access to see upcoming events</string>
     <string name="feed_contacts_title">Starred contacts</string>
     <string name="feed_contacts_permission">Allow contacts access to see starred contacts</string>
+    <string name="feed_screen_time_title">Screen time</string>
+    <string name="feed_screen_time_access">Allow usage access to see today\'s screen time. It\'s read on this phone only.</string>
+    <string name="feed_screen_time_total">%1$s today</string>
+    <plurals name="feed_screen_time_unlocks">
+        <item quantity="one">Unlocked %d time</item>
+        <item quantity="other">Unlocked %d times</item>
+    </plurals>
     <string name="feed_grant_access">Grant access</string>
     <string name="calendar_permission_needed">Calendar permission is required for the calendar card</string>
     <string name="contacts_permission_feed_needed">Contacts permission is required for the contacts card</string>

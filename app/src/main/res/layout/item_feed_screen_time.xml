@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The screen time card (#17): today's total, the apps used most and the
+     unlocks, or the ask for usage access. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="@dimen/space_sm"
+    android:background="@drawable/bg_feed_card"
+    android:orientation="vertical"
+    android:padding="@dimen/space_ms">
+
+    <TextView
+        android:id="@+id/screenTimeHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/feed_screen_time_title"
+        android:textSize="@dimen/text_secondary"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/screenTimeTotal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_xs"
+        android:textSize="@dimen/text_headline"
+        android:visibility="gone" />
+
+    <!-- The apps used most, added programmatically (<= 3). -->
+    <LinearLayout
+        android:id="@+id/screenTimeApps"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" />
+
+    <TextView
+        android:id="@+id/screenTimeUnlocks"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_xs"
+        android:textSize="@dimen/text_secondary"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/screenTimePermissionText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_sm"
+        android:text="@string/feed_screen_time_access"
+        android:textSize="@dimen/text_secondary"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/screenTimeGrantButton"
+        style="@style/Widget.Supernova.Button.Text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/feed_grant_access"
+        android:visibility="gone" />
+</LinearLayout>

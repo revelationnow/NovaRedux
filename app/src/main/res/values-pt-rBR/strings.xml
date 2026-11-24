@@ -1017,6 +1017,7 @@
     <string name="cards_media_title">Controles de mídia</string>
     <string name="feed_show_calendar">Mostrar próximos eventos</string>
     <string name="feed_show_contacts">Mostrar contatos com estrela</string>
+    <string name="feed_show_screen_time">Mostrar o tempo de tela de hoje, os apps mais usados e os desbloqueios</string>
     <string name="feed_media_needs_access">Precisa de acesso às notificações</string>
     <string name="feed_media_needs_access_summary">Toque para permitir e o card mostrar o que está tocando</string>
     <string name="feed_disabled_hint">Primeiro ative a página do feed nas Configurações</string>
@@ -1025,6 +1026,14 @@
     <string name="feed_calendar_permission">Permita o acesso à agenda para ver os próximos eventos</string>
     <string name="feed_contacts_title">Contatos com estrela</string>
     <string name="feed_contacts_permission">Permita o acesso aos contatos para ver os contatos com estrela</string>
+    <string name="feed_screen_time_title">Tempo de tela</string>
+    <string name="feed_screen_time_access">Permita o acesso aos dados de uso para ver o tempo de tela de hoje. Eles são lidos somente neste telefone.</string>
+    <string name="feed_screen_time_total">%1$s hoje</string>
+    <plurals name="feed_screen_time_unlocks">
+        <item quantity="one">Desbloqueado %d vez</item>
+        <item quantity="many">Desbloqueado %d vezes</item>
+        <item quantity="other">Desbloqueado %d vezes</item>
+    </plurals>
     <string name="feed_grant_access">Conceder acesso</string>
     <string name="calendar_permission_needed">O card de agenda precisa da permissão de agenda</string>
     <string name="contacts_permission_feed_needed">O card de contatos precisa da permissão de contatos</string>

@@ -1017,6 +1017,7 @@
     <string name="cards_media_title">Commandes multimédias</string>
     <string name="feed_show_calendar">Afficher les prochains événements</string>
     <string name="feed_show_contacts">Afficher les contacts favoris</string>
+    <string name="feed_show_screen_time">Afficher le temps d\'écran du jour, les applis les plus utilisées et les déverrouillages</string>
     <string name="feed_media_needs_access">Nécessite l\'accès aux notifications</string>
     <string name="feed_media_needs_access_summary">Appuyez pour l\'accorder, afin que la carte montre ce qui est en lecture</string>
     <string name="feed_disabled_hint">Activez d\'abord la page du flux dans les paramètres</string>
@@ -1025,6 +1026,14 @@
     <string name="feed_calendar_permission">Autorisez l\'accès à l\'agenda pour voir les prochains événements</string>
     <string name="feed_contacts_title">Contacts favoris</string>
     <string name="feed_contacts_permission">Autorisez l\'accès aux contacts pour voir les contacts favoris</string>
+    <string name="feed_screen_time_title">Temps d\'écran</string>
+    <string name="feed_screen_time_access">Autorisez l\'accès aux données d\'utilisation pour voir le temps d\'écran du jour. Elles ne sont lues que sur ce téléphone.</string>
+    <string name="feed_screen_time_total">%1$s aujourd\'hui</string>
+    <plurals name="feed_screen_time_unlocks">
+        <item quantity="one">Déverrouillé %d fois</item>
+        <item quantity="many">Déverrouillé %d fois</item>
+        <item quantity="other">Déverrouillé %d fois</item>
+    </plurals>
     <string name="feed_grant_access">Autoriser l\'accès</string>
     <string name="calendar_permission_needed">La carte Agenda nécessite l\'autorisation Agenda</string>
     <string name="contacts_permission_feed_needed">La carte Contacts nécessite l\'autorisation Contacts</string>

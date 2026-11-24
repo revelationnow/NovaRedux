@@ -2,6 +2,7 @@ package com.supernova.launcher.ui
 
 import android.graphics.Color
 import android.graphics.Outline
+import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.text.format.DateUtils
 import android.view.Gravity
@@ -21,11 +22,13 @@ import com.supernova.launcher.databinding.ItemFeedContactsBinding
 import com.supernova.launcher.databinding.ItemFeedCustomBinding
 import com.supernova.launcher.databinding.ItemFeedEmptyBinding
 import com.supernova.launcher.databinding.ItemFeedMediaBinding
+import com.supernova.launcher.databinding.ItemFeedScreenTimeBinding
 import com.supernova.launcher.feed.CalendarCardSource
 import com.supernova.launcher.feed.ContactsCardSource
 import com.supernova.launcher.feed.FeedCard
 import com.supernova.launcher.feed.FeedOrder
 import com.supernova.launcher.feed.MediaCardSource
+import com.supernova.launcher.feed.ScreenTimeCardSource
 import com.supernova.launcher.runLogged
 
 // Renders the feed pane's card list. One view type per card kind; the list is
@@ -50,7 +53,9 @@ class FeedAdapter(
         val onFeedSettings: () -> Unit,
         val onAddWidget: () -> Unit,
         val onAddShortcuts: () -> Unit,
-        val onShowBuiltIn: (String) -> Unit
+        val onShowBuiltIn: (String) -> Unit,
+        // The screen time card's ask (#17): Settings' usage access page.
+        val onGrantUsageAccess: () -> Unit
     )
 
     // key and group place a card in the user's order (FeedOrder); the
@@ -59,12 +64,21 @@ class FeedAdapter(
         class Media(val state: MediaCardSource.MediaState) : Row(FeedOrder.MEDIA, FeedOrder.Group.REST)
         class CalendarRow(val state: CalendarCardSource.CalendarState) : Row(FeedOrder.CALENDAR, FeedOrder.Group.REST)
         class Contacts(val state: ContactsCardSource.ContactsState) : Row(FeedOrder.CONTACTS, FeedOrder.Group.REST)
+        // Today's screen time (#17); apps are the ones it names, as the
+        // launcher draws them.
+        class ScreenTime(
+            val state: ScreenTimeCardSource.ScreenTimeState,
+            val apps: List<ShownApp>
+        ) : Row(FeedOrder.SCREEN_TIME, FeedOrder.Group.REST)
         class Custom(val card: FeedCard, cardGroup: FeedOrder.Group) : Row(card.id, cardGroup)
         object Footer : Row(null, null)
         // No card at all: the page explains itself. readyMade holds the
         // order keys of the built-in cards that are turned off.
         class Empty(val readyMade: List<String>) : Row(null, null)
     }
+
+    // An app the screen time card names: its name and icon, and its time.
+    class ShownApp(val label: String, val icon: Drawable?, val timeMs: Long)
 
     private val rows = ArrayList<Row>()
 
@@ -114,6 +128,7 @@ class FeedAdapter(
         is Row.Media -> TYPE_MEDIA
         is Row.CalendarRow -> TYPE_CALENDAR
         is Row.Contacts -> TYPE_CONTACTS
+        is Row.ScreenTime -> TYPE_SCREEN_TIME
         is Row.Custom -> TYPE_CUSTOM
         Row.Footer -> TYPE_ADD
         is Row.Empty -> TYPE_EMPTY
@@ -126,6 +141,7 @@ class FeedAdapter(
             TYPE_MEDIA -> MediaHolder(ItemFeedMediaBinding.inflate(inflater, parent, false))
             TYPE_CALENDAR -> CalendarHolder(ItemFeedCalendarBinding.inflate(inflater, parent, false))
             TYPE_CONTACTS -> ContactsHolder(ItemFeedContactsBinding.inflate(inflater, parent, false))
+            TYPE_SCREEN_TIME -> ScreenTimeHolder(ItemFeedScreenTimeBinding.inflate(inflater, parent, false))
             TYPE_CUSTOM -> CustomHolder(ItemFeedCustomBinding.inflate(inflater, parent, false))
             TYPE_EMPTY -> EmptyHolder(ItemFeedEmptyBinding.inflate(inflater, parent, false))
             else -> AddHolder(ItemFeedAddBinding.inflate(inflater, parent, false))
@@ -137,6 +153,7 @@ class FeedAdapter(
             is Row.Media -> (holder as MediaHolder).bind(row.state)
             is Row.CalendarRow -> (holder as CalendarHolder).bind(row.state)
             is Row.Contacts -> (holder as ContactsHolder).bind(row.state)
+            is Row.ScreenTime -> (holder as ScreenTimeHolder).bind(row)
             is Row.Custom -> (holder as CustomHolder).bind(row.card)
             Row.Footer -> (holder as AddHolder).bind()
             is Row.Empty -> (holder as EmptyHolder).bind(row.readyMade)
@@ -286,6 +303,61 @@ class FeedAdapter(
         }
     }
 
+    private inner class ScreenTimeHolder(private val binding: ItemFeedScreenTimeBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(row: Row.ScreenTime) {
+            tintCard(binding.root)
+            binding.screenTimeHeader.setTextColor(accentColor)
+            binding.screenTimeApps.removeAllViews()
+            val today = row.state as? ScreenTimeCardSource.ScreenTimeState.Today
+            val asking = today == null
+            binding.screenTimePermissionText.visibility = if (asking) View.VISIBLE else View.GONE
+            binding.screenTimeGrantButton.visibility = if (asking) View.VISIBLE else View.GONE
+            binding.screenTimeTotal.visibility = if (asking) View.GONE else View.VISIBLE
+            binding.screenTimeUnlocks.visibility = if (asking) View.GONE else View.VISIBLE
+            binding.screenTimePermissionText.setTextColor(textColor)
+            binding.screenTimeGrantButton.setOnClickListener { callbacks.onGrantUsageAccess() }
+            today ?: return
+            val context = binding.root.context
+            binding.screenTimeTotal.setTextColor(textColor)
+            binding.screenTimeTotal.text =
+                context.getString(R.string.feed_screen_time_total, ScreenTimeText.duration(today.totalMs))
+            binding.screenTimeUnlocks.setTextColor(textColor)
+            binding.screenTimeUnlocks.text =
+                context.resources.getQuantityString(R.plurals.feed_screen_time_unlocks, today.unlocks, today.unlocks)
+            row.apps.forEach { binding.screenTimeApps.addView(appRow(it)) }
+        }
+
+        // An app's icon, name and time on one line.
+        private fun appRow(app: ShownApp): View {
+            val context = binding.root.context
+            val size = dp(APP_ICON_DP)
+            return LinearLayout(context).apply {
+                orientation = LinearLayout.HORIZONTAL
+                gravity = Gravity.CENTER_VERTICAL
+                setPadding(0, dp(APP_ROW_PADDING_DP), 0, dp(APP_ROW_PADDING_DP))
+                addView(ImageView(context).apply { setImageDrawable(app.icon) }, LinearLayout.LayoutParams(size, size))
+                addView(
+                    TextView(context).apply {
+                        text = app.label
+                        setTextColor(textColor)
+                        maxLines = 1
+                        ellipsize = android.text.TextUtils.TruncateAt.END
+                        setPaddingRelative(dp(APP_ROW_PADDING_DP * 2), 0, dp(APP_ROW_PADDING_DP), 0)
+                    },
+                    LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f)
+                )
+                addView(
+                    TextView(context).apply {
+                        text = ScreenTimeText.duration(app.timeMs)
+                        setTextColor(textColor)
+                    }
+                )
+            }
+        }
+    }
+
     // A custom card's own menu (its ⋮'s), for a card put down unmoved;
     // false for any other row, whose menu the feed builds itself.
     fun openCardMenu(holder: RecyclerView.ViewHolder): Boolean {
@@ -373,12 +445,18 @@ class FeedAdapter(
         private const val TYPE_CUSTOM = 3
         private const val TYPE_ADD = 4
         private const val TYPE_EMPTY = 5
+        private const val TYPE_SCREEN_TIME = 6
+
+        // The screen time card's app lines.
+        private const val APP_ICON_DP = 24
+        private const val APP_ROW_PADDING_DP = 6
 
         // The ready-made cards as the empty page names them.
         val BUILT_IN_LABELS = mapOf(
             FeedOrder.MEDIA to R.string.cards_media_title,
             FeedOrder.CALENDAR to R.string.feed_calendar_title,
-            FeedOrder.CONTACTS to R.string.feed_contacts_title
+            FeedOrder.CONTACTS to R.string.feed_contacts_title,
+            FeedOrder.SCREEN_TIME to R.string.feed_screen_time_title
         )
     }
 }

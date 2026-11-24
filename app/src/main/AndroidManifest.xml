@@ -50,6 +50,12 @@
     <!-- Lock hidden apps asks for the phone's own fingerprint, face or
          screen lock through the system's prompt (install-time). -->
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
+    <!-- The feed's screen time card (#17) reads today's usage stats on the
+         phone. Granted by the user on the system's Usage access screen,
+         which the card opens; nothing is read until then. -->
+    <uses-permission
+        android:name="android.permission.PACKAGE_USAGE_STATS"
+        tools:ignore="ProtectedPermissions" />
 
     <queries>
         <intent>

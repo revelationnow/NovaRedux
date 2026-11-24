@@ -1034,6 +1034,7 @@
     <string name="cards_media_title">Управление медиа</string>
     <string name="feed_show_calendar">Показывать ближайшие события</string>
     <string name="feed_show_contacts">Показывать избранные контакты</string>
+    <string name="feed_show_screen_time">Показывать сегодняшнее экранное время, самые используемые приложения и разблокировки</string>
     <string name="feed_media_needs_access">Нужен доступ к уведомлениям</string>
     <string name="feed_media_needs_access_summary">Нажмите, чтобы предоставить доступ, и карточка покажет, что играет</string>
     <string name="feed_disabled_hint">Сначала включите страницу ленты в настройках</string>
@@ -1042,6 +1043,15 @@
     <string name="feed_calendar_permission">Разрешите доступ к календарю, чтобы видеть ближайшие события</string>
     <string name="feed_contacts_title">Избранные контакты</string>
     <string name="feed_contacts_permission">Разрешите доступ к контактам, чтобы видеть избранные контакты</string>
+    <string name="feed_screen_time_title">Экранное время</string>
+    <string name="feed_screen_time_access">Разрешите доступ к истории использования, чтобы видеть сегодняшнее экранное время. Данные читаются только на этом телефоне.</string>
+    <string name="feed_screen_time_total">%1$s сегодня</string>
+    <plurals name="feed_screen_time_unlocks">
+        <item quantity="one">Разблокирован %d раз</item>
+        <item quantity="few">Разблокирован %d раза</item>
+        <item quantity="many">Разблокирован %d раз</item>
+        <item quantity="other">Разблокирован %d раза</item>
+    </plurals>
     <string name="feed_grant_access">Разрешить доступ</string>
     <string name="calendar_permission_needed">Для карточки календаря нужно разрешение на доступ к календарю</string>
     <string name="contacts_permission_feed_needed">Для карточки контактов нужно разрешение на доступ к контактам</string>

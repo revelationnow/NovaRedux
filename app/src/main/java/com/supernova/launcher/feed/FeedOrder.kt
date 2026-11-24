@@ -12,9 +12,12 @@ object FeedOrder {
     const val MEDIA = "builtin:media"
     const val CALENDAR = "builtin:calendar"
     const val CONTACTS = "builtin:contacts"
+    const val SCREEN_TIME = "builtin:screen_time"
 
-    // Where they stood before the order could be changed: first.
-    val BUILT_INS = listOf(MEDIA, CALENDAR, CONTACTS)
+    // Where they stood before the order could be changed: first. Screen
+    // time (#17) came later, and an order stored before it starts it first
+    // too, the place a card just turned on shows.
+    val BUILT_INS = listOf(MEDIA, CALENDAR, CONTACTS, SCREEN_TIME)
 
     enum class Group { PINNED, REST }
 

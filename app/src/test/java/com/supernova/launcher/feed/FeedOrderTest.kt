@@ -4,6 +4,7 @@ import com.supernova.launcher.feed.FeedOrder.CALENDAR
 import com.supernova.launcher.feed.FeedOrder.CONTACTS
 import com.supernova.launcher.feed.FeedOrder.Group
 import com.supernova.launcher.feed.FeedOrder.MEDIA
+import com.supernova.launcher.feed.FeedOrder.SCREEN_TIME
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
@@ -13,16 +14,16 @@ class FeedOrderTest {
     @Test
     fun emptyOrderKeepsBuiltInsFirstThenCardsInStoredOrder() {
         assertEquals(
-            listOf(MEDIA, CALENDAR, CONTACTS, "a", "b"),
+            listOf(MEDIA, CALENDAR, CONTACTS, SCREEN_TIME, "a", "b"),
             FeedOrder.resolve(emptyList(), listOf("a", "b"))
         )
     }
 
     @Test
     fun resolveDropsGoneKeysAndAddsNewCardsLast() {
-        val stored = listOf("b", CONTACTS, "gone", MEDIA, "a", CALENDAR, "b")
+        val stored = listOf("b", CONTACTS, "gone", MEDIA, "a", CALENDAR, SCREEN_TIME, "b")
         assertEquals(
-            listOf("b", CONTACTS, MEDIA, "a", CALENDAR, "c"),
+            listOf("b", CONTACTS, MEDIA, "a", CALENDAR, SCREEN_TIME, "c"),
             FeedOrder.resolve(stored, listOf("a", "b", "c"))
         )
     }
@@ -30,7 +31,7 @@ class FeedOrderTest {
     @Test
     fun resolvePutsAMissingBuiltInAtTheFront() {
         assertEquals(
-            listOf(CONTACTS, "a", MEDIA, CALENDAR),
+            listOf(CONTACTS, SCREEN_TIME, "a", MEDIA, CALENDAR),
             FeedOrder.resolve(listOf("a", MEDIA, CALENDAR), listOf("a"))
         )
     }

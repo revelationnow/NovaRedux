@@ -58,6 +58,10 @@ object FeedAddSheet {
             viewModel.set(Pref.feedShowContacts, it)
             if (it) requestContacts()
         }
+        // The card itself asks for usage access (#17).
+        ready(binding.readyScreenTime, binding.readyScreenTimeSwitch, prefs.feedShowScreenTime) {
+            viewModel.set(Pref.feedShowScreenTime, it)
+        }
         dialog.show()
     }
 }
