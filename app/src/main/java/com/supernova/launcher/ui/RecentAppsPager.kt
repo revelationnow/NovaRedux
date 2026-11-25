@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.ViewGroup
+import androidx.core.view.children
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -78,9 +79,7 @@ class RecentAppsPager @JvmOverloads constructor(
             holder.row.bindLabeled(pages[position], look.textColor, look.columns, sidePaddingDp = 0, look = look.cell)
             // Its apps' cells turn in place with the drawer's tiles; the
             // empty ones keeping the columns have no label.
-            (0 until holder.row.childCount).map(holder.row::getChildAt)
-                .filter { it.contentDescription != null }
-                .forEach { RotateInPlace.mark(it) }
+            holder.row.children.filter { it.contentDescription != null }.forEach { RotateInPlace.mark(it) }
         }
     }
 }

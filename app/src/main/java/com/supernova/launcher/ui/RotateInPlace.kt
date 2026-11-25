@@ -10,6 +10,7 @@ import android.provider.Settings
 import android.view.OrientationEventListener
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.children
 import com.supernova.launcher.R
 
 // Smart Launcher's Rotate on place (#20): with it on and the home screen
@@ -117,10 +118,10 @@ class RotateInPlace(
         when {
             view is WorkspaceCanvas -> {
                 view.turn = current
-                (0 until view.childCount).forEach { turn(view.getChildAt(it), animated) }
+                view.children.forEach { turn(it, animated) }
             }
             view.getTag(R.id.tag_turns) == true -> turnOne(view, animated)
-            view is ViewGroup -> (0 until view.childCount).forEach { turn(view.getChildAt(it), animated) }
+            view is ViewGroup -> view.children.forEach { turn(it, animated) }
         }
     }
 
