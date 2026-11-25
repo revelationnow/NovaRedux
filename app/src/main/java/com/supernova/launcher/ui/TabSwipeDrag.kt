@@ -5,6 +5,7 @@ import android.view.VelocityTracker
 import android.view.View
 import android.view.ViewConfiguration
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import kotlin.math.abs
 import kotlin.math.sign
@@ -214,7 +215,7 @@ internal object SidewaysLists {
         view !is ViewGroup -> null
         else -> (view.childCount - 1 downTo 0).asSequence()
             .map(view::getChildAt)
-            .filter { it.visibility == View.VISIBLE && covers(it, x, y) }
+            .filter { it.isVisible && covers(it, x, y) }
             .firstNotNullOfOrNull { within(it, x - it.x, y - it.y) }
     }
 
