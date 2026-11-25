@@ -362,7 +362,7 @@ class FeatureTour {
             return "held on its side, ${home.turned} home icons and the widget turned in place, " +
                 "then ${drawer.turned - home.turned} drawer tiles; upright again, all turned back"
         } finally {
-            onLauncher { it.holdTurn(null) }
+            onLauncher(required = false) { it.holdTurn(null) }
         }
     }
 
@@ -388,12 +388,18 @@ class FeatureTour {
         return result
     }
 
-    private fun onLauncher(action: (LauncherActivity) -> Unit) {
+    // On the main thread, with the launcher in front; a throw there would
+    // take the app down, so a missing launcher is reported back here.
+    private fun onLauncher(required: Boolean = true, action: (LauncherActivity) -> Unit) {
+        var found = false
         instrumentation.runOnMainSync {
             val resumed = ActivityLifecycleMonitorRegistry.getInstance().getActivitiesInStage(Stage.RESUMED)
-            resumed.filterIsInstance<LauncherActivity>().firstOrNull()?.let(action)
-                ?: error("the launcher isn't in front")
+            resumed.filterIsInstance<LauncherActivity>().firstOrNull()?.let { launcher ->
+                found = true
+                action(launcher)
+            }
         }
+        check(found || !required) { "the launcher isn't in front" }
     }
 
     private fun cellLabels(row: UiObject2): List<String> =
