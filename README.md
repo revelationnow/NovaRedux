@@ -37,12 +37,12 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 
 | Status | Features |
 | --- | --- |
-| ✅ Done | 177 |
+| ✅ Done | 178 |
 | 🟡 Partial | 3 |
 | ❌ Missing | 0 |
 | ❔ Needs a check on a device | 0 |
 | ⛔ Won't do | 2 |
-| **Total** | **182** |
+| **Total** | **183** |
 
 <details>
 <summary><b>Home screen</b> · 23 features · ✅ 23</summary>
@@ -69,7 +69,7 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 | ✅ | Add new apps to the home screen |  |  | P2 | New installs placed automatically | auto_add_apps |
 | ✅ | Default page; Home returns to it |  |  | P1 | Home button jumps to the chosen page | home_return_to_default_page |
 | ✅ | Desktop previews: add, remove, reorder, set default page |  |  | P1 | Page overview for editing | Page drag and default-page controls |
-| ✅ | Screen rotation |  |  | P1 | Portrait, landscape or auto-rotate | HomeOrientation |
+| ✅ | Screen rotation |  |  | P1 | Portrait, landscape or auto-rotate | HomeOrientation. With Auto-rotate, Rotate in place (#20) keeps the window upright and turns the items where they are instead, as Smart Launcher does |
 | ✅ | Tablet and foldable layouts | 8.0 beta |  | P1 | 8.0 beta moved to the Android 12L launcher base | Checked on tablet (2560x1600) and foldable (2208x1840) emulators: home, drawer (11 and 7 columns), search and settings fit the width, the drawer opens by swipe and by tap, and the accessibility audit is clean. DeviceProfile.isWide, WideScreen |
 | ✅ | Edge-to-edge display support | 7.0.37 |  | P2 | Layouts that respect curved and edge displays | Lays out behind the system bars with insets. Checked on the emulator with a tall cutout in landscape (home, the dock beside the search bar, the drawer) and curved (waterfall) edges in portrait: the chrome stays clear, the wallpaper runs edge to edge |
 
@@ -125,7 +125,7 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 | ✅ | Open animation: circle reveal, slide up, zoom, fade | 2014 beta |  | P2 | Drawer transition choice | Slide up, Zoom, Fade and Circle (a reveal from the bottom middle) |
 | ✅ | Drawer scroll effects in paged mode | 1.x |  | P2 | Same effects as the desktop | drawer_page_effect |
 | ✅ | Fast scroller and scroll accent colour | 4.2 beta |  | P2 | Letter scrubber along the edge | drawer_fast_scroller, drawer_scrubber_color |
-| ✅ | Frequently used apps row | 4.2 beta |  | P2 | Most-used apps at the top | drawer_frequent_row |
+| ✅ | Frequently used apps row | 4.2 beta |  | P2 | Most-used apps at the top | drawer_frequent_row. The recently opened apps a grid row to a page: a sideways swipe turns to older ones (RecentAppsPager, #19) |
 | ✅ | Search bar in the drawer | 4.2 beta |  | P1 | Persistent bar at the top of the drawer | Drawer bar. The drawer opens without the keyboard, as Nova's did; Show keyboard when opened is an option, off by default |
 | ✅ | Drawer search bar styled like the desktop bar | 6.0 |  | P2 | Same style options as the desktop bar | Radius, filled or outline, glass, hint, top or bottom, opacity, shadow, colour from Styles and the same buttons as the home bar |
 | ✅ | Search and tab bars at the bottom | 7.0 beta |  | P1 | Easier reach on tall phones | DrawerTabBar TOP, BOTTOM |
@@ -302,7 +302,7 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 </details>
 
 <details>
-<summary><b>Beyond Nova</b> · 22 features · ✅ 22</summary>
+<summary><b>Beyond Nova</b> · 23 features · ✅ 23</summary>
 
 | Status | Feature | Since | Prime | Priority | What Nova did | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -328,6 +328,7 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 | ✅ | Notification text on home screen icons |  |  | P2 | Niagara shows messages on its home screen | #15. Picked apps show their newest notification in place of their name, under Notification badges (NotificationLabels). On an Android 15 emulator the label read the message and went back to the name when it was cleared; not yet tried on a phone |
 | ✅ | Notification summary |  |  | P2 | Niagara's notification summary | #16. Picked apps' notifications wait for set hours through Android's own snooze, under Notification badges (SummaryRules, NotificationSummary); off by default. On an Android 15 emulator a held app's notification stayed out of the shade beside another app's; not yet tried on a phone |
 | ✅ | Screen time card on the feed |  |  | P2 | Microsoft Launcher's screen time | #17. A ready-made feed card: today's screen time, the top three apps and the unlocks, with usage access (ScreenTime, ScreenTimeCardSource). On an Android 15 emulator it asked for usage access, then showed the day as soon as access was on; not yet tried on a phone |
+| ✅ | Rotate in place |  |  | P2 | Smart Launcher's Rotate on place | #20. Under Screen orientation when it is Auto-rotate (or Default on a tablet), off by default: the window stays upright and, as the phone turns on its side, each icon, folder and widget on the home screen and in the dock and each tile in the app drawer turns upright where it is; a widget is laid out on its cells' width and height swapped (RotateInPlace, WorkspaceCanvas.turn). Nothing turns while the phone's auto-rotate is off. On an Android 15 emulator, with the phone held on its side through a test hook, the home screen's icons and widget and the drawer's tiles turned and turned back; not yet tried on a phone |
 
 </details>
 
