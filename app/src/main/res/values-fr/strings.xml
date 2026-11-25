@@ -711,6 +711,8 @@
     <string name="indicator_circle">Cercles</string>
     <string name="home_orientation">Orientation de l\'écran</string>
     <string name="home_orientation_keywords">paysage portrait rotation pivoter rotation automatique</string>
+    <string name="rotate_in_place">Pivoter sur place</string>
+    <string name="rotate_in_place_summary">Quand le téléphone est tourné, les icônes et widgets de l\'écran d\'accueil et du tiroir d\'applications pivotent sur place pour rester droits, comme « Rotate on place » de Smart Launcher. L\'écran reste en portrait.</string>
     <string name="orientation_default">Par défaut (portrait)</string>
     <string name="orientation_default_tablet">Par défaut (suit la rotation automatique)</string>
     <string name="orientation_system_owned">Sur les tablettes, Android la règle avec la rotation automatique du système</string>

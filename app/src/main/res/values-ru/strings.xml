@@ -727,6 +727,8 @@
     <string name="indicator_circle">Кружки</string>
     <string name="home_orientation">Ориентация экрана</string>
     <string name="home_orientation_keywords">альбомная портретная поворот вращение автоповорот</string>
+    <string name="rotate_in_place">Поворот на месте</string>
+    <string name="rotate_in_place_summary">Когда телефон поворачивают, значки и виджеты на главном экране и в меню приложений поворачиваются на своих местах, как «Rotate on place» в Smart Launcher. Сам экран остаётся вертикальным.</string>
     <string name="orientation_default">По умолчанию (портретная)</string>
     <string name="orientation_default_tablet">По умолчанию (по автоповороту)</string>
     <string name="orientation_system_owned">На планшетах Android задаёт её системным автоповоротом</string>

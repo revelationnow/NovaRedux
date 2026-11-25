@@ -711,6 +711,8 @@
     <string name="indicator_circle">Círculos</string>
     <string name="home_orientation">Orientación de la pantalla</string>
     <string name="home_orientation_keywords">horizontal vertical girar rotación giro automático</string>
+    <string name="rotate_in_place">Girar en el sitio</string>
+    <string name="rotate_in_place_summary">Al girar el teléfono, los iconos y widgets de la pantalla de inicio y del cajón de aplicaciones giran en su sitio para verse derechos, como «Rotate on place» de Smart Launcher. La pantalla sigue en vertical.</string>
     <string name="orientation_default">Predeterminada (vertical)</string>
     <string name="orientation_default_tablet">Predeterminada (según el giro automático)</string>
     <string name="orientation_system_owned">En las tabletas, Android la fija con el giro automático del sistema</string>

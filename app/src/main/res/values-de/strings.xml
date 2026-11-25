@@ -695,6 +695,8 @@
     <string name="indicator_circle">Kreise</string>
     <string name="home_orientation">Bildschirmausrichtung</string>
     <string name="home_orientation_keywords">querformat hochformat drehen drehung automatisch drehen</string>
+    <string name="rotate_in_place">An Ort und Stelle drehen</string>
+    <string name="rotate_in_place_summary">Wird das Telefon gedreht, drehen sich Symbole und Widgets auf dem Startbildschirm und in der App-Übersicht an ihrem Platz aufrecht, wie bei Smart Launchers „Rotate on place“. Der Bildschirm selbst bleibt hochkant.</string>
     <string name="orientation_default">Standard (Hochformat)</string>
     <string name="orientation_default_tablet">Standard (folgt dem automatischen Drehen)</string>
     <string name="orientation_system_owned">Auf Tablets legt Android das mit dem automatischen Drehen des Systems fest</string>

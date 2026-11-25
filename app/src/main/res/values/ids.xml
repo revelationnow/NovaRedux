@@ -26,6 +26,8 @@
     <!-- View tag: the app a drawer icon view shows, or is waiting for while
          its icon renders off the main thread (AppDrawerAdapter.bindIcon). -->
     <item name="tag_icon_app" type="id" />
+    <!-- RotateInPlace: a view that turns upright where it is. -->
+    <item name="tag_turns" type="id" />
     <!-- Accessibility actions on a home screen icon: a move without a drag
          (ItemMoveActions). -->
     <item name="a11y_move_left" type="id" />

@@ -591,6 +591,10 @@ class AppDrawerAdapter(
     inner class TileHolder(private val binding: ItemDrawerAppBinding) : RecyclerView.ViewHolder(binding.root) {
         private val baseIconPx = binding.appIcon.layoutParams.width
 
+        init {
+            RotateInPlace.mark(binding.root)
+        }
+
         fun bind(app: LaunchableApp) {
             applyTileWidth(binding.root)
             binding.appLabel.text = app.label
@@ -627,6 +631,10 @@ class AppDrawerAdapter(
 
     inner class FolderTileHolder(private val binding: ItemDrawerAppBinding) : RecyclerView.ViewHolder(binding.root) {
         private val baseIconPx = binding.appIcon.layoutParams.width
+
+        init {
+            RotateInPlace.mark(binding.root)
+        }
 
         fun bind(folder: FolderEntry) {
             applyTileWidth(binding.root)

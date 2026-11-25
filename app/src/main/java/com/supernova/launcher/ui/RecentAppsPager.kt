@@ -76,6 +76,11 @@ class RecentAppsPager @JvmOverloads constructor(
         override fun onBindViewHolder(holder: Holder, position: Int) {
             val look = look ?: return
             holder.row.bindLabeled(pages[position], look.textColor, look.columns, sidePaddingDp = 0, look = look.cell)
+            // Its apps' cells turn in place with the drawer's tiles; the
+            // empty ones keeping the columns have no label.
+            (0 until holder.row.childCount).map(holder.row::getChildAt)
+                .filter { it.contentDescription != null }
+                .forEach { RotateInPlace.mark(it) }
         }
     }
 }

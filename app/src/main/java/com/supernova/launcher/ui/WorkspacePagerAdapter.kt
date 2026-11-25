@@ -482,6 +482,15 @@ class WorkspacePagerAdapter(private val host: Host) : RecyclerView.Adapter<Recyc
                     }
                 }
             }
+            // Rotate in place: the canvas takes the turn as it comes into
+            // view, and its widgets, laid out the other way round, tell
+            // their providers their new size.
+            RotateInPlace.mark(binding.workspaceCanvas)
+            binding.workspaceCanvas.onTurned = {
+                widgets.forEach { (item, view) ->
+                    if (view.parent === binding.workspaceCanvas) host.reportWidgetSize(item, view)
+                }
+            }
         }
 
         fun lostWidgets(): Boolean = widgets.any { (_, view) -> view.parent !== binding.workspaceCanvas }

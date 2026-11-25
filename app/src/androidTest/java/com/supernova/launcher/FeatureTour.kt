@@ -27,6 +27,8 @@ import android.text.format.DateUtils
 import android.util.Log
 import android.view.InputDevice
 import android.view.MotionEvent
+import android.view.View
+import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.EditText
 import androidx.datastore.preferences.core.MutablePreferences
@@ -38,6 +40,8 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry
+import androidx.test.runner.lifecycle.Stage
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.By
 import androidx.test.uiautomator.Configurator
@@ -142,6 +146,7 @@ class FeatureTour {
             "panel" to ::widgetPanel,
             "blur" to ::blur,
             "recents" to ::recentsRow,
+            "rotate" to ::rotateInPlace,
             "gestures" to ::gestureActions,
             "pairs" to ::appPairs,
             "notification-text" to ::notificationText,
@@ -317,6 +322,78 @@ class FeatureTour {
         shot("recents-next-page")
         check(after.isNotEmpty() && after.none { it in before }) { "a swipe on the row went from $before to $after" }
         return "the row showed ${before.joinToString()}; a swipe turned it to ${after.joinToString()}"
+    }
+
+    // Rotate in place (#20): the phone held on its side, as its sensor would
+    // report it, turns the home screen's icons and widget and the drawer's
+    // tiles upright where they are; the window stays in portrait.
+    private fun rotateInPlace(): String {
+        allowWidgets()
+        val id = bind(glance)
+        setPrefs {
+            it[stringPreferencesKey(Pref.homeOrientation.key.name)] = "AUTO_ROTATE"
+            it[booleanPreferencesKey(Pref.rotateInPlace.key.name)] = true
+        }
+        val widget = LauncherItem(
+            id = "tour-turned-glance", itemType = ItemType.WIDGET, container = ContainerType.WORKSPACE,
+            page = 0, cellX = 0, cellY = 0, spanX = cols, spanY = 2,
+            appWidgetId = id, widgetProvider = glance.flattenToString(), label = "At a glance"
+        )
+        layout(listOf(widget, appItem(app(*SETTINGS), 0, ROW), appItem(app(*CLOCKS, *CONTACTS), 1, ROW)))
+        showHome()
+        shot("rotate-upright")
+        try {
+            onLauncher { it.holdTurn(HELD_ON_SIDE) }
+            SystemClock.sleep(SETTLE_MS)
+            shot("rotate-turned")
+            val home = turnedViews()
+            check(home.icons > 0 && home.icons == home.turned) { "${home.turned} of ${home.icons} views turned" }
+            check(home.widgetTurned) { "the widget didn't turn on its cells" }
+            check(openDrawer()) { "the drawer didn't open" }
+            SystemClock.sleep(SETTLE_MS)
+            shot("rotate-drawer")
+            val drawer = turnedViews()
+            check(drawer.turned > home.turned) { "the drawer's tiles didn't turn" }
+            device.pressBack()
+            onLauncher { it.holdTurn(0) }
+            SystemClock.sleep(SETTLE_MS)
+            val back = turnedViews()
+            check(back.turned == 0 && !back.widgetTurned) { "${back.turned} views stayed turned" }
+            return "held on its side, ${home.turned} home icons and the widget turned in place, " +
+                "then ${drawer.turned - home.turned} drawer tiles; upright again, all turned back"
+        } finally {
+            onLauncher { it.holdTurn(null) }
+        }
+    }
+
+    private class Turned(val icons: Int, val turned: Int, val widgetTurned: Boolean)
+
+    // The launcher's views that turn in place, and how many are turned.
+    private fun turnedViews(): Turned {
+        var result = Turned(0, 0, false)
+        onLauncher { activity ->
+            val marked = mutableListOf<View>()
+            var widgetTurned = false
+            fun walk(view: View) {
+                if (view.getTag(R.id.tag_turns) == true && view !is com.supernova.launcher.ui.WorkspaceCanvas) {
+                    if (view.isShown) marked += view
+                } else if (view is android.appwidget.AppWidgetHostView) {
+                    widgetTurned = widgetTurned || (view.isShown && view.rotation != 0f && view.width < view.height)
+                }
+                if (view is ViewGroup) (0 until view.childCount).forEach { walk(view.getChildAt(it)) }
+            }
+            walk(activity.window.decorView)
+            result = Turned(marked.size, marked.count { it.rotation != 0f }, widgetTurned)
+        }
+        return result
+    }
+
+    private fun onLauncher(action: (LauncherActivity) -> Unit) {
+        instrumentation.runOnMainSync {
+            val resumed = ActivityLifecycleMonitorRegistry.getInstance().getActivitiesInStage(Stage.RESUMED)
+            resumed.filterIsInstance<LauncherActivity>().firstOrNull()?.let(action)
+                ?: error("the launcher isn't in front")
+        }
     }
 
     private fun cellLabels(row: UiObject2): List<String> =
@@ -846,6 +923,9 @@ class FeatureTour {
         const val SEE_THROUGH = 0.6f
         const val HOURS_AHEAD = 3
         const val RECENTS_SEEDED = 15
+        // OrientationEventListener's reading for a phone on its side, its
+        // left edge up.
+        const val HELD_ON_SIDE = 90
         const val TEXT_ID = 41
         const val SUMMARY_ID = 42
         const val HELD_TITLE = "Shop"

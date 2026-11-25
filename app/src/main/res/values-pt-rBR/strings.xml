@@ -711,6 +711,8 @@
     <string name="indicator_circle">Círculos</string>
     <string name="home_orientation">Orientação da tela</string>
     <string name="home_orientation_keywords">paisagem retrato girar rotação girar automaticamente</string>
+    <string name="rotate_in_place">Girar no lugar</string>
+    <string name="rotate_in_place_summary">Ao girar o telefone, os ícones e widgets da tela inicial e da gaveta de apps giram no lugar para ficar em pé, como o Rotate on place do Smart Launcher. A tela continua em retrato.</string>
     <string name="orientation_default">Padrão (retrato)</string>
     <string name="orientation_default_tablet">Padrão (segue a rotação automática)</string>
     <string name="orientation_system_owned">Nos tablets, o Android define isso com a rotação automática do sistema</string>

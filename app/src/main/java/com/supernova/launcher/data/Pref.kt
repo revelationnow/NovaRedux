@@ -367,6 +367,7 @@ object Pref {
     val transparentStatus = bool("transparent_status")
     val homeRotation = bool("home_rotation")
     val homeOrientation = text("home_orientation")
+    val rotateInPlace = bool("rotate_in_place")
     val feedEnabled = bool("feed_enabled")
     val feedEdgeSwipe = bool("feed_edge_swipe")
     val feedProvider = text("feed_provider")

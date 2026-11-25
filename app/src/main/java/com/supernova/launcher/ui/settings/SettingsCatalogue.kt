@@ -591,6 +591,22 @@ object SettingsCatalogue {
                             com.supernova.launcher.data.DeviceProfile.isWide(context)
                     }
                 }.searchableBy(R.string.home_orientation_keywords),
+                // Where the home screen turns with the phone: Auto-rotate, or
+                // Default on a tablet.
+                SettingItem.Toggle(
+                    R.string.rotate_in_place,
+                    get = { it.rotateInPlace },
+                    set = { viewModel.set(Pref.rotateInPlace, it) },
+                    visibleIf = {
+                        when (com.supernova.launcher.ui.HomeOrientation.fromPrefs(it)) {
+                            com.supernova.launcher.ui.HomeOrientation.AUTO_ROTATE -> true
+                            com.supernova.launcher.ui.HomeOrientation.DEFAULT ->
+                                com.supernova.launcher.data.DeviceProfile.isWide(context)
+                            else -> false
+                        }
+                    },
+                    subtitle = R.string.rotate_in_place_summary
+                ),
                 SettingItem.Header(R.string.group_pages),
                 rows.choice(
                     R.string.page_indicator, IndicatorStyle.entries,

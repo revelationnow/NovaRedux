@@ -149,6 +149,7 @@ class BackupRoundTripTest {
         transparentNav = false,
         homeRotation = true,
         homeOrientation = "LANDSCAPE",
+        rotateInPlace = true,
         themeScheduleStart = 1200,
         themeScheduleEnd = 360,
         overlapWhenPlacing = true,

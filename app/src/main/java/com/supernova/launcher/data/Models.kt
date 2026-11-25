@@ -621,6 +621,10 @@ data class LauncherPrefs(
     // HomeOrientation name (DEFAULT/AUTO_ROTATE/PORTRAIT/LANDSCAPE); ""
     // derives from the legacy homeRotation flag (true = AUTO_ROTATE).
     val homeOrientation: String = "",
+    // Smart Launcher's Rotate on place (#20), where the home screen
+    // auto-rotates: the window stays upright and the items turn where they
+    // are (ui/RotateInPlace).
+    val rotateInPlace: Boolean = false,
     // Feed page (Phase 7): master toggle, the left-edge-swipe open path, and
     // which built-in sections/cards render. Calendar/contacts stay off by
     // default because they are permission-gated. The page itself starts on.

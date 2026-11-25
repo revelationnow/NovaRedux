@@ -169,6 +169,17 @@ class LauncherActivity :
     // A home swipe turns the page or swipes up or down, never both (#82).
     private val pageSwipeGuard by lazy { com.supernova.launcher.ui.PageSwipeGuard(binding.workspacePager) }
 
+    // Rotate in place (#20): the home screen's and the drawer's items turn
+    // upright where they are while the window stays as the phone is held
+    // upright.
+    private val rotateInPlace by lazy {
+        com.supernova.launcher.ui.RotateInPlace(
+            this,
+            roots = { listOf(binding.workspacePager, binding.dockBar, binding.drawerSheet) },
+            animate = { Animations.enabled(viewModel.state.value.prefs) }
+        )
+    }
+
     private val gestureDetector by lazy {
         HomeGestureDetector(
             this,
@@ -1062,6 +1073,7 @@ class LauncherActivity :
         // open is one they came back to, not one parked behind an app.
         drawerKeptBehindLaunch = false
         reopenDockIfAutoClosed()
+        rotateInPlace.onResume()
     }
 
     override fun onPause() {
@@ -1069,6 +1081,7 @@ class LauncherActivity :
         // off. One already asked for carries on.
         launchPrelude.cancelPending()
         discover.activityState(started = true, resumed = false)
+        rotateInPlace.onPause()
         super.onPause()
     }
 
@@ -2093,7 +2106,7 @@ class LauncherActivity :
         val key = listOf(
             prefs.hideStatusBar, lightBars, lightNav, prefs.transparentNav,
             prefs.transparentStatus, prefs.homeRotation,
-            prefs.homeOrientation
+            prefs.homeOrientation, prefs.rotateInPlace
         )
         if (appliedSystemChrome == key) return
         appliedSystemChrome = key
@@ -2126,7 +2139,23 @@ class LauncherActivity :
         binding.navBarBand.isVisible = !prefs.transparentNav
 
         requestedOrientation = homeOrientationRequest(prefs)
+        rotateInPlace.set(rotatesInPlace(prefs))
     }
+
+    // For FeatureTour: the phone held turned `degrees` (as
+    // OrientationEventListener reads it), or the sensor again with null.
+    fun holdTurn(degrees: Int?) {
+        rotateInPlace.heldDegrees = degrees
+    }
+
+    // Rotate in place applies where the home screen would turn with the
+    // phone: Auto-rotate, or Default on a tablet.
+    private fun rotatesInPlace(prefs: LauncherPrefs): Boolean = prefs.rotateInPlace &&
+        when (HomeOrientation.fromPrefs(prefs)) {
+            HomeOrientation.AUTO_ROTATE -> true
+            HomeOrientation.DEFAULT -> com.supernova.launcher.data.DeviceProfile.isWide(this)
+            else -> false
+        }
 
     // Landscape keeps the portrait grid: every icon stays in its cell,
     // and the cells reshape to the wider window. The manifest doesn't pin
@@ -2135,7 +2164,12 @@ class LauncherActivity :
     // stand or a keyboard case as often as in a hand (Android 16 ignores
     // a portrait pin on large screens anyway). The forced axes use the
     // sensor variants so the 180-degree flip still works.
-    private fun homeOrientationRequest(prefs: LauncherPrefs): Int = when (HomeOrientation.fromPrefs(prefs)) {
+    //
+    // Rotate in place keeps the window as the phone is held upright (its
+    // natural orientation) and turns the items instead (RotateInPlace).
+    private fun homeOrientationRequest(prefs: LauncherPrefs): Int = if (rotatesInPlace(prefs)) {
+        ActivityInfo.SCREEN_ORIENTATION_NOSENSOR
+    } else when (HomeOrientation.fromPrefs(prefs)) {
         HomeOrientation.DEFAULT ->
             if (com.supernova.launcher.data.DeviceProfile.isWide(this)) {
                 ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
@@ -3286,6 +3320,7 @@ class LauncherActivity :
                 true
             }
         }
+        com.supernova.launcher.ui.RotateInPlace.mark(iconBinding.root)
 
         return iconBinding.root
     }

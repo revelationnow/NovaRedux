@@ -695,6 +695,8 @@
     <string name="indicator_circle">गोले</string>
     <string name="home_orientation">स्क्रीन की दिशा</string>
     <string name="home_orientation_keywords">लैंडस्केप पोर्ट्रेट घुमाएं रोटेशन अपने-आप घुमाएं</string>
+    <string name="rotate_in_place">अपनी जगह पर घुमाएं</string>
+    <string name="rotate_in_place_summary">फ़ोन को घुमाने पर होम स्क्रीन और ऐप ड्रॉअर के आइकन और विजेट अपनी जगह पर सीधे घूम जाते हैं, Smart Launcher के Rotate on place की तरह। स्क्रीन खुद सीधी रहती है।</string>
     <string name="orientation_default">डिफ़ॉल्ट (पोर्ट्रेट)</string>
     <string name="orientation_default_tablet">डिफ़ॉल्ट (अपने-आप घूमने के मुताबिक)</string>
     <string name="orientation_system_owned">टैबलेट पर Android इसे सिस्टम के ‘अपने-आप घुमाएं’ से सेट करता है</string>

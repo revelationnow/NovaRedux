@@ -6,6 +6,8 @@ import android.view.Gravity
 import android.view.MotionEvent
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.core.view.doOnNextLayout
+import com.supernova.launcher.widget.WidgetResizeFrame
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.roundToInt
@@ -91,6 +93,25 @@ class WorkspaceCanvas @JvmOverloads constructor(
     override fun onInterceptTouchEvent(ev: MotionEvent): Boolean =
         holdsChildren() || super.onInterceptTouchEvent(ev)
 
+    // Rotate in place (RotateInPlace): the turn the page's widgets take, in
+    // View.rotation's degrees. Each is laid out with its cells' width and
+    // height swapped, centred on them, and turned, so it fills its cells
+    // upright for a phone held on its side. Icons turn on their own.
+    var turn = 0
+        set(value) {
+            if (field == value) return
+            field = value
+            requestLayout()
+            doOnNextLayout { onTurned() }
+        }
+
+    // Once a turn is laid out: its widgets have new sizes to tell.
+    var onTurned: () -> Unit = {}
+
+    // A resize frame keeps to the cells as they are: editing is done the
+    // phone's way up.
+    private fun turns(child: android.view.View): Boolean = turn != 0 && child !is WidgetResizeFrame
+
     // A one-cell icon's room at its own size, `needW` x `needH`, its icon
     // box and padding, and how it sets its parts: the icon to `iconPx`, the
     // label and padding to `scale` of their own. A large icon shrinks as the
@@ -151,11 +172,20 @@ class WorkspaceCanvas @JvmOverloads constructor(
         val height = MeasureSpec.getSize(heightMeasureSpec)
         fitIcons(width, height)
         for (i in 0 until childCount) {
-            val params = getChildAt(i).layoutParams as? WidgetParams ?: continue
+            val child = getChildAt(i)
+            val params = child.layoutParams as? WidgetParams ?: continue
             params.leftMargin = widgetOrigin(params.cellX, params.cols, width, params.inset)
             params.topMargin = widgetOrigin(params.cellY, params.rows, height, params.inset)
             params.width = widgetSize(params.spanX, params.cols, width, params.inset)
             params.height = widgetSize(params.spanY, params.rows, height, params.inset)
+            if (turns(child)) {
+                val cellsW = params.width
+                val cellsH = params.height
+                params.leftMargin += (cellsW - cellsH) / 2
+                params.topMargin += (cellsH - cellsW) / 2
+                params.width = cellsH
+                params.height = cellsW
+            }
         }
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         for (i in 0 until childCount) {
@@ -209,6 +239,7 @@ class WorkspaceCanvas @JvmOverloads constructor(
         val height = bottom - top
         for (i in 0 until childCount) {
             val child = getChildAt(i)
+            if (child.layoutParams is WidgetParams && child !is WidgetResizeFrame) child.rotation = turn.toFloat()
             val params = child.layoutParams as? IconParams ?: continue
             if (child.visibility == GONE) continue
             val x = iconOrigin(params.centerX, width, child.measuredWidth)
