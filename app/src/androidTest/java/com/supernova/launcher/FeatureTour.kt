@@ -42,8 +42,8 @@ import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.By
 import androidx.test.uiautomator.Configurator
 import androidx.test.uiautomator.UiDevice
+import androidx.test.uiautomator.UiObject2
 import androidx.test.uiautomator.Until
-import com.supernova.launcher.data.AppPairs
 import com.supernova.launcher.data.ContainerType
 import com.supernova.launcher.data.ItemType
 import com.supernova.launcher.data.LaunchableApp
@@ -141,6 +141,7 @@ class FeatureTour {
             "stack" to ::widgetStack,
             "panel" to ::widgetPanel,
             "blur" to ::blur,
+            "recents" to ::recentsRow,
             "gestures" to ::gestureActions,
             "pairs" to ::appPairs,
             "notification-text" to ::notificationText,
@@ -291,6 +292,36 @@ class FeatureTour {
         }
     }
 
+    // The drawer's row of recent apps pages sideways through older ones (a
+    // phone tester found it wouldn't swipe).
+    private fun recentsRow(): String {
+        val opened = apps.filter { it.packageName != appId }.distinctBy { it.packageName }.take(RECENTS_SEEDED)
+        // Oldest first, so the last is the newest.
+        runBlocking {
+            opened.forEach { app ->
+                graph.preferences.recordLaunch("${app.userSerial}/${app.packageName}/${app.className}")
+                SystemClock.sleep(TAP_MS)
+            }
+        }
+        showHome()
+        check(openDrawer()) { "the drawer didn't open" }
+        val row = device.wait(Until.findObject(By.res(appId, "drawerFrequentRow")), WAIT_MS)
+            ?: error("the drawer has no row of recent apps")
+        val before = cellLabels(row)
+        shot("recents-first-page")
+        val area = row.visibleBounds
+        val edge = area.width() / EDGE_SHARE
+        device.swipe(area.right - edge, area.centerY(), area.left + edge, area.centerY(), FLICK_STEPS)
+        SystemClock.sleep(SETTLE_MS)
+        val after = device.findObject(By.res(appId, "drawerFrequentRow"))?.let(::cellLabels).orEmpty()
+        shot("recents-next-page")
+        check(after.isNotEmpty() && after.none { it in before }) { "a swipe on the row went from $before to $after" }
+        return "the row showed ${before.joinToString()}; a swipe turned it to ${after.joinToString()}"
+    }
+
+    private fun cellLabels(row: UiObject2): List<String> =
+        row.findObjects(By.clickable(true)).mapNotNull { it.contentDescription }
+
     // #5: a double tap bound to the power menu, a screenshot and the torch.
     private fun gestureActions(): String {
         enableAccessibility()
@@ -345,9 +376,11 @@ class FeatureTour {
         val first = app(*SETTINGS)
         val second = app(*CLOCKS, *CONTACTS)
         val label = "${first.label} + ${second.label}"
-        layout(listOf(AppPairs.paired(appItem(first, 0, ROW), second, label)))
+        layout(listOf(appItem(first, 0, ROW)))
         showHome()
-        val icon = device.wait(Until.findObject(By.desc(label)), WAIT_MS) ?: error("the pair isn't on the home screen")
+        val sheetMs = pairThroughMenu(first, second)
+        val icon = device.wait(Until.findObject(By.desc(label)), WAIT_MS)
+            ?: error("picking ${second.label} made no pair (did a list of its shortcuts come up?)")
         shot("pair-icon")
         icon.click()
         val both = waitFor(PAIR_WAIT_MS) { setOf(first.packageName, second.packageName).all { it in windowPackages() } }
@@ -360,8 +393,26 @@ class FeatureTour {
         check((tops[first.packageName] ?: 0) < (tops[second.packageName] ?: 0)) {
             "${first.label} wasn't in the upper half: $tops"
         }
-        return "$label opened both apps side by side, ${first.label} in the upper half" +
+        return "paired through the icon's menu (the app list was up ${sheetMs} ms after the tap); " +
+            "$label opened both apps side by side, ${first.label} in the upper half" +
             if (needsService) "" else ", with accessibility off"
+    }
+
+    // As a person pairs: a long press on the icon, Pair with another app,
+    // then the app. Returns how long the app list took to come up.
+    private fun pairThroughMenu(first: LaunchableApp, second: LaunchableApp): Long {
+        val plain = device.wait(Until.findObject(By.desc(first.label)), WAIT_MS)
+            ?: error("${first.label} isn't on the home screen")
+        plain.longClick()
+        val pairWith = context.getString(R.string.pair_with)
+        val row = device.wait(Until.findObject(By.text(pairWith)), WAIT_MS) ?: error("the icon's menu has no $pairWith")
+        row.click()
+        val tapped = SystemClock.uptimeMillis()
+        check(waitFor { device.hasObject(By.text(second.label)) }) { "the app list didn't show ${second.label}" }
+        val sheetMs = SystemClock.uptimeMillis() - tapped
+        shot("pair-picker")
+        device.findObject(By.text(second.label)).click()
+        return sheetMs
     }
 
     // #15: a chosen app's label shows its newest notification.
@@ -794,6 +845,7 @@ class FeatureTour {
         const val FULL_BLUR = 100
         const val SEE_THROUGH = 0.6f
         const val HOURS_AHEAD = 3
+        const val RECENTS_SEEDED = 15
         const val TEXT_ID = 41
         const val SUMMARY_ID = 42
         const val HELD_TITLE = "Shop"

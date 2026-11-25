@@ -280,8 +280,9 @@
 
         <!-- The top row of apps (drawerFrequentRow), with a short centred
              rule separating it from the list. DrawerController moves both
-             into the list's header, the rule into DrawerSortBars' strip. -->
-        <com.supernova.launcher.ui.FrequentAppsRowView
+             into the list's header, the rule into DrawerSortBars' strip.
+             It pages sideways through older recent apps. -->
+        <com.supernova.launcher.ui.RecentAppsPager
             android:id="@+id/drawerFrequentRow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

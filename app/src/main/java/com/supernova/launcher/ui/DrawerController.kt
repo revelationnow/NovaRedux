@@ -867,6 +867,7 @@ class DrawerController(
         if (!prefs.drawerRememberPosition) {
             showDefaultTab(prefs)
             binding.drawerRecycler.scrollToPosition(0)
+            binding.drawerFrequentRow.scrollToPosition(0)
         }
     }
 
@@ -878,6 +879,7 @@ class DrawerController(
         if (prefs.drawerRememberPosition) return
         showDefaultTab(prefs)
         binding.drawerRecycler.scrollToPosition(0)
+        binding.drawerFrequentRow.scrollToPosition(0)
     }
 
     // Selects the default tab (else the first) with no slide; a no-op when
@@ -1868,6 +1870,9 @@ class DrawerController(
     // The top row above the list: All tab only, hidden while a query
     // filters, rebound only when its membership or the icons change.
     private var frequentRowKey: String? = null
+    // Its apps alone: a rebind with the same apps (late icons, a look
+    // changed) stays on the page showing.
+    private var frequentRowApps: String? = null
     // Last icon generation the list was bound at; a change means per-app
     // icons moved even though the app list is identical (DiffUtil would skip).
     private var lastIconGeneration = -1
@@ -1881,9 +1886,9 @@ class DrawerController(
             return
         }
         // The top row: the recently opened apps, labelled, one per grid
-        // column.
+        // column, a row to a page (RecentAppsPager).
         val columns = columnCount(prefs)
-        val apps = viewModel.recentApps(columns)
+        val apps = viewModel.recentApps(columns * RECENT_PAGES)
         if (apps.isEmpty()) {
             setFrequentRowVisible(prefs, false, list = true)
             return
@@ -1896,10 +1901,12 @@ class DrawerController(
         val baseDp = if (currentStyle == DrawerStyle.VERTICAL_LIST) ROW_ICON_DP else TILE_ICON_DP
         val iconSizePx = (context.dp(baseDp) * iconScale(prefs)).toInt()
             .coerceAtMost((gridWidthPx() / columns - context.dp(TILE_SIDE_PADDING_DP)).coerceAtLeast(1))
-        val key = apps.joinToString { "${it.userSerial}/${it.packageName}/${it.className}" } +
-            "|$columns|$textColor|$lastIconGeneration|$iconSizePx|${styleKey(prefs)}"
+        val appsKey = apps.joinToString { "${it.userSerial}/${it.packageName}/${it.className}" } + "|$columns"
+        val key = "$appsKey|$textColor|$lastIconGeneration|$iconSizePx|${styleKey(prefs)}"
         if (key == frequentRowKey) return
         frequentRowKey = key
+        val sameApps = appsKey == frequentRowApps
+        frequentRowApps = appsKey
         // Long-pressed, each is a drawer icon like any other: its menu, and a
         // drag to the home screen.
         // Icons not rendered yet come in off the main thread, and the row
@@ -1930,7 +1937,7 @@ class DrawerController(
             LabelStyler.apply(label, prefs, onWallpaper = false, context = LabelContext.DRAWER)
             label.visibility = if (prefs.drawerLabels) View.VISIBLE else View.GONE
         }
-        binding.drawerFrequentRow.bindLabeled(entries, textColor, columns, sidePaddingDp = 0, look = look)
+        binding.drawerFrequentRow.bindLabeled(entries, textColor, columns, look, keepPage = sameApps)
     }
 
     // The label prefs LabelStyler reads for the drawer and the badge prefs
@@ -2696,6 +2703,8 @@ class DrawerController(
         const val TILE_MIN_HEIGHT_DP = 98
         // The icon box item_drawer_app_row declares.
         const val ROW_ICON_DP = 40
+        // How many rows of recent apps the top row pages through.
+        const val RECENT_PAGES = 3
         // The search field's end inset alone, and beside its action buttons
         // (36dp, padded), which sit inside it.
         const val FIELD_END_DP = 16

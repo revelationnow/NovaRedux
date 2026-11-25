@@ -4,6 +4,7 @@ import android.view.MotionEvent
 import android.view.VelocityTracker
 import android.view.View
 import android.view.ViewConfiguration
+import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlin.math.abs
 import kotlin.math.sign
@@ -18,7 +19,8 @@ import kotlin.math.sign
 // Watching only, so vertical scrolling is untouched, until the gesture
 // reads as a sideways swipe. Then it is taken: the row under the finger
 // gets a cancel and drops its press, so a swipe never opens the app it
-// crosses.
+// crosses. A sideways list in the list (the recent apps row) keeps a swipe
+// that starts on it while it can still scroll that way.
 internal class TabSwipeDrag(
     // What moves with the finger: the list's container.
     private val list: View,
@@ -47,6 +49,8 @@ internal class TabSwipeDrag(
     private var lastX = 0f
     private var dragging = false
     private var tracker: VelocityTracker? = null
+    // The sideways list under the press, if any.
+    private var scroller: View? = null
 
     override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
         when (e.actionMasked) {
@@ -54,6 +58,7 @@ internal class TabSwipeDrag(
                 downX = e.rawX
                 downY = e.rawY
                 dragging = false
+                scroller = SidewaysLists.under(rv, e.x, e.y)
                 tracker?.recycle()
                 tracker = VelocityTracker.obtain()
                 track(e)
@@ -62,7 +67,10 @@ internal class TabSwipeDrag(
                 track(e)
                 val dx = abs(e.rawX - downX)
                 val dy = abs(e.rawY - downY)
-                if (dx > slop && dx > dy * SIDEWAYS_RATIO && swipeable()) start(rv, e.rawX)
+                val sideways = dx > slop && dx > dy * SIDEWAYS_RATIO
+                // A finger going left scrolls a list's content right.
+                val listTakesIt = scroller?.canScrollHorizontally(if (e.rawX < downX) 1 else -1) == true
+                if (sideways && swipeable() && !listTakesIt) start(rv, e.rawX)
             }
             MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> release()
         }
@@ -173,6 +181,7 @@ internal class TabSwipeDrag(
 
     private fun release() {
         dragging = false
+        scroller = null
         tracker?.recycle()
         tracker = null
     }
@@ -188,4 +197,27 @@ internal class TabSwipeDrag(
         const val FADE = 0.5f
         const val MS_PER_S = 1000
     }
+}
+
+// The sideways lists inside the drawer's list (the recent apps row), found
+// under a press so the tab swipe can leave them their swipes.
+internal object SidewaysLists {
+
+    // The sideways list at (x, y) in the list's coordinates, if any.
+    fun under(list: RecyclerView, x: Float, y: Float): View? =
+        list.findChildViewUnder(x, y)?.let { item -> within(item, x - item.x, y - item.y) }
+
+    // view itself, or the one under (x, y), in view's coordinates, among its
+    // children.
+    private fun within(view: View, x: Float, y: Float): View? = when {
+        view is RecyclerView && view.layoutManager?.canScrollHorizontally() == true -> view
+        view !is ViewGroup -> null
+        else -> (view.childCount - 1 downTo 0).asSequence()
+            .map(view::getChildAt)
+            .filter { it.visibility == View.VISIBLE && covers(it, x, y) }
+            .firstNotNullOfOrNull { within(it, x - it.x, y - it.y) }
+    }
+
+    private fun covers(child: View, x: Float, y: Float): Boolean =
+        x in child.x..child.x + child.width && y in child.y..child.y + child.height
 }
