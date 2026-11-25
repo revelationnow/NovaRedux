@@ -24,7 +24,9 @@ internal object AppPairRows {
             return
         }
         menu.addRow(activity.getString(R.string.pair_with), R.drawable.ic_menu_pair) {
-            ActionPickerSheet.showApps(activity, viewModel, activity.getString(R.string.pair_with)) { pick ->
+            // The app alone: a pair opens apps, not their shortcuts.
+            val title = activity.getString(R.string.pair_with)
+            ActionPickerSheet.showApps(activity, viewModel, title, withShortcuts = false) { pick ->
                 val second = (pick as? ActionPick.App)?.app ?: return@showApps
                 val label = activity.getString(R.string.pair_label, item.label, second.label)
                 viewModel.updateApp(item.id) { AppPairs.paired(it, second, label) }

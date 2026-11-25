@@ -24,6 +24,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayout
 import com.supernova.launcher.R
+import com.supernova.launcher.data.AppCatalog
+import com.supernova.launcher.data.IconThread
 import com.supernova.launcher.data.LaunchableApp
 import com.supernova.launcher.gesture.GestureAction
 import com.supernova.launcher.search.AppMatcher
@@ -51,20 +53,25 @@ class ActionPickerSheet private constructor(
     private val actions: List<GestureAction>,
     // Only the Apps list, with no tabs: a feed card's apps and shortcuts.
     private val appsOnly: Boolean,
+    // Whether tapping an app with shortcuts offers them too; an app pair
+    // takes the app alone.
+    private val withShortcuts: Boolean,
     private val onPick: (ActionPick) -> Unit
 ) {
 
     // keys: what a search matches - the label, plus the app's name for a
-    // shortcut screen.
+    // shortcut screen. `app`: an app's row, whose icon is bound as the row
+    // shows (RowAdapter.bindAppIcon) in place of `icon`.
     private class Row(
         val icon: Drawable?,
         val label: CharSequence,
         val keys: List<String> = listOf(label.toString()),
+        val app: LaunchableApp? = null,
         val onClick: () -> Unit
     )
 
     private val sheet = Sheets.open(context)
-    private val adapter = RowAdapter(context.getColor(R.color.textPrimary))
+    private val adapter = RowAdapter(context.getColor(R.color.textPrimary), viewModel.appCatalog())
 
     private fun picked(pick: ActionPick) {
         sheet.dismiss()
@@ -200,9 +207,14 @@ class ActionPickerSheet private constructor(
         }
     }
 
+    // No icons yet: each row's is bound as it shows. Rendering every app's
+    // icon here held the sheet back for seconds on a phone with hundreds of
+    // apps, before it appeared at all.
     private fun appRows(): List<Row> =
         com.supernova.launcher.data.LabelOrder.sorted(viewModel.appsForPicking()) { it.label }.map { app ->
-            Row(viewModel.appCatalog().iconFor(app), app.label) { pickAppOrShortcut(app) }
+            Row(null, app.label, app = app) {
+                if (withShortcuts) pickAppOrShortcut(app) else picked(ActionPick.App(app))
+            }
         }
 
     // The app itself, or one of its own shortcuts when it has any.
@@ -255,7 +267,10 @@ class ActionPickerSheet private constructor(
             .showTracked()
     }
 
-    private class RowAdapter(private val textColor: Int) : RecyclerView.Adapter<RowAdapter.Holder>() {
+    private class RowAdapter(
+        private val textColor: Int,
+        private val catalog: AppCatalog
+    ) : RecyclerView.Adapter<RowAdapter.Holder>() {
 
         // A tab switch replaces every row at once.
         @SuppressLint("NotifyDataSetChanged")
@@ -310,8 +325,28 @@ class ActionPickerSheet private constructor(
         override fun onBindViewHolder(holder: Holder, position: Int) {
             val row = rows[position]
             holder.label.text = row.label
-            holder.icon.setImageDrawable(row.icon)
+            val app = row.app
+            if (app == null) {
+                holder.icon.setTag(R.id.tag_icon_app, null)
+                holder.icon.setImageDrawable(row.icon)
+            } else {
+                bindAppIcon(holder.icon, app)
+            }
             holder.root.setOnClickListener { row.onClick() }
+        }
+
+        // As the drawer binds an icon: from the cache at once, or rendered on
+        // the icon thread and set when it is ready, if the row still shows
+        // that app.
+        private fun bindAppIcon(view: ImageView, app: LaunchableApp) {
+            val key = "${app.userSerial}/${app.packageName}/${app.className}"
+            view.setTag(R.id.tag_icon_app, key)
+            val cached = catalog.cachedIcon(app)
+            view.setImageDrawable(cached)
+            if (cached != null) return
+            IconThread.render(catalog, app) { icon ->
+                if (view.getTag(R.id.tag_icon_app) == key) view.setImageDrawable(catalog.cachedIcon(app) ?: icon)
+            }
         }
     }
 
@@ -334,15 +369,17 @@ class ActionPickerSheet private constructor(
             title: CharSequence,
             actions: List<GestureAction>,
             onPick: (ActionPick) -> Unit
-        ) = ActionPickerSheet(context, viewModel, actions, appsOnly = false, onPick).show(title)
+        ) = ActionPickerSheet(context, viewModel, actions, appsOnly = false, withShortcuts = true, onPick).show(title)
 
         // Apps alone, with icons: tapping one offers it or one of its own
-        // shortcuts, as the gesture picker's Apps tab does.
+        // shortcuts, as the gesture picker's Apps tab does, or with
+        // withShortcuts off picks the app.
         fun showApps(
             context: Context,
             viewModel: LauncherViewModel,
             title: CharSequence,
+            withShortcuts: Boolean = true,
             onPick: (ActionPick) -> Unit
-        ) = ActionPickerSheet(context, viewModel, emptyList(), appsOnly = true, onPick).show(title)
+        ) = ActionPickerSheet(context, viewModel, emptyList(), appsOnly = true, withShortcuts, onPick).show(title)
     }
 }
