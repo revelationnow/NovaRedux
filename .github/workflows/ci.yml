@@ -23,10 +23,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
-      - uses: actions/checkout@v7
-
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Set up JDK 21
-        uses: actions/setup-java@v6
+        uses: actions/setup-java@d1374f8ac74474200d16ef8ecee22c7ae7a51880 # v6.3.0
         with:
           distribution: temurin
           java-version: "21"
@@ -34,8 +33,9 @@ jobs:
       # Checks the wrapper jar against Gradle's checksums and caches Gradle.
       # "basic" is the open-source (MIT) cache; the default one is proprietary.
       - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v6
+        uses: gradle/actions/setup-gradle@8da46b539cd8fe6ab27ca75128919a18d757604c # v6.4.1
         with:
+          validate-wrappers: true
           cache-provider: basic
 
       # The runner image already ships an Android SDK in $ANDROID_HOME.
@@ -62,7 +62,7 @@ jobs:
       - name: Debug signing key
         id: debug-key
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
-        uses: actions/cache@v6
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: ${{ runner.temp }}/android-user/debug.keystore
           key: debug-keystore-v1
@@ -96,6 +96,22 @@ jobs:
           :connect:testDebugUnitTest
           :connect:assembleDebug
 
+      # NovaRedux has no internet access: its APK holds no such permission,
+      # whatever a library's manifest asks for (the launcher's manifest
+      # removes it as they merge; NovaRedux Connect is the one that goes
+      # online).
+      - name: The launcher holds no internet permission
+        run: |
+          aapt2="$(find "$ANDROID_HOME/build-tools" -name aapt2 | sort -V | tail -n 1)"
+          for apk in app/build/outputs/apk/debug/*.apk; do
+            permissions="$("$aapt2" dump permissions "$apk")"
+            echo "$permissions"
+            if echo "$permissions" | grep -q "android.permission.INTERNET"; then
+              echo "::error::$apk asks for android.permission.INTERNET"
+              exit 1
+            fi
+          done
+
       # Lint names only its first error in the console; the rest are in its
       # text report, printed here when a check failed.
       - name: Print lint findings
@@ -107,7 +123,7 @@ jobs:
 
       - name: Upload reports
         if: always()
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: reports
           path: |
@@ -118,14 +134,14 @@ jobs:
           if-no-files-found: ignore
 
       - name: Upload debug APK
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: novaredux-debug-apk
           path: app/build/outputs/apk/debug/*.apk
           if-no-files-found: error
 
       - name: Upload NovaRedux Connect debug APK
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: novaredux-connect-debug-apk
           path: connect/build/outputs/apk/debug/*.apk
@@ -135,7 +151,10 @@ jobs:
   # on the draft release "Debug build (newest main)", replacing the last
   # ones: plain APK links, the same every time, that install from a phone
   # signed in to GitHub. A draft is seen only by people who can push here,
-  # and makes no tag (tools/ci/debug_release.sh).
+  # and makes no tag (tools/ci/debug_release.sh). Each APK gets a build
+  # provenance attestation first: `gh attestation verify <apk> --repo
+  # revelationnow/NovaRedux` shows it came from this workflow, at a commit
+  # of this repository (SECURITY.md).
   debug-release:
     if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
     needs: check
@@ -143,18 +162,26 @@ jobs:
     timeout-minutes: 10
     permissions:
       contents: write
+      id-token: write
+      attestations: write
     steps:
-      - uses: actions/checkout@v7
-
-      - uses: actions/download-artifact@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
         with:
           name: novaredux-debug-apk
           path: apk/app
 
-      - uses: actions/download-artifact@v7
+      - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
         with:
           name: novaredux-connect-debug-apk
           path: apk/connect
+
+      - name: Attest where they were built
+        uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
+        with:
+          subject-path: |
+            apk/app/*.apk
+            apk/connect/*.apk
 
       - name: Put them on the draft release
         env:

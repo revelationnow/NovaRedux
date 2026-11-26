@@ -1,0 +1,71 @@
+# Run by hand when Gradle or a dependency changes (#22, from a security
+# review). It prints what the build pins, for a commit:
+# - the Gradle distribution's checksum as Gradle publishes it, for
+#   distributionSha256Sum in gradle/wrapper/gradle-wrapper.properties;
+# - gradle/verification-metadata.xml written afresh (SHA-256 of every
+#   plugin and library the builds fetch), gzipped and base64-encoded between
+#   VERIFICATION-BEGIN and VERIFICATION-END in the log.
+# With that file in the repository, Gradle checks every artifact it fetches
+# against it and stops on a mismatch or an artifact it doesn't list.
+name: Supply chain
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  pins:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@d1374f8ac74474200d16ef8ecee22c7ae7a51880 # v6.3.0
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@8da46b539cd8fe6ab27ca75128919a18d757604c # v6.4.1
+        with:
+          validate-wrappers: true
+          cache-disabled: true
+
+      - name: Gradle's own checksum of the distribution
+        run: |
+          url=$(sed -n 's/^distributionUrl=//p' gradle/wrapper/gradle-wrapper.properties | sed 's/\\:/:/g')
+          echo "distributionUrl: $url"
+          echo "distributionSha256Sum=$(curl -fsSL "$url.sha256")"
+
+      - name: Accept Android SDK licences
+        run: |
+          : "${ANDROID_HOME:?ANDROID_HOME is not set on this runner}"
+          sdkmanager="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+          if [ ! -x "$sdkmanager" ]; then
+            sdkmanager="$(find "$ANDROID_HOME/cmdline-tools" -path '*/bin/sdkmanager' | sort -V | tail -n 1)"
+          fi
+          yes | "$sdkmanager" --licenses > /dev/null
+
+      # Every task CI, Release, Screens and the endpoint check run, so the
+      # file lists all they fetch. Unsigned here: no release key is needed
+      # to resolve what a release build uses.
+      - name: Write the verification metadata
+        run: >
+          rm -f gradle/verification-metadata.xml &&
+          ./gradlew --stacktrace --continue --write-verification-metadata sha256
+          :app:lintDebug :app:detekt :app:testDebugUnitTest :app:assembleDebug
+          :app:assembleDebugAndroidTest :app:assembleRelease
+          :connect:lintDebug :connect:detekt :connect:testDebugUnitTest :connect:assembleDebug
+          :connect:assembleRelease
+
+      - name: Print it
+        run: |
+          wc -c gradle/verification-metadata.xml
+          sha256sum gradle/verification-metadata.xml
+          echo "VERIFICATION-BEGIN"
+          gzip -9c gradle/verification-metadata.xml | base64 -w 0
+          echo
+          echo "VERIFICATION-END"

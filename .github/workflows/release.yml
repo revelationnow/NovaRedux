@@ -27,6 +27,9 @@ on:
 
 permissions:
   contents: write
+  # The build provenance attestation (SECURITY.md).
+  id-token: write
+  attestations: write
 
 concurrency:
   group: release-${{ inputs.tag || github.ref_name }}
@@ -39,12 +42,12 @@ jobs:
     env:
       TAG: ${{ inputs.tag || github.ref_name }}
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ inputs.tag || github.ref }}
 
       - name: Set up JDK 21
-        uses: actions/setup-java@v6
+        uses: actions/setup-java@d1374f8ac74474200d16ef8ecee22c7ae7a51880 # v6.3.0
         with:
           distribution: temurin
           java-version: "21"
@@ -52,8 +55,9 @@ jobs:
       # No cache from or for a release: it builds from a clean state, as
       # F-Droid's reproducible build does.
       - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v6
+        uses: gradle/actions/setup-gradle@8da46b539cd8fe6ab27ca75128919a18d757604c # v6.4.1
         with:
+          validate-wrappers: true
           cache-provider: basic
           cache-disabled: true
 
@@ -124,13 +128,36 @@ jobs:
           apksigner="$(find "$ANDROID_HOME/build-tools" -name apksigner | sort -V | tail -n 1)"
           "$apksigner" verify --print-certs "$MODULE/build/outputs/apk/release/$MODULE-release.apk"
 
-      - name: Publish the release
-        env:
-          GH_TOKEN: ${{ github.token }}
+      # NovaRedux has no internet access (Connect is the app that goes
+      # online): its APK holds no such permission.
+      - name: The launcher holds no internet permission
+        if: env.MODULE == 'app'
+        run: |
+          aapt2="$(find "$ANDROID_HOME/build-tools" -name aapt2 | sort -V | tail -n 1)"
+          permissions="$("$aapt2" dump permissions app/build/outputs/apk/release/app-release.apk)"
+          echo "$permissions"
+          if echo "$permissions" | grep -q "android.permission.INTERNET"; then
+            echo "::error::The release APK asks for android.permission.INTERNET"
+            exit 1
+          fi
+
+      - name: Name the APK
         run: |
           mkdir -p out
           cp "$MODULE/build/outputs/apk/release/$MODULE-release.apk" "out/$APK_NAME"
           (cd out && sha256sum "$APK_NAME" > SHA256SUMS)
+
+      # Signed proof of where the APK was built: this workflow, at the
+      # tag's commit (`gh attestation verify`, SECURITY.md).
+      - name: Attest where it was built
+        uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
+        with:
+          subject-path: out/${{ env.APK_NAME }}
+
+      - name: Publish the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
           gh release create "$TAG" "out/$APK_NAME" out/SHA256SUMS --verify-tag --title "$TITLE" --notes-file "$NOTES"
 
       - name: Remove the key
