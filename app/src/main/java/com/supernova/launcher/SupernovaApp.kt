@@ -82,7 +82,9 @@ class SupernovaApp : Application() {
         const val CRASH_ENTRY = "=== "
 
         // Settings > About shares it: without a crash reporter, it is the
-        // only way a tester's stack traces get back to the developer.
+        // only way a tester's stack traces get back to the developer. Never
+        // in Android's backups (backup_rules.xml, data_extraction_rules.xml
+        // name it).
         fun crashLog(context: android.content.Context): File =
             File(context.filesDir, "supernova_crash.log")
 

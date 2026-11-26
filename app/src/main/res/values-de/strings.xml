@@ -874,6 +874,7 @@
     <string name="connect_get">NovaRedux Connect herunterladen</string>
     <string name="connect_installed">Installiert. Tippe, um zu sehen, was es an wen sendet</string>
     <string name="connect_missing">Nicht installiert, aber die Websuchvorschläge brauchen es. Zum Herunterladen tippen</string>
+    <string name="connect_foreign">Installiert, aber nicht vom selben Entwickler signiert wie dieses NovaRedux, daher bekommt es deine Eingaben nicht. Installiere beide aus derselben Quelle</string>
     <string name="search_private_keyboard">Privater Tastaturmodus</string>
     <string name="search_private_keyboard_summary">Bittet die Tastatur, nicht aus deinen Suchen zu lernen</string>
     <string name="home_button_action">Aktion der Startbildschirmtaste</string>
@@ -944,6 +945,7 @@
     <string name="lock_method_root">Root</string>
     <string name="lock_method_timeout">Bildschirm-Zeitlimit</string>
     <string name="lock_root_failed">Sperren nicht möglich: Root ist nicht verfügbar oder wurde verweigert</string>
+    <string name="lock_root_warning">Root drückt die Ein/Aus-Taste über deinen Root-Manager. Eine Root-Freigabe gibt NovaRedux die volle Kontrolle über das Telefon, auch wenn es nur diesen einen Tastendruck ausführt, und sie gilt, bis du sie im Root-Manager wieder entziehst. Bedienungshilfe und Geräteadministrator sperren ohne Root.</string>
     <string name="lock_timeout_permission">Der Bildschirm wird schwarz und das Bildschirm-Zeitlimit sinkt auf den kürzesten Wert, bis sich der Bildschirm ausschaltet; danach wird es zurückgesetzt. Erlaube NovaRedux dafür, Systemeinstellungen zu ändern.</string>
     <string name="lock_timeout_cancel">Tippen, um entsperrt zu bleiben</string>
     <string name="lock_admin_explanation">Erlaubt NovaRedux, den Bildschirm zu sperren. Es löscht nie Daten und verwaltet keine Passwörter.</string>

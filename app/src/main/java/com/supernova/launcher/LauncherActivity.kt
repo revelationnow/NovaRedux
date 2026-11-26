@@ -2945,8 +2945,11 @@ class LauncherActivity :
 
     // Fires an arbitrary intent stored on an item (an activity chosen from the
     // picker, or a legacy created shortcut). Reuses the app-launch reveal.
+    // Scrubbed first: no URI grants, and none of NovaRedux's own hidden
+    // screens (SafeIntents).
     private fun launchIntentUri(uri: String, anchor: View?) {
         val intent = runLogged("read intent item") { Intent.parseUri(uri, Intent.URI_INTENT_SCHEME) }.getOrNull()
+            ?.let { com.supernova.launcher.ui.SafeIntents.forLaunch(this, it) }
         if (intent == null) {
             Toast.makeText(this, R.string.launch_failed, Toast.LENGTH_SHORT).show()
             return

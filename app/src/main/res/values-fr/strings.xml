@@ -891,6 +891,7 @@
     <string name="connect_get">Obtenir NovaRedux Connect</string>
     <string name="connect_installed">Installée. Appuyez pour voir ce qu\'elle envoie, et à qui</string>
     <string name="connect_missing">Non installée, alors que les suggestions web en ont besoin. Appuyez pour l\'obtenir</string>
+    <string name="connect_foreign">Installée, mais pas signée par le même développeur que ce NovaRedux : elle ne reçoit donc pas votre saisie. Installez les deux depuis la même source</string>
     <string name="search_private_keyboard">Mode clavier privé</string>
     <string name="search_private_keyboard_summary">Demande au clavier de ne pas apprendre de vos recherches</string>
     <string name="home_button_action">Action du bouton d\'accueil</string>
@@ -961,6 +962,7 @@
     <string name="lock_method_root">Root</string>
     <string name="lock_method_timeout">Délai de mise en veille</string>
     <string name="lock_root_failed">Verrouillage impossible : le root n\'est pas disponible ou a été refusé</string>
+    <string name="lock_root_warning">Root appuie sur le bouton d\'alimentation via votre gestionnaire root. Accorder le root donne à NovaRedux le contrôle total du téléphone, même s\'il n\'exécute que cet appui, et cela dure jusqu\'à ce que vous le retiriez dans votre gestionnaire root. Le service d\'accessibilité et l\'administrateur de l\'appareil verrouillent sans root.</string>
     <string name="lock_timeout_permission">L\'écran devient noir et le délai de mise en veille passe au plus court jusqu\'à l\'extinction de l\'écran, puis il est rétabli. Autorisez NovaRedux à modifier les paramètres système pour cela.</string>
     <string name="lock_timeout_cancel">Appuyez pour rester déverrouillé</string>
     <string name="lock_admin_explanation">Permet à NovaRedux de verrouiller l\'écran. Il n\'efface jamais de données et ne gère pas les mots de passe.</string>

@@ -891,6 +891,7 @@
     <string name="connect_get">Baixar o NovaRedux Connect</string>
     <string name="connect_installed">Instalado. Toque para ver o que ele envia e para quem</string>
     <string name="connect_missing">Não instalado, e as sugestões da web precisam dele. Toque para baixar</string>
+    <string name="connect_foreign">Instalado, mas não assinado pelo mesmo desenvolvedor deste NovaRedux, então não recebe o que você digita. Instale os dois do mesmo lugar</string>
     <string name="search_private_keyboard">Modo de teclado privado</string>
     <string name="search_private_keyboard_summary">Pede ao teclado que não aprenda com suas pesquisas</string>
     <string name="home_button_action">Ação do botão de início</string>
@@ -961,6 +962,7 @@
     <string name="lock_method_root">Root</string>
     <string name="lock_method_timeout">Tempo limite da tela</string>
     <string name="lock_root_failed">Não foi possível bloquear: o root não está disponível ou foi recusado</string>
+    <string name="lock_root_warning">Root pressiona o botão liga/desliga pelo seu gerenciador de root. Conceder root dá ao NovaRedux controle total do telefone, embora ele só execute esse toque, e vale até você revogar no gerenciador de root. O serviço de acessibilidade e o administrador do dispositivo bloqueiam sem root.</string>
     <string name="lock_timeout_permission">A tela fica preta e o tempo limite da tela cai para o mínimo até a tela desligar; depois ele é restaurado. Permita que o NovaRedux modifique as configurações do sistema para isso.</string>
     <string name="lock_timeout_cancel">Toque para continuar desbloqueado</string>
     <string name="lock_admin_explanation">Permite que o NovaRedux bloqueie a tela. Ele nunca apaga dados nem gerencia senhas.</string>

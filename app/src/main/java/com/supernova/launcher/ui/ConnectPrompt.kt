@@ -14,19 +14,20 @@ import com.supernova.launcher.runLogged
 object ConnectPrompt {
 
     fun explainIfMissing(activity: Activity) {
-        if (NovaConnect.installed(activity)) return
+        val state = NovaConnect.state(activity)
+        if (state == NovaConnect.State.READY) return
         MaterialAlertDialogBuilder(activity)
             .setTitle(R.string.connect_title)
-            .setMessage(R.string.connect_message)
+            .setMessage(if (state == NovaConnect.State.FOREIGN) R.string.connect_foreign else R.string.connect_message)
             .setPositiveButton(R.string.connect_get) { _, _ -> open(activity) }
             .setNegativeButton(R.string.not_now, null)
             .show()
     }
 
     // Its own page (what it sends, and to whom) once installed; until then,
-    // the page to get it from.
+    // or for one signed elsewhere, the page to get it from.
     fun open(context: Context) {
-        val intent = if (NovaConnect.installed(context)) {
+        val intent = if (NovaConnect.state(context) == NovaConnect.State.READY) {
             Intent(Intent.ACTION_APPLICATION_PREFERENCES).setPackage(NovaConnect.PACKAGE)
         } else {
             NovaConnect.downloadIntent()

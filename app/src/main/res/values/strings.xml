@@ -922,6 +922,7 @@
     <string name="connect_get">Get NovaRedux Connect</string>
     <string name="connect_installed">Installed. Tap for what it sends, and to whom</string>
     <string name="connect_missing">Not installed, and web suggestions need it. Tap to get it</string>
+    <string name="connect_foreign">Installed, but not signed by the same developer as this NovaRedux, so it isn\'t sent your typing. Install both from the same place</string>
     <string name="search_private_keyboard">Private keyboard mode</string>
     <string name="search_private_keyboard_summary">Asks the keyboard not to learn from your searches</string>
     <string name="home_button_action">Home button action</string>
@@ -1005,6 +1006,7 @@
     <string name="lock_method_root">Root</string>
     <string name="lock_method_timeout">Screen timeout</string>
     <string name="lock_root_failed">Couldn’t lock: root isn’t available, or it was refused</string>
+    <string name="lock_root_warning">Root presses the power key through your root manager. A root grant gives NovaRedux full control of the phone, though it only ever runs that one key press, and it lasts until you take it back in your root manager. The accessibility service and device admin lock without root.</string>
     <string name="lock_timeout_permission">The screen goes black and the screen timeout drops to its shortest until the screen turns off, then it is put back. Allow NovaRedux to modify system settings for this.</string>
     <string name="lock_timeout_cancel">Tap to stay unlocked</string>
     <string name="lock_admin_explanation">Allows NovaRedux to lock the screen. It never wipes data or manages passwords.</string>

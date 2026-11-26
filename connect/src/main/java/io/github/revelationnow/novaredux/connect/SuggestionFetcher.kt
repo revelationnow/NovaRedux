@@ -9,10 +9,11 @@ import java.nio.charset.Charset
 // Asks an engine for suggestions over HTTPS, as plainly as it can be asked:
 // no cookies, no identifiers, this app's own name as the user agent, and the
 // phone's language so the suggestions come in it. Answers are kept a few
-// minutes (SuggestionCache).
+// minutes (SuggestionCache). Only HTTPS, and no redirects: the query goes to
+// the engine's own address and nowhere it might point to.
 class SuggestionFetcher(
     private val cache: SuggestionCache = SuggestionCache(),
-    private val open: (String) -> HttpURLConnection = { URI(it).toURL().openConnection() as HttpURLConnection }
+    private val open: (String) -> HttpURLConnection = { openHttps(it) }
 ) {
 
     // What one request came back with: the HTTP status (0 when it never got
@@ -43,6 +44,7 @@ class SuggestionFetcher(
             connection.connectTimeout = TIMEOUT_MS
             connection.readTimeout = TIMEOUT_MS
             connection.useCaches = false
+            connection.instanceFollowRedirects = false
             connection.setRequestProperty("User-Agent", USER_AGENT)
             connection.setRequestProperty("Accept", ACCEPT)
             if (language.isNotEmpty()) connection.setRequestProperty("Accept-Language", language)
@@ -59,6 +61,12 @@ class SuggestionFetcher(
 
     internal companion object {
         const val TIMEOUT_MS = 2_000
+
+        fun openHttps(url: String): HttpURLConnection {
+            val uri = URI(url)
+            require(uri.scheme == "https") { "suggestions go over HTTPS only" }
+            return uri.toURL().openConnection() as HttpURLConnection
+        }
         const val USER_AGENT = "NovaReduxConnect/1 (Android)"
         const val ACCEPT = "application/x-suggestions+json, application/json;q=0.9, */*;q=0.1"
 

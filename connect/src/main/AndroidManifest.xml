@@ -6,9 +6,11 @@
          asks this app for what needs it. -->
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <!-- Nothing to back up: it keeps no data. -->
+    <!-- Nothing to back up: it keeps no data. HTTPS only: no request goes
+         out in clear text. -->
     <application
         android:allowBackup="false"
+        android:usesCleartextTraffic="false"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"

@@ -1220,8 +1220,13 @@ object SettingsCatalogue {
                 SettingItem.Row(
                     R.string.connect_title,
                     subtitle = {
-                        val installed = com.supernova.launcher.connect.NovaConnect.installed(context)
-                        context.getString(if (installed) R.string.connect_installed else R.string.connect_missing)
+                        context.getString(
+                            when (com.supernova.launcher.connect.NovaConnect.state(context)) {
+                                com.supernova.launcher.connect.NovaConnect.State.READY -> R.string.connect_installed
+                                com.supernova.launcher.connect.NovaConnect.State.FOREIGN -> R.string.connect_foreign
+                                com.supernova.launcher.connect.NovaConnect.State.MISSING -> R.string.connect_missing
+                            }
+                        )
                     },
                     onClick = actions.openConnect,
                     visibleIf = { it.searchSuggestions }

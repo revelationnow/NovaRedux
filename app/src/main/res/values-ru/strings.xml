@@ -908,6 +908,7 @@
     <string name="connect_get">Установить NovaRedux Connect</string>
     <string name="connect_installed">Установлено. Нажмите, чтобы узнать, что и кому оно отправляет</string>
     <string name="connect_missing">Не установлено, а веб-подсказкам оно нужно. Нажмите, чтобы установить</string>
+    <string name="connect_foreign">Установлено, но подписано не тем же разработчиком, что этот NovaRedux, поэтому ему не передаётся ввод. Установите оба приложения из одного источника</string>
     <string name="search_private_keyboard">Приватный режим клавиатуры</string>
     <string name="search_private_keyboard_summary">Просит клавиатуру не обучаться на ваших запросах</string>
     <string name="home_button_action">Действие кнопки «Домой»</string>
@@ -978,6 +979,7 @@
     <string name="lock_method_root">Root</string>
     <string name="lock_method_timeout">Тайм-аут экрана</string>
     <string name="lock_root_failed">Не удалось заблокировать: root недоступен или в нём отказано</string>
+    <string name="lock_root_warning">Root нажимает кнопку питания через ваш root-менеджер. Права root дают NovaRedux полный контроль над телефоном, хотя он выполняет только это нажатие, и действуют, пока вы не отзовёте их в root-менеджере. Служба специальных возможностей и администратор устройства блокируют экран без root.</string>
     <string name="lock_timeout_permission">Экран становится чёрным, а тайм-аут экрана опускается до минимума, пока экран не погаснет, после чего он возвращается. Для этого разрешите NovaRedux изменять системные настройки.</string>
     <string name="lock_timeout_cancel">Нажмите, чтобы не блокировать</string>
     <string name="lock_admin_explanation">Позволяет NovaRedux блокировать экран. Он никогда не стирает данные и не управляет паролями.</string>

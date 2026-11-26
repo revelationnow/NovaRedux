@@ -1,6 +1,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- NovaRedux has no internet access, whatever a library's manifest asks
+         for: taken out as the manifests are merged, and CI checks the built
+         APK holds no such permission. NovaRedux Connect is the app that
+         goes online. -->
+    <uses-permission
+        android:name="android.permission.INTERNET"
+        tools:node="remove" />
+
     <!-- The search bar's weather button reads Breezy Weather's shared weather,
          with the user's leave; NovaRedux itself has no internet access. -->
     <uses-permission android:name="org.breezyweather.READ_PROVIDER" />

@@ -108,4 +108,13 @@ class SuggestionFetcherTest {
         assertEquals(100, read(100).length)
         assertEquals(text, read(SuggestionFetcher.MAX_BYTES))
     }
+
+    // A redirect would take the query somewhere other than the engine's own
+    // address; cleartext isn't asked at all.
+    @Test
+    fun followsNoRedirectAndOpensHttpsOnly() {
+        fetcher().fetch(SuggestionEngine.DUCKDUCKGO, "dog", "en")
+        assertFalse(opened.single().instanceFollowRedirects)
+        assertThrows(IllegalArgumentException::class.java) { SuggestionFetcher.openHttps("http://example.org/?q=dog") }
+    }
 }

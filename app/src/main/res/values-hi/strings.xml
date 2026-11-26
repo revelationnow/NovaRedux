@@ -874,6 +874,7 @@
     <string name="connect_get">NovaRedux Connect पाएं</string>
     <string name="connect_installed">इंस्टॉल है. यह क्या और किसे भेजता है, यह जानने के लिए टैप करें</string>
     <string name="connect_missing">इंस्टॉल नहीं है, और वेब सुझावों के लिए इसकी ज़रूरत है. पाने के लिए टैप करें</string>
+    <string name="connect_foreign">इंस्टॉल है, पर इस NovaRedux वाले डेवलपर ने साइन नहीं किया है, इसलिए आपका टाइप किया हुआ इसे नहीं भेजा जाता। दोनों को एक ही जगह से इंस्टॉल करें</string>
     <string name="search_private_keyboard">निजी कीबोर्ड मोड</string>
     <string name="search_private_keyboard_summary">कीबोर्ड से कहता है कि वह आपकी खोजों से न सीखे</string>
     <string name="home_button_action">होम बटन का ऐक्शन</string>
@@ -944,6 +945,7 @@
     <string name="lock_method_root">रूट</string>
     <string name="lock_method_timeout">स्क्रीन टाइम आउट</string>
     <string name="lock_root_failed">लॉक नहीं हो सका: रूट उपलब्ध नहीं है या उसे मना कर दिया गया</string>
+    <string name="lock_root_warning">रूट आपके रूट मैनेजर के ज़रिए पावर बटन दबाता है। रूट की अनुमति NovaRedux को फ़ोन का पूरा नियंत्रण देती है, हालांकि यह सिर्फ़ वही एक बटन दबाता है, और यह तब तक रहती है जब तक आप इसे रूट मैनेजर में वापस नहीं लेते। सुलभता सेवा और डिवाइस एडमिन बिना रूट के लॉक करते हैं।</string>
     <string name="lock_timeout_permission">स्क्रीन काली हो जाती है और स्क्रीन बंद होने तक स्क्रीन टाइम आउट सबसे कम पर चला जाता है, फिर उसे पहले जैसा कर दिया जाता है. इसके लिए NovaRedux को सिस्टम सेटिंग में बदलाव करने की अनुमति दें.</string>
     <string name="lock_timeout_cancel">अनलॉक रहने के लिए टैप करें</string>
     <string name="lock_admin_explanation">इससे NovaRedux स्क्रीन लॉक कर पाता है. यह कभी डेटा नहीं मिटाता और पासवर्ड मैनेज नहीं करता.</string>

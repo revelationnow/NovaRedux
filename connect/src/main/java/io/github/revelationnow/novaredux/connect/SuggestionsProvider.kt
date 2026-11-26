@@ -10,7 +10,8 @@ import android.os.CancellationSignal
 import java.util.Locale
 
 // Answers NovaRedux's question, what an engine suggests for what was typed
-// (SuggestionsContract), and only NovaRedux's: any other app is refused.
+// (SuggestionsContract), and only NovaRedux's, signed with this app's key:
+// any other app is refused (Callers).
 // Read-only. The request runs on the binder thread the query came in on,
 // and stops when NovaRedux stops waiting (its cancellation signal).
 class SuggestionsProvider : ContentProvider() {
@@ -36,7 +37,8 @@ class SuggestionsProvider : ContentProvider() {
     ): Cursor = answer(uri, null)
 
     private fun answer(uri: Uri, signal: CancellationSignal?): Cursor {
-        if (!Callers.mayAsk(callingPackage)) throw SecurityException("Only NovaRedux may ask for suggestions")
+        val context = context ?: throw SecurityException(REFUSED)
+        if (!Callers.mayAsk(context, callingPackage)) throw SecurityException(REFUSED)
         val cursor = MatrixCursor(arrayOf(SuggestionsContract.COLUMN))
         val query = uri.getQueryParameter(SuggestionsContract.PARAM_QUERY)?.trim().orEmpty()
         val engine = SuggestionEngine.fromName(uri.getQueryParameter(SuggestionsContract.PARAM_ENGINE))
@@ -63,5 +65,6 @@ class SuggestionsProvider : ContentProvider() {
         // A search, not a page of text: anything longer isn't sent.
         const val MAX_QUERY_CHARS = 200
         const val READ_ONLY = "Suggestions are read-only"
+        const val REFUSED = "Only NovaRedux may ask for suggestions"
     }
 }

@@ -18,7 +18,9 @@ import kotlinx.coroutines.flow.first
 // home screen layout and its inline icons, and re-emitted every setting.
 //
 // Device-local, like the gate flags left in the main store: not part of
-// LauncherPrefs, never backed up, untouched by a reset.
+// LauncherPrefs, untouched by a reset, and never backed up, by NovaRedux's
+// own backups or Android's (backup_rules.xml and data_extraction_rules.xml
+// leave its file out; the name below is in both).
 val Context.supernovaUsageStore by preferencesDataStore(
     name = "supernova_usage",
     produceMigrations = { context -> listOf(UsageMigration { context.supernovaStore }) }

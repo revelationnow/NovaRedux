@@ -2,6 +2,7 @@ package com.supernova.launcher.connect
 
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.database.Cursor
 import android.net.Uri
 import android.os.CancellationSignal
@@ -19,6 +20,11 @@ import java.util.concurrent.atomic.AtomicReference
 // It answers through a content provider, and only to NovaRedux's own
 // packages. The contract below (authority, path, parameters and column) is
 // the connect module's SuggestionsContract; the two change together.
+//
+// Typing goes only to the Connect signed with NovaRedux's own key, whose
+// provider it is that answers (READY): another app named so where Connect
+// isn't installed, or a build signed elsewhere, is FOREIGN and asked
+// nothing. Connect checks NovaRedux the same way.
 object NovaConnect {
     const val PACKAGE = "io.github.revelationnow.novaredux.connect"
     private const val AUTHORITY = "$PACKAGE.suggestions"
@@ -37,20 +43,38 @@ object NovaConnect {
     // asks on every pause in the typing.
     private const val RECHECK_MS = 5_000L
 
+    enum class State { MISSING, FOREIGN, READY }
+
     @Volatile private var checkedAt = Long.MIN_VALUE
-    @Volatile private var present = false
+    @Volatile private var known = State.MISSING
 
     // The ask still waiting, which a newer one cancels.
     private val inFlight = AtomicReference<CancellationSignal?>()
     private val timer by lazy { Handler(Looper.getMainLooper()) }
 
-    fun installed(context: Context): Boolean {
+    fun state(context: Context): State {
         val now = SystemClock.elapsedRealtime()
         if (checkedAt == Long.MIN_VALUE || now - checkedAt > RECHECK_MS) {
-            present = runCatching { context.packageManager.getPackageInfo(PACKAGE, 0) }.isSuccess
+            known = check(context)
             checkedAt = now
         }
-        return present
+        return known
+    }
+
+    fun installed(context: Context): Boolean = state(context) != State.MISSING
+
+    private fun check(context: Context): State {
+        val packages = context.packageManager
+        val present = runCatching { packages.getPackageInfo(PACKAGE, 0) }.isSuccess
+        @Suppress("DEPRECATION")
+        val answering = runCatching { packages.resolveContentProvider(AUTHORITY, 0)?.packageName }.getOrNull()
+        val signedAlike = present &&
+            packages.checkSignatures(context.packageName, PACKAGE) == PackageManager.SIGNATURE_MATCH
+        return when {
+            !present -> State.MISSING
+            answering == PACKAGE && signedAlike -> State.READY
+            else -> State.FOREIGN
+        }
     }
 
     // The page to get it from.
@@ -61,7 +85,7 @@ object NovaConnect {
     // suggests for query, best first. Empty without the app, past the
     // timeout, or when a newer ask has taken over.
     fun suggestions(context: Context, query: String, engine: String): List<String> {
-        if (!installed(context)) return emptyList()
+        if (state(context) != State.READY) return emptyList()
         val uri = Uri.Builder().scheme("content").authority(AUTHORITY).appendPath(PATH)
             .appendQueryParameter(PARAM_QUERY, query)
             .appendQueryParameter(PARAM_ENGINE, engine)

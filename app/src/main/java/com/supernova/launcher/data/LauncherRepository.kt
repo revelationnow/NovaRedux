@@ -966,7 +966,8 @@ class LauncherRepository(private val context: Context) {
         widgetBound: (appWidgetId: Int, provider: String?) -> Boolean,
         snapshotFirst: Boolean = true
     ): ImportResult {
-        val migrated = ModelMigrations.migrate(payload.model)
+        // A backup is a file from anywhere: its calls dial (ImportedIntents).
+        val migrated = ImportedIntents.calmed(ModelMigrations.migrate(payload.model))
 
         // Apps that vanished since the backup would render as dead icons.
         val missing = migrated.items.filter { item ->
@@ -983,10 +984,11 @@ class LauncherRepository(private val context: Context) {
             migrated.copy(items = kept.filterNot { it.id in emptyFolders }),
             widgetBound
         )
-        val restoredPrefs = if (widgetBound(payload.prefs.searchBarWidgetId, payload.prefs.searchBarWidgetProvider)) {
-            payload.prefs
+        val importedPrefs = ImportedIntents.calmed(payload.prefs)
+        val restoredPrefs = if (widgetBound(importedPrefs.searchBarWidgetId, importedPrefs.searchBarWidgetProvider)) {
+            importedPrefs
         } else {
-            payload.prefs.copy(searchBarWidgetId = 0, searchBarWidgetProvider = "")
+            importedPrefs.copy(searchBarWidgetId = 0, searchBarWidgetProvider = "")
         }
 
         // What is being replaced stays recoverable from Automatic backups, as

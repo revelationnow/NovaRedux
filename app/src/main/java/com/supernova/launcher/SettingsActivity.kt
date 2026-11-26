@@ -1815,6 +1815,19 @@ class SettingsActivity : AppCompatActivity() {
             if (methods[which] == LockMethod.TIMEOUT && !com.supernova.launcher.ui.TimeoutLock.canLock(this)) {
                 com.supernova.launcher.ui.TimeoutLock.explainPermission(this)
             }
+            // Root: what a grant gives is said before it is picked, and the
+            // ways that need none are named (a security review's point).
+            if (methods[which] == LockMethod.ROOT && viewModel.state.value.prefs.lockMethod != LockMethod.ROOT) {
+                MaterialAlertDialogBuilder(this)
+                    .setTitle(R.string.lock_method_root)
+                    .setMessage(R.string.lock_root_warning)
+                    .setPositiveButton(R.string.continue_label) { _, _ ->
+                        viewModel.set(Pref.lockMethod, LockMethod.ROOT)
+                    }
+                    .setNegativeButton(R.string.cancel, null)
+                    .show()
+                return@showChoice
+            }
             if (methods[which] != LockMethod.DEVICE_ADMIN || SupernovaDeviceAdmin.isActive(this)) {
                 viewModel.set(Pref.lockMethod, methods[which])
                 return@showChoice
