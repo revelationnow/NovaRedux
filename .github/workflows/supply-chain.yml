@@ -4,7 +4,7 @@
 #   distributionSha256Sum in gradle/wrapper/gradle-wrapper.properties;
 # - gradle/verification-metadata.xml written afresh (SHA-256 of every
 #   plugin and library the builds fetch), gzipped and base64-encoded between
-#   VERIFICATION-BEGIN and VERIFICATION-END in the log of its last job.
+#   VERIFICATION-BEGIN and VERIFICATION-END in the log.
 # With that file in the repository, Gradle checks every artifact it fetches
 # against it and stops on a mismatch or an artifact it doesn't list.
 name: Supply chain
@@ -16,9 +16,7 @@ permissions:
   contents: read
 
 jobs:
-  # Everything a build on Linux fetches: every task CI, Release, Screens and
-  # the endpoint check run.
-  linux:
+  pins:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
@@ -72,8 +70,9 @@ jobs:
           </verification-metadata>
           EOF
 
-      # Unsigned here: no release key is needed to resolve what a release
-      # build uses.
+      # Every task CI, Release, Screens and the endpoint check run, so the
+      # file lists all they fetch. Unsigned here: no release key is needed
+      # to resolve what a release build uses.
       - name: Write the verification metadata
         run: >
           ./gradlew --stacktrace --continue --write-verification-metadata sha256
@@ -82,106 +81,36 @@ jobs:
           :connect:lintDebug :connect:detekt :connect:testDebugUnitTest :connect:assembleDebug
           :connect:assembleRelease
 
-      - name: Keep it for the next job
-        if: always()
-        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
-        with:
-          name: verification-metadata
-          path: gradle/verification-metadata.xml
-          if-no-files-found: error
-          overwrite: true
-
-  # What a build on macOS fetches besides (its own aapt2), so contributors
-  # can build there too. Writing the file resolves every configuration of
-  # the build, whatever task runs.
-  macos:
-    needs: linux
-    if: always()
-    runs-on: macos-latest
-    timeout-minutes: 30
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-
-      - name: Set up JDK 21
-        uses: actions/setup-java@d1374f8ac74474200d16ef8ecee22c7ae7a51880 # v6.3.0
-        with:
-          distribution: temurin
-          java-version: "21"
-
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@8da46b539cd8fe6ab27ca75128919a18d757604c # v6.4.1
-        with:
-          validate-wrappers: true
-          cache-disabled: true
-
-      - name: The file so far
-        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
-        with:
-          name: verification-metadata
-          path: gradle
-
-      - name: Add this platform's artifacts
-        run: ./gradlew --stacktrace --write-verification-metadata sha256 help
-
-      - name: Keep it for the next job
-        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
-        with:
-          name: verification-metadata
-          path: gradle/verification-metadata.xml
-          if-no-files-found: error
-          overwrite: true
-
-  # The same for Windows, with the wrapper's batch script (the repository
-  # pins no line endings, so gradlew may check out with Windows ones).
-  windows:
-    needs: macos
-    if: always()
-    runs-on: windows-latest
-    timeout-minutes: 30
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-
-      - name: Set up JDK 21
-        uses: actions/setup-java@d1374f8ac74474200d16ef8ecee22c7ae7a51880 # v6.3.0
-        with:
-          distribution: temurin
-          java-version: "21"
-
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@8da46b539cd8fe6ab27ca75128919a18d757604c # v6.4.1
-        with:
-          validate-wrappers: true
-          cache-disabled: true
-
-      - name: The file so far
-        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
-        with:
-          name: verification-metadata
-          path: gradle
-
-      - name: Add this platform's artifacts
-        run: .\gradlew.bat --stacktrace --write-verification-metadata sha256 help
-
-      - name: Keep it for the next job
-        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
-        with:
-          name: verification-metadata
-          path: gradle/verification-metadata.xml
-          if-no-files-found: error
-          overwrite: true
-
-  print:
-    needs: windows
-    if: always()
-    runs-on: ubuntu-latest
-    steps:
-      - name: The file
-        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
-        with:
-          name: verification-metadata
-          path: gradle
+      # AGP fetches an aapt2 built for the machine it runs on. The macOS and
+      # Windows ones, of the version this build fetched, so contributors can
+      # build there too.
+      - name: Add the macOS and Windows aapt2
+        run: |
+          version="$(sed -n 's/.*group="com.android.tools.build" name="aapt2" version="\([^"]*\)".*/\1/p' gradle/verification-metadata.xml | head -n 1)"
+          : "${version:?the file names no aapt2}"
+          echo "aapt2 $version"
+          cat > "$RUNNER_TEMP/aapt2-platforms.gradle" <<'EOF'
+          rootProject {
+              def platforms = configurations.create('aapt2Platforms') {
+                  canBeConsumed = false
+                  transitive = false
+              }
+              ['osx', 'windows'].each { classifier ->
+                  dependencies.add('aapt2Platforms', "com.android.tools.build:aapt2:${System.getenv('AAPT2_VERSION')}:${classifier}")
+              }
+              tasks.register('resolveAapt2Platforms') {
+                  inputs.files(platforms)
+                  doLast { platforms.files.each { println(it.name) } }
+              }
+          }
+          EOF
+          AAPT2_VERSION="$version" ./gradlew --stacktrace --no-configuration-cache \
+            --init-script "$RUNNER_TEMP/aapt2-platforms.gradle" \
+            --write-verification-metadata sha256 resolveAapt2Platforms
+          grep 'name="aapt2-.*[.]jar"' gradle/verification-metadata.xml
 
       - name: Print it
+        if: always()
         run: |
           wc -c gradle/verification-metadata.xml
           sha256sum gradle/verification-metadata.xml
