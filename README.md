@@ -359,6 +359,10 @@ python3 tools/parity_readme.py
 
 [`connect/`](connect) is a small, optional companion app, and the only part of NovaRedux with internet access. NovaRedux asks it, through a content provider that answers NovaRedux alone, for what its search engine suggests while a search is typed; it sends nothing else and stores nothing. Without it, NovaRedux works the same, minus web suggestions. [PRIVACY.md](PRIVACY.md) says exactly what it sends.
 
+## Security
+
+[SECURITY.md](SECURITY.md) says how to report a security problem privately, how to check that an APK was built from this repository, and what each app can and can't do.
+
 ## Building
 
 You need JDK 17 or newer and the Android SDK with the compile SDK the project uses (37).
@@ -367,7 +371,9 @@ You need JDK 17 or newer and the Android SDK with the compile SDK the project us
 ./gradlew :app:assembleDebug :connect:assembleDebug
 ```
 
-The debug APKs land in `app/build/outputs/apk/debug/` and `connect/build/outputs/apk/debug/`. NovaRedux's debug build installs beside its release build, because it uses a `.debug` application ID suffix; Connect has one ID for both, and answers either. Releases (signing, tags, F-Droid) are described in [docs/RELEASING.md](docs/RELEASING.md).
+The debug APKs land in `app/build/outputs/apk/debug/` and `connect/build/outputs/apk/debug/`. NovaRedux's debug build installs beside its release build, because it uses a `.debug` application ID suffix. Connect has one ID for both builds, and answers a NovaRedux signed with the same key as itself: a debug Connect answers a debug NovaRedux built on the same computer.
+
+Gradle checks every plugin and library it fetches against [`gradle/verification-metadata.xml`](gradle/verification-metadata.xml). After adding or updating a dependency, run the Supply chain workflow (Actions tab) and commit the file it prints. Releases (signing, tags, F-Droid) are described in [docs/RELEASING.md](docs/RELEASING.md).
 
 ## Contributing
 

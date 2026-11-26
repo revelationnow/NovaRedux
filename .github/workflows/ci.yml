@@ -38,6 +38,24 @@ jobs:
           validate-wrappers: true
           cache-provider: basic
 
+      # The wrapper checks the Gradle it downloads against
+      # distributionSha256Sum; this checks that the sum is the one Gradle's
+      # own server publishes for that version.
+      - name: The Gradle distribution's checksum is Gradle's
+        run: |
+          props=gradle/wrapper/gradle-wrapper.properties
+          url="$(sed -n 's/^distributionUrl=//p' "$props" | sed 's/\\:/:/g')"
+          have="$(sed -n 's/^distributionSha256Sum=//p' "$props")"
+          case "$url" in
+            https://services.gradle.org/distributions/*) ;;
+            *) echo "::error::distributionUrl is not Gradle's own: $url"; exit 1 ;;
+          esac
+          want="$(curl -fsSL "$url.sha256")"
+          if [ -z "$have" ] || [ "$have" != "$want" ]; then
+            echo "::error::distributionSha256Sum is '$have'; Gradle publishes $want for $url"
+            exit 1
+          fi
+
       # The runner image already ships an Android SDK in $ANDROID_HOME.
       # Accepting its licences lets AGP download the compileSdk platform and
       # build tools itself. (android-actions/setup-android is not used: it
