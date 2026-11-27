@@ -10,9 +10,9 @@ an APK was built from this repository, and what the apps can and can't do.
 Please report anything that could put users at risk privately, through
 **Security → Report a vulnerability** on the repository's GitHub page, not
 in a public issue. Say what you found, how to reproduce it, and which
-version (Settings → About). If that button isn't there, open an issue that
-asks for a private contact, without the details. Anything else goes in an
-ordinary [issue](https://github.com/revelationnow/NovaRedux/issues).
+version (Settings → About). The report stays between you and the
+maintainers until they publish an advisory. Anything else goes in an ordinary
+[issue](https://github.com/revelationnow/NovaRedux/issues).
 
 ## Checking an APK
 
