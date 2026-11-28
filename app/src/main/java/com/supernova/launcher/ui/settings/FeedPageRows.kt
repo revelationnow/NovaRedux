@@ -36,7 +36,7 @@ internal object FeedPageRows {
                 R.string.feed_page_discover,
                 subtitle = { context.getString(R.string.feed_page_discover_summary) },
                 onClick = {},
-                look = SettingItem.RowLook(chevron = false, tappable = false)
+                look = SettingItem.RowLook(end = 0, tappable = false)
             ).hiddenWhen(feedHidden)
         )
     }
