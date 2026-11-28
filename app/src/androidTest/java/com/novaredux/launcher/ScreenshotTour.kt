@@ -100,7 +100,9 @@ class ScreenshotTour {
 
     private fun prepare() = runBlocking {
         val graph = context.appGraph
-        if (graph.repository.modelFlow.first().items.isEmpty() && graph.preferences.claimDefaultLayoutSeed()) {
+        // Planted whatever the seed's claim says (FeatureTour.prepare).
+        if (graph.repository.modelFlow.first().items.isEmpty()) {
+            graph.preferences.claimDefaultLayoutSeed()
             val prefs = graph.preferences.snapshot()
             val items = DefaultLayoutBuilder.buildItems(
                 context, graph.catalog, prefs.gridCols, prefs.gridRows, prefs.dockCount

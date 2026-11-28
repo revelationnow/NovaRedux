@@ -68,6 +68,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 
 class LauncherViewModel(
@@ -1698,13 +1699,18 @@ class LauncherViewModel(
     // The home screen a fresh install starts with (see
     // DefaultLayoutBuilder): on a phone, the device's phone, messages, maps,
     // browser and camera apps in the dock with the search bar under them,
-    // and a few apps and Supernova Settings on the first page; on a tablet,
-    // the default tablet dock. The first-run wizard plants it as it opens. Planted once per install, and only over a layout that
-    // is still empty: an import brought its own arrangement. The drawer's
-    // first smart folders come with it, the small ones only.
-    suspend fun seedDefaultLayout() {
-        if (!preferences.claimDefaultLayoutSeed()) return
-        if (repository.modelFlow.first().items.isNotEmpty()) return
+    // and a few apps and NovaRedux Settings on the first page; on a tablet,
+    // the default tablet dock. The first-run wizard plants it as it opens.
+    // Planted once per install, and only over a layout that is still empty:
+    // an import brought its own arrangement. The drawer's first smart
+    // folders come with it, the small ones only.
+    suspend fun seedDefaultLayout(): Unit = seeding.withLock {
+        // A first run that claimed it and was stopped before planting (the
+        // process went between the two) left an empty home screen for good:
+        // until the wizard is done, an empty one is planted again. One
+        // seeding at a time, so the wizard's two calls never plant twice.
+        if (!preferences.claimDefaultLayoutSeed() && preferences.onboardingDone()) return@withLock
+        if (repository.modelFlow.first().items.isNotEmpty()) return@withLock
         val prefs = preferences.snapshot()
         val items = withContext(Dispatchers.Default) {
             DefaultLayoutBuilder.buildItems(getApplication(), catalog, prefs.gridCols, prefs.gridRows, prefs.dockCount)
@@ -1858,6 +1864,10 @@ class LauncherViewModel(
     }
 
     private companion object {
+        // Every LauncherViewModel's seedDefaultLayout, the wizard's and the
+        // home screen's, takes its turn.
+        val seeding = kotlinx.coroutines.sync.Mutex()
+
         // The icon size settings' top.
         const val MAX_ICON_RESOLUTION = 2f
         // A large icon fills its 2x2 block (largeIconBoxPx), about two and a

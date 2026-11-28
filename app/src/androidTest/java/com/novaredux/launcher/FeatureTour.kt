@@ -610,7 +610,12 @@ class FeatureTour {
     // onboarding done, and a Home press that does nothing of its own.
     private fun prepare() = runBlocking {
         val prefs = graph.preferences.snapshot()
-        if (graph.repository.modelFlow.first().items.isEmpty() && graph.preferences.claimDefaultLayoutSeed()) {
+        // Planted whatever the seed's claim says: the first-run wizard, up
+        // as the app became the home app, can claim it and be stopped
+        // before it plants, as the tour's start restarts the app. The
+        // claim keeps a wizard started later from planting a second.
+        if (graph.repository.modelFlow.first().items.isEmpty()) {
+            graph.preferences.claimDefaultLayoutSeed()
             graph.repository.seedDefaultLayout(
                 DefaultLayoutBuilder.buildItems(context, graph.catalog, prefs.gridCols, prefs.gridRows, prefs.dockCount)
             )
