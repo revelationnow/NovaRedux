@@ -28,7 +28,7 @@
 
             <Button
                 android:id="@+id/styleDefault"
-                style="@style/Widget.Supernova.Button.Text"
+                style="@style/Widget.NovaRedux.Button.Text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/space_sm"
@@ -74,7 +74,7 @@
 
             <Button
                 android:id="@+id/slotSurface"
-                style="@style/Widget.Supernova.Button.Segment"
+                style="@style/Widget.NovaRedux.Button.Segment"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -82,7 +82,7 @@
 
             <Button
                 android:id="@+id/slotText"
-                style="@style/Widget.Supernova.Button.Segment"
+                style="@style/Widget.NovaRedux.Button.Segment"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -90,7 +90,7 @@
 
             <Button
                 android:id="@+id/slotAccent"
-                style="@style/Widget.Supernova.Button.Segment"
+                style="@style/Widget.NovaRedux.Button.Segment"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

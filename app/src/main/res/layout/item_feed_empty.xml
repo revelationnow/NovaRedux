@@ -95,7 +95,7 @@
         android:text="@string/feed_ready_made"
         android:textSize="13sp" />
 
-    <com.supernova.launcher.ui.FlowLayout
+    <com.novaredux.launcher.ui.FlowLayout
         android:id="@+id/feedEmptyReady"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

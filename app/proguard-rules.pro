@@ -4,10 +4,10 @@
 # reflective serializer() lookups the runtime performs.
 -keepattributes *Annotation*, InnerClasses
 -dontnote kotlinx.serialization.**
--keepclassmembers class com.supernova.launcher.** {
+-keepclassmembers class com.novaredux.launcher.** {
     *** Companion;
 }
--keepclasseswithmembers class com.supernova.launcher.** {
+-keepclasseswithmembers class com.novaredux.launcher.** {
     kotlinx.serialization.KSerializer serializer(...);
 }
--keep,includedescriptorclasses class com.supernova.launcher.**$$serializer { *; }
+-keep,includedescriptorclasses class com.novaredux.launcher.**$$serializer { *; }

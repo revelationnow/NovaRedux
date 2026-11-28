@@ -23,7 +23,7 @@ NovaRedux keeps what made Nova great and leaves out everything that came after t
 
 ## Status
 
-NovaRedux is built on upstream Supernova v0.2.8 (commit `5b63c43`) and adds the Nova features in the tracker below. There are no NovaRedux releases yet: the first, v0.3.0, is ready to tag ([docs/RELEASING.md](docs/RELEASING.md)). Meanwhile, [Supernova is on F-Droid](https://f-droid.org/packages/com.supernova.launcher/).
+NovaRedux is built on upstream Supernova v0.2.8 (commit `5b63c43`), with Supernova's fixes through v0.2.9 ported, and adds the Nova features in the tracker below. There are no NovaRedux releases yet: the first, v0.3.0, is ready to tag ([docs/RELEASING.md](docs/RELEASING.md)). Meanwhile, [Supernova is on F-Droid](https://f-droid.org/packages/com.supernova.launcher/).
 
 ## Nova parity tracker
 
@@ -381,7 +381,7 @@ Gradle checks every plugin and library it fetches against [`gradle/verification-
 - Translate NovaRedux into your language: [docs/TRANSLATING.md](docs/TRANSLATING.md).
 - Have Nova 7.0.57 on a spare phone? Check ✅ rows side by side and correct their status.
 - Keep the offline design: no internet permission in NovaRedux, no analytics. What truly needs the network goes through another app (Connect, or an app the user already has).
-- If a change would suit Supernova too, offer it upstream as well.
+- If a change would suit Supernova too, offer it upstream as well. Supernova's own changes come over with [`tools/upstream_names.py`](tools/upstream_names.py), which renames them as NovaRedux names things ([docs/NAMES.md](docs/NAMES.md)).
 
 ## Credits and licence
 

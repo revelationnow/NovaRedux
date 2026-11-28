@@ -1135,8 +1135,8 @@
     <string name="reset_failed">Zurücksetzen fehlgeschlagen: %1$s</string>
     <string name="quick_start">Schnellstart</string>
     <string name="quick_start_subtitle">Die Ersteinrichtung erneut durchlaufen</string>
-    <string name="restart_supernova">NovaRedux neu starten</string>
-    <string name="restart_supernova_subtitle">Den Launcher schließen und wieder öffnen</string>
+    <string name="restart_novaredux">NovaRedux neu starten</string>
+    <string name="restart_novaredux_subtitle">Den Launcher schließen und wieder öffnen</string>
     <string name="restart_launcher_q">NovaRedux neu starten?</string>
     <string name="restart_launcher_message">Die Einstellungen und der Startbildschirm werden geschlossen und wieder geöffnet. Nichts geht verloren.</string>
     <string name="restart">Neu starten</string>

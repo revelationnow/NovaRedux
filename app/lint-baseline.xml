@@ -7,7 +7,7 @@
         errorLine1="        super.onCleared()"
         errorLine2="              ~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/LauncherViewModel.kt"
+            file="src/main/java/com/novaredux/launcher/ui/LauncherViewModel.kt"
             line="370"
             column="15"/>
     </issue>
@@ -18,7 +18,7 @@
         errorLine1="        android.R.color.system_accent1_1000, android.R.color.system_accent1_900,"
         errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/theme/PaletteSource.kt"
+            file="src/main/java/com/novaredux/launcher/ui/theme/PaletteSource.kt"
             line="39"
             column="9"/>
     </issue>
@@ -29,7 +29,7 @@
         errorLine1="        android.R.color.system_accent1_1000, android.R.color.system_accent1_900,"
         errorLine2="                                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/theme/PaletteSource.kt"
+            file="src/main/java/com/novaredux/launcher/ui/theme/PaletteSource.kt"
             line="39"
             column="46"/>
     </issue>
@@ -40,7 +40,7 @@
         errorLine1="        android.R.color.system_accent1_800, android.R.color.system_accent1_700,"
         errorLine2="                                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/theme/PaletteSource.kt"
+            file="src/main/java/com/novaredux/launcher/ui/theme/PaletteSource.kt"
             line="40"
             column="45"/>
     </issue>
@@ -51,7 +51,7 @@
         errorLine1="        android.R.color.system_accent1_800, android.R.color.system_accent1_700,"
         errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/theme/PaletteSource.kt"
+            file="src/main/java/com/novaredux/launcher/ui/theme/PaletteSource.kt"
             line="40"
             column="9"/>
     </issue>
@@ -62,7 +62,7 @@
         errorLine1="        android.R.color.system_accent1_600, android.R.color.system_accent1_500,"
         errorLine2="                                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/theme/PaletteSource.kt"
+            file="src/main/java/com/novaredux/launcher/ui/theme/PaletteSource.kt"
             line="41"
             column="45"/>
     </issue>
@@ -73,7 +73,7 @@
         errorLine1="        android.R.color.system_accent1_600, android.R.color.system_accent1_500,"
         errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/theme/PaletteSource.kt"
+            file="src/main/java/com/novaredux/launcher/ui/theme/PaletteSource.kt"
             line="41"
             column="9"/>
     </issue>
@@ -84,7 +84,7 @@
         errorLine1="        android.R.color.system_accent1_400, android.R.color.system_accent1_300,"
         errorLine2="                                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/theme/PaletteSource.kt"
+            file="src/main/java/com/novaredux/launcher/ui/theme/PaletteSource.kt"
             line="42"
             column="45"/>
     </issue>
@@ -95,7 +95,7 @@
         errorLine1="        android.R.color.system_accent1_400, android.R.color.system_accent1_300,"
         errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/theme/PaletteSource.kt"
+            file="src/main/java/com/novaredux/launcher/ui/theme/PaletteSource.kt"
             line="42"
             column="9"/>
     </issue>
@@ -106,7 +106,7 @@
         errorLine1="        android.R.color.system_accent1_200, android.R.color.system_accent1_100,"
         errorLine2="                                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/theme/PaletteSource.kt"
+            file="src/main/java/com/novaredux/launcher/ui/theme/PaletteSource.kt"
             line="43"
             column="45"/>
     </issue>
@@ -117,7 +117,7 @@
         errorLine1="        android.R.color.system_accent1_200, android.R.color.system_accent1_100,"
         errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/theme/PaletteSource.kt"
+            file="src/main/java/com/novaredux/launcher/ui/theme/PaletteSource.kt"
             line="43"
             column="9"/>
     </issue>
@@ -128,7 +128,7 @@
         errorLine1="        android.R.color.system_accent1_50, android.R.color.system_accent1_10,"
         errorLine2="                                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/theme/PaletteSource.kt"
+            file="src/main/java/com/novaredux/launcher/ui/theme/PaletteSource.kt"
             line="44"
             column="44"/>
     </issue>
@@ -139,7 +139,7 @@
         errorLine1="        android.R.color.system_accent1_50, android.R.color.system_accent1_10,"
         errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/theme/PaletteSource.kt"
+            file="src/main/java/com/novaredux/launcher/ui/theme/PaletteSource.kt"
             line="44"
             column="9"/>
     </issue>
@@ -150,7 +150,7 @@
         errorLine1="        android.R.color.system_accent1_0"
         errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/theme/PaletteSource.kt"
+            file="src/main/java/com/novaredux/launcher/ui/theme/PaletteSource.kt"
             line="45"
             column="9"/>
     </issue>
@@ -161,7 +161,7 @@
         errorLine1="        android.R.color.system_neutral1_1000, android.R.color.system_neutral1_900,"
         errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/theme/PaletteSource.kt"
+            file="src/main/java/com/novaredux/launcher/ui/theme/PaletteSource.kt"
             line="48"
             column="9"/>
     </issue>
@@ -172,7 +172,7 @@
         errorLine1="        android.R.color.system_neutral1_1000, android.R.color.system_neutral1_900,"
         errorLine2="                                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/theme/PaletteSource.kt"
+            file="src/main/java/com/novaredux/launcher/ui/theme/PaletteSource.kt"
             line="48"
             column="47"/>
     </issue>
@@ -183,7 +183,7 @@
         errorLine1="        android.R.color.system_neutral1_800, android.R.color.system_neutral1_700,"
         errorLine2="                                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/theme/PaletteSource.kt"
+            file="src/main/java/com/novaredux/launcher/ui/theme/PaletteSource.kt"
             line="49"
             column="46"/>
     </issue>
@@ -194,7 +194,7 @@
         errorLine1="        android.R.color.system_neutral1_800, android.R.color.system_neutral1_700,"
         errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/theme/PaletteSource.kt"
+            file="src/main/java/com/novaredux/launcher/ui/theme/PaletteSource.kt"
             line="49"
             column="9"/>
     </issue>
@@ -205,7 +205,7 @@
         errorLine1="        android.R.color.system_neutral1_600, android.R.color.system_neutral1_500,"
         errorLine2="                                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/theme/PaletteSource.kt"
+            file="src/main/java/com/novaredux/launcher/ui/theme/PaletteSource.kt"
             line="50"
             column="46"/>
     </issue>
@@ -216,7 +216,7 @@
         errorLine1="        android.R.color.system_neutral1_600, android.R.color.system_neutral1_500,"
         errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/theme/PaletteSource.kt"
+            file="src/main/java/com/novaredux/launcher/ui/theme/PaletteSource.kt"
             line="50"
             column="9"/>
     </issue>
@@ -227,7 +227,7 @@
         errorLine1="        android.R.color.system_neutral1_400, android.R.color.system_neutral1_300,"
         errorLine2="                                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/theme/PaletteSource.kt"
+            file="src/main/java/com/novaredux/launcher/ui/theme/PaletteSource.kt"
             line="51"
             column="46"/>
     </issue>
@@ -238,7 +238,7 @@
         errorLine1="        android.R.color.system_neutral1_400, android.R.color.system_neutral1_300,"
         errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/theme/PaletteSource.kt"
+            file="src/main/java/com/novaredux/launcher/ui/theme/PaletteSource.kt"
             line="51"
             column="9"/>
     </issue>
@@ -249,7 +249,7 @@
         errorLine1="        android.R.color.system_neutral1_200, android.R.color.system_neutral1_100,"
         errorLine2="                                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/theme/PaletteSource.kt"
+            file="src/main/java/com/novaredux/launcher/ui/theme/PaletteSource.kt"
             line="52"
             column="46"/>
     </issue>
@@ -260,7 +260,7 @@
         errorLine1="        android.R.color.system_neutral1_200, android.R.color.system_neutral1_100,"
         errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/theme/PaletteSource.kt"
+            file="src/main/java/com/novaredux/launcher/ui/theme/PaletteSource.kt"
             line="52"
             column="9"/>
     </issue>
@@ -271,7 +271,7 @@
         errorLine1="        android.R.color.system_neutral1_50, android.R.color.system_neutral1_10,"
         errorLine2="                                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/theme/PaletteSource.kt"
+            file="src/main/java/com/novaredux/launcher/ui/theme/PaletteSource.kt"
             line="53"
             column="45"/>
     </issue>
@@ -282,7 +282,7 @@
         errorLine1="        android.R.color.system_neutral1_50, android.R.color.system_neutral1_10,"
         errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/theme/PaletteSource.kt"
+            file="src/main/java/com/novaredux/launcher/ui/theme/PaletteSource.kt"
             line="53"
             column="9"/>
     </issue>
@@ -293,7 +293,7 @@
         errorLine1="        android.R.color.system_neutral1_0"
         errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/theme/PaletteSource.kt"
+            file="src/main/java/com/novaredux/launcher/ui/theme/PaletteSource.kt"
             line="54"
             column="9"/>
     </issue>
@@ -304,7 +304,7 @@
         errorLine1="        android.R.color.system_neutral2_1000, android.R.color.system_neutral2_900,"
         errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/theme/PaletteSource.kt"
+            file="src/main/java/com/novaredux/launcher/ui/theme/PaletteSource.kt"
             line="57"
             column="9"/>
     </issue>
@@ -315,7 +315,7 @@
         errorLine1="        android.R.color.system_neutral2_1000, android.R.color.system_neutral2_900,"
         errorLine2="                                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/theme/PaletteSource.kt"
+            file="src/main/java/com/novaredux/launcher/ui/theme/PaletteSource.kt"
             line="57"
             column="47"/>
     </issue>
@@ -326,7 +326,7 @@
         errorLine1="        android.R.color.system_neutral2_800, android.R.color.system_neutral2_700,"
         errorLine2="                                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/theme/PaletteSource.kt"
+            file="src/main/java/com/novaredux/launcher/ui/theme/PaletteSource.kt"
             line="58"
             column="46"/>
     </issue>
@@ -337,7 +337,7 @@
         errorLine1="        android.R.color.system_neutral2_800, android.R.color.system_neutral2_700,"
         errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/theme/PaletteSource.kt"
+            file="src/main/java/com/novaredux/launcher/ui/theme/PaletteSource.kt"
             line="58"
             column="9"/>
     </issue>
@@ -348,7 +348,7 @@
         errorLine1="        android.R.color.system_neutral2_600, android.R.color.system_neutral2_500,"
         errorLine2="                                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/theme/PaletteSource.kt"
+            file="src/main/java/com/novaredux/launcher/ui/theme/PaletteSource.kt"
             line="59"
             column="46"/>
     </issue>
@@ -359,7 +359,7 @@
         errorLine1="        android.R.color.system_neutral2_600, android.R.color.system_neutral2_500,"
         errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/theme/PaletteSource.kt"
+            file="src/main/java/com/novaredux/launcher/ui/theme/PaletteSource.kt"
             line="59"
             column="9"/>
     </issue>
@@ -370,7 +370,7 @@
         errorLine1="        android.R.color.system_neutral2_400, android.R.color.system_neutral2_300,"
         errorLine2="                                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/theme/PaletteSource.kt"
+            file="src/main/java/com/novaredux/launcher/ui/theme/PaletteSource.kt"
             line="60"
             column="46"/>
     </issue>
@@ -381,7 +381,7 @@
         errorLine1="        android.R.color.system_neutral2_400, android.R.color.system_neutral2_300,"
         errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/theme/PaletteSource.kt"
+            file="src/main/java/com/novaredux/launcher/ui/theme/PaletteSource.kt"
             line="60"
             column="9"/>
     </issue>
@@ -392,7 +392,7 @@
         errorLine1="        android.R.color.system_neutral2_200, android.R.color.system_neutral2_100,"
         errorLine2="                                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/theme/PaletteSource.kt"
+            file="src/main/java/com/novaredux/launcher/ui/theme/PaletteSource.kt"
             line="61"
             column="46"/>
     </issue>
@@ -403,7 +403,7 @@
         errorLine1="        android.R.color.system_neutral2_200, android.R.color.system_neutral2_100,"
         errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/theme/PaletteSource.kt"
+            file="src/main/java/com/novaredux/launcher/ui/theme/PaletteSource.kt"
             line="61"
             column="9"/>
     </issue>
@@ -414,7 +414,7 @@
         errorLine1="        android.R.color.system_neutral2_50, android.R.color.system_neutral2_10,"
         errorLine2="                                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/theme/PaletteSource.kt"
+            file="src/main/java/com/novaredux/launcher/ui/theme/PaletteSource.kt"
             line="62"
             column="45"/>
     </issue>
@@ -425,7 +425,7 @@
         errorLine1="        android.R.color.system_neutral2_50, android.R.color.system_neutral2_10,"
         errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/theme/PaletteSource.kt"
+            file="src/main/java/com/novaredux/launcher/ui/theme/PaletteSource.kt"
             line="62"
             column="9"/>
     </issue>
@@ -436,7 +436,7 @@
         errorLine1="        android.R.color.system_neutral2_0"
         errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/theme/PaletteSource.kt"
+            file="src/main/java/com/novaredux/launcher/ui/theme/PaletteSource.kt"
             line="63"
             column="9"/>
     </issue>
@@ -469,7 +469,7 @@
         errorLine1="                when (newState) {"
         errorLine2="                ~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/DrawerController.kt"
+            file="src/main/java/com/novaredux/launcher/ui/DrawerController.kt"
             line="447"
             column="17"/>
     </issue>
@@ -480,7 +480,7 @@
         errorLine1="        val id = res.getIdentifier(drawableName, &quot;drawable&quot;, packPackage)"
         errorLine2="                     ~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/data/AppCatalog.kt"
+            file="src/main/java/com/novaredux/launcher/data/AppCatalog.kt"
             line="129"
             column="22"/>
     </issue>
@@ -491,7 +491,7 @@
         errorLine1="        val drawablesId = resources.getIdentifier(&quot;drawables&quot;, &quot;xml&quot;, packageName)"
         errorLine2="                                    ~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/data/IconPackRepository.kt"
+            file="src/main/java/com/novaredux/launcher/data/IconPackRepository.kt"
             line="187"
             column="37"/>
     </issue>
@@ -502,7 +502,7 @@
         errorLine1="        return names.filter { resources.getIdentifier(it, &quot;drawable&quot;, packageName) != 0 }.sorted()"
         errorLine2="                                        ~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/data/IconPackRepository.kt"
+            file="src/main/java/com/novaredux/launcher/data/IconPackRepository.kt"
             line="217"
             column="41"/>
     </issue>
@@ -513,7 +513,7 @@
         errorLine1="        val xmlId = resources.getIdentifier(&quot;appfilter&quot;, &quot;xml&quot;, packageName)"
         errorLine2="                              ~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/data/IconPackRepository.kt"
+            file="src/main/java/com/novaredux/launcher/data/IconPackRepository.kt"
             line="224"
             column="31"/>
     </issue>
@@ -524,7 +524,7 @@
         errorLine1="        val id = res.getIdentifier(name, &quot;drawable&quot;, pkg)"
         errorLine2="                     ~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/data/IconPackRepository.kt"
+            file="src/main/java/com/novaredux/launcher/data/IconPackRepository.kt"
             line="246"
             column="22"/>
     </issue>
@@ -535,7 +535,7 @@
         errorLine1="            val id = res.getIdentifier(iconRes.resourceName, null, null)"
         errorLine2="                         ~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/LauncherActivity.kt"
+            file="src/main/java/com/novaredux/launcher/LauncherActivity.kt"
             line="4758"
             column="26"/>
     </issue>
@@ -546,7 +546,7 @@
         errorLine1="        if (id == 0) null else res.getDrawable(id, null)"
         errorLine2="                               ~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/data/AppCatalog.kt"
+            file="src/main/java/com/novaredux/launcher/data/AppCatalog.kt"
             line="130"
             column="32"/>
     </issue>
@@ -557,7 +557,7 @@
         errorLine1="                        foreground = context.getDrawable(R.drawable.ripple_icon)"
         errorLine2="                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/CardViewBinder.kt"
+            file="src/main/java/com/novaredux/launcher/ui/CardViewBinder.kt"
             line="116"
             column="38"/>
     </issue>
@@ -568,7 +568,7 @@
         errorLine1="                        foreground = context.getDrawable(R.drawable.ripple_icon)"
         errorLine2="                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/CardViewBinder.kt"
+            file="src/main/java/com/novaredux/launcher/ui/CardViewBinder.kt"
             line="116"
             column="38"/>
     </issue>
@@ -579,7 +579,7 @@
         errorLine1="                background = (context.getDrawable(R.drawable.bg_card_chip)?.mutate() as? GradientDrawable)"
         errorLine2="                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/CardViewBinder.kt"
+            file="src/main/java/com/novaredux/launcher/ui/CardViewBinder.kt"
             line="220"
             column="31"/>
     </issue>
@@ -590,7 +590,7 @@
         errorLine1="                background = (context.getDrawable(R.drawable.bg_card_chip)?.mutate() as? GradientDrawable)"
         errorLine2="                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/CardViewBinder.kt"
+            file="src/main/java/com/novaredux/launcher/ui/CardViewBinder.kt"
             line="220"
             column="31"/>
     </issue>
@@ -601,7 +601,7 @@
         errorLine1="                foreground = context.getDrawable(R.drawable.ripple_icon)"
         errorLine2="                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/CardViewBinder.kt"
+            file="src/main/java/com/novaredux/launcher/ui/CardViewBinder.kt"
             line="222"
             column="30"/>
     </issue>
@@ -612,7 +612,7 @@
         errorLine1="                foreground = context.getDrawable(R.drawable.ripple_icon)"
         errorLine2="                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/CardViewBinder.kt"
+            file="src/main/java/com/novaredux/launcher/ui/CardViewBinder.kt"
             line="222"
             column="30"/>
     </issue>
@@ -620,10 +620,10 @@
     <issue
         id="UseCompatLoadingForDrawables"
         message="Use `AppCompatResources.getDrawable()`"
-        errorLine1="                    ?: binding.root.context.getDrawable(com.supernova.launcher.R.drawable.ic_folder)"
+        errorLine1="                    ?: binding.root.context.getDrawable(com.novaredux.launcher.R.drawable.ic_folder)"
         errorLine2="                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/FolderMemberAdapter.kt"
+            file="src/main/java/com/novaredux/launcher/ui/FolderMemberAdapter.kt"
             line="79"
             column="24"/>
     </issue>
@@ -634,7 +634,7 @@
         errorLine1="                foreground = context.getDrawable(R.drawable.ripple_icon)"
         errorLine2="                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/FrequentAppsRowView.kt"
+            file="src/main/java/com/novaredux/launcher/ui/FrequentAppsRowView.kt"
             line="53"
             column="30"/>
     </issue>
@@ -645,7 +645,7 @@
         errorLine1="                foreground = context.getDrawable(R.drawable.ripple_icon)"
         errorLine2="                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/FrequentAppsRowView.kt"
+            file="src/main/java/com/novaredux/launcher/ui/FrequentAppsRowView.kt"
             line="53"
             column="30"/>
     </issue>
@@ -656,7 +656,7 @@
         errorLine1="                foreground = context.getDrawable(R.drawable.ripple_icon)"
         errorLine2="                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/FrequentAppsRowView.kt"
+            file="src/main/java/com/novaredux/launcher/ui/FrequentAppsRowView.kt"
             line="90"
             column="30"/>
     </issue>
@@ -667,7 +667,7 @@
         errorLine1="                foreground = context.getDrawable(R.drawable.ripple_icon)"
         errorLine2="                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/FrequentAppsRowView.kt"
+            file="src/main/java/com/novaredux/launcher/ui/FrequentAppsRowView.kt"
             line="90"
             column="30"/>
     </issue>
@@ -678,7 +678,7 @@
         errorLine1="        return runCatching { res.getDrawable(id, null) }.getOrNull()"
         errorLine2="                             ~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/data/IconPackRepository.kt"
+            file="src/main/java/com/novaredux/launcher/data/IconPackRepository.kt"
             line="248"
             column="30"/>
     </issue>
@@ -686,10 +686,10 @@
     <issue
         id="UseCompatLoadingForDrawables"
         message="Use `AppCompatResources.getDrawable()`"
-        errorLine1="                getDrawable(com.supernova.launcher.ui.ActionIcons.of(binding.action))?.let {"
+        errorLine1="                getDrawable(com.novaredux.launcher.ui.ActionIcons.of(binding.action))?.let {"
         errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/LauncherActivity.kt"
+            file="src/main/java/com/novaredux/launcher/LauncherActivity.kt"
             line="2752"
             column="17"/>
     </issue>
@@ -700,7 +700,7 @@
         errorLine1="            ItemType.WIDGET -> getDrawable(R.drawable.ic_widget)"
         errorLine2="                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/LauncherActivity.kt"
+            file="src/main/java/com/novaredux/launcher/LauncherActivity.kt"
             line="4020"
             column="32"/>
     </issue>
@@ -708,10 +708,10 @@
     <issue
         id="UseCompatLoadingForDrawables"
         message="Use `AppCompatResources.getDrawable()`"
-        errorLine1="            ItemType.APP -> app?.let { viewModel.appCatalog().iconFor(it) } ?: getDrawable(R.drawable.ic_supernova)"
+        errorLine1="            ItemType.APP -> app?.let { viewModel.appCatalog().iconFor(it) } ?: getDrawable(R.drawable.ic_novaredux)"
         errorLine2="                                                                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/LauncherActivity.kt"
+            file="src/main/java/com/novaredux/launcher/LauncherActivity.kt"
             line="4021"
             column="80"/>
     </issue>
@@ -719,10 +719,10 @@
     <issue
         id="UseCompatLoadingForDrawables"
         message="Use `AppCompatResources.getDrawable()`"
-        errorLine1="                ?: app?.let { viewModel.appCatalog().iconFor(it) } ?: getDrawable(R.drawable.ic_supernova)"
+        errorLine1="                ?: app?.let { viewModel.appCatalog().iconFor(it) } ?: getDrawable(R.drawable.ic_novaredux)"
         errorLine2="                                                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/LauncherActivity.kt"
+            file="src/main/java/com/novaredux/launcher/LauncherActivity.kt"
             line="4023"
             column="71"/>
     </issue>
@@ -733,7 +733,7 @@
         errorLine1="            if (id != 0) res.getDrawable(id, null) else null"
         errorLine2="                         ~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/LauncherActivity.kt"
+            file="src/main/java/com/novaredux/launcher/LauncherActivity.kt"
             line="4759"
             column="26"/>
     </issue>
@@ -744,7 +744,7 @@
         errorLine1="        return if (value.resourceId != 0) context.getDrawable(value.resourceId) else null"
         errorLine2="                                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/SupernovaPopupMenu.kt"
+            file="src/main/java/com/novaredux/launcher/ui/NovaReduxPopupMenu.kt"
             line="511"
             column="43"/>
     </issue>
@@ -755,7 +755,7 @@
         errorLine1="                        ?: appContext.getDrawable(R.drawable.ic_widget)"
         errorLine2="                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/WidgetPickerAdapter.kt"
+            file="src/main/java/com/novaredux/launcher/ui/WidgetPickerAdapter.kt"
             line="184"
             column="28"/>
     </issue>
@@ -766,7 +766,7 @@
         errorLine1="                icon = context.getDrawable(ActionIcons.of(action)),"
         errorLine2="                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/WidgetPickerGroups.kt"
+            file="src/main/java/com/novaredux/launcher/ui/WidgetPickerGroups.kt"
             line="134"
             column="24"/>
     </issue>
@@ -777,7 +777,7 @@
         errorLine1="            icon = context.getDrawable(R.drawable.ic_action_drawer),"
         errorLine2="                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/WidgetPickerGroups.kt"
+            file="src/main/java/com/novaredux/launcher/ui/WidgetPickerGroups.kt"
             line="141"
             column="20"/>
     </issue>
@@ -785,10 +785,10 @@
     <issue
         id="UseCompatLoadingForDrawables"
         message="Use `AppCompatResources.getDrawable()`"
-        errorLine1="            icon = context.getDrawable(R.drawable.ic_supernova),"
+        errorLine1="            icon = context.getDrawable(R.drawable.ic_novaredux),"
         errorLine2="                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/WidgetPickerGroups.kt"
+            file="src/main/java/com/novaredux/launcher/ui/WidgetPickerGroups.kt"
             line="147"
             column="20"/>
     </issue>
@@ -876,7 +876,7 @@
         errorLine1="        if (displayItems.isNotEmpty()) notifyDataSetChanged()"
         errorLine2="                                       ~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/AppDrawerAdapter.kt"
+            file="src/main/java/com/novaredux/launcher/ui/AppDrawerAdapter.kt"
             line="138"
             column="40"/>
     </issue>
@@ -887,7 +887,7 @@
         errorLine1="        notifyDataSetChanged()"
         errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/AppDrawerAdapter.kt"
+            file="src/main/java/com/novaredux/launcher/ui/AppDrawerAdapter.kt"
             line="164"
             column="9"/>
     </issue>
@@ -898,7 +898,7 @@
         errorLine1="            notifyDataSetChanged()"
         errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/AppDrawerAdapter.kt"
+            file="src/main/java/com/novaredux/launcher/ui/AppDrawerAdapter.kt"
             line="204"
             column="13"/>
     </issue>
@@ -909,7 +909,7 @@
         errorLine1="            actionsAdapter.notifyDataSetChanged()"
         errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/CustomCardEditorSheet.kt"
+            file="src/main/java/com/novaredux/launcher/ui/CustomCardEditorSheet.kt"
             line="303"
             column="13"/>
     </issue>
@@ -920,7 +920,7 @@
         errorLine1="            if (iconsChanged) adapter.notifyDataSetChanged()"
         errorLine2="                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/DrawerController.kt"
+            file="src/main/java/com/novaredux/launcher/ui/DrawerController.kt"
             line="998"
             column="31"/>
     </issue>
@@ -931,7 +931,7 @@
         errorLine1="        adapter.notifyDataSetChanged()"
         errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/DrawerController.kt"
+            file="src/main/java/com/novaredux/launcher/ui/DrawerController.kt"
             line="1006"
             column="9"/>
     </issue>
@@ -942,7 +942,7 @@
         errorLine1="        adapter.notifyDataSetChanged()"
         errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/DrawerController.kt"
+            file="src/main/java/com/novaredux/launcher/ui/DrawerController.kt"
             line="1424"
             column="9"/>
     </issue>
@@ -953,7 +953,7 @@
         errorLine1="            pagerAdapter.notifyDataSetChanged()"
         errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/DrawerController.kt"
+            file="src/main/java/com/novaredux/launcher/ui/DrawerController.kt"
             line="1623"
             column="13"/>
     </issue>
@@ -964,7 +964,7 @@
         errorLine1="        notifyDataSetChanged()"
         errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/FolderMemberAdapter.kt"
+            file="src/main/java/com/novaredux/launcher/ui/FolderMemberAdapter.kt"
             line="35"
             column="9"/>
     </issue>
@@ -975,7 +975,7 @@
         errorLine1="        notifyDataSetChanged()"
         errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/SearchResultsAdapter.kt"
+            file="src/main/java/com/novaredux/launcher/ui/SearchResultsAdapter.kt"
             line="128"
             column="9"/>
     </issue>
@@ -986,7 +986,7 @@
         errorLine1="        notifyDataSetChanged()"
         errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/settings/SettingsAdapter.kt"
+            file="src/main/java/com/novaredux/launcher/ui/settings/SettingsAdapter.kt"
             line="127"
             column="9"/>
     </issue>
@@ -997,7 +997,7 @@
         errorLine1="        notifyDataSetChanged()"
         errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/WidgetPickerAdapter.kt"
+            file="src/main/java/com/novaredux/launcher/ui/WidgetPickerAdapter.kt"
             line="79"
             column="9"/>
     </issue>
@@ -1008,7 +1008,7 @@
         errorLine1="        notifyDataSetChanged()"
         errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/WorkspacePagerAdapter.kt"
+            file="src/main/java/com/novaredux/launcher/ui/WorkspacePagerAdapter.kt"
             line="199"
             column="9"/>
     </issue>
@@ -1019,7 +1019,7 @@
         errorLine1="            notifyDataSetChanged()"
         errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/WorkspacePagerAdapter.kt"
+            file="src/main/java/com/novaredux/launcher/ui/WorkspacePagerAdapter.kt"
             line="225"
             column="13"/>
     </issue>
@@ -1030,7 +1030,7 @@
         errorLine1="        notifyDataSetChanged()"
         errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/WorkspacePagerAdapter.kt"
+            file="src/main/java/com/novaredux/launcher/ui/WorkspacePagerAdapter.kt"
             line="245"
             column="9"/>
     </issue>
@@ -1147,7 +1147,7 @@
 
     <issue
         id="Overdraw"
-        message="Possible overdraw: Root element paints background `@color/onboardingScrim` with a theme that also paints a background (inferred theme is `@style/Theme.Supernova`)"
+        message="Possible overdraw: Root element paints background `@color/onboardingScrim` with a theme that also paints a background (inferred theme is `@style/Theme.NovaRedux`)"
         errorLine1="    android:background=&quot;@color/onboardingScrim&quot;>"
         errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
@@ -1158,7 +1158,7 @@
 
     <issue
         id="Overdraw"
-        message="Possible overdraw: Root element paints background `@color/background` with a theme that also paints a background (inferred theme is `@style/Theme.Supernova`)"
+        message="Possible overdraw: Root element paints background `@color/background` with a theme that also paints a background (inferred theme is `@style/Theme.NovaRedux`)"
         errorLine1="    android:background=&quot;@color/background&quot;"
         errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
@@ -1169,7 +1169,7 @@
 
     <issue
         id="Overdraw"
-        message="Possible overdraw: Root element paints background `?attr/selectableItemBackground` with a theme that also paints a background (inferred theme is `@style/Theme.Supernova`)"
+        message="Possible overdraw: Root element paints background `?attr/selectableItemBackground` with a theme that also paints a background (inferred theme is `@style/Theme.NovaRedux`)"
         errorLine1="    android:background=&quot;?attr/selectableItemBackground&quot;"
         errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
@@ -1180,7 +1180,7 @@
 
     <issue
         id="Overdraw"
-        message="Possible overdraw: Root element paints background `?attr/selectableItemBackground` with a theme that also paints a background (inferred theme is `@style/Theme.Supernova`)"
+        message="Possible overdraw: Root element paints background `?attr/selectableItemBackground` with a theme that also paints a background (inferred theme is `@style/Theme.NovaRedux`)"
         errorLine1="    android:background=&quot;?attr/selectableItemBackground&quot;"
         errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
@@ -1191,7 +1191,7 @@
 
     <issue
         id="Overdraw"
-        message="Possible overdraw: Root element paints background `?attr/selectableItemBackgroundBorderless` with a theme that also paints a background (inferred theme is `@style/Theme.Supernova`)"
+        message="Possible overdraw: Root element paints background `?attr/selectableItemBackgroundBorderless` with a theme that also paints a background (inferred theme is `@style/Theme.NovaRedux`)"
         errorLine1="    android:background=&quot;?attr/selectableItemBackgroundBorderless&quot;"
         errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
@@ -1202,7 +1202,7 @@
 
     <issue
         id="Overdraw"
-        message="Possible overdraw: Root element paints background `?attr/selectableItemBackground` with a theme that also paints a background (inferred theme is `@style/Theme.Supernova`)"
+        message="Possible overdraw: Root element paints background `?attr/selectableItemBackground` with a theme that also paints a background (inferred theme is `@style/Theme.NovaRedux`)"
         errorLine1="    android:background=&quot;?attr/selectableItemBackground&quot;"
         errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
@@ -1261,7 +1261,7 @@
         errorLine1="class WidgetResizeFrame("
         errorLine2="      ~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/widget/WidgetResizeFrame.kt"
+            file="src/main/java/com/novaredux/launcher/widget/WidgetResizeFrame.kt"
             line="25"
             column="7"/>
     </issue>
@@ -1272,7 +1272,7 @@
         errorLine1="                GalleryIconCodec.decode(data)?.let { BitmapDrawable(context.resources, it) }"
         errorLine2="                                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/data/AppCatalog.kt"
+            file="src/main/java/com/novaredux/launcher/data/AppCatalog.kt"
             line="182"
             column="54"/>
     </issue>
@@ -1283,7 +1283,7 @@
         errorLine1="        val sample = android.graphics.Bitmap.createScaledBitmap(bitmap, 8, 8, true)"
         errorLine2="                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/data/AppCatalog.kt"
+            file="src/main/java/com/novaredux/launcher/data/AppCatalog.kt"
             line="239"
             column="22"/>
     </issue>
@@ -1294,7 +1294,7 @@
         errorLine1="                val pixel = sample.getPixel(x, y)"
         errorLine2="                            ~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/data/AppCatalog.kt"
+            file="src/main/java/com/novaredux/launcher/data/AppCatalog.kt"
             line="251"
             column="29"/>
     </issue>
@@ -1305,7 +1305,7 @@
         errorLine1="                    android.graphics.drawable.ColorDrawable(themedIconBg), fg"
         errorLine2="                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/data/AppCatalog.kt"
+            file="src/main/java/com/novaredux/launcher/data/AppCatalog.kt"
             line="358"
             column="21"/>
     </issue>
@@ -1316,7 +1316,7 @@
         errorLine1="        val silhouette = android.graphics.Bitmap.createBitmap("
         errorLine2="                         ^">
         <location
-            file="src/main/java/com/supernova/launcher/data/AppCatalog.kt"
+            file="src/main/java/com/novaredux/launcher/data/AppCatalog.kt"
             line="375"
             column="26"/>
     </issue>
@@ -1327,7 +1327,7 @@
         errorLine1="        val tinted = android.graphics.Bitmap.createBitmap("
         errorLine2="                     ^">
         <location
-            file="src/main/java/com/supernova/launcher/data/AppCatalog.kt"
+            file="src/main/java/com/novaredux/launcher/data/AppCatalog.kt"
             line="387"
             column="22"/>
     </issue>
@@ -1338,7 +1338,7 @@
         errorLine1="            android.graphics.drawable.ColorDrawable(themedIconBg),"
         errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/data/AppCatalog.kt"
+            file="src/main/java/com/novaredux/launcher/data/AppCatalog.kt"
             line="395"
             column="13"/>
     </issue>
@@ -1349,7 +1349,7 @@
         errorLine1="            android.graphics.drawable.BitmapDrawable(context.resources, tinted)"
         errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/data/AppCatalog.kt"
+            file="src/main/java/com/novaredux/launcher/data/AppCatalog.kt"
             line="396"
             column="13"/>
     </issue>
@@ -1360,7 +1360,7 @@
         errorLine1="                    data = Uri.parse(&quot;package:$packageName&quot;)"
         errorLine2="                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/data/AppCatalog.kt"
+            file="src/main/java/com/novaredux/launcher/data/AppCatalog.kt"
             line="514"
             column="28"/>
     </issue>
@@ -1371,7 +1371,7 @@
         errorLine1="                    data = Uri.parse(&quot;package:$packageName&quot;)"
         errorLine2="                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/data/AppCatalog.kt"
+            file="src/main/java/com/novaredux/launcher/data/AppCatalog.kt"
             line="514"
             column="28"/>
     </issue>
@@ -1382,7 +1382,7 @@
         errorLine1="            data = Uri.parse(&quot;package:$packageName&quot;)"
         errorLine2="                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/data/AppCatalog.kt"
+            file="src/main/java/com/novaredux/launcher/data/AppCatalog.kt"
             line="523"
             column="20"/>
     </issue>
@@ -1393,7 +1393,7 @@
         errorLine1="            data = Uri.parse(&quot;package:$packageName&quot;)"
         errorLine2="                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/data/AppCatalog.kt"
+            file="src/main/java/com/novaredux/launcher/data/AppCatalog.kt"
             line="523"
             column="20"/>
     </issue>
@@ -1404,7 +1404,7 @@
         errorLine1="            setBackgroundDrawable(ColorDrawable(0))"
         errorLine2="                                  ~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/ChoiceMenu.kt"
+            file="src/main/java/com/novaredux/launcher/ui/ChoiceMenu.kt"
             line="131"
             column="35"/>
     </issue>
@@ -1415,7 +1415,7 @@
         errorLine1="            context.contentResolver.openInputStream(Uri.parse(photoUri))?.use { stream ->"
         errorLine2="                                                    ~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/search/ContactSearchProvider.kt"
+            file="src/main/java/com/novaredux/launcher/search/ContactSearchProvider.kt"
             line="90"
             column="53"/>
     </issue>
@@ -1426,7 +1426,7 @@
         errorLine1="        val bitmap = Bitmap.createBitmap("
         errorLine2="                     ^">
         <location
-            file="src/main/java/com/supernova/launcher/ui/DesktopPreviewsOverlay.kt"
+            file="src/main/java/com/novaredux/launcher/ui/DesktopPreviewsOverlay.kt"
             line="241"
             column="22"/>
     </issue>
@@ -1437,7 +1437,7 @@
         errorLine1="                canvas.save()"
         errorLine2="                ~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/DragGridView.kt"
+            file="src/main/java/com/novaredux/launcher/ui/DragGridView.kt"
             line="199"
             column="17"/>
     </issue>
@@ -1448,7 +1448,7 @@
         errorLine1="            if (container.childCount > 0) container.removeAllViews()"
         errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/DrawerController.kt"
+            file="src/main/java/com/novaredux/launcher/ui/DrawerController.kt"
             line="1141"
             column="17"/>
     </issue>
@@ -1459,7 +1459,7 @@
         errorLine1="        if (key != cardsKey || container.childCount == 0) {"
         errorLine2="                               ~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/DrawerController.kt"
+            file="src/main/java/com/novaredux/launcher/ui/DrawerController.kt"
             line="1147"
             column="32"/>
     </issue>
@@ -1470,7 +1470,7 @@
         errorLine1="            if (child.visibility == GONE) continue"
         errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/FlowLayout.kt"
+            file="src/main/java/com/novaredux/launcher/ui/FlowLayout.kt"
             line="42"
             column="17"/>
     </issue>
@@ -1481,7 +1481,7 @@
         errorLine1="            if (child.visibility == GONE) continue"
         errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/FlowLayout.kt"
+            file="src/main/java/com/novaredux/launcher/ui/FlowLayout.kt"
             line="80"
             column="17"/>
     </issue>
@@ -1492,7 +1492,7 @@
         errorLine1="            canvas.save()"
         errorLine2="            ~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/FolderIconDrawable.kt"
+            file="src/main/java/com/novaredux/launcher/ui/FolderIconDrawable.kt"
             line="186"
             column="13"/>
     </issue>
@@ -1503,7 +1503,7 @@
         errorLine1="            setBackgroundDrawable(ColorDrawable(0))"
         errorLine2="                                  ~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/FolderPopup.kt"
+            file="src/main/java/com/novaredux/launcher/ui/FolderPopup.kt"
             line="161"
             column="35"/>
     </issue>
@@ -1514,7 +1514,7 @@
         errorLine1="            val bmp = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)"
         errorLine2="                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/data/GalleryIconCodec.kt"
+            file="src/main/java/com/novaredux/launcher/data/GalleryIconCodec.kt"
             line="74"
             column="23"/>
     </issue>
@@ -1525,7 +1525,7 @@
         errorLine1="        val output = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888)"
         errorLine2="                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/data/GalleryIconCodec.kt"
+            file="src/main/java/com/novaredux/launcher/data/GalleryIconCodec.kt"
             line="96"
             column="22"/>
     </issue>
@@ -1536,7 +1536,7 @@
         errorLine1="        Bitmap.createBitmap(ICON_PX, ICON_PX, Bitmap.Config.ARGB_8888).also { bitmap ->"
         errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/data/IconExporter.kt"
+            file="src/main/java/com/novaredux/launcher/data/IconExporter.kt"
             line="77"
             column="9"/>
     </issue>
@@ -1547,7 +1547,7 @@
         errorLine1="        val bitmap = Bitmap.createBitmap(iconSizePx, iconSizePx, Bitmap.Config.ARGB_8888)"
         errorLine2="                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/data/IconRenderer.kt"
+            file="src/main/java/com/novaredux/launcher/data/IconRenderer.kt"
             line="65"
             column="22"/>
     </issue>
@@ -1558,7 +1558,7 @@
         errorLine1="            canvas.save()"
         errorLine2="            ~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/data/IconRenderer.kt"
+            file="src/main/java/com/novaredux/launcher/data/IconRenderer.kt"
             line="85"
             column="13"/>
     </issue>
@@ -1569,7 +1569,7 @@
         errorLine1="        return if (shadow) withShadow(flat) else BitmapDrawable(resources, flat)"
         errorLine2="                                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/data/IconRenderer.kt"
+            file="src/main/java/com/novaredux/launcher/data/IconRenderer.kt"
             line="110"
             column="50"/>
     </issue>
@@ -1580,7 +1580,7 @@
         errorLine1="        val output = Bitmap.createBitmap(iconSizePx, iconSizePx, Bitmap.Config.ARGB_8888)"
         errorLine2="                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/data/IconRenderer.kt"
+            file="src/main/java/com/novaredux/launcher/data/IconRenderer.kt"
             line="116"
             column="22"/>
     </issue>
@@ -1591,7 +1591,7 @@
         errorLine1="        val output = Bitmap.createBitmap(size + 2 * margin, size + 2 * margin, Bitmap.Config.ARGB_8888)"
         errorLine2="                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/data/IconRenderer.kt"
+            file="src/main/java/com/novaredux/launcher/data/IconRenderer.kt"
             line="150"
             column="22"/>
     </issue>
@@ -1602,7 +1602,7 @@
         errorLine1="        val output = Bitmap.createBitmap(iconSizePx, iconSizePx, Bitmap.Config.ARGB_8888)"
         errorLine2="                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/data/IconRenderer.kt"
+            file="src/main/java/com/novaredux/launcher/data/IconRenderer.kt"
             line="194"
             column="22"/>
     </issue>
@@ -1613,7 +1613,7 @@
         errorLine1="        val bitmap = Bitmap.createBitmap(iconSizePx, iconSizePx, Bitmap.Config.ARGB_8888)"
         errorLine2="                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/data/IconRenderer.kt"
+            file="src/main/java/com/novaredux/launcher/data/IconRenderer.kt"
             line="249"
             column="22"/>
     </issue>
@@ -1624,7 +1624,7 @@
         errorLine1="        if (raw.isEmpty()) fallback else runCatching { Color.parseColor(raw) }.getOrDefault(fallback)"
         errorLine2="                                                       ~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/LabelStyler.kt"
+            file="src/main/java/com/novaredux/launcher/ui/LabelStyler.kt"
             line="100"
             column="56"/>
     </issue>
@@ -1635,7 +1635,7 @@
         errorLine1="        val drawable = BitmapDrawable(root.resources, snapshot)"
         errorLine2="                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/LaunchPrelude.kt"
+            file="src/main/java/com/novaredux/launcher/ui/LaunchPrelude.kt"
             line="102"
             column="24"/>
     </issue>
@@ -1646,7 +1646,7 @@
         errorLine1="        val dockTop = if (binding.dockBar.visibility == View.VISIBLE) binding.dockBar.top else binding.root.height"
         errorLine2="                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/LauncherActivity.kt"
+            file="src/main/java/com/novaredux/launcher/LauncherActivity.kt"
             line="1023"
             column="27"/>
     </issue>
@@ -1657,7 +1657,7 @@
         errorLine1="            startActivity(Intent(Intent.ACTION_VIEW, android.net.Uri.parse(uri)))"
         errorLine2="                                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/LauncherActivity.kt"
+            file="src/main/java/com/novaredux/launcher/LauncherActivity.kt"
             line="1445"
             column="54"/>
     </issue>
@@ -1668,7 +1668,7 @@
         errorLine1="                android.net.Uri.parse(&quot;https://www.google.com/search?q=${android.net.Uri.encode(query)}&quot;)"
         errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/LauncherActivity.kt"
+            file="src/main/java/com/novaredux/launcher/LauncherActivity.kt"
             line="1454"
             column="17"/>
     </issue>
@@ -1679,7 +1679,7 @@
         errorLine1="            if (swipeArrowWanted(prefs) &amp;&amp; binding.dockBar.visibility == View.VISIBLE) View.VISIBLE else View.GONE"
         errorLine2="                                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/LauncherActivity.kt"
+            file="src/main/java/com/novaredux/launcher/LauncherActivity.kt"
             line="2580"
             column="44"/>
     </issue>
@@ -1690,7 +1690,7 @@
         errorLine1="            if (swipeArrowWanted(prefs) &amp;&amp; binding.dockBar.visibility == View.VISIBLE) View.VISIBLE else View.GONE"
         errorLine2="                                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/LauncherActivity.kt"
+            file="src/main/java/com/novaredux/launcher/LauncherActivity.kt"
             line="2580"
             column="44"/>
     </issue>
@@ -1701,7 +1701,7 @@
         errorLine1="                return catalog.renderThemedDrawable(android.graphics.drawable.BitmapDrawable(resources, bmp))"
         errorLine2="                                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/LauncherActivity.kt"
+            file="src/main/java/com/novaredux/launcher/LauncherActivity.kt"
             line="2759"
             column="53"/>
     </issue>
@@ -1712,7 +1712,7 @@
         errorLine1="        if (binding.dockBar.visibility == View.VISIBLE) {"
         errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/LauncherActivity.kt"
+            file="src/main/java/com/novaredux/launcher/LauncherActivity.kt"
             line="3267"
             column="13"/>
     </issue>
@@ -1723,7 +1723,7 @@
         errorLine1="                Intent(Intent.ACTION_VIEW, android.net.Uri.parse(&quot;market://details?id=$packageName&quot;))"
         errorLine2="                                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/LauncherActivity.kt"
+            file="src/main/java/com/novaredux/launcher/LauncherActivity.kt"
             line="3276"
             column="44"/>
     </issue>
@@ -1734,7 +1734,7 @@
         errorLine1="            val ta = context.obtainStyledAttributes(intArrayOf(android.R.attr.selectableItemBackgroundBorderless))"
         errorLine2="                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/LauncherActivity.kt"
+            file="src/main/java/com/novaredux/launcher/LauncherActivity.kt"
             line="3567"
             column="22"/>
     </issue>
@@ -1745,7 +1745,7 @@
         errorLine1="                val src = android.graphics.drawable.BitmapDrawable(resources, bmp)"
         errorLine2="                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/LauncherActivity.kt"
+            file="src/main/java/com/novaredux/launcher/LauncherActivity.kt"
             line="3867"
             column="27"/>
     </issue>
@@ -1756,7 +1756,7 @@
         errorLine1="        val out = Bitmap.createBitmap(bitmap.width, bitmap.height, Bitmap.Config.ARGB_8888)"
         errorLine2="                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/LiveDragController.kt"
+            file="src/main/java/com/novaredux/launcher/ui/LiveDragController.kt"
             line="608"
             column="19"/>
     </issue>
@@ -1767,7 +1767,7 @@
         errorLine1="            hash = hash * 31 + runCatching { bitmap.getPixel(x, y) }.getOrDefault(0)"
         errorLine2="                                             ~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/feed/MediaCardSource.kt"
+            file="src/main/java/com/novaredux/launcher/feed/MediaCardSource.kt"
             line="166"
             column="46"/>
     </issue>
@@ -1778,7 +1778,7 @@
         errorLine1="        return Bitmap.createScaledBitmap("
         errorLine2="               ^">
         <location
-            file="src/main/java/com/supernova/launcher/feed/MediaCardSource.kt"
+            file="src/main/java/com/novaredux/launcher/feed/MediaCardSource.kt"
             line="177"
             column="16"/>
     </issue>
@@ -1789,7 +1789,7 @@
         errorLine1="        if (restyled &amp;&amp; visibility == VISIBLE) show()"
         errorLine2="                        ~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/PageIndicatorView.kt"
+            file="src/main/java/com/novaredux/launcher/ui/PageIndicatorView.kt"
             line="103"
             column="25"/>
     </issue>
@@ -1800,7 +1800,7 @@
         errorLine1="        if (!jump &amp;&amp; alpha > 0f &amp;&amp; visibility == VISIBLE) show()"
         errorLine2="                                   ~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/PageIndicatorView.kt"
+            file="src/main/java/com/novaredux/launcher/ui/PageIndicatorView.kt"
             line="131"
             column="36"/>
     </issue>
@@ -1811,7 +1811,7 @@
         errorLine1="            if (backdrop.visibility == View.VISIBLE) {"
         errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/SearchController.kt"
+            file="src/main/java/com/novaredux/launcher/ui/SearchController.kt"
             line="218"
             column="17"/>
     </issue>
@@ -1822,7 +1822,7 @@
         errorLine1="                    Intent(Intent.ACTION_DIAL, android.net.Uri.parse(&quot;tel:$number&quot;))"
         errorLine2="                                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/SearchController.kt"
+            file="src/main/java/com/novaredux/launcher/ui/SearchController.kt"
             line="496"
             column="48"/>
     </issue>
@@ -1833,7 +1833,7 @@
         errorLine1="                    Intent(Intent.ACTION_SENDTO, android.net.Uri.parse(&quot;smsto:$number&quot;))"
         errorLine2="                                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/SearchController.kt"
+            file="src/main/java/com/novaredux/launcher/ui/SearchController.kt"
             line="504"
             column="50"/>
     </issue>
@@ -1844,7 +1844,7 @@
         errorLine1="            if (child.visibility == View.GONE) continue"
         errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/SearchGridView.kt"
+            file="src/main/java/com/novaredux/launcher/ui/SearchGridView.kt"
             line="31"
             column="17"/>
     </issue>
@@ -1855,7 +1855,7 @@
         errorLine1="            if (child.visibility == View.GONE) continue"
         errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/SearchGridView.kt"
+            file="src/main/java/com/novaredux/launcher/ui/SearchGridView.kt"
             line="51"
             column="17"/>
     </issue>
@@ -1866,7 +1866,7 @@
         errorLine1="        canvas.save()"
         errorLine2="        ~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/settings/preview/ShapePreviewView.kt"
+            file="src/main/java/com/novaredux/launcher/ui/settings/preview/ShapePreviewView.kt"
             line="49"
             column="9"/>
     </issue>
@@ -1877,7 +1877,7 @@
         errorLine1="        canvas.save()"
         errorLine2="        ~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/onboarding/ShapeSwatchView.kt"
+            file="src/main/java/com/novaredux/launcher/onboarding/ShapeSwatchView.kt"
             line="62"
             column="9"/>
     </issue>
@@ -1888,7 +1888,7 @@
         errorLine1="        val drawable = AdaptiveIconDrawable(ColorDrawable(Color.BLACK), ColorDrawable(Color.BLACK))"
         errorLine2="                                            ~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/onboarding/ShapeSwatchView.kt"
+            file="src/main/java/com/novaredux/launcher/onboarding/ShapeSwatchView.kt"
             line="75"
             column="45"/>
     </issue>
@@ -1899,7 +1899,7 @@
         errorLine1="        val drawable = AdaptiveIconDrawable(ColorDrawable(Color.BLACK), ColorDrawable(Color.BLACK))"
         errorLine2="                                                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/onboarding/ShapeSwatchView.kt"
+            file="src/main/java/com/novaredux/launcher/onboarding/ShapeSwatchView.kt"
             line="75"
             column="73"/>
     </issue>
@@ -1910,7 +1910,7 @@
         errorLine1="                        swatch(Color.parseColor(hex), selected) { onPick(ColorSpec(fixed = hex)) },"
         errorLine2="                               ~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/settings/StylePickerSheet.kt"
+            file="src/main/java/com/novaredux/launcher/ui/settings/StylePickerSheet.kt"
             line="191"
             column="32"/>
     </issue>
@@ -1921,7 +1921,7 @@
         errorLine1="        setBackgroundDrawable(ColorDrawable(0))"
         errorLine2="                              ~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/SupernovaPopupMenu.kt"
+            file="src/main/java/com/novaredux/launcher/ui/NovaReduxPopupMenu.kt"
             line="193"
             column="31"/>
     </issue>
@@ -1932,7 +1932,7 @@
         errorLine1="            topMargin = if (content.childCount > 0) context.dp(6) else 0"
         errorLine2="                            ~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/SupernovaPopupMenu.kt"
+            file="src/main/java/com/novaredux/launcher/ui/NovaReduxPopupMenu.kt"
             line="300"
             column="29"/>
     </issue>
@@ -1943,7 +1943,7 @@
         errorLine1="            topMargin = if (content.childCount > 0) context.dp(6) else 0"
         errorLine2="                            ~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/SupernovaPopupMenu.kt"
+            file="src/main/java/com/novaredux/launcher/ui/NovaReduxPopupMenu.kt"
             line="300"
             column="29"/>
     </issue>
@@ -1954,7 +1954,7 @@
         errorLine1="        (row.layoutParams as LinearLayout.LayoutParams).topMargin = if (tiles.childCount > 0) context.dp(2) else 0"
         errorLine2="                                                                        ~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/SupernovaPopupMenu.kt"
+            file="src/main/java/com/novaredux/launcher/ui/NovaReduxPopupMenu.kt"
             line="313"
             column="73"/>
     </issue>
@@ -1965,7 +1965,7 @@
         errorLine1="            if (child.visibility == VISIBLE &amp;&amp; scrollsVertically(child)) return true"
         errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/widget/SupernovaWidgetHost.kt"
+            file="src/main/java/com/novaredux/launcher/widget/NovaReduxWidgetHost.kt"
             line="171"
             column="17"/>
     </issue>
@@ -1976,7 +1976,7 @@
         errorLine1="        spec.fixed != null -> runCatching { android.graphics.Color.parseColor(spec.fixed) }.getOrNull()"
         errorLine2="                                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/theme/SurfaceStyleResolver.kt"
+            file="src/main/java/com/novaredux/launcher/ui/theme/SurfaceStyleResolver.kt"
             line="145"
             column="45"/>
     </issue>
@@ -1987,7 +1987,7 @@
         errorLine1="        canvas.save()"
         errorLine2="        ~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/SwipeArrowDrawable.kt"
+            file="src/main/java/com/novaredux/launcher/ui/SwipeArrowDrawable.kt"
             line="51"
             column="9"/>
     </issue>
@@ -1998,7 +1998,7 @@
         errorLine1="            if (slot.childCount > 0) slot.removeAllViews()"
         errorLine2="                ~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/WidgetController.kt"
+            file="src/main/java/com/novaredux/launcher/ui/WidgetController.kt"
             line="290"
             column="17"/>
     </issue>
@@ -2009,7 +2009,7 @@
         errorLine1="        if (hostedSearchWidgetId == id &amp;&amp; slot.childCount > 0) return slot.getChildAt(0)"
         errorLine2="                                          ~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/WidgetController.kt"
+            file="src/main/java/com/novaredux/launcher/ui/WidgetController.kt"
             line="294"
             column="43"/>
     </issue>
@@ -2020,7 +2020,7 @@
         errorLine1="            if (params.cols &lt;= 0 || child.visibility == GONE) continue"
         errorLine2="                                    ~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/WorkspaceCanvas.kt"
+            file="src/main/java/com/novaredux/launcher/ui/WorkspaceCanvas.kt"
             line="98"
             column="37"/>
     </issue>
@@ -2031,7 +2031,7 @@
         errorLine1="            if (child.visibility == GONE) continue"
         errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/WorkspaceCanvas.kt"
+            file="src/main/java/com/novaredux/launcher/ui/WorkspaceCanvas.kt"
             line="115"
             column="17"/>
     </issue>
@@ -2054,7 +2054,7 @@
         errorLine1="            binding.editComponent.text = &quot;${app.packageName}/${app.className}&quot;"
         errorLine2="                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/AppEditSheet.kt"
+            file="src/main/java/com/novaredux/launcher/ui/AppEditSheet.kt"
             line="65"
             column="42"/>
     </issue>
@@ -2065,7 +2065,7 @@
         errorLine1="                    text = (page + 1).toString()"
         errorLine2="                            ~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/DesktopPreviewsOverlay.kt"
+            file="src/main/java/com/novaredux/launcher/ui/DesktopPreviewsOverlay.kt"
             line="170"
             column="29"/>
     </issue>
@@ -2076,7 +2076,7 @@
         errorLine1="                    text = (page + 1).toString()"
         errorLine2="                           ~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/DesktopPreviewsOverlay.kt"
+            file="src/main/java/com/novaredux/launcher/ui/DesktopPreviewsOverlay.kt"
             line="170"
             column="28"/>
     </issue>
@@ -2087,7 +2087,7 @@
         errorLine1="            dialogBinding.rowsValue.text = rows.toString()"
         errorLine2="                                           ~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/SettingsActivity.kt"
+            file="src/main/java/com/novaredux/launcher/SettingsActivity.kt"
             line="1367"
             column="44"/>
     </issue>
@@ -2098,7 +2098,7 @@
         errorLine1="            dialogBinding.colsValue.text = cols.toString()"
         errorLine2="                                           ~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/SettingsActivity.kt"
+            file="src/main/java/com/novaredux/launcher/SettingsActivity.kt"
             line="1368"
             column="44"/>
     </issue>
@@ -2120,7 +2120,7 @@
         errorLine1="        ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.TOP or Gravity.LEFT"
         errorLine2="                                                                                                         ~~~~">
         <location
-            file="src/main/java/com/supernova/launcher/ui/WorkspaceCanvas.kt"
+            file="src/main/java/com/novaredux/launcher/ui/WorkspaceCanvas.kt"
             line="73"
             column="106"/>
     </issue>

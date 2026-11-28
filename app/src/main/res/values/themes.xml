@@ -1,5 +1,5 @@
 <resources>
-    <style name="Theme.Supernova" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.NovaRedux" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimary">@color/accent</item>
         <item name="colorControlHighlight">@color/rippleHighlight</item>
         <item name="android:colorControlHighlight">@color/rippleHighlight</item>
@@ -9,16 +9,16 @@
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowShowWallpaper">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="materialAlertDialogTheme">@style/ThemeOverlay.Supernova.Dialog</item>
-        <item name="alertDialogTheme">@style/ThemeOverlay.Supernova.Dialog</item>
-        <item name="bottomSheetDialogTheme">@style/ThemeOverlay.Supernova.BottomSheet</item>
-        <item name="materialTimePickerTheme">@style/ThemeOverlay.Supernova.TimePicker</item>
-        <item name="materialButtonStyle">@style/Widget.Supernova.Button</item>
-        <item name="borderlessButtonStyle">@style/Widget.Supernova.Button.Text</item>
-        <item name="checkboxStyle">@style/Widget.Supernova.CheckBox</item>
-        <item name="radioButtonStyle">@style/Widget.Supernova.RadioButton</item>
-        <item name="switchStyle">@style/Widget.Supernova.Switch</item>
-        <item name="textInputStyle">@style/Widget.Supernova.TextInput</item>
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.NovaRedux.Dialog</item>
+        <item name="alertDialogTheme">@style/ThemeOverlay.NovaRedux.Dialog</item>
+        <item name="bottomSheetDialogTheme">@style/ThemeOverlay.NovaRedux.BottomSheet</item>
+        <item name="materialTimePickerTheme">@style/ThemeOverlay.NovaRedux.TimePicker</item>
+        <item name="materialButtonStyle">@style/Widget.NovaRedux.Button</item>
+        <item name="borderlessButtonStyle">@style/Widget.NovaRedux.Button.Text</item>
+        <item name="checkboxStyle">@style/Widget.NovaRedux.CheckBox</item>
+        <item name="radioButtonStyle">@style/Widget.NovaRedux.RadioButton</item>
+        <item name="switchStyle">@style/Widget.NovaRedux.Switch</item>
+        <item name="textInputStyle">@style/Widget.NovaRedux.TextInput</item>
         <item name="android:textColorPrimary">@color/textPrimary</item>
         <item name="android:textColorSecondary">@color/textSecondary</item>
         <item name="colorOnSurface">@color/textPrimary</item>
@@ -31,7 +31,7 @@
     <!-- The wallpaper crop screen: black behind the image while it loads,
          and no wallpaper drawn under a screen the image covers. -->
     <!-- The timeout lock's black screen: black from its first frame. -->
-    <style name="Theme.Supernova.TimeoutLock" parent="Theme.MaterialComponents.NoActionBar">
+    <style name="Theme.NovaRedux.TimeoutLock" parent="Theme.MaterialComponents.NoActionBar">
         <item name="android:windowBackground">@android:color/black</item>
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowAnimationStyle">@null</item>
@@ -40,32 +40,32 @@
     <!-- An app pair's moment on the full screen before the split (#12): the
          plain background of an app's first frame, and no animation of its
          own. -->
-    <style name="Theme.Supernova.Pair" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.NovaRedux.Pair" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:windowAnimationStyle">@null</item>
     </style>
 
-    <style name="Theme.Supernova.WallpaperCrop">
+    <style name="Theme.NovaRedux.WallpaperCrop">
         <item name="android:windowBackground">@android:color/black</item>
         <item name="android:windowShowWallpaper">false</item>
     </style>
 
-    <style name="Theme.Supernova.Transparent" parent="Theme.MaterialComponents.DayNight.Dialog.Alert">
+    <style name="Theme.NovaRedux.Transparent" parent="Theme.MaterialComponents.DayNight.Dialog.Alert">
         <item name="colorPrimary">@color/accent</item>
         <item name="colorControlHighlight">@color/rippleHighlight</item>
         <item name="android:colorControlHighlight">@color/rippleHighlight</item>
         <item name="colorAccentOnRaised">@color/accentBlueText</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:backgroundDimEnabled">true</item>
-        <item name="materialAlertDialogTheme">@style/ThemeOverlay.Supernova.Dialog</item>
-        <item name="alertDialogTheme">@style/ThemeOverlay.Supernova.Dialog</item>
-        <item name="bottomSheetDialogTheme">@style/ThemeOverlay.Supernova.BottomSheet</item>
-        <item name="materialTimePickerTheme">@style/ThemeOverlay.Supernova.TimePicker</item>
-        <item name="materialButtonStyle">@style/Widget.Supernova.Button</item>
-        <item name="borderlessButtonStyle">@style/Widget.Supernova.Button.Text</item>
-        <item name="checkboxStyle">@style/Widget.Supernova.CheckBox</item>
-        <item name="radioButtonStyle">@style/Widget.Supernova.RadioButton</item>
-        <item name="switchStyle">@style/Widget.Supernova.Switch</item>
-        <item name="textInputStyle">@style/Widget.Supernova.TextInput</item>
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.NovaRedux.Dialog</item>
+        <item name="alertDialogTheme">@style/ThemeOverlay.NovaRedux.Dialog</item>
+        <item name="bottomSheetDialogTheme">@style/ThemeOverlay.NovaRedux.BottomSheet</item>
+        <item name="materialTimePickerTheme">@style/ThemeOverlay.NovaRedux.TimePicker</item>
+        <item name="materialButtonStyle">@style/Widget.NovaRedux.Button</item>
+        <item name="borderlessButtonStyle">@style/Widget.NovaRedux.Button.Text</item>
+        <item name="checkboxStyle">@style/Widget.NovaRedux.CheckBox</item>
+        <item name="radioButtonStyle">@style/Widget.NovaRedux.RadioButton</item>
+        <item name="switchStyle">@style/Widget.NovaRedux.Switch</item>
+        <item name="textInputStyle">@style/Widget.NovaRedux.TextInput</item>
         <item name="android:textColorPrimary">@color/textPrimary</item>
         <item name="android:textColorSecondary">@color/textSecondary</item>
         <item name="colorOnSurface">@color/textPrimary</item>
@@ -84,7 +84,7 @@
 
     <!-- Drawer group tabs: title case at label weight, not Material's
          all-caps micro-type. -->
-    <style name="TextAppearance.Supernova.DrawerTab" parent="TextAppearance.MaterialComponents.Button">
+    <style name="TextAppearance.NovaRedux.DrawerTab" parent="TextAppearance.MaterialComponents.Button">
         <item name="android:textSize">@dimen/text_secondary</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:fontFamily">sans-serif-medium</item>
@@ -98,75 +98,75 @@
         <item name="android:gravity">center</item>
         <item name="android:paddingHorizontal">@dimen/space_ms</item>
         <item name="android:background">?attr/selectableItemBackground</item>
-        <item name="android:textAppearance">@style/TextAppearance.Supernova.DrawerTab</item>
+        <item name="android:textAppearance">@style/TextAppearance.NovaRedux.DrawerTab</item>
         <item name="android:textColor">@color/textPrimary</item>
     </style>
 
 
-    <style name="ThemeOverlay.Supernova.Blue" parent="">
+    <style name="ThemeOverlay.NovaRedux.Blue" parent="">
         <item name="colorPrimary">@color/accentBlue</item>
         <item name="colorSecondary">@color/accentBlue</item>
         <item name="colorAccent">@color/accentBlue</item>
         <item name="colorAccentOnRaised">@color/accentBlueText</item>
     </style>
 
-    <style name="ThemeOverlay.Supernova.Indigo" parent="">
+    <style name="ThemeOverlay.NovaRedux.Indigo" parent="">
         <item name="colorPrimary">@color/accentIndigo</item>
         <item name="colorSecondary">@color/accentIndigo</item>
         <item name="colorAccent">@color/accentIndigo</item>
         <item name="colorAccentOnRaised">@color/accentIndigoText</item>
     </style>
 
-    <style name="ThemeOverlay.Supernova.Purple" parent="">
+    <style name="ThemeOverlay.NovaRedux.Purple" parent="">
         <item name="colorPrimary">@color/accentPurple</item>
         <item name="colorSecondary">@color/accentPurple</item>
         <item name="colorAccent">@color/accentPurple</item>
         <item name="colorAccentOnRaised">@color/accentPurpleText</item>
     </style>
 
-    <style name="ThemeOverlay.Supernova.Pink" parent="">
+    <style name="ThemeOverlay.NovaRedux.Pink" parent="">
         <item name="colorPrimary">@color/accentPink</item>
         <item name="colorSecondary">@color/accentPink</item>
         <item name="colorAccent">@color/accentPink</item>
         <item name="colorAccentOnRaised">@color/accentPinkText</item>
     </style>
 
-    <style name="ThemeOverlay.Supernova.Red" parent="">
+    <style name="ThemeOverlay.NovaRedux.Red" parent="">
         <item name="colorPrimary">@color/accentRed</item>
         <item name="colorSecondary">@color/accentRed</item>
         <item name="colorAccent">@color/accentRed</item>
         <item name="colorAccentOnRaised">@color/accentRedText</item>
     </style>
 
-    <style name="ThemeOverlay.Supernova.Orange" parent="">
+    <style name="ThemeOverlay.NovaRedux.Orange" parent="">
         <item name="colorPrimary">@color/accentOrange</item>
         <item name="colorSecondary">@color/accentOrange</item>
         <item name="colorAccent">@color/accentOrange</item>
         <item name="colorAccentOnRaised">@color/accentOrangeText</item>
     </style>
 
-    <style name="ThemeOverlay.Supernova.Amber" parent="">
+    <style name="ThemeOverlay.NovaRedux.Amber" parent="">
         <item name="colorPrimary">@color/accentAmber</item>
         <item name="colorSecondary">@color/accentAmber</item>
         <item name="colorAccent">@color/accentAmber</item>
         <item name="colorAccentOnRaised">@color/accentAmberText</item>
     </style>
 
-    <style name="ThemeOverlay.Supernova.Green" parent="">
+    <style name="ThemeOverlay.NovaRedux.Green" parent="">
         <item name="colorPrimary">@color/accentGreen</item>
         <item name="colorSecondary">@color/accentGreen</item>
         <item name="colorAccent">@color/accentGreen</item>
         <item name="colorAccentOnRaised">@color/accentGreenText</item>
     </style>
 
-    <style name="ThemeOverlay.Supernova.Teal" parent="">
+    <style name="ThemeOverlay.NovaRedux.Teal" parent="">
         <item name="colorPrimary">@color/accentTeal</item>
         <item name="colorSecondary">@color/accentTeal</item>
         <item name="colorAccent">@color/accentTeal</item>
         <item name="colorAccentOnRaised">@color/accentTealText</item>
     </style>
 
-    <style name="ThemeOverlay.Supernova.Cyan" parent="">
+    <style name="ThemeOverlay.NovaRedux.Cyan" parent="">
         <item name="colorPrimary">@color/accentCyan</item>
         <item name="colorSecondary">@color/accentCyan</item>
         <item name="colorAccent">@color/accentCyan</item>
@@ -175,7 +175,7 @@
 
     <!-- Any colour (the Settings style's Accent): placeholders that
          ThemeEngine.applySettingsAccent rewrites at runtime on Android 11+. -->
-    <style name="ThemeOverlay.Supernova.Custom" parent="">
+    <style name="ThemeOverlay.NovaRedux.Custom" parent="">
         <item name="colorPrimary">@color/accentCustom</item>
         <item name="colorSecondary">@color/accentCustom</item>
         <item name="colorAccent">@color/accentCustom</item>
@@ -196,7 +196,7 @@
     <!-- per-call styling.                                            -->
     <!-- ============================================================ -->
 
-    <style name="ThemeOverlay.Supernova.Dialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+    <style name="ThemeOverlay.NovaRedux.Dialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
         <item name="colorSurface">@color/raised</item>
         <item name="colorOnSurface">@color/textPrimary</item>
         <item name="colorPrimary">?attr/colorAccent</item>
@@ -208,12 +208,12 @@
         <item name="android:textColorAlertDialogListItem">@color/textPrimary</item>
         <item name="elevationOverlayEnabled">false</item>
         <!-- 28dp corners, the same radius the popup and the sheets use. -->
-        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Supernova.Dialog</item>
-        <item name="materialAlertDialogTitleTextStyle">@style/TextAppearance.Supernova.DialogTitle</item>
-        <item name="materialAlertDialogBodyTextStyle">@style/TextAppearance.Supernova.DialogBody</item>
-        <item name="buttonBarPositiveButtonStyle">@style/Widget.Supernova.Button.Dialog</item>
-        <item name="buttonBarNegativeButtonStyle">@style/Widget.Supernova.Button.Dialog</item>
-        <item name="buttonBarNeutralButtonStyle">@style/Widget.Supernova.Button.Dialog</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.NovaRedux.Dialog</item>
+        <item name="materialAlertDialogTitleTextStyle">@style/TextAppearance.NovaRedux.DialogTitle</item>
+        <item name="materialAlertDialogBodyTextStyle">@style/TextAppearance.NovaRedux.DialogBody</item>
+        <item name="buttonBarPositiveButtonStyle">@style/Widget.NovaRedux.Button.Dialog</item>
+        <item name="buttonBarNegativeButtonStyle">@style/Widget.NovaRedux.Button.Dialog</item>
+        <item name="buttonBarNeutralButtonStyle">@style/Widget.NovaRedux.Button.Dialog</item>
         <!-- The stock AppCompat dialog window, for the few paths that
              still resolve alertDialogTheme (e.g. a builder on a plain
              ContextThemeWrapper): same plate, same corners. -->
@@ -221,37 +221,37 @@
         <item name="android:backgroundDimAmount">0.5</item>
         <item name="listPreferredItemPaddingLeft">24dp</item>
         <item name="listPreferredItemPaddingRight">24dp</item>
-        <item name="checkboxStyle">@style/Widget.Supernova.CheckBox</item>
-        <item name="radioButtonStyle">@style/Widget.Supernova.RadioButton</item>
-        <item name="materialButtonStyle">@style/Widget.Supernova.Button</item>
-        <item name="borderlessButtonStyle">@style/Widget.Supernova.Button.Text</item>
-        <item name="textInputStyle">@style/Widget.Supernova.TextInput</item>
+        <item name="checkboxStyle">@style/Widget.NovaRedux.CheckBox</item>
+        <item name="radioButtonStyle">@style/Widget.NovaRedux.RadioButton</item>
+        <item name="materialButtonStyle">@style/Widget.NovaRedux.Button</item>
+        <item name="borderlessButtonStyle">@style/Widget.NovaRedux.Button.Text</item>
+        <item name="textInputStyle">@style/Widget.NovaRedux.TextInput</item>
     </style>
 
-    <style name="ThemeOverlay.Supernova.TimePicker" parent="ThemeOverlay.MaterialComponents.TimePicker">
+    <style name="ThemeOverlay.NovaRedux.TimePicker" parent="ThemeOverlay.MaterialComponents.TimePicker">
         <item name="colorSurface">@color/surface</item>
         <item name="colorOnSurface">@color/textPrimary</item>
         <item name="colorPrimary">?attr/colorAccent</item>
         <item name="colorOnPrimary">@color/onAccent</item>
         <item name="colorSecondary">?attr/colorAccent</item>
         <item name="elevationOverlayEnabled">false</item>
-        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearanceOverlay.Supernova.Dialog</item>
-        <item name="materialButtonStyle">@style/Widget.Supernova.Button</item>
-        <item name="borderlessButtonStyle">@style/Widget.Supernova.Button.Text</item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearanceOverlay.NovaRedux.Dialog</item>
+        <item name="materialButtonStyle">@style/Widget.NovaRedux.Button</item>
+        <item name="borderlessButtonStyle">@style/Widget.NovaRedux.Button.Text</item>
     </style>
 
-    <style name="ShapeAppearanceOverlay.Supernova.Dialog" parent="">
+    <style name="ShapeAppearanceOverlay.NovaRedux.Dialog" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">28dp</item>
     </style>
 
-    <style name="TextAppearance.Supernova.DialogTitle" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
+    <style name="TextAppearance.NovaRedux.DialogTitle" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
         <item name="android:textColor">@color/textPrimary</item>
         <item name="android:textSize">@dimen/text_headline</item>
         <item name="android:fontFamily">sans-serif-medium</item>
     </style>
 
-    <style name="TextAppearance.Supernova.DialogBody" parent="MaterialAlertDialog.MaterialComponents.Body.Text">
+    <style name="TextAppearance.NovaRedux.DialogBody" parent="MaterialAlertDialog.MaterialComponents.Body.Text">
         <item name="android:textColor">@color/textSecondary</item>
         <item name="android:textSize">@dimen/text_body</item>
         <item name="android:lineSpacingMultiplier">1.15</item>
@@ -260,8 +260,8 @@
     <!-- Bottom sheets: the plate, its top corners, and a navigation bar
          painted to match so the sheet runs under it instead of stopping at
          a black strip. -->
-    <style name="ThemeOverlay.Supernova.BottomSheet" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
-        <item name="bottomSheetStyle">@style/Widget.Supernova.BottomSheet</item>
+    <style name="ThemeOverlay.NovaRedux.BottomSheet" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/Widget.NovaRedux.BottomSheet</item>
         <item name="colorSurface">@color/raised</item>
         <item name="colorOnSurface">@color/textPrimary</item>
         <item name="colorPrimary">?attr/colorAccent</item>
@@ -273,17 +273,17 @@
         <item name="android:navigationBarColor">@color/raised</item>
         <item name="android:windowLightNavigationBar">@bool/lightSystemBars</item>
         <item name="android:backgroundDimAmount">0.5</item>
-        <item name="materialButtonStyle">@style/Widget.Supernova.Button</item>
-        <item name="borderlessButtonStyle">@style/Widget.Supernova.Button.Text</item>
-        <item name="checkboxStyle">@style/Widget.Supernova.CheckBox</item>
-        <item name="radioButtonStyle">@style/Widget.Supernova.RadioButton</item>
-        <item name="switchStyle">@style/Widget.Supernova.Switch</item>
-        <item name="textInputStyle">@style/Widget.Supernova.TextInput</item>
+        <item name="materialButtonStyle">@style/Widget.NovaRedux.Button</item>
+        <item name="borderlessButtonStyle">@style/Widget.NovaRedux.Button.Text</item>
+        <item name="checkboxStyle">@style/Widget.NovaRedux.CheckBox</item>
+        <item name="radioButtonStyle">@style/Widget.NovaRedux.RadioButton</item>
+        <item name="switchStyle">@style/Widget.NovaRedux.Switch</item>
+        <item name="textInputStyle">@style/Widget.NovaRedux.TextInput</item>
     </style>
 
-    <style name="Widget.Supernova.BottomSheet" parent="Widget.MaterialComponents.BottomSheet.Modal">
+    <style name="Widget.NovaRedux.BottomSheet" parent="Widget.MaterialComponents.BottomSheet.Modal">
         <item name="backgroundTint">@color/raised</item>
-        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Supernova.BottomSheet</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.NovaRedux.BottomSheet</item>
         <item name="android:elevation">0dp</item>
         <!-- Sheets open fully; a sheet that peeks at half height and needs a
              second drag to read is a step, not a shortcut. -->
@@ -294,7 +294,7 @@
         <item name="shouldRemoveExpandedCorners">false</item>
     </style>
 
-    <style name="ShapeAppearanceOverlay.Supernova.BottomSheet" parent="">
+    <style name="ShapeAppearanceOverlay.NovaRedux.BottomSheet" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSizeTopLeft">28dp</item>
         <item name="cornerSizeTopRight">28dp</item>
@@ -305,7 +305,7 @@
     <!-- Buttons: pills in the accent, and text buttons in the accent, in
          sentence case. Material's all-caps default reads as shouting next
          to sentence-case rows. -->
-    <style name="Widget.Supernova.Button" parent="Widget.MaterialComponents.Button">
+    <style name="Widget.NovaRedux.Button" parent="Widget.MaterialComponents.Button">
         <item name="android:textAllCaps">false</item>
         <item name="android:textSize">@dimen/text_body</item>
         <item name="android:fontFamily">sans-serif-medium</item>
@@ -318,7 +318,7 @@
         <item name="android:stateListAnimator">@null</item>
     </style>
 
-    <style name="Widget.Supernova.Button.Text" parent="Widget.MaterialComponents.Button.TextButton">
+    <style name="Widget.NovaRedux.Button.Text" parent="Widget.MaterialComponents.Button.TextButton">
         <item name="android:textAllCaps">false</item>
         <item name="android:textSize">@dimen/text_body</item>
         <item name="android:fontFamily">sans-serif-medium</item>
@@ -331,7 +331,7 @@
 
     <!-- A quiet tonal button: the surface tint with the text in the accent.
          For secondary actions that still deserve a shape (Reset, Delete). -->
-    <style name="Widget.Supernova.Button.Tonal" parent="Widget.Supernova.Button">
+    <style name="Widget.NovaRedux.Button.Tonal" parent="Widget.NovaRedux.Button">
         <item name="backgroundTint">@color/settingsPillBg</item>
         <item name="android:textColor">@color/textPrimary</item>
         <item name="iconTint">@color/textPrimary</item>
@@ -339,7 +339,7 @@
 
     <!-- One segment of a toggle group: a hairline pill that fills with a
          tint of the accent when chosen. -->
-    <style name="Widget.Supernova.Button.Segment" parent="Widget.MaterialComponents.Button.OutlinedButton">
+    <style name="Widget.NovaRedux.Button.Segment" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="android:textAllCaps">false</item>
         <item name="android:textSize">@dimen/text_secondary</item>
         <item name="android:fontFamily">sans-serif-medium</item>
@@ -359,7 +359,7 @@
 
     <!-- A single-choice chip: the segment's look (hairline pill, accent tint
          and outline when chosen), for choices that wrap onto more lines. -->
-    <style name="Widget.Supernova.Chip.Choice" parent="Widget.MaterialComponents.Chip.Choice">
+    <style name="Widget.NovaRedux.Chip.Choice" parent="Widget.MaterialComponents.Chip.Choice">
         <item name="chipSurfaceColor">@android:color/transparent</item>
         <item name="chipBackgroundColor">@color/segment_background</item>
         <item name="chipStrokeColor">@color/chip_choice_stroke</item>
@@ -367,17 +367,17 @@
         <item name="chipMinHeight">36dp</item>
         <item name="checkedIconVisible">false</item>
         <item name="rippleColor">@color/rippleHighlight</item>
-        <item name="android:textAppearance">@style/TextAppearance.Supernova.Chip</item>
+        <item name="android:textAppearance">@style/TextAppearance.NovaRedux.Chip</item>
         <item name="android:textColor">@color/segment_text</item>
     </style>
 
-    <style name="TextAppearance.Supernova.Chip" parent="TextAppearance.MaterialComponents.Chip">
+    <style name="TextAppearance.NovaRedux.Chip" parent="TextAppearance.MaterialComponents.Chip">
         <item name="android:textSize">@dimen/text_secondary</item>
         <item name="android:fontFamily">sans-serif-medium</item>
         <item name="android:textColor">@color/segment_text</item>
     </style>
 
-    <style name="Widget.Supernova.Button.Dialog" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+    <style name="Widget.NovaRedux.Button.Dialog" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
         <item name="android:textAllCaps">false</item>
         <item name="android:textColor">?attr/colorAccentOnRaised</item>
         <item name="android:textSize">@dimen/text_body</item>
@@ -391,7 +391,7 @@
          state, so the checked one is the one that stands out. -->
     <!-- A rounded box (checkbox_box) that carries its own colours, so
          nothing tints over it. -->
-    <style name="Widget.Supernova.CheckBox" parent="Widget.MaterialComponents.CompoundButton.CheckBox">
+    <style name="Widget.NovaRedux.CheckBox" parent="Widget.MaterialComponents.CompoundButton.CheckBox">
         <item name="android:button">@drawable/checkbox_box</item>
         <item name="buttonCompat">@drawable/checkbox_box</item>
         <item name="buttonIcon">@null</item>
@@ -400,7 +400,7 @@
         <item name="android:textColor">@color/textPrimary</item>
     </style>
 
-    <style name="Widget.Supernova.RadioButton" parent="Widget.MaterialComponents.CompoundButton.RadioButton">
+    <style name="Widget.NovaRedux.RadioButton" parent="Widget.MaterialComponents.CompoundButton.RadioButton">
         <item name="buttonTint">@color/selection_control_tint</item>
         <item name="android:textColor">@color/textPrimary</item>
     </style>
@@ -408,7 +408,7 @@
     <!-- The settings pages' lists and bars: the Settings style's Text drives
          the theme's text, control and ripple colours there (#281). Equal to
          the theme's own until Text is set. -->
-    <style name="ThemeOverlay.Supernova.SettingsPage" parent="">
+    <style name="ThemeOverlay.NovaRedux.SettingsPage" parent="">
         <item name="android:textColorPrimary">@color/settingsText</item>
         <item name="android:textColorSecondary">@color/settingsTextSecondary</item>
         <item name="colorOnSurface">@color/settingsText</item>
@@ -419,12 +419,12 @@
         <item name="android:colorControlHighlight">@color/settingsPageHighlight</item>
     </style>
 
-    <style name="Widget.Supernova.Switch" parent="Widget.MaterialComponents.CompoundButton.Switch">
+    <style name="Widget.NovaRedux.Switch" parent="Widget.MaterialComponents.CompoundButton.Switch">
         <item name="android:textColor">@color/textPrimary</item>
     </style>
 
     <!-- Text fields: outlined, rounded to match the plates they sit on. -->
-    <style name="Widget.Supernova.TextInput" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+    <style name="Widget.NovaRedux.TextInput" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
         <item name="boxCornerRadiusTopStart">14dp</item>
         <item name="boxCornerRadiusTopEnd">14dp</item>
         <item name="boxCornerRadiusBottomStart">14dp</item>
@@ -436,7 +436,7 @@
 
     <!-- A settings tab: its icon and label side by side, on an accent pill
          while it is the current one. -->
-    <style name="Widget.Supernova.SettingsTab" parent="">
+    <style name="Widget.NovaRedux.SettingsTab" parent="">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">40dp</item>
         <item name="android:background">@drawable/bg_settings_tab</item>

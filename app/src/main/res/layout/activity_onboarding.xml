@@ -48,7 +48,7 @@
                 android:text="@string/onboarding_skip" />
         </FrameLayout>
 
-        <com.supernova.launcher.ui.settings.preview.PreviewPane
+        <com.novaredux.launcher.ui.settings.preview.PreviewPane
             android:id="@+id/onboardingPreviewPane"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -57,11 +57,11 @@
             android:layout_weight="1"
             android:importantForAccessibility="noHideDescendants">
 
-            <com.supernova.launcher.onboarding.HomePreviewView
+            <com.novaredux.launcher.onboarding.HomePreviewView
                 android:id="@+id/onboardingPreview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-        </com.supernova.launcher.ui.settings.preview.PreviewPane>
+        </com.novaredux.launcher.ui.settings.preview.PreviewPane>
 
         <LinearLayout
             android:id="@+id/onboardingPanel"

@@ -57,7 +57,7 @@
     <!-- Full width for the line style; applyDockChrome centres it over the
          dock, and it takes no touches, so the workspace under it still
          gets them. -->
-    <com.supernova.launcher.ui.PageIndicatorView
+    <com.novaredux.launcher.ui.PageIndicatorView
         android:id="@+id/pageIndicator"
         android:layout_width="match_parent"
         android:layout_height="24dp"
@@ -79,7 +79,7 @@
 
     <!-- Desktop search bar: GONE by default; applyDockChrome drives placement
          margins and visibility from the searchBarConfig pref. -->
-    <com.supernova.launcher.ui.SearchBarView
+    <com.novaredux.launcher.ui.SearchBarView
         android:id="@+id/desktopSearchBar"
         android:layout_width="match_parent"
         android:layout_height="48dp"
@@ -219,7 +219,7 @@
             app:tabPaddingEnd="12dp"
             app:tabPaddingStart="12dp"
             app:tabSelectedTextColor="@color/textPrimary"
-            app:tabTextAppearance="@style/TextAppearance.Supernova.DrawerTab"
+            app:tabTextAppearance="@style/TextAppearance.NovaRedux.DrawerTab"
             app:tabTextColor="@color/textSecondary" />
 
         <!-- The private space tab's controls; DrawerController shows it
@@ -282,7 +282,7 @@
              rule separating it from the list. DrawerController moves both
              into the list's header, the rule into DrawerSortBars' strip.
              It pages sideways through older recent apps. -->
-        <com.supernova.launcher.ui.RecentAppsPager
+        <com.novaredux.launcher.ui.RecentAppsPager
             android:id="@+id/drawerFrequentRow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -304,7 +304,7 @@
             android:layout_height="0dp"
             android:layout_weight="1">
 
-            <com.supernova.launcher.ui.EdgeFadeRecyclerView
+            <com.novaredux.launcher.ui.EdgeFadeRecyclerView
                 android:id="@+id/drawerRecycler"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -362,7 +362,7 @@
             <!-- The drawer search is the search window: while the field
                  holds a query this list - the search controller's results -
                  stands in for the drawer's own. -->
-            <com.supernova.launcher.ui.EdgeFadeRecyclerView
+            <com.novaredux.launcher.ui.EdgeFadeRecyclerView
                 android:id="@+id/drawerSearchResults"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -371,7 +371,7 @@
 
             <!-- The fast scrollbar: the visible 32dp of its 58dp scroller,
                  which hangs 26dp past the list's edge. -->
-            <com.supernova.launcher.ui.FastScrollerView
+            <com.novaredux.launcher.ui.FastScrollerView
                 android:id="@+id/drawerFastScroller"
                 android:layout_width="32dp"
                 android:layout_height="match_parent"
@@ -626,7 +626,7 @@
     <!-- Own drag layer: the picked-up item's picture rides here, above every
          sheet and bar. Touches pass through; the activity routes the drag
          gesture to it directly. -->
-    <com.supernova.launcher.ui.DragLayer
+    <com.novaredux.launcher.ui.DragLayer
         android:id="@+id/dragLayer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

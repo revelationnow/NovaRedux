@@ -78,7 +78,7 @@
 
                 <Button
                     android:id="@+id/cardWidgetChange"
-                    style="@style/Widget.Supernova.Button.Text"
+                    style="@style/Widget.NovaRedux.Button.Text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/card_widget_change" />
@@ -127,7 +127,7 @@
 
                     <Button
                         android:id="@+id/cardHeightFill"
-                        style="@style/Widget.Supernova.Button.Segment"
+                        style="@style/Widget.NovaRedux.Button.Segment"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -135,7 +135,7 @@
 
                     <Button
                         android:id="@+id/cardHeightSet"
-                        style="@style/Widget.Supernova.Button.Segment"
+                        style="@style/Widget.NovaRedux.Button.Segment"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -217,7 +217,7 @@
                     android:textSize="@dimen/text_secondary" />
             </LinearLayout>
 
-            <com.supernova.launcher.ui.FlowLayout
+            <com.novaredux.launcher.ui.FlowLayout
                 android:id="@+id/cardItems"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -293,7 +293,7 @@
 
         <Button
             android:id="@+id/cardRemove"
-            style="@style/Widget.Supernova.Button.Text"
+            style="@style/Widget.NovaRedux.Button.Text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/card_menu_remove" />
@@ -305,7 +305,7 @@
 
         <Button
             android:id="@+id/cardCancel"
-            style="@style/Widget.Supernova.Button.Text"
+            style="@style/Widget.NovaRedux.Button.Text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/cancel" />

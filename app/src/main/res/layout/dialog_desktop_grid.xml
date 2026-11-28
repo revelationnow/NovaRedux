@@ -19,7 +19,7 @@
         android:paddingHorizontal="@dimen/space_ms"
         android:paddingVertical="@dimen/space_md">
 
-        <com.supernova.launcher.ui.settings.preview.MiniGridView
+        <com.novaredux.launcher.ui.settings.preview.MiniGridView
             android:id="@+id/gridPreview"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />

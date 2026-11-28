@@ -49,7 +49,7 @@ case "$tour" in
     *[!A-Za-z]*|"") echo "::error::No such tour: $tour"; exit 1 ;;
 esac
 read -r -a extra <<< "${TOUR_ARGS:-}"
-adb shell am instrument -w -r "${extra[@]}" -e class "com.supernova.launcher.$tour" \
+adb shell am instrument -w -r "${extra[@]}" -e class "com.novaredux.launcher.$tour" \
     "$app.test/androidx.test.runner.AndroidJUnitRunner" | tee tour.txt
 
 mkdir -p "$out"

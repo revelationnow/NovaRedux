@@ -21,13 +21,14 @@ val keystoreProperties = Properties().apply {
 }
 
 android {
-    namespace = "com.supernova.launcher"
+    namespace = "com.novaredux.launcher"
     compileSdk = 37
 
     defaultConfig {
         // NovaRedux's own ID, so it installs beside Supernova and never
-        // replaces it. The namespace above (the code's package) stays
-        // Supernova's, which keeps merging from upstream simple.
+        // replaces it. The namespace above (the code's package) mirrors
+        // Supernova's com.supernova.launcher name for name, so a change from
+        // upstream ports by a rename (docs/NAMES.md, tools/upstream_names.py).
         applicationId = "io.github.revelationnow.novaredux"
         minSdk = 28
         targetSdk = 36
@@ -52,7 +53,7 @@ android {
     buildTypes {
         // A separate app beside the release one, so the dev build and the
         // APK testers get can sit on one phone. The namespace (and so every
-        // class name and the settings alias) stays com.supernova.launcher.
+        // class name and the settings alias) is the same in both.
         debug {
             applicationIdSuffix = ".debug"
         }

@@ -66,7 +66,7 @@
             android:visibility="gone" />
 
         <!-- The drawer's fast scrollbar and its letter bubble. -->
-        <com.supernova.launcher.ui.FastScrollerView
+        <com.novaredux.launcher.ui.FastScrollerView
             android:id="@+id/activitiesFastScroller"
             android:layout_width="32dp"
             android:layout_height="match_parent"

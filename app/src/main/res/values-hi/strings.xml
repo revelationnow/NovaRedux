@@ -1135,8 +1135,8 @@
     <string name="reset_failed">रीसेट नहीं हो सका: %1$s</string>
     <string name="quick_start">क्विक स्टार्ट</string>
     <string name="quick_start_subtitle">पहली बार वाला सेटअप फिर से चलाएं</string>
-    <string name="restart_supernova">NovaRedux रीस्टार्ट करें</string>
-    <string name="restart_supernova_subtitle">लॉन्चर बंद करके फिर से खोलें</string>
+    <string name="restart_novaredux">NovaRedux रीस्टार्ट करें</string>
+    <string name="restart_novaredux_subtitle">लॉन्चर बंद करके फिर से खोलें</string>
     <string name="restart_launcher_q">NovaRedux रीस्टार्ट करें?</string>
     <string name="restart_launcher_message">सेटिंग और होम स्क्रीन बंद होकर फिर से खुलेंगी. कुछ भी नहीं खोएगा.</string>
     <string name="restart">रीस्टार्ट करें</string>

@@ -28,7 +28,7 @@
              comes first. -->
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/settingsAppBar"
-            android:theme="@style/ThemeOverlay.Supernova.SettingsPage"
+            android:theme="@style/ThemeOverlay.NovaRedux.SettingsPage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
@@ -133,7 +133,7 @@
                 android:paddingTop="@dimen/space_sm"
                 android:visibility="gone">
 
-                <com.supernova.launcher.ui.settings.preview.PreviewPane
+                <com.novaredux.launcher.ui.settings.preview.PreviewPane
                     android:id="@+id/previewPane"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -198,7 +198,7 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/settingsRecycler"
-                android:theme="@style/ThemeOverlay.Supernova.SettingsPage"
+                android:theme="@style/ThemeOverlay.NovaRedux.SettingsPage"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:clipToPadding="false"
@@ -234,7 +234,7 @@
 
         <TextView
             android:id="@+id/tabSettings"
-            style="@style/Widget.Supernova.SettingsTab"
+            style="@style/Widget.NovaRedux.SettingsTab"
             android:text="@string/settings"
             app:drawableStartCompat="@drawable/ic_tab_settings" />
 
@@ -245,7 +245,7 @@
 
         <TextView
             android:id="@+id/tabStyle"
-            style="@style/Widget.Supernova.SettingsTab"
+            style="@style/Widget.NovaRedux.SettingsTab"
             android:text="@string/style_tab"
             app:drawableStartCompat="@drawable/ic_tab_style" />
 

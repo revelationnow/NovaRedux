@@ -1154,8 +1154,8 @@
     <string name="reset_failed">Falha ao redefinir: %1$s</string>
     <string name="quick_start">Início rápido</string>
     <string name="quick_start_subtitle">Executar de novo a configuração inicial</string>
-    <string name="restart_supernova">Reiniciar o NovaRedux</string>
-    <string name="restart_supernova_subtitle">Fechar e reabrir o launcher</string>
+    <string name="restart_novaredux">Reiniciar o NovaRedux</string>
+    <string name="restart_novaredux_subtitle">Fechar e reabrir o launcher</string>
     <string name="restart_launcher_q">Reiniciar o NovaRedux?</string>
     <string name="restart_launcher_message">As configurações e a tela inicial fecham e abrem de novo. Nada se perde.</string>
     <string name="restart">Reiniciar</string>

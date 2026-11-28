@@ -1154,8 +1154,8 @@
     <string name="reset_failed">Error al restablecer: %1$s</string>
     <string name="quick_start">Inicio rápido</string>
     <string name="quick_start_subtitle">Vuelve a hacer la configuración inicial</string>
-    <string name="restart_supernova">Reiniciar NovaRedux</string>
-    <string name="restart_supernova_subtitle">Cierra y vuelve a abrir el launcher</string>
+    <string name="restart_novaredux">Reiniciar NovaRedux</string>
+    <string name="restart_novaredux_subtitle">Cierra y vuelve a abrir el launcher</string>
     <string name="restart_launcher_q">¿Reiniciar NovaRedux?</string>
     <string name="restart_launcher_message">Los ajustes y la pantalla de inicio se cierran y se vuelven a abrir. No se pierde nada.</string>
     <string name="restart">Reiniciar</string>

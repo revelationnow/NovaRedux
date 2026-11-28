@@ -26,7 +26,7 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <com.supernova.launcher.ui.FadingTextView
+        <com.novaredux.launcher.ui.FadingTextView
             android:id="@+id/shortcutLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

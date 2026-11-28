@@ -20,7 +20,7 @@
         android:ellipsize="end"
         android:maxLines="1"
         android:text="@string/action_private_space"
-        android:textAppearance="@style/TextAppearance.Supernova.DrawerTab"
+        android:textAppearance="@style/TextAppearance.NovaRedux.DrawerTab"
         android:textColor="@color/textPrimary" />
 
     <TextView

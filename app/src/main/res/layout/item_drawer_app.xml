@@ -20,9 +20,9 @@
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:importantForAccessibility="no"
-        android:src="@drawable/ic_supernova" />
+        android:src="@drawable/ic_novaredux" />
 
-    <com.supernova.launcher.ui.FadingTextView
+    <com.novaredux.launcher.ui.FadingTextView
         android:id="@+id/appLabel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

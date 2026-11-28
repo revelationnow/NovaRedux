@@ -1154,8 +1154,8 @@
     <string name="reset_failed">Échec de la réinitialisation : %1$s</string>
     <string name="quick_start">Démarrage rapide</string>
     <string name="quick_start_subtitle">Refaire la configuration initiale</string>
-    <string name="restart_supernova">Redémarrer NovaRedux</string>
-    <string name="restart_supernova_subtitle">Fermer et rouvrir le lanceur</string>
+    <string name="restart_novaredux">Redémarrer NovaRedux</string>
+    <string name="restart_novaredux_subtitle">Fermer et rouvrir le lanceur</string>
     <string name="restart_launcher_q">Redémarrer NovaRedux ?</string>
     <string name="restart_launcher_message">Les paramètres et l\'écran d\'accueil se ferment et se rouvrent. Rien n\'est perdu.</string>
     <string name="restart">Redémarrer</string>

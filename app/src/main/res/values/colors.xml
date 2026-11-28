@@ -69,7 +69,7 @@
     <!-- Text and icons on an accent-filled control (a pill button, a
          checked box). Every curated accent is dark enough for white. -->
     <color name="onAccent">#FFFFFFFF</color>
-    <!-- The custom accent's three colours (ThemeOverlay.Supernova.Custom),
+    <!-- The custom accent's three colours (ThemeOverlay.NovaRedux.Custom),
          overwritten at runtime; these values only show if that fails. -->
     <color name="accentCustom">#2E89FF</color>
     <color name="accentCustomText">#2E89FF</color>

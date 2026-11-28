@@ -15,7 +15,7 @@ plugins {
 }
 
 android {
-    namespace = "com.supernova.launcher.baselineprofile"
+    namespace = "com.novaredux.launcher.baselineprofile"
     compileSdk = 37
 
     defaultConfig {

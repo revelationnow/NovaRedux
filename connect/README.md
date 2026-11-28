@@ -14,7 +14,7 @@ content://io.github.revelationnow.novaredux.connect.suggestions/suggestions?q=<t
 - The answer is one column, `suggestion`, best first.
 - Only NovaRedux (`io.github.revelationnow.novaredux` and its `.debug` build) gets an answer; any other app gets a `SecurityException`.
 
-NovaRedux's side is [`NovaConnect.kt`](../app/src/main/java/com/supernova/launcher/connect/NovaConnect.kt); this side is [`SuggestionsContract.kt`](src/main/java/io/github/revelationnow/novaredux/connect/SuggestionsContract.kt). The two change together.
+NovaRedux's side is [`NovaConnect.kt`](../app/src/main/java/com/novaredux/launcher/connect/NovaConnect.kt); this side is [`SuggestionsContract.kt`](src/main/java/io/github/revelationnow/novaredux/connect/SuggestionsContract.kt). The two change together.
 
 ## What it sends
 

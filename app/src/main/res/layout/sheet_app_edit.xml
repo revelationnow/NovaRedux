@@ -36,7 +36,7 @@
 
     <!-- The preview sits on the real wallpaper, seen through the sheet,
          as the icon will on home. -->
-    <com.supernova.launcher.ui.WallpaperWell
+    <com.novaredux.launcher.ui.WallpaperWell
         android:id="@+id/previewCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -61,7 +61,7 @@
                 android:contentDescription="@string/edit_preview"
                 android:scaleType="fitCenter" />
 
-            <com.supernova.launcher.ui.FadingTextView
+            <com.novaredux.launcher.ui.FadingTextView
                 android:id="@+id/previewLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -101,7 +101,7 @@
                 app:chipSpacingHorizontal="@dimen/space_xs"
                 app:chipSpacingVertical="@dimen/space_xs" />
         </LinearLayout>
-    </com.supernova.launcher.ui.WallpaperWell>
+    </com.novaredux.launcher.ui.WallpaperWell>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -208,7 +208,7 @@
 
                     <Button
                         android:id="@+id/variantDefault"
-                        style="@style/Widget.Supernova.Button.Segment"
+                        style="@style/Widget.NovaRedux.Button.Segment"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -216,7 +216,7 @@
 
                     <Button
                         android:id="@+id/variantThemed"
-                        style="@style/Widget.Supernova.Button.Segment"
+                        style="@style/Widget.NovaRedux.Button.Segment"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -224,7 +224,7 @@
 
                     <Button
                         android:id="@+id/variantOriginal"
-                        style="@style/Widget.Supernova.Button.Segment"
+                        style="@style/Widget.NovaRedux.Button.Segment"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -437,7 +437,7 @@
 
         <Button
             android:id="@+id/resetButton"
-            style="@style/Widget.Supernova.Button.Text"
+            style="@style/Widget.NovaRedux.Button.Text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/reset" />
@@ -449,7 +449,7 @@
 
         <Button
             android:id="@+id/cancelButton"
-            style="@style/Widget.Supernova.Button.Text"
+            style="@style/Widget.NovaRedux.Button.Text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/cancel" />

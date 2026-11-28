@@ -35,7 +35,7 @@
 
         <Button
             android:id="@+id/moveAsFolder"
-            style="@style/Widget.Supernova.Button.Segment"
+            style="@style/Widget.NovaRedux.Button.Segment"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -43,7 +43,7 @@
 
         <Button
             android:id="@+id/moveAsTab"
-            style="@style/Widget.Supernova.Button.Segment"
+            style="@style/Widget.NovaRedux.Button.Segment"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -105,7 +105,7 @@
 
         <Button
             android:id="@+id/moveCancel"
-            style="@style/Widget.Supernova.Button.Text"
+            style="@style/Widget.NovaRedux.Button.Text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/cancel" />

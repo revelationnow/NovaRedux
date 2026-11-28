@@ -1219,8 +1219,8 @@
     <string name="reset_failed">Reset failed: %1$s</string>
     <string name="quick_start">Quick start</string>
     <string name="quick_start_subtitle">Run the first-run setup again</string>
-    <string name="restart_supernova">Restart NovaRedux</string>
-    <string name="restart_supernova_subtitle">Close and reopen the launcher</string>
+    <string name="restart_novaredux">Restart NovaRedux</string>
+    <string name="restart_novaredux_subtitle">Close and reopen the launcher</string>
     <string name="restart_launcher_q">Restart NovaRedux?</string>
     <string name="restart_launcher_message">Settings and the home screen close and open again. Nothing is lost.</string>
     <string name="restart">Restart</string>

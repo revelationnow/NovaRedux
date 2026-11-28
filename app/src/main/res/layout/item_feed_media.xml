@@ -23,7 +23,7 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <com.supernova.launcher.ui.FadingTextView
+        <com.novaredux.launcher.ui.FadingTextView
             android:id="@+id/mediaTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -31,7 +31,7 @@
             android:textSize="@dimen/text_body"
             android:textStyle="bold" />
 
-        <com.supernova.launcher.ui.FadingTextView
+        <com.novaredux.launcher.ui.FadingTextView
             android:id="@+id/mediaArtist"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

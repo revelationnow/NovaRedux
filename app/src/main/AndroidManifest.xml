@@ -106,7 +106,7 @@
     </queries>
 
     <application
-        android:name=".SupernovaApp"
+        android:name=".NovaReduxApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -114,7 +114,7 @@
         android:label="@string/app_label"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Supernova">
+        android:theme="@style/Theme.NovaRedux">
 
         <!-- Its own task: a distinct
              taskAffinity plus singleTask puts Settings in a separate recents
@@ -166,7 +166,7 @@
         </provider>
 
         <service
-            android:name=".notification.SupernovaNotificationListener"
+            android:name=".notification.NovaReduxNotificationListener"
             android:exported="true"
             android:label="@string/app_label"
             android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
@@ -176,7 +176,7 @@
         </service>
 
         <service
-            android:name=".SupernovaAccessibilityService"
+            android:name=".NovaReduxAccessibilityService"
             android:exported="true"
             android:label="@string/app_label"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
@@ -221,7 +221,7 @@
         <!-- Device admin (force-lock only) backing the device-admin screen
              lock method, as an alternative to the accessibility service. -->
         <receiver
-            android:name=".SupernovaDeviceAdmin"
+            android:name=".NovaReduxDeviceAdmin"
             android:description="@string/lock_admin_explanation"
             android:exported="true"
             android:permission="android.permission.BIND_DEVICE_ADMIN">
@@ -260,7 +260,7 @@
             android:launchMode="singleTop"
             android:noHistory="true"
             android:taskAffinity="${applicationId}.applyiconpack"
-            android:theme="@style/Theme.Supernova.Transparent">
+            android:theme="@style/Theme.NovaRedux.Transparent">
             <intent-filter>
                 <action android:name="com.supernova.launcher.APPLY_ICON_THEME" />
                 <!-- Nova's own, for a pack that offers it to any launcher. -->
@@ -280,7 +280,7 @@
             android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize"
             android:excludeFromRecents="true"
             android:exported="false"
-            android:theme="@style/Theme.Supernova.WallpaperCrop" />
+            android:theme="@style/Theme.NovaRedux.WallpaperCrop" />
 
         <!-- An app pair's screen of its own (#12), from Android 12L: full
              screen for a moment, in a task of its own, it opens the pair's
@@ -293,7 +293,7 @@
             android:excludeFromRecents="true"
             android:exported="false"
             android:taskAffinity="${applicationId}.pair"
-            android:theme="@style/Theme.Supernova.Pair" />
+            android:theme="@style/Theme.NovaRedux.Pair" />
 
         <!-- The Screen timeout lock method's black screen (TimeoutLock). -->
         <activity
@@ -301,7 +301,7 @@
             android:excludeFromRecents="true"
             android:exported="false"
             android:noHistory="true"
-            android:theme="@style/Theme.Supernova.TimeoutLock" />
+            android:theme="@style/Theme.NovaRedux.TimeoutLock" />
 
         <!-- Lets other apps ask to pin a shortcut or widget to the home screen;
              the system only delivers these to the default launcher. -->
@@ -310,7 +310,7 @@
             android:excludeFromRecents="true"
             android:exported="true"
             android:launchMode="singleTop"
-            android:theme="@style/Theme.Supernova.Transparent">
+            android:theme="@style/Theme.NovaRedux.Transparent">
             <intent-filter>
                 <action android:name="android.content.pm.action.CONFIRM_PIN_SHORTCUT" />
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIRM_PIN" />

@@ -1173,8 +1173,8 @@
     <string name="reset_failed">Не удалось сбросить: %1$s</string>
     <string name="quick_start">Быстрый старт</string>
     <string name="quick_start_subtitle">Пройти первоначальную настройку заново</string>
-    <string name="restart_supernova">Перезапустить NovaRedux</string>
-    <string name="restart_supernova_subtitle">Закрыть и снова открыть лаунчер</string>
+    <string name="restart_novaredux">Перезапустить NovaRedux</string>
+    <string name="restart_novaredux_subtitle">Закрыть и снова открыть лаунчер</string>
     <string name="restart_launcher_q">Перезапустить NovaRedux?</string>
     <string name="restart_launcher_message">Настройки и главный экран закроются и откроются снова. Ничего не потеряется.</string>
     <string name="restart">Перезапустить</string>

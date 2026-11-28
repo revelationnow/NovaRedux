@@ -16,4 +16,4 @@
     app:tabPaddingEnd="12dp"
     app:tabPaddingStart="12dp"
     app:tabRippleColor="@android:color/transparent"
-    app:tabTextAppearance="@style/TextAppearance.Supernova.DrawerTab" />
+    app:tabTextAppearance="@style/TextAppearance.NovaRedux.DrawerTab" />

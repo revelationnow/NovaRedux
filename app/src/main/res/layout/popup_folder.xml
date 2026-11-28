@@ -21,7 +21,7 @@
              so a long folder's name could not be seen or typed into. Its
              height stays wrap_content: the card wraps, so 0dp would fold
              the grid away. -->
-        <com.supernova.launcher.ui.FolderGridView
+        <com.novaredux.launcher.ui.FolderGridView
             android:id="@+id/folderGrid"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

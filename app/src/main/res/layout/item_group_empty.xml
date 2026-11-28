@@ -181,7 +181,7 @@
 
     <Button
         android:id="@+id/emptyAdd"
-        style="@style/Widget.Supernova.Button.Tonal"
+        style="@style/Widget.NovaRedux.Button.Tonal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/space_ms"
