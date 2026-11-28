@@ -135,7 +135,7 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 | ✅ | Custom tabs (drawer groups) |  | Prime | P0 | Unlimited custom tabs | drawer_groups |
 | ✅ | Apps only in their tab, or also in All apps |  | Prime | P1 | Per-tab choice | drawer_isolate_tabs |
 | ✅ | Category tabs | 7.0 beta | Prime | P2 | Tabs sorted by app category | A tab or folder can take its apps from a category (Apps from a category, on its page) and keeps up as apps install and go; a Smart Folder turned into a tab keeps updating |
-| ✅ | Folders in the drawer |  | Prime | P0 | Drawer folders, inside tabs too | Nested drawer folders |
+| ✅ | Folders in the drawer |  | Prime | P0 | Drawer folders, inside tabs too | Nested drawer folders. A-Z as Nova shows them, imported ones too, or in the order dragged on the Drawer groups page; Sort A-Z there puts them back |
 | ✅ | Hide apps | 1.x | Prime | P0 | Hidden without uninstalling | hidden_apps |
 | ✅ | Hide from the long-press menu | 7.0.10 | Prime | P2 | One-tap hide | PopupExtraRow HIDE |
 | ✅ | Work-profile apps in their own tab | 7.0.39 |  | P1 | Separate work tab | drawer_work_tab |

@@ -42,9 +42,12 @@ import org.junit.runner.RunWith
 // Settings come as instrumentation arguments, typed by their prefix:
 //   pref.b.<key> true · pref.i.<key> 5 · pref.f.<key> 1.5 · pref.s.<key> TEXT
 //   pref.s64.<key> <base64 of the text>, for values with spaces or quotes.
+//   pref.set64.<key> <base64 of the entries, a line each>, for a set (the
+//   drawer groups, say).
 // `shots` lists the screens, comma-separated: home, drawer, search, settings,
 // settings.searchbar (the search bar's settings page), settings.search (the
-// Search page, at its search window rows), feed (the page to the
+// Search page, at its search window rows), settings.groups (the Drawer
+// groups page), feed (the page to the
 // left of home), menu.home (the first home icon's menu), menu.drawer (the
 // first drawer app's) and folder.drawer (the first drawer folder's card; with
 // pref.b.disable_animations true, as the software-rendered emulator may not
@@ -147,6 +150,8 @@ class ScreenshotTour {
             "f" -> store[floatPreferencesKey(key)] = raw.toFloat()
             "s" -> store[stringPreferencesKey(key)] = raw
             "s64" -> store[stringPreferencesKey(key)] = String(Base64.decode(raw, Base64.DEFAULT))
+            "set64" -> store[stringSetPreferencesKey(key)] =
+                String(Base64.decode(raw, Base64.DEFAULT)).lines().filter { it.isNotEmpty() }.toSet()
         }
     }
 
@@ -165,6 +170,7 @@ class ScreenshotTour {
         "folder.drawer" -> openDrawer() && tapFirst(By.descStartsWith(FOLDER_DESC))
         "settings" -> startSettings(Intent())
         "settings.searchbar" -> startSettings(Intent().putExtra(SettingsActivity.EXTRA_OPEN_SEARCH_BAR, true))
+        "settings.groups" -> startSettings(Intent().putExtra(SettingsActivity.EXTRA_DRAWER_GROUP, ""))
         "settings.search" -> startSettings(
             Intent().putExtra(SettingsActivity.EXTRA_SECTION_TITLE_RES, R.string.settings_section_search)
                 .putExtra(SettingsActivity.EXTRA_HIGHLIGHT_TITLE_RES, R.string.search_show_apps_row)

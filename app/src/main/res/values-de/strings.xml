@@ -520,7 +520,8 @@
     <string name="group_default_tag">Standard</string>
     <string name="group_smart_tag">Intelligent</string>
     <string name="group_tab_hint">Ziehe eine Zeile, um die Reihenfolge in der Tab-Leiste festzulegen.</string>
-    <string name="group_folder_hint">Ordner stehen in dieser Reihenfolge in der App-Liste. Ziehe einen nach oben zu „Tabs“, um ihn zum Tab zu machen.</string>
+    <string name="group_folder_hint">Ordner stehen in dieser Reihenfolge in der App-Liste: von A–Z, bis du sie per Ziehen selbst ordnest. Ziehe einen nach oben zu „Tabs“, um ihn zum Tab zu machen.</string>
+    <string name="group_sort_az">A–Z sortieren</string>
     <string name="group_tab_bar_hidden">Die Tab-Leiste ist ausgeblendet, daher erscheinen keine Tabs im Drawer. Stelle auf der Seite „App-Drawer“ die Position der Tab-Leiste ein, um sie zurückzuholen.</string>
     <string name="groups_intro">Ordne den App-Drawer nach deinen Wünschen. Eine Gruppe ist eine Reihe von Apps, die als Tab oder als Ordner angezeigt wird.</string>
     <string name="groups_tabs_blurb">Seiten des Drawers, zwischen denen du wischst, etwa „Spiele“ oder „Reisen“.</string>

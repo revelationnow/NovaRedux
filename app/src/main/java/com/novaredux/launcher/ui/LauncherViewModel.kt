@@ -1301,8 +1301,7 @@ class LauncherViewModel(
     fun drawerGroups(): List<DrawerGroup> {
         val stored = listOf(state.value.prefs.drawerGroups)
         drawerGroupsMemo?.takeIf { it.matches(stored) }?.let { return it.value }
-        val groups = state.value.prefs.drawerGroups.mapNotNull(DrawerGroup::decode)
-            .sortedWith(compareBy<DrawerGroup> { it.order }.then(LabelOrder.by { it.name }))
+        val groups = DrawerGroupOrder.sorted(state.value.prefs.drawerGroups.mapNotNull(DrawerGroup::decode))
         drawerGroupsMemo = Memo(stored, groups)
         return groups
     }
@@ -1422,22 +1421,26 @@ class LauncherViewModel(
     }
 
     // Swaps the group with the next one of its own type in that direction,
-    // then reassigns sequential orders: tabs and folders are separate lists
-    // (the tab bar, the drawer's folders, the Drawer groups page), and a move
-    // across one of the other type changed nothing anyone could see.
+    // and numbers that type's groups again; the other type's keep theirs
+    // (DrawerGroupOrder).
     fun moveGroup(id: String, delta: Int) {
         viewModelScope.launch {
-            preferences.updateDrawerGroups { stored ->
-                val groups = stored.sortedWith(compareBy<DrawerGroup> { it.order }.then(LabelOrder.by { it.name }))
-                    .toMutableList()
-                val index = groups.indexOfFirst { it.id == id }
-                val target = if (index < 0) null else generateSequence(index + delta) { it + delta }
-                    .takeWhile { it in groups.indices }
-                    .firstOrNull { groups[it].type == groups[index].type }
-                if (target == null) return@updateDrawerGroups stored
-                groups[index] = groups[target].also { groups[target] = groups[index] }
-                groups.mapIndexed { position, group -> group.copy(order = position) }
-            }
+            preferences.updateDrawerGroups { DrawerGroupOrder.stepped(it, id, delta) }
+        }
+    }
+
+    // Sort A-Z on the Drawer groups page: one type's groups lose the order
+    // a drag or an import gave them, and show by name.
+    fun sortGroupsByName(type: DrawerGroupType) {
+        viewModelScope.launch {
+            preferences.updateDrawerGroups { DrawerGroupOrder.byName(it, type) }
+        }
+    }
+
+    // Its Undo: the orders they had in before.
+    fun restoreGroupOrders(before: List<DrawerGroup>, type: DrawerGroupType) {
+        viewModelScope.launch {
+            preferences.updateDrawerGroups { DrawerGroupOrder.withOrders(it, before, type) }
         }
     }
 

@@ -30,6 +30,8 @@ class GroupListAdapter(
         fun step(group: DrawerGroup, delta: Int)
         // A press on a row's handle.
         fun startDrag(holder: RecyclerView.ViewHolder)
+        // Sort A-Z on a card.
+        fun sortByName(type: DrawerGroupType)
     }
 
     private var rows: List<GroupListRow> = emptyList()
@@ -39,8 +41,9 @@ class GroupListAdapter(
 
     fun row(position: Int): GroupListRow? = rows.getOrNull(position)
 
-    // A row on a card: a group, or its card's New row.
-    fun isCardRow(position: Int): Boolean = row(position).let { it is GroupListRow.Group || it is GroupListRow.Add }
+    // A row on a card: a group, or its card's Sort A-Z or New row.
+    fun isCardRow(position: Int): Boolean =
+        row(position).let { it is GroupListRow.Group || it is GroupListRow.Add || it is GroupListRow.SortByName }
 
     fun submit(next: List<GroupListRow>) {
         val diff = DiffUtil.calculateDiff(RowDiff(rows, next))
@@ -87,7 +90,7 @@ class GroupListAdapter(
         is GroupListRow.Preview -> R.layout.item_group_preview
         is GroupListRow.Header -> R.layout.item_setting_group_label
         is GroupListRow.Group -> R.layout.item_group_row
-        is GroupListRow.Add -> R.layout.item_group_add
+        is GroupListRow.Add, is GroupListRow.SortByName -> R.layout.item_group_add
         is GroupListRow.Caption -> R.layout.item_group_caption
         is GroupListRow.Empty -> R.layout.item_group_empty
     }
@@ -114,6 +117,7 @@ class GroupListAdapter(
             is GroupListRow.Header -> (holder as GroupHeaderHolder).bind(row)
             is GroupListRow.Group -> (holder as GroupRowHolder).bind(row)
             is GroupListRow.Add -> (holder as GroupAddHolder).bind(row)
+            is GroupListRow.SortByName -> (holder as GroupAddHolder).bind(row)
             is GroupListRow.Caption -> (holder as GroupCaptionHolder).bind(row)
             is GroupListRow.Empty -> (holder as GroupEmptyHolder).bind(row, cardColor)
         }

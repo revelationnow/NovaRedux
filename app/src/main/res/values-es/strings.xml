@@ -534,7 +534,8 @@
     <string name="group_default_tag">Predeterminada</string>
     <string name="group_smart_tag">Inteligente</string>
     <string name="group_tab_hint">Arrastra una fila para fijar el orden en la barra de pestañas.</string>
-    <string name="group_folder_hint">Las carpetas están en la lista de aplicaciones, en este orden. Arrastra una hasta Pestañas para convertirla en pestaña.</string>
+    <string name="group_folder_hint">Las carpetas están en la lista de aplicaciones en este orden: de la A a la Z, hasta que las ordenes tú arrastrándolas. Arrastra una hasta Pestañas para convertirla en pestaña.</string>
+    <string name="group_sort_az">Ordenar de la A a la Z</string>
     <string name="group_tab_bar_hidden">La barra de pestañas está oculta, así que las pestañas no se ven en el cajón. Ajusta Posición de la barra de pestañas en la página Cajón de aplicaciones para recuperarlas.</string>
     <string name="groups_intro">Organiza el cajón de aplicaciones a tu manera. Un grupo es un conjunto de aplicaciones que se muestra como pestaña o como carpeta.</string>
     <string name="groups_tabs_blurb">Páginas del cajón entre las que deslizas, como Juegos o Viajes.</string>

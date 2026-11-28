@@ -4,11 +4,13 @@ import com.novaredux.launcher.data.DrawerGroup
 import com.novaredux.launcher.data.DrawerGroupType
 import com.novaredux.launcher.data.TabFolders
 
-// Another launcher's drawer tabs and folders as Supernova's drawer groups:
+// Another launcher's drawer tabs and folders as NovaRedux's drawer groups:
 // each holding the apps of its own that are on this phone, a tab or a
 // folder holding its folders as it holds apps. A folder left with no app,
 // itself or in a folder inside it, is left out; a tab stays, as one made
-// empty would.
+// empty would. The tabs keep the launcher's order. The folders show A-Z, as
+// Nova shows them: no launcher's folder order says where a folder goes in
+// one list of them all (Smart Launcher's counts within each category).
 internal object DrawerGroupConverter {
 
     // The stored groups with the backup's in place: one of the same name is
@@ -30,11 +32,10 @@ internal object DrawerGroupConverter {
         val tabs = ordered(groups.filterNot { it.folder })
         // Each group under an id of its own: names may repeat, as there.
         val folderIds = folders.associate { it.id to DrawerGroup.newId() }
-        val madeFolders = folders.mapIndexed { order, folder ->
+        val madeFolders = folders.map { folder ->
             DrawerGroup(
                 name = name(folder.title, FOLDER),
                 members = (apps[folder.id].orEmpty() + held(folder, folderIds)).toSet(),
-                order = order,
                 type = DrawerGroupType.FOLDER,
                 keepInMain = folder.keepInMain,
                 iconBase64 = folder.icon?.let(phone.encodeIcon),

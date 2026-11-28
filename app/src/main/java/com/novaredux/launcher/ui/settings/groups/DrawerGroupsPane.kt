@@ -172,6 +172,16 @@ class DrawerGroupsPane(
 
     override fun step(group: DrawerGroup, delta: Int) = viewModel.moveGroup(group.id, delta)
 
+    // Sorted at once, with Undo: the orders as they stood go with the
+    // snackbar.
+    override fun sortByName(type: DrawerGroupType) {
+        val before = viewModel.drawerGroups()
+        viewModel.sortGroupsByName(type)
+        Snackbar.make(container, R.string.folder_sorted, Snackbar.LENGTH_LONG)
+            .setAction(R.string.undo) { viewModel.restoreGroupOrders(before, type) }
+            .show()
+    }
+
     private fun editActions() = GroupEditPage.Actions(
         renamed = ::followRename,
         selectApps = ::selectApps,

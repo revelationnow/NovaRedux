@@ -147,6 +147,12 @@ internal class GroupAddHolder(
         )
         binding.groupAdd.setOnClickListener { listener.add(row.type) }
     }
+
+    // Sort A-Z wears the New row's look.
+    fun bind(row: GroupListRow.SortByName) {
+        binding.groupAdd.setText(R.string.group_sort_az)
+        binding.groupAdd.setOnClickListener { listener.sortByName(row.type) }
+    }
 }
 
 internal class GroupCaptionHolder(private val binding: ItemGroupCaptionBinding) :

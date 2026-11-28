@@ -520,7 +520,8 @@
     <string name="group_default_tag">डिफ़ॉल्ट</string>
     <string name="group_smart_tag">स्मार्ट</string>
     <string name="group_tab_hint">टैब बार में क्रम सेट करने के लिए किसी पंक्ति को खींचें.</string>
-    <string name="group_folder_hint">फ़ोल्डर, ऐप की सूची में इसी क्रम में रहते हैं. किसी फ़ोल्डर को टैब बनाने के लिए उसे ऊपर ‘टैब’ में खींचें.</string>
+    <string name="group_folder_hint">फ़ोल्डर, ऐप की सूची में इसी क्रम में रहते हैं: A-Z में, जब तक आप उन्हें खींचकर अपने हिसाब से न लगाएं. किसी फ़ोल्डर को टैब बनाने के लिए उसे ऊपर ‘टैब’ में खींचें.</string>
+    <string name="group_sort_az">A-Z क्रम में लगाएं</string>
     <string name="group_tab_bar_hidden">टैब बार छिपा हुआ है, इसलिए टैब ड्रॉअर में नहीं दिखते. इन्हें वापस लाने के लिए ‘ऐप ड्रॉअर’ पेज पर टैब बार की जगह सेट करें.</string>
     <string name="groups_intro">ऐप ड्रॉअर को अपने तरीके से व्यवस्थित करें. ग्रुप, ऐप का एक सेट होता है, जो टैब या फ़ोल्डर के रूप में दिखता है.</string>
     <string name="groups_tabs_blurb">ड्रॉअर के पेज, जिनके बीच आप स्वाइप करते हैं, जैसे ‘गेम’ या ‘यात्रा’.</string>

@@ -1,6 +1,7 @@
 package com.novaredux.launcher.data.imports
 
 import com.novaredux.launcher.data.DrawerGroup
+import com.novaredux.launcher.data.DrawerGroupOrder
 import com.novaredux.launcher.data.DrawerGroupType
 import com.novaredux.launcher.data.LauncherPrefs
 import com.novaredux.launcher.data.TabFolders
@@ -279,12 +280,31 @@ class DrawerGroupsImportTest {
         assertEquals("Chat", folder.name)
         assertEquals(setOf("0/com.c/com.c.Main"), folder.members)
         assertEquals("icon2", folder.iconBase64)
+        assertEquals(Int.MAX_VALUE, folder.order)
         val tabs = made.filter { it.type == DrawerGroupType.TAB }
         assertEquals(listOf("Tab A", "Tab B"), tabs.map { it.name })
         assertEquals(listOf(0, 1), tabs.map { it.order })
         val chat = made.single { it.name == "Chat" }
         assertEquals(setOf("0/com.a/com.a.Main", TabFolders.keyOf(chat.id)), tabs[0].members)
         assertEquals(false, tabs[0].keepInMain)
+    }
+
+    // Smart Launcher counts a folder's place within its category, so its
+    // folders, all in one list here, would interleave. They show A-Z, as
+    // Nova shows its own.
+    @Test
+    fun importedFoldersShowAToZ() {
+        val made = DrawerGroupConverter.convert(
+            listOf(
+                group(1, "Travel", folder = true, "com.a", order = 0),
+                group(2, "Banking", folder = true, "com.b", order = 0),
+                group(3, "Music", folder = true, "com.c", order = 1),
+                group(4, "Audio", folder = true, "com.d", order = 1)
+            ),
+            phone
+        )
+        val shown = DrawerGroupOrder.sorted(made).map { it.name }
+        assertEquals(listOf("Audio", "Banking", "Music", "Travel"), shown)
     }
 
     @Test

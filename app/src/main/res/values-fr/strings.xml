@@ -534,7 +534,8 @@
     <string name="group_default_tag">Par défaut</string>
     <string name="group_smart_tag">Intelligent</string>
     <string name="group_tab_hint">Faites glisser une ligne pour définir l\'ordre dans la barre d\'onglets.</string>
-    <string name="group_folder_hint">Les dossiers se trouvent dans la liste des applis, dans cet ordre. Faites-en glisser un vers Onglets pour en faire un onglet.</string>
+    <string name="group_folder_hint">Les dossiers se trouvent dans la liste des applis dans cet ordre : de A à Z, jusqu\'à ce que vous les rangiez vous-même en les faisant glisser. Faites-en glisser un vers Onglets pour en faire un onglet.</string>
+    <string name="group_sort_az">Trier de A à Z</string>
     <string name="group_tab_bar_hidden">La barre d\'onglets est masquée, les onglets ne s\'affichent donc pas dans le tiroir. Réglez Position de la barre d\'onglets sur la page Tiroir d\'applications pour les retrouver.</string>
     <string name="groups_intro">Organisez le tiroir d\'applications à votre façon. Un groupe est un ensemble d\'applis affiché sous forme d\'onglet ou de dossier.</string>
     <string name="groups_tabs_blurb">Des pages du tiroir entre lesquelles vous balayez, comme Jeux ou Voyages.</string>

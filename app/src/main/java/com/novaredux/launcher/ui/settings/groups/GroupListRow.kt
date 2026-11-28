@@ -53,6 +53,12 @@ sealed class GroupListRow {
         override val key: String get() = "add:$type"
     }
 
+    // Sort A-Z, over the New row of a card whose groups don't show by name:
+    // they go back to doing so.
+    data class SortByName(val type: DrawerGroupType) : GroupListRow() {
+        override val key: String get() = "sort:$type"
+    }
+
     // A line of help: under a card, or opening the empty page.
     data class Caption(@StringRes val text: Int) : GroupListRow() {
         override val key: String get() = "caption:$text"

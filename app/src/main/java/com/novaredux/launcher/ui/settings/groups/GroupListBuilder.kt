@@ -3,6 +3,7 @@ package com.novaredux.launcher.ui.settings.groups
 import android.content.Context
 import com.novaredux.launcher.R
 import com.novaredux.launcher.data.DrawerGroup
+import com.novaredux.launcher.data.DrawerGroupOrder
 import com.novaredux.launcher.data.DrawerGroupType
 import com.novaredux.launcher.data.LabelOrder
 import com.novaredux.launcher.data.LaunchableApp
@@ -11,8 +12,9 @@ import com.novaredux.launcher.ui.DrawerTabBar
 import com.novaredux.launcher.ui.LauncherViewModel
 
 // The Drawer groups page's list from what is stored: the tab bar preview,
-// the Tabs card, the Folders card, each with its New row; or, with no group
-// yet, what tabs and folders are.
+// the Tabs card, the Folders card (with Sort A-Z while its folders don't
+// show by name), each with its New row; or, with no group yet, what tabs
+// and folders are.
 class GroupListBuilder(private val context: Context, private val viewModel: LauncherViewModel) {
 
     fun rows(): List<GroupListRow> {
@@ -36,6 +38,9 @@ class GroupListBuilder(private val context: Context, private val viewModel: Laun
             if (tabs.size > 1) add(GroupListRow.Caption(R.string.group_tab_hint))
             add(GroupListRow.Header(R.string.group_folders_header))
             folders.forEach { add(row(it, apps, 0, false)) }
+            if (folders.size > 1 && !DrawerGroupOrder.showByName(folders, DrawerGroupType.FOLDER)) {
+                add(GroupListRow.SortByName(DrawerGroupType.FOLDER))
+            }
             add(GroupListRow.Add(DrawerGroupType.FOLDER))
             if (folders.isNotEmpty()) add(GroupListRow.Caption(R.string.group_folder_hint))
         }

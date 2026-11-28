@@ -61,7 +61,7 @@ App drawer,Scrolling tab bar and tab menu action icons,7.0.10,No,Done,P2,Many ta
 App drawer,Custom tabs (drawer groups),,Yes,Done,P0,Unlimited custom tabs,drawer_groups
 App drawer,"Apps only in their tab, or also in All apps",,Yes,Done,P1,Per-tab choice,drawer_isolate_tabs
 App drawer,Category tabs,7.0 beta,Yes,Done,P2,Tabs sorted by app category,"A tab or folder can take its apps from a category (Apps from a category, on its page) and keeps up as apps install and go; a Smart Folder turned into a tab keeps updating"
-App drawer,Folders in the drawer,,Yes,Done,P0,"Drawer folders, inside tabs too",Nested drawer folders
+App drawer,Folders in the drawer,,Yes,Done,P0,"Drawer folders, inside tabs too","Nested drawer folders. A-Z as Nova shows them, imported ones too, or in the order dragged on the Drawer groups page; Sort A-Z there puts them back"
 App drawer,Hide apps,1.x,Yes,Done,P0,Hidden without uninstalling,hidden_apps
 App drawer,Hide from the long-press menu,7.0.10,Yes,Done,P2,One-tap hide,PopupExtraRow HIDE
 App drawer,Work-profile apps in their own tab,7.0.39,No,Done,P1,Separate work tab,drawer_work_tab
