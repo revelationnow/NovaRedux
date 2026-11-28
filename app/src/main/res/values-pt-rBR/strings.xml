@@ -534,8 +534,8 @@
     <string name="group_default_tag">Padrão</string>
     <string name="group_smart_tag">Inteligente</string>
     <string name="group_tab_hint">Arraste uma linha para definir a ordem na barra de guias.</string>
-    <string name="group_folder_hint">As pastas ficam na lista de apps nesta ordem: de A a Z, até você organizá-las do seu jeito arrastando. Arraste uma para Guias para torná-la uma guia.</string>
-    <string name="group_sort_az">Ordenar de A a Z</string>
+    <string name="group_folder_hint">As pastas ficam na lista de apps nesta ordem: alfabética, até você organizá-las do seu jeito arrastando. Arraste uma para Guias para torná-la uma guia.</string>
+    <string name="group_sort_az">Ordenar alfabeticamente</string>
     <string name="group_tab_bar_hidden">A barra de guias está oculta, então as guias não aparecem na gaveta. Defina Posição da barra de guias na página Gaveta de apps para trazê-las de volta.</string>
     <string name="groups_intro">Organize a gaveta de apps do seu jeito. Um grupo é um conjunto de apps mostrado como guia ou como pasta.</string>
     <string name="groups_tabs_blurb">Páginas da gaveta entre as quais você desliza, como Jogos ou Viagem.</string>
