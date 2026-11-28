@@ -10,9 +10,13 @@ package com.novaredux.launcher.data
 object AppIconSource {
 
     // A package name holds no ':'.
-    const val PACK = "supernova:app"
+    const val PACK = "novaredux:app"
 
-    fun isAppIcon(pack: String?): Boolean = pack == PACK
+    // Its name before 28 Nov 2026 (docs/NAMES.md), and Supernova's: still
+    // read, from older layouts, drawer groups and Supernova backups.
+    const val SUPERNOVA_PACK = "supernova:app"
+
+    fun isAppIcon(pack: String?): Boolean = pack == PACK || pack == SUPERNOVA_PACK
 
     fun nameFor(app: LaunchableApp): String = "${app.userSerial}/${app.packageName}/${app.className}"
 

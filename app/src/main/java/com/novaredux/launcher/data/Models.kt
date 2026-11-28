@@ -89,7 +89,7 @@ data class LauncherItem(
     val customIconPack: String? = null,
     val customIconName: String? = null,
     // Set on SHORTCUT items that are not app shortcuts: a launcher action
-    // ("supernova://action/..." - see gesture/ActionShortcut) or an explicit
+    // ("novaredux://action/..." - see gesture/ActionShortcut) or an explicit
     // intent to fire (Intent.toUri(URI_INTENT_SCHEME), e.g. an activity or a
     // legacy created shortcut). Default-supplied so older items and backups
     // decode unchanged; launchItem routes on it before the app-shortcut path.

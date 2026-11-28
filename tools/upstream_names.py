@@ -55,6 +55,10 @@ RULES = [
     (r"\bsupernovaStore\b", "novaReduxStore", "settings store's Kotlin name"),
     (r"\bsupernovaLayoutStore\b", "novaReduxLayoutStore", "layout store's Kotlin name"),
     (r"\bsupernovaUsageStore\b", "novaReduxUsageStore", "usage store's Kotlin name"),
+    (r"\bsupernova_(store|layout|usage)\b", r"novaredux_\1", "settings, layout and usage store files"),
+    (r"\bsupernova_crash\.log\b", "novaredux_crash.log", "crash log file"),
+    (r"\bsupernova://action/", "novaredux://action/", "launcher-action links"),
+    (r"\bsupernova:app\b", "novaredux:app", "App icons marker"),
 ]
 COMPILED = [(re.compile(pattern), repl) for pattern, repl, _ in RULES]
 

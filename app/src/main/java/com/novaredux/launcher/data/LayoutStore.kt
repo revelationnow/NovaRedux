@@ -28,7 +28,7 @@ val Context.novaReduxLayoutStore by preferencesDataStore(
 )
 
 object LayoutStore {
-    const val NAME = "supernova_layout"
+    const val NAME = StoreFiles.LAYOUT
 }
 
 // An install from before the split holds the layout in the main store: it

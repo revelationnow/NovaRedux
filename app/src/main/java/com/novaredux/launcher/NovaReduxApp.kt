@@ -18,6 +18,13 @@ class NovaReduxApp : Application() {
     // The app's one set of services (AppGraph); every screen draws from it.
     val graph: AppGraph by lazy { AppGraph(this) }
 
+    // Before anything opens a store, files from before the rename take
+    // their new names (StoreFiles).
+    override fun attachBaseContext(base: android.content.Context) {
+        super.attachBaseContext(base)
+        com.novaredux.launcher.data.StoreFiles.renameOld(base.filesDir)
+    }
+
     override fun onCreate() {
         super.onCreate()
         installCrashHandler()
@@ -86,7 +93,7 @@ class NovaReduxApp : Application() {
         // in Android's backups (backup_rules.xml, data_extraction_rules.xml
         // name it).
         fun crashLog(context: android.content.Context): File =
-            File(context.filesDir, "supernova_crash.log")
+            File(context.filesDir, com.novaredux.launcher.data.StoreFiles.CRASH_LOG)
 
         fun crashCount(context: android.content.Context): Int = runCatching {
             crashLog(context).takeIf { it.exists() }

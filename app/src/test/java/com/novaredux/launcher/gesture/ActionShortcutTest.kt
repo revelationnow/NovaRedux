@@ -9,7 +9,7 @@ class ActionShortcutTest {
     @Test
     fun encodeDecodeRoundTripsAPayloadlessAction() {
         val uri = ActionShortcut.encode(GestureAction.OPEN_DRAWER)
-        assertEquals("supernova://action/OPEN_DRAWER", uri)
+        assertEquals("novaredux://action/OPEN_DRAWER", uri)
         val decoded = ActionShortcut.decode(uri)
         assertEquals(GestureAction.OPEN_DRAWER, decoded?.action)
         assertNull(decoded?.payload)
@@ -34,12 +34,21 @@ class ActionShortcutTest {
     fun payloadActionWithoutPayloadDecodesToNull() {
         // A page-jump with no page index is meaningless; decode rejects it so
         // launchItem falls through rather than jumping nowhere.
-        assertNull(ActionShortcut.decode("supernova://action/JUMP_TO_PAGE"))
+        assertNull(ActionShortcut.decode("novaredux://action/JUMP_TO_PAGE"))
+    }
+
+    // The links' name before 28 Nov 2026, and Supernova's.
+    @Test
+    fun oldLinksStillDecode() {
+        assertEquals(GestureAction.OPEN_DRAWER, ActionShortcut.decode("supernova://action/OPEN_DRAWER")?.action)
+        val page = ActionShortcut.decode("supernova://action/JUMP_TO_PAGE?p=2")
+        assertEquals(GestureAction.JUMP_TO_PAGE, page?.action)
+        assertEquals("2", page?.payload)
     }
 
     @Test
     fun unknownActionNameDecodesToNoneBinding() {
-        val decoded = ActionShortcut.decode("supernova://action/NOT_A_REAL_ACTION")
+        val decoded = ActionShortcut.decode("novaredux://action/NOT_A_REAL_ACTION")
         assertEquals(GestureAction.NONE, decoded?.action)
     }
 

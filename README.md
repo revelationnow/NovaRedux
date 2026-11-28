@@ -343,7 +343,7 @@ Legend: ✅ done · 🟡 partial · ❌ missing · ❔ needs a check on a device
 | 🟡 | Translations |  |  | P1 | Nova shipped 74 languages | Machine-translated into Spanish, Brazilian Portuguese, French, German, Hindi and Russian as a start, corrections welcome; per-app language settings, partial translations allowed and checked, tools/i18n and docs/TRANSLATING.md |
 | ✅ | TalkBack support |  |  | P1 | Accessible custom views | No accessibility lint findings; the Screens workflow's audit (-e a11y true) finds every clickable view named on phone, tablet and foldable. A pass with TalkBack on a device is still worth doing |
 | 🟡 | Split LauncherActivity |  |  | P1 | Move UI state into controllers | About 3,480 lines (from 5,470). Their own classes now: the dock's chrome, margins and geometry (DockChrome, ChromeMargins, DockGeometry); the item menus (WorkspaceItemMenus, DrawerItemMenus, built from ItemMenuKit), Edit sheets and the swipe picker (ItemEdits), removals and their Undo bars (ItemRemoval), folder cards (FolderCards) and icon swipes (IconSwipes), reached through ItemSurfaces. Still in it: touch routing (about 400 lines), launching (200), and the search and feed setup (260) |
-| ✅ | Give the layout its own store |  |  | P2 | Layout saves stop rewriting settings | The layout has its own store (supernova_layout), moved over from the settings store on the first read; layout edits and setting changes no longer rewrite each other |
+| ✅ | Give the layout its own store |  |  | P2 | Layout saves stop rewriting settings | The layout has its own store (novaredux_layout), moved over from the settings store on the first read; layout edits and setting changes no longer rewrite each other |
 
 </details>
 

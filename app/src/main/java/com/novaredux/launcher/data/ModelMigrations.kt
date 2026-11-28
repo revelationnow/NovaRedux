@@ -14,9 +14,9 @@ object ModelMigrations {
                 else -> current.copy(version = CURRENT_MODEL_VERSION)
             }
         }
-        // Not a version step: a layout of any version can name a class
-        // from before the rename.
-        return RenamedPackage.applied(current)
+        // Not version steps: a layout of any version can name a class, or
+        // hold a marker, from before the rename.
+        return RenamedMarkers.applied(RenamedPackage.applied(current))
     }
 
     // v2 added LauncherItem.userSerial; the serialization default already stamps

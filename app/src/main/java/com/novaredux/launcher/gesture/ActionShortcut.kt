@@ -7,12 +7,16 @@ import android.os.Build
 // it back through runAction - which respects live state like the feed toggle
 // or the accessibility requirement - instead of firing a raw intent.
 //
-// Encoding: "supernova://action/<ACTION>[?p=<payload>]". The payload backs
+// Encoding: "novaredux://action/<ACTION>[?p=<payload>]". The payload backs
 // JUMP_TO_PAGE (page index) and the launch-app/shortcut targets, matching the
 // gesture payload conventions.
 object ActionShortcut {
 
-    const val PREFIX = "supernova://action/"
+    const val PREFIX = "novaredux://action/"
+
+    // Its name before 28 Nov 2026 (docs/NAMES.md), and Supernova's: still
+    // read, from older layouts and from Supernova backups.
+    const val SUPERNOVA_PREFIX = "supernova://action/"
 
     fun encode(action: GestureAction, payload: String? = null): String =
         PREFIX + action.name + (payload?.takeIf { it.isNotEmpty() }?.let { "?p=$it" }.orEmpty())
@@ -20,8 +24,9 @@ object ActionShortcut {
     // Null when the uri is not one of ours, so callers can fall through to the
     // arbitrary-intent path.
     fun decode(intentUri: String?): GestureBinding? {
-        if (intentUri == null || !intentUri.startsWith(PREFIX)) return null
-        val rest = intentUri.removePrefix(PREFIX)
+        val prefix = listOf(PREFIX, SUPERNOVA_PREFIX).firstOrNull { intentUri?.startsWith(it) == true }
+        if (intentUri == null || prefix == null) return null
+        val rest = intentUri.removePrefix(prefix)
         val name = rest.substringBefore("?p=")
         val payload = if (rest.contains("?p=")) rest.substringAfter("?p=").ifEmpty { null } else null
         val action = GestureAction.fromName(name)

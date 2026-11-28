@@ -22,7 +22,7 @@ import kotlinx.coroutines.flow.first
 // own backups or Android's (backup_rules.xml and data_extraction_rules.xml
 // leave its file out; the name below is in both).
 val Context.novaReduxUsageStore by preferencesDataStore(
-    name = "supernova_usage",
+    name = StoreFiles.USAGE,
     produceMigrations = { context -> listOf(UsageMigration { context.novaReduxStore }) }
 )
 

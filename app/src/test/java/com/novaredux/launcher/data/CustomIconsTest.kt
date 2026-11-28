@@ -24,7 +24,7 @@ class CustomIconsTest {
             ),
             LauncherItem(
                 id = "action", itemType = ItemType.SHORTCUT, label = "Drawer",
-                intentUri = "supernova://action/OPEN_DRAWER", customIconPack = "com.pack", customIconName = "drawer"
+                intentUri = "novaredux://action/OPEN_DRAWER", customIconPack = "com.pack", customIconName = "drawer"
             ),
             // A pinned shortcut whose Edit picked an icon and hid its label.
             LauncherItem(

@@ -12,12 +12,12 @@ import androidx.datastore.preferences.preferencesDataStore
 // The settings and the install's own flags. An unreadable file is replaced
 // rather than thrown on every read (StoreRecovery).
 val Context.novaReduxStore by preferencesDataStore(
-    name = "supernova_store",
+    name = StoreFiles.SETTINGS,
     corruptionHandler = ReplaceFileCorruptionHandler { failure ->
-        StoreRecovery.onCorrupt(failure, "supernova_store")
+        StoreRecovery.onCorrupt(failure, StoreFiles.SETTINGS)
         emptyPreferences()
     },
-    produceMigrations = { listOf(SmartFoldersKept) }
+    produceMigrations = { listOf(SmartFoldersKept, RenamedGroupIcons) }
 )
 
 object StoreKeys {

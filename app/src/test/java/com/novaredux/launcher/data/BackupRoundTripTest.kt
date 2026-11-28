@@ -261,7 +261,7 @@ class BackupRoundTripTest {
                 cellX = 0,
                 cellY = 0,
                 label = "Open drawer",
-                intentUri = "supernova://action/OPEN_DRAWER"
+                intentUri = "novaredux://action/OPEN_DRAWER"
             ),
             LauncherItem(
                 id = "activity",

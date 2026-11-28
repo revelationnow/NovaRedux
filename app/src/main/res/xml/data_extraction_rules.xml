@@ -6,11 +6,17 @@
 <data-extraction-rules>
     <cloud-backup>
         <include domain="file" path="." />
+        <exclude domain="file" path="datastore/novaredux_usage.preferences_pb" />
+        <exclude domain="file" path="novaredux_crash.log" />
+        <!-- Their names before 28 Nov 2026, should one be left (StoreFiles). -->
         <exclude domain="file" path="datastore/supernova_usage.preferences_pb" />
         <exclude domain="file" path="supernova_crash.log" />
     </cloud-backup>
     <device-transfer>
         <include domain="file" path="." />
+        <exclude domain="file" path="datastore/novaredux_usage.preferences_pb" />
+        <exclude domain="file" path="novaredux_crash.log" />
+        <!-- Their names before 28 Nov 2026, should one be left (StoreFiles). -->
         <exclude domain="file" path="datastore/supernova_usage.preferences_pb" />
         <exclude domain="file" path="supernova_crash.log" />
     </device-transfer>

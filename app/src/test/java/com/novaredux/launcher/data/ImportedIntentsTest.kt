@@ -26,7 +26,7 @@ class ImportedIntentsTest {
     fun everythingElseIsLeftAsItCame() {
         val view = "intent:https://example.org#Intent;action=android.intent.action.VIEW;end"
         assertEquals(view, ImportedIntents.calmed(view))
-        assertEquals("supernova://action/OPEN_DRAWER", ImportedIntents.calmed("supernova://action/OPEN_DRAWER"))
+        assertEquals("novaredux://action/OPEN_DRAWER", ImportedIntents.calmed("novaredux://action/OPEN_DRAWER"))
         assertEquals(null, ImportedIntents.calmed(null as String?))
     }
 

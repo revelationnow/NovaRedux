@@ -38,6 +38,8 @@ class AppIconSourceTest {
     @Test
     fun packNameIsNoPackageName() {
         assertTrue(AppIconSource.isAppIcon(AppIconSource.PACK))
+        // Its name before 28 Nov 2026, and Supernova's.
+        assertTrue(AppIconSource.isAppIcon("supernova:app"))
         assertFalse(AppIconSource.isAppIcon("com.android.chrome"))
         assertFalse(AppIconSource.isAppIcon(null))
         assertTrue(':' in AppIconSource.PACK)

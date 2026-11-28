@@ -54,18 +54,30 @@ The R8 keep rules, the release baseline profiles, the lint and detekt
 baselines and the Screens script (`tools/ci/screens.sh`) name the new
 package and classes.
 
+### Stored names
+
+What a phone and a backup hold. These were kept at first and renamed later
+the same day. NovaRedux still reads the old names, from a phone that had
+an earlier build, from older NovaRedux backups and from Supernova's backups,
+which use them too.
+
+| Supernova | NovaRedux | The old name |
+| --- | --- | --- |
+| `supernova_store`, `supernova_layout`, `supernova_usage`: the DataStore files (settings, home screen layout, usage history) | `novaredux_store`, `novaredux_layout`, `novaredux_usage` | Moved to the new name as the app starts, before any store opens (`StoreFiles`). |
+| `supernova_crash.log` | `novaredux_crash.log` | Moved the same way. The backup rules leave out both names. |
+| `supernova://action/…`: launcher actions on the home screen and icon swipes (Open drawer, Lock…) | `novaredux://action/…` | A layout takes the new links as it is read or imported (`RenamedMarkers`); `ActionShortcut.decode` reads both. |
+| `supernova:app`: an icon picked from an app's own icon | `novaredux:app` | The same, and a drawer folder's icon takes it in the settings (`RenamedGroupIcons`); `AppIconSource.isAppIcon` reads both. |
+
 ## Kept
 
-These still say Supernova because phones, backups or other apps hold them.
+These still say Supernova because other apps send them, or they name
+Supernova itself.
 
 | Name | What it is | Why it stays |
 | --- | --- | --- |
-| `supernova_store`, `supernova_layout`, `supernova_usage` | The DataStore files: settings, home screen layout, usage history | Renamed, every install would start with no settings or layout. Nobody sees them. |
-| `supernova_crash.log` | The crash log file | The same; the backup rules leave it out by this name. |
-| `supernova://action/…` | Launcher actions (Open drawer, Lock…) stored in layouts, gestures and backups | Layouts, NovaRedux backups and Supernova backups hold it. |
-| `supernova:app` | An icon picked from an app's own icon, stored in icon edits | Icon edits and backups hold it. |
 | `com.supernova.launcher.APPLY_ICON_THEME`, `com.supernova.launcher.extra.ICON_THEME_PACKAGE` | What an icon pack's Apply button sends | Packs that support Supernova send these, and reach NovaRedux with them. |
 | `badge_test` and the other notification channel IDs | Android's channels | They never said Supernova. |
+| "A NovaRedux or Supernova backup" (Import), and About's licence text | What the app shows | Import does read Supernova's backups, and the licence says NovaRedux is a modified version of Supernova. |
 | "Supernova" in comments, commit messages and docs | Upstream's issues and versions ("Supernova issue 322", "Supernova v0.2.9") | They name upstream. Comments from before the rename may still call the app Supernova. |
 
 ## What the rename changed on a phone
@@ -77,9 +89,11 @@ NovaRedux build from before the rename, after updating:
 - Turn notification access, the accessibility service or device admin back on, if they were.
 - Put the glance widget back on the home screen, if it was there.
 
-Settings, layout and backups are as they were. Home screen icons that open
-NovaRedux's own screens, such as the NovaRedux Settings icon the first run
-places, take the new class names as the layout is read (`RenamedPackage`).
+Settings, layout and backups are as they were: the store files move to
+their new names at the first start (Stored names, above). Home screen icons
+that open NovaRedux's own screens, such as the NovaRedux Settings icon the
+first run places, take the new class names as the layout is read
+(`RenamedPackage`).
 
 ## Porting a Supernova change
 
