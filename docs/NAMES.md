@@ -75,10 +75,11 @@ NovaRedux build from before the rename, after updating:
 
 - Pick NovaRedux as the home app again (Android asks at the next Home).
 - Turn notification access, the accessibility service or device admin back on, if they were.
-- Put the glance widget back on the home screen, if it was there, and a
-  home screen icon for NovaRedux's own Settings.
+- Put the glance widget back on the home screen, if it was there.
 
-Settings, layout and backups are as they were.
+Settings, layout and backups are as they were. Home screen icons that open
+NovaRedux's own screens, such as the NovaRedux Settings icon the first run
+places, take the new class names as the layout is read (`RenamedPackage`).
 
 ## Porting a Supernova change
 
